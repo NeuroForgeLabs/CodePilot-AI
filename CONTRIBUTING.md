@@ -1,10 +1,10 @@
-# Contributing to CodePilot AI
+# 🤝 Contributing to CodePilot AI
 
-Thank you for your interest in contributing! This project is open source and community-driven. Whether you're fixing a bug, adding a new problem, improving the UI, or enhancing the AI — every contribution matters.
+Thank you for your interest in contributing! This project is open source and community-driven. Whether you're fixing a bug, adding a new problem, improving the UI, or enhancing the AI — every contribution matters. 🙌
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
@@ -12,7 +12,7 @@ Thank you for your interest in contributing! This project is open source and com
    git clone https://github.com/<your-username>/CodePilot-AI.git
    cd CodePilot-AI
    ```
-3. **Set up the development environment** — follow the [Quick Start](README.md#quick-start) guide
+3. **Set up the development environment** — follow the [Quick Start](README.md#-quick-start) guide
 4. **Create a branch** for your work:
    ```bash
    git checkout -b feat/your-feature-name
@@ -20,23 +20,23 @@ Thank you for your interest in contributing! This project is open source and com
 
 ---
 
-## Development Setup
+## 🛠️ Development Setup
 
 ### Prerequisites
 
-- Node.js 18+ and npm
-- Python 3.10+
-- A Judge0 instance (RapidAPI or self-hosted)
-- An OpenAI API key (or any OpenAI-compatible provider)
+- 📦 Node.js 18+ and npm
+- 🐍 Python 3.10+
+- ⚡ A Judge0 instance (RapidAPI or self-hosted)
+- 🤖 An OpenAI API key (or any OpenAI-compatible provider)
 
 ### Running Locally
 
 ```bash
-# Frontend
+# 🌐 Frontend
 npm install
 npm run dev
 
-# Backend (in a separate terminal)
+# 🐍 Backend (in a separate terminal)
 cd server
 python3 -m venv .venv
 source .venv/bin/activate
@@ -48,9 +48,9 @@ The frontend runs at `http://localhost:3000` and proxies API calls to the backen
 
 ---
 
-## What You Can Contribute
+## 💡 What You Can Contribute
 
-### New Problems
+### 🧩 New Problems
 
 Add a JSON file to `data/problems/`. Each problem needs:
 - Unique ID matching the filename
@@ -62,7 +62,7 @@ Add a JSON file to `data/problems/`. Each problem needs:
 
 Use any existing problem file as a template.
 
-### New Syntax Trainer Lessons
+### 📚 New Syntax Trainer Lessons
 
 Add a JSON file to `data/syntax/trainer/` following the naming convention `{language}-{category}.json`. Each lesson needs:
 - 3-5 sections with explanations, code examples, and exercises
@@ -71,7 +71,7 @@ Add a JSON file to `data/syntax/trainer/` following the naming convention `{lang
 
 See `data/syntax/trainer/curriculum.json` for the 13 category definitions.
 
-### UI Improvements
+### 🎨 UI Improvements
 
 The frontend uses Next.js 14, React, Tailwind CSS, and Lucide icons. Key files:
 - `app/page.tsx` — Landing page
@@ -80,7 +80,7 @@ The frontend uses Next.js 14, React, Tailwind CSS, and Lucide icons. Key files:
 - `app/globals.css` — Global styles and animations
 - `components/` — All React components
 
-### Backend Improvements
+### ⚙️ Backend Improvements
 
 The backend uses Python FastAPI with Judge0 for code execution and OpenAI-compatible APIs for AI features. Key files:
 - `server/main.py` — API endpoints
@@ -88,23 +88,23 @@ The backend uses Python FastAPI with Judge0 for code execution and OpenAI-compat
 - `server/services/llm.py` — AI/LLM integration
 - `server/services/prompts.py` — Prompt templates
 
-### Bug Fixes
+### 🐛 Bug Fixes
 
 Check the [Issues](https://github.com/NeuroForgeLabs/CodePilot-AI/issues) tab for open bugs. When submitting a fix, reference the issue number in your PR.
 
 ---
 
-## Code Style
+## 📏 Code Style
 
-- **TypeScript** — Use strict types. Avoid `any`. Follow existing patterns.
-- **React** — Functional components with hooks. No class components.
-- **Tailwind CSS** — Use utility classes. Follow the existing dark theme (`#0f1117` background, `#161821` surface, `border-gray-800` borders, `brand-*` for blue accents).
-- **Python** — Follow PEP 8. Use type hints. Pydantic models for request/response schemas.
-- **No unnecessary dependencies** — Prefer built-in solutions. If you need a new package, explain why in the PR.
+- 🔷 **TypeScript** — Use strict types. Avoid `any`. Follow existing patterns.
+- ⚛️ **React** — Functional components with hooks. No class components.
+- 🎨 **Tailwind CSS** — Use utility classes. Follow the existing dark theme (`#0f1117` background, `#161821` surface, `border-gray-800` borders, `brand-*` for blue accents).
+- 🐍 **Python** — Follow PEP 8. Use type hints. Pydantic models for request/response schemas.
+- 📦 **No unnecessary dependencies** — Prefer built-in solutions. If you need a new package, explain why in the PR.
 
 ---
 
-## Commit Messages
+## 💬 Commit Messages
 
 Use clear, concise commit messages that describe what changed and why:
 
@@ -117,36 +117,36 @@ docs: update README with new routing structure
 
 ---
 
-## Pull Request Process
+## 📋 Pull Request Process
 
-1. **Keep PRs focused** — One feature or fix per PR
-2. **Test your changes** — Make sure the app builds (`npm run build`) and runs without errors
-3. **Update documentation** — If your change affects the README or DOCUMENTATION.md, update them
-4. **Write a clear PR description** — Explain what you changed, why, and how to test it
-5. **Link related issues** — Reference any GitHub issues your PR addresses
+1. 🎯 **Keep PRs focused** — One feature or fix per PR
+2. ✅ **Test your changes** — Make sure the app builds (`npm run build`) and runs without errors
+3. 📝 **Update documentation** — If your change affects the README or DOCUMENTATION.md, update them
+4. 💬 **Write a clear PR description** — Explain what you changed, why, and how to test it
+5. 🔗 **Link related issues** — Reference any GitHub issues your PR addresses
 
 ---
 
-## Project Structure at a Glance
+## 🗂️ Project Structure at a Glance
 
 ```
-app/              → Next.js pages and API routes
-components/       → React UI components
-data/problems/    → 100 algorithm problem definitions (JSON)
-data/syntax/      → Syntax trainer lessons and curriculum (JSON)
-lib/              → Shared TypeScript utilities and types
-server/           → Python FastAPI backend
-public/           → Static assets
+app/              → 🌐 Next.js pages and API routes
+components/       → 🧱 React UI components
+data/problems/    → 🧩 100 algorithm problem definitions (JSON)
+data/syntax/      → 📚 Syntax trainer lessons and curriculum (JSON)
+lib/              → 🔧 Shared TypeScript utilities and types
+server/           → 🐍 Python FastAPI backend
+public/           → 🖼️ Static assets
 ```
 
 ---
 
-## Contact
+## 📬 Contact
 
-- **Email**: xadja35@gmail.com
-- **LinkedIn**: [Anvar Baltakhojayev](https://www.linkedin.com/in/anvarbaltakhojayev/)
-- **GitHub**: [Dante9988](https://github.com/Dante9988)
+- 📧 **Email**: xadja35@gmail.com
+- 💼 **LinkedIn**: [Anvar Baltakhojayev](https://www.linkedin.com/in/anvarbaltakhojayev/)
+- 🐙 **GitHub**: [Dante9988](https://github.com/Dante9988)
 
 ---
 
-Thank you for helping make CodePilot AI better for everyone!
+🙏 Thank you for helping make CodePilot AI better for everyone!
