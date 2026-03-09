@@ -1,0 +1,38 @@
+{
+  "id": "binary-search",
+  "title": "Binary Search",
+  "difficulty": "Easy",
+  "tags": ["binary-search", "arrays"],
+  "prompt": "Given a sorted array of integers nums and an integer target, return the index of target if it is in nums. Otherwise, return -1.\n\nYou must write an algorithm with O(log n) runtime complexity.\n\nThe array is sorted in ascending order. No duplicate elements are guaranteed.",
+  "examples": [
+    {"input": "nums = [-1,0,3,5,9,12], target = 9", "output": "4"},
+    {"input": "nums = [-1,0,3,5,9,12], target = 2", "output": "-1"}
+  ],
+  "constraints": [
+    "0 <= nums.length <= 10^4",
+    "-10^4 < nums[i], target < 10^4",
+    "nums is sorted in ascending order"
+  ],
+  "starterCode": {
+    "python": "def solve(nums, target):\n    pass",
+    "javascript": "function solve(nums, target) {\n  \n}",
+    "typescript": "export function solve(nums: number[], target: number): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(int[] nums, int target) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(int[] nums, int target) {\n        \n    }\n}",
+    "go": "func solve(nums []int, target int) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": "print(solve([-1,0,3,5,9,12], 9))", "expectedStdout": "4"},
+    {"stdin": "print(solve([-1,0,3,5,9,12], 2))", "expectedStdout": "-1"}
+  ],
+  "hiddenTests": [
+    {"stdin": "print(solve([5], 5))", "expectedStdout": "0"},
+    {"stdin": "print(solve([], 0))", "expectedStdout": "-1"},
+    {"stdin": "print(solve([1,2,3,4,5], 1))", "expectedStdout": "0"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Classic binary search: maintain left and right pointers. Compute mid = (left + right) // 2. If nums[mid] == target, return mid. If nums[mid] < target, search right half. Otherwise search left half. Handle empty array.",
+    "commonBugs": ["Infinite loop from mid calculation: use (left + right) // 2 or left + (right - left) // 2 to avoid overflow", "Off-by-one in boundary updates (left = mid + 1 vs left = mid)", "Not handling empty array (return -1)"],
+    "expectedComplexity": "O(log n)"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "climbing-stairs",
+  "title": "Climbing Stairs",
+  "difficulty": "Easy",
+  "tags": ["dynamic-programming"],
+  "prompt": "You are climbing a staircase. It takes n steps to reach the top.\n\nEach time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?\n\nFor example, if n = 2, you can reach the top in 2 ways: (1+1) or (2). If n = 3, you can reach it in 3 ways: (1+1+1), (1+2), or (2+1).",
+  "examples": [
+    {"input": "n = 2", "output": "2"},
+    {"input": "n = 3", "output": "3"},
+    {"input": "n = 1", "output": "1"}
+  ],
+  "constraints": [
+    "1 <= n <= 45"
+  ],
+  "starterCode": {
+    "python": "def solve(n):\n    pass",
+    "javascript": "function solve(n) {\n  \n}",
+    "typescript": "export function solve(n: number): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(int n) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(int n) {\n        \n    }\n}",
+    "go": "func solve(n int) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": "print(solve(2))", "expectedStdout": "2"},
+    {"stdin": "print(solve(3))", "expectedStdout": "3"},
+    {"stdin": "print(solve(1))", "expectedStdout": "1"}
+  ],
+  "hiddenTests": [
+    {"stdin": "print(solve(5))", "expectedStdout": "8"},
+    {"stdin": "print(solve(10))", "expectedStdout": "89"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Fibonacci recurrence: ways(n) = ways(n-1) + ways(n-2). From step n, you either came from n-1 (1 step) or n-2 (2 steps). Use DP with O(1) space by keeping only last two values.",
+    "commonBugs": ["Off-by-one: n=1 should return 1, n=2 returns 2", "Integer overflow for large n (unlikely with n<=45)", "Recursive solution without memoization causes TLE"],
+    "expectedComplexity": "O(n) time, O(1) space"
+  }
+}

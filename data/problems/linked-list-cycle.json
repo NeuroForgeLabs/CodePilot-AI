@@ -1,0 +1,40 @@
+{
+  "id": "linked-list-cycle",
+  "title": "Linked List Cycle",
+  "difficulty": "Medium",
+  "tags": ["linked-list", "two-pointers"],
+  "prompt": "Given the head of a linked list, determine if the linked list has a cycle in it.\n\nA cycle exists if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that the tail's next pointer is connected to (0-indexed). If pos is -1, there is no cycle.\n\nFor this problem, we simplify the input: solve takes a list of values and a pos integer. The list represents node values in order. If pos >= 0, the tail node's next pointer connects back to the node at index pos, forming a cycle. If pos is -1, there is no cycle.\n\nReturn True if there is a cycle in the linked list, otherwise return False.",
+  "examples": [
+    {"input": "values = [3, 2, 0, -4], pos = 1", "output": "True"},
+    {"input": "values = [1, 2], pos = 0", "output": "True"},
+    {"input": "values = [1], pos = -1", "output": "False"}
+  ],
+  "constraints": [
+    "The number of nodes in the list is in the range [0, 10^4].",
+    "-10^5 <= Node.val <= 10^5",
+    "pos is -1 or a valid index in the list."
+  ],
+  "starterCode": {
+    "python": "def solve(values: list[int], pos: int) -> bool:\n    pass",
+    "javascript": "function solve(values, pos) {\n  \n}",
+    "typescript": "export function solve(values: number[], pos: number): boolean {\n  \n}",
+    "java": "class Solution {\n    public boolean solve(int[] values, int pos) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public bool Solve(int[] values, int pos) {\n        \n    }\n}",
+    "go": "func solve(values []int, pos int) bool {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": "print(solve([3, 2, 0, -4], 1))", "expectedStdout": "True"},
+    {"stdin": "print(solve([1, 2], 0))", "expectedStdout": "True"},
+    {"stdin": "print(solve([1], -1))", "expectedStdout": "False"}
+  ],
+  "hiddenTests": [
+    {"stdin": "print(solve([], -1))", "expectedStdout": "False"},
+    {"stdin": "print(solve([1, 2, 3, 4, 5], -1))", "expectedStdout": "False"},
+    {"stdin": "print(solve([1, 2, 3], 2))", "expectedStdout": "True"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Floyd's cycle detection (tortoise and hare): slow pointer moves 1 step, fast moves 2. If they meet, cycle exists.",
+    "commonBugs": ["Not handling empty list", "Null pointer when list has one node and pos=-1", "Incorrect cycle construction from (values, pos)"],
+    "expectedComplexity": "O(n)"
+  }
+}
