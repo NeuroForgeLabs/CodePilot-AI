@@ -1,4 +1,4 @@
-# Contributing to AI Interview Coach
+# Contributing to CodePilot AI
 
 Thank you for your interest in contributing! This project is open source and community-driven. Whether you're fixing a bug, adding a new problem, improving the UI, or enhancing the AI — every contribution matters.
 
@@ -9,8 +9,8 @@ Thank you for your interest in contributing! This project is open source and com
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
    ```bash
-   git clone https://github.com/<your-username>/ai-interview-coach.git
-   cd ai-interview-coach
+   git clone https://github.com/<your-username>/CodePilot-AI.git
+   cd CodePilot-AI
    ```
 3. **Set up the development environment** — follow the [Quick Start](README.md#quick-start) guide
 4. **Create a branch** for your work:
@@ -90,7 +90,7 @@ The backend uses Python FastAPI with Judge0 for code execution and OpenAI-compat
 
 ### Bug Fixes
 
-Check the [Issues](https://github.com/open-interview-ai/ai-interview-coach/issues) tab for open bugs. When submitting a fix, reference the issue number in your PR.
+Check the [Issues](https://github.com/NeuroForgeLabs/CodePilot-AI/issues) tab for open bugs. When submitting a fix, reference the issue number in your PR.
 
 ---
 
@@ -149,4 +149,4 @@ public/           → Static assets
 
 ---
 
-Thank you for helping make AI Interview Coach better for everyone!
+Thank you for helping make CodePilot AI better for everyone!

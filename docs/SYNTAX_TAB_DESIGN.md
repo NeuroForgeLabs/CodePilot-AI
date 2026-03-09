@@ -1,6 +1,6 @@
 # Syntax Tab — Feature Design Document
 
-> AI Interview Coach: Interactive, AI-assisted syntax reference for coding interview fluency.
+> CodePilot AI: Interactive, AI-assisted syntax reference for coding interview fluency.
 
 ---
 
@@ -431,7 +431,7 @@ class SyntaxExplainResponse(BaseModel):
 ### 6.1 System Prompt
 
 ```
-You are InterviewCoach Syntax Tutor, an expert at teaching programming language
+You are CodePilot AI Syntax Tutor, an expert at teaching programming language
 syntax specifically for coding interviews and algorithm problems.
 
 RULES:
@@ -609,7 +609,7 @@ Lessons and lesson data are loaded statically from JSON (no API route needed —
 ## 9. Project Folder Structure Updates
 
 ```
-InterviewCoach/
+codepilot-ai/
 ├── app/
 │   └── api/
 │       ├── execute/route.ts

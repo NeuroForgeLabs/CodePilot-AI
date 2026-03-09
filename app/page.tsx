@@ -309,7 +309,7 @@ export default function HomePage() {
                 <polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" /><line x1="14" y1="4" x2="10" y2="20" />
               </svg>
             </div>
-            <span className="text-lg font-bold text-white tracking-tight"><span className="text-brand-400">AI Interview</span> Coach</span>
+            <span className="text-lg font-bold text-white tracking-tight"><span className="text-brand-400">CodePilot</span> AI</span>
           </Link>
           <nav className="flex items-center gap-1">
             <span className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium bg-brand-600 text-white"><Home className="h-3.5 w-3.5" />Home</span>
@@ -348,7 +348,7 @@ export default function HomePage() {
             </h1>
 
             <p className="mx-auto mt-6 max-w-lg text-lg text-gray-400">
-              Practice algorithms, train syntax, and get AI coaching — all in one platform.
+              AI-powered interview coach for algorithm practice, syntax training, and guided coding — all in one platform.
             </p>
 
             <p className="mt-3 text-sm text-gray-500">
@@ -363,7 +363,7 @@ export default function HomePage() {
                 Start Practicing
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
-              <a href="https://github.com/open-interview-ai/ai-interview-coach" target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 rounded-xl border border-gray-700 bg-gray-800/50 px-7 py-3 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white hover:border-gray-600 transition-all duration-300 hover:scale-[1.03] backdrop-blur-sm">
+              <a href="https://github.com/NeuroForgeLabs/CodePilot-AI" target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 rounded-xl border border-gray-700 bg-gray-800/50 px-7 py-3 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white hover:border-gray-600 transition-all duration-300 hover:scale-[1.03] backdrop-blur-sm">
                 <Github className="h-4 w-4" />
                 View GitHub
               </a>
@@ -474,7 +474,7 @@ export default function HomePage() {
                 <span className="text-gray-700">&middot;</span>
                 <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="h-4 w-4 text-emerald-400" />Community driven</span>
               </div>
-              <a href="https://github.com/open-interview-ai/ai-interview-coach" target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 rounded-xl border border-gray-700 bg-gray-800/50 px-6 py-2.5 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-all duration-300 hover:scale-[1.03]">
+              <a href="https://github.com/NeuroForgeLabs/CodePilot-AI" target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 rounded-xl border border-gray-700 bg-gray-800/50 px-6 py-2.5 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-all duration-300 hover:scale-[1.03]">
                 <Github className="h-4 w-4" />
                 View on GitHub
                 <ExternalLink className="h-3 w-3" />
@@ -498,7 +498,7 @@ export default function HomePage() {
               <span className="text-gray-700">&middot;</span>
               <Link href="/contact" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">Contact</Link>
               <span className="text-gray-700">&middot;</span>
-              <a href="https://github.com/open-interview-ai/ai-interview-coach" target="_blank" rel="noopener noreferrer" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">GitHub</a>
+              <a href="https://github.com/NeuroForgeLabs/CodePilot-AI" target="_blank" rel="noopener noreferrer" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">GitHub</a>
             </div>
           </div>
         </footer>

@@ -12,9 +12,9 @@ import {
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact — AI Interview Coach",
+  title: "Contact — CodePilot AI",
   description:
-    "Get in touch with the AI Interview Coach team. Questions, feedback, or contributions welcome.",
+    "Get in touch with the CodePilot AI team. Questions, feedback, or contributions welcome.",
 };
 
 const contacts = [
@@ -70,7 +70,7 @@ export default function ContactPage() {
               </svg>
             </div>
             <span className="text-lg font-bold text-white tracking-tight">
-              <span className="text-brand-400">AI Interview</span> Coach
+              <span className="text-brand-400">CodePilot</span> AI
             </span>
           </Link>
           <nav className="flex items-center gap-1">
@@ -158,10 +158,10 @@ export default function ContactPage() {
           <div className="mt-12 rounded-xl border border-gray-800 bg-[#161821] p-6 text-center">
             <h3 className="font-semibold text-gray-100">Want to contribute?</h3>
             <p className="mt-2 text-sm text-gray-400 leading-relaxed">
-              AI Interview Coach is open source. Whether it&apos;s fixing a bug, adding a new problem, or improving the AI — every contribution matters.
+              CodePilot AI is open source. Whether it&apos;s fixing a bug, adding a new problem, or improving the AI — every contribution matters.
             </p>
             <a
-              href="https://github.com/open-interview-ai/ai-interview-coach"
+              href="https://github.com/NeuroForgeLabs/CodePilot-AI"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-4 inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800/50 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
@@ -185,7 +185,7 @@ export default function ContactPage() {
               </Link>
               <span className="text-gray-700">&middot;</span>
               <a
-                href="https://github.com/open-interview-ai/ai-interview-coach"
+                href="https://github.com/NeuroForgeLabs/CodePilot-AI"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
@@ -194,7 +194,7 @@ export default function ContactPage() {
               </a>
             </div>
             <p className="mt-3 text-xs text-gray-600">
-              AI Interview Coach — Built by Anvar Baltakhojayev
+              CodePilot AI — Built by Anvar Baltakhojayev
             </p>
           </div>
         </footer>

@@ -1,5 +1,5 @@
 <p align="center">
-  <h1 align="center">AI Interview Coach</h1>
+  <h1 align="center">CodePilot AI</h1>
   <p align="center">
     <strong>Open-source, AI-powered coding interview preparation platform with algorithm practice, interactive syntax training, and guided coaching.</strong>
   </p>
@@ -46,6 +46,8 @@ Each mode supports **5 progressive hint levels** — from a subtle nudge to a de
 **Auto-Save** — Your code is automatically saved to browser localStorage. Pick up right where you left off.
 
 **Modern Landing Page** — Interactive homepage with animated hero, live code demo, mouse-parallax effects, and scroll-reveal animations.
+
+> Formerly known as "AI Interview Coach" — rebranded to **CodePilot AI**.
 
 ---
 
@@ -138,7 +140,7 @@ docker compose up -d
 ### Project Structure
 
 ```
-InterviewCoach/
+codepilot-ai/
 ├── app/                          Next.js App Router
 │   ├── layout.tsx                Root layout (Inter font, dark theme)
 │   ├── page.tsx                  Landing / homepage
@@ -266,5 +268,5 @@ MIT
 ---
 
 <p align="center">
-  Built by <a href="https://www.linkedin.com/in/anvarbaltakhojayev/">Anvar Baltakhojayev</a> — Full Stack AI Engineer
+  CodePilot AI — Built by <a href="https://www.linkedin.com/in/anvarbaltakhojayev/">Anvar Baltakhojayev</a>
 </p>

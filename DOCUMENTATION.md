@@ -1,4 +1,4 @@
-# InterviewCoach — Complete Project Documentation
+# CodePilot AI — Complete Project Documentation
 
 AI-powered coding interview practice platform with 100 algorithm problems, multi-language code execution, progressive AI-guided hints, intelligent code review, and an interactive 9-language syntax trainer.
 
@@ -46,7 +46,7 @@ AI-powered coding interview practice platform with 100 algorithm problems, multi
 
 ## Overview
 
-InterviewCoach is a full-stack web application for coding interview preparation. It provides:
+CodePilot AI is a full-stack web application for coding interview preparation. It provides:
 
 - **100 coding problems** (35 Easy, 45 Medium, 20 Hard) across 21 topic categories, with LeetCode-style topic filtering (Array, String, Hash Table, Dynamic Programming, Tree, Graph, etc.)
 - **Interactive Syntax Trainer** with 13 curriculum categories across 9 programming languages (Python, JavaScript, TypeScript, Java, C++, C, C#, Go, Rust) — 117 lesson files with ~500 interactive exercises
@@ -147,7 +147,7 @@ InterviewCoach is a full-stack web application for coding interview preparation.
 ## Directory Structure
 
 ```
-InterviewCoach/
+codepilot-ai/
 ├── .env.example                        # Environment variable template
 ├── .env.local                          # Local environment (not committed)
 ├── .gitignore
@@ -244,7 +244,7 @@ InterviewCoach/
 
 | Variable               | Required | Default                          | Description                                                |
 |------------------------|----------|----------------------------------|------------------------------------------------------------|
-| `NEXT_PUBLIC_APP_NAME` | No       | `InterviewCoach`                 | App display name                                           |
+| `NEXT_PUBLIC_APP_NAME` | No       | `CodePilot AI`                   | App display name                                           |
 | `FASTAPI_BASE_URL`     | No       | `http://localhost:8000`          | FastAPI backend URL (used by Next.js API proxy)            |
 | `OPENAI_API_KEY`       | Yes      | —                                | API key for OpenAI or compatible provider                  |
 | `OPENAI_BASE_URL`      | No       | `https://api.openai.com/v1`     | LLM API base URL                                           |

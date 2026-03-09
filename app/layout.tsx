@@ -5,9 +5,9 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "AI Interview Coach — Coding Interview Practice",
+  title: "CodePilot AI — Coding Interview Practice",
   description:
-    "Practice coding interviews with 100 problems, AI-guided hints, syntax training in 9 languages, and multi-language code execution.",
+    "AI-powered coding interview preparation with 100 problems, guided hints, syntax training in 9 languages, and multi-language code execution.",
   icons: {
     icon: "/favicon.svg",
   },

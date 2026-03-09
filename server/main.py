@@ -31,7 +31,7 @@ from services.llm import generate_exercise_feedback, generate_hint, generate_rev
 load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / ".env.local")
 load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / ".env")
 
-app = FastAPI(title="InterviewCoach API", version="0.1.0")
+app = FastAPI(title="CodePilot AI API", version="0.2.0")
 
 app.add_middleware(
     CORSMiddleware,

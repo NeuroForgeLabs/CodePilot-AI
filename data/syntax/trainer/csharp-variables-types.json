@@ -63,14 +63,14 @@
       "explanation": "`const` declares compile-time constants—must be assigned at declaration, implicitly static, and only for primitive types and strings. `readonly` declares runtime constants—can be assigned in the constructor, work with any type. Use `const` for true constants (Math values, config limits). Use `readonly` when the value is determined at runtime. In interviews, prefer `const` for simple literals.",
       "example": "class Program\n{\n    const int MaxRetries = 3;\n    const string Prefix = \"ID-\";\n    static readonly DateTime StartTime = DateTime.Now;\n\n    static void Main()\n    {\n        Console.WriteLine(MaxRetries);          // 3\n        Console.WriteLine(Prefix + \"001\");      // ID-001\n        Console.WriteLine(StartTime.Year);      // current year\n\n        // MaxRetries = 5; // ERROR: cannot assign to const\n    }\n}",
       "exercise": {
-        "prompt": "Declare a const int `MaxSize` set to 100 and a const double `Pi` set to 3.14159. Declare a static readonly string `AppName` set to \"InterviewCoach\". In Main, print all three on separate lines.",
+        "prompt": "Declare a const int `MaxSize` set to 100 and a const double `Pi` set to 3.14159. Declare a static readonly string `AppName` set to \"CodePilot\". In Main, print all three on separate lines.",
         "starterCode": "class Program\n{\n    // Declare const and readonly fields here\n\n    static void Main()\n    {\n        Console.WriteLine(MaxSize);\n        Console.WriteLine(Pi);\n        Console.WriteLine(AppName);\n    }\n}",
         "validation": [
-          {"type": "output", "expected": "100\n3.14159\nInterviewCoach", "message": "Print MaxSize (100), Pi (3.14159), and AppName on separate lines."},
+          {"type": "output", "expected": "100\n3.14159\nCodePilot", "message": "Print MaxSize (100), Pi (3.14159), and AppName on separate lines."},
           {"type": "contains", "patterns": ["const int MaxSize", "const double Pi", "static readonly string AppName"], "message": "Use const for compile-time constants and static readonly for the runtime constant."}
         ],
         "testCode": "",
-        "hint": "const int MaxSize = 100; const double Pi = 3.14159; static readonly string AppName = \"InterviewCoach\";"
+        "hint": "const int MaxSize = 100; const double Pi = 3.14159; static readonly string AppName = \"CodePilot\";"
       },
       "order": 4
     },

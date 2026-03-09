@@ -205,7 +205,7 @@ export default function PracticePage() {
               </svg>
             </div>
             <h1 className="text-lg font-bold text-white tracking-tight">
-              <span className="text-brand-400">AI Interview</span> Coach
+              <span className="text-brand-400">CodePilot</span> AI
             </h1>
           </Link>
 
