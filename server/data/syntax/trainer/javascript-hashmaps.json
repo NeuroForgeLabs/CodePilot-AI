@@ -1,0 +1,95 @@
+{
+  "id": "javascript-hashmaps",
+  "title": "Hashmaps",
+  "description": "Hash maps are the single most important data structure in interviews. Master both Map and plain objects for O(1) lookups, frequency counting, and complement patterns.",
+  "language": "javascript",
+  "category": "hashmaps",
+  "order": 5,
+  "sections": [
+    {
+      "id": "map-vs-object",
+      "title": "Map vs plain object",
+      "explanation": "Use `new Map()` for interview code — it handles any key type, preserves insertion order, and has a clean API. Plain objects work for string keys but have prototype pitfalls. Map has `.size` instead of Object.keys().length. Interviewers prefer Map for clarity.",
+      "example": "// Map — preferred for interviews\nconst map = new Map();\nmap.set(\"a\", 1);\nmap.set(\"b\", 2);\nconsole.log(map.get(\"a\")); // 1\nconsole.log(map.size);     // 2\n\n// Plain object — quick frequency maps\nconst freq = {};\nfreq[\"x\"] = 10;\nconsole.log(freq[\"x\"]); // 10",
+      "exercise": {
+        "prompt": "Create a Map, set key \"x\" to 10 and key \"y\" to 20. Print the value for \"x\", print the size, then print whether the map has key \"y\".",
+        "starterCode": "const map = new Map();\nmap._____(\"x\", 10);\nmap._____(\"y\", 20);\n\nconsole.log(map.get(\"x\"));\nconsole.log(map._____);\nconsole.log(map.has(\"y\"));",
+        "validation": [
+          {"type": "output", "expected": "10\n2\ntrue", "message": "get('x') returns 10, size is 2, has('y') is true"},
+          {"type": "contains", "patterns": ["new Map()", "set(", "has("], "message": "Use Map's set, get, has, and size API"}
+        ],
+        "testCode": "",
+        "hint": "Use .set() to add entries and .size (not .length) for the count."
+      },
+      "order": 1
+    },
+    {
+      "id": "set-get-has",
+      "title": "set, get, has, and delete",
+      "explanation": "Map's core API is set/get/has/delete — all O(1) average. get() returns undefined for missing keys, so always check with has() first or use a default. delete() returns true if the key existed. These operations form the basis of nearly every hashmap interview pattern.",
+      "example": "const map = new Map();\nmap.set(1, \"one\");\nmap.set(2, \"two\");\n\nconsole.log(map.has(1));    // true\nconsole.log(map.get(1));    // \"one\"\nmap.delete(1);\nconsole.log(map.has(1));    // false\nconsole.log(map.get(1));    // undefined",
+      "exercise": {
+        "prompt": "Create a Map with entries (1, \"a\"), (2, \"b\"), (3, \"c\"). Print has(2), then delete key 2, print has(2) again, and print the remaining size.",
+        "starterCode": "const map = new Map();\nmap.set(1, \"a\");\nmap.set(2, \"b\");\nmap.set(3, \"c\");\n\nconsole.log(map.has(2));\nmap._____(2);\nconsole.log(map._____(2));\nconsole.log(map.size);",
+        "validation": [
+          {"type": "output", "expected": "true\nfalse\n2", "message": "has(2) is true before delete, false after, size drops to 2"},
+          {"type": "contains", "patterns": ["delete(", "has("], "message": "Use delete to remove and has to check existence"}
+        ],
+        "testCode": "",
+        "hint": "delete(2) removes the entry, then has(2) returns false."
+      },
+      "order": 2
+    },
+    {
+      "id": "iterate-map",
+      "title": "Iterating over a Map",
+      "explanation": "Maps are iterable with for...of. Use `map.entries()` for [key, value] pairs, `map.keys()` for keys, and `map.values()` for values. Destructuring in the loop is idiomatic: `for (const [key, val] of map)`. This pattern appears in frequency counting and grouping problems.",
+      "example": "const map = new Map([[\"a\", 1], [\"b\", 2], [\"c\", 3]]);\n\nfor (const [key, val] of map) {\n  console.log(`${key}:${val}`);\n}\n// a:1, b:2, c:3",
+      "exercise": {
+        "prompt": "Create a Map from the array [[\"x\", 10], [\"y\", 20], [\"z\", 30]]. Iterate with for...of and destructuring, printing each key:value pair on its own line.",
+        "starterCode": "const map = new Map([[\"x\", 10], [\"y\", 20], [\"z\", 30]]);\n\nfor (const [key, _____] of map) {\n  console.log(key + \":\" + _____);\n}",
+        "validation": [
+          {"type": "output", "expected": "x:10\ny:20\nz:30", "message": "Each entry should print as key:value on its own line"},
+          {"type": "contains", "patterns": ["for", "of", "const ["], "message": "Use for...of with destructuring to iterate the Map"}
+        ],
+        "testCode": "",
+        "hint": "Destructure as [key, val] and print key + \":\" + val."
+      },
+      "order": 3
+    },
+    {
+      "id": "frequency-count",
+      "title": "Frequency counting pattern",
+      "explanation": "The most common hashmap interview pattern: count occurrences of each element. Use `map.get(key) || 0` to handle missing keys, or `map.get(key) ?? 0` for null-safe default. This pattern is the foundation for anagram checks, majority element, and top-K problems.",
+      "example": "const s = \"abracadabra\";\nconst freq = new Map();\nfor (const ch of s) {\n  freq.set(ch, (freq.get(ch) || 0) + 1);\n}\n// freq: a->5, b->2, r->2, c->1, d->1",
+      "exercise": {
+        "prompt": "Count character frequencies in \"hello\" using a Map. Then print each character and its count in insertion order, formatted as char:count, each on its own line.",
+        "starterCode": "const s = \"hello\";\nconst freq = new Map();\n\nfor (const ch of s) {\n  freq.set(ch, (freq.get(ch) _____ 0) + 1);\n}\n\nfor (const [ch, count] of freq) {\n  console.log(ch + \":\" + count);\n}",
+        "validation": [
+          {"type": "output", "expected": "h:1\ne:1\nl:2\no:1", "message": "h, e each appear once, l appears twice, o appears once"},
+          {"type": "contains", "patterns": ["new Map()", "freq.set(", "freq.get("], "message": "Use Map with get/set for frequency counting"}
+        ],
+        "testCode": "",
+        "hint": "Use || to default to 0 when the key doesn't exist: (freq.get(ch) || 0) + 1."
+      },
+      "order": 4
+    },
+    {
+      "id": "complement-pattern",
+      "title": "Complement lookup pattern",
+      "explanation": "The complement pattern stores previously seen values to find pairs that satisfy a condition — the classic Two Sum approach. For each element, check if its complement exists in the map; if not, store the current element. This converts O(n^2) brute force into O(n) time.",
+      "example": "function twoSum(nums, target) {\n  const seen = new Map();\n  for (let i = 0; i < nums.length; i++) {\n    const complement = target - nums[i];\n    if (seen.has(complement)) {\n      return [seen.get(complement), i];\n    }\n    seen.set(nums[i], i);\n  }\n  return [];\n}",
+      "exercise": {
+        "prompt": "Implement twoSum: given nums and target, return indices of two numbers that add to target. Use the complement pattern with a Map. Test with nums=[2, 7, 11, 15], target=9 and print the result joined by comma.",
+        "starterCode": "function twoSum(nums, target) {\n  const seen = new Map();\n  for (let i = 0; i < nums.length; i++) {\n    const complement = target _____ nums[i];\n    if (seen._____(complement)) {\n      return [seen.get(complement), i];\n    }\n    seen.set(nums[i], i);\n  }\n  return [];\n}\n\nconsole.log(twoSum([2, 7, 11, 15], 9).join(\",\"));",
+        "validation": [
+          {"type": "output", "expected": "0,1", "message": "nums[0]+nums[1] = 2+7 = 9, so the answer is [0,1]"},
+          {"type": "contains", "patterns": ["new Map()", "has(", "get("], "message": "Use Map's has/get for the complement lookup pattern"}
+        ],
+        "testCode": "",
+        "hint": "complement = target - nums[i], then check seen.has(complement)."
+      },
+      "order": 5
+    }
+  ]
+}

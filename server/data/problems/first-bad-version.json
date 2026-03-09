@@ -1,0 +1,36 @@
+{
+  "id": "first-bad-version",
+  "title": "First Bad Version",
+  "difficulty": "Easy",
+  "tags": ["binary-search"],
+  "prompt": "You are a product manager and the current version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad.\n\nGiven `n` (the total number of versions) and `bad` (the first bad version number), implement a function that finds the first bad version.\n\nYou should minimize the number of calls to a simulated `isBadVersion(version)` API. The function internally checks if `version >= bad`.\n\nReturn the first bad version number.",
+  "examples": [
+    {"input": "n = 5, bad = 4", "output": "4\nExplanation: isBadVersion(3) = False, isBadVersion(4) = True, isBadVersion(5) = True. So 4 is the first bad version."},
+    {"input": "n = 1, bad = 1", "output": "1\nExplanation: There is only one version and it is bad."}
+  ],
+  "constraints": [
+    "1 <= bad <= n <= 2^31 - 1"
+  ],
+  "starterCode": {
+    "python": "def solve(n, bad):\n    pass",
+    "javascript": "function solve(n, bad) {\n  \n}",
+    "typescript": "export function solve(n: number, bad: number): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(int n, int bad) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(int n, int bad) {\n        \n    }\n}",
+    "go": "func solve(n int, bad int) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve(5, 4))"}, "expectedStdout": "4"},
+    {"stdin": {"python": "print(solve(1, 1))"}, "expectedStdout": "1"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve(10, 1))"}, "expectedStdout": "1"},
+    {"stdin": {"python": "print(solve(100, 50))"}, "expectedStdout": "50"},
+    {"stdin": {"python": "print(solve(2, 2))"}, "expectedStdout": "2"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Binary search: define isBadVersion(v) = (v >= bad). Set left=1, right=n. While left < right, compute mid = left + (right - left) // 2. If isBadVersion(mid), search left half (right = mid). Otherwise search right half (left = mid + 1). Return left.",
+    "commonBugs": ["Integer overflow when computing mid with (left + right) / 2 — use left + (right - left) // 2", "Using right = mid - 1 instead of right = mid (can skip the answer)", "Off-by-one: returning left - 1 or right + 1 instead of left"],
+    "expectedComplexity": "O(log n)"
+  }
+}

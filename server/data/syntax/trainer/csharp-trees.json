@@ -1,0 +1,78 @@
+{
+  "id": "csharp-trees",
+  "title": "Trees",
+  "description": "Master C# binary tree implementation: TreeNode class, DFS traversals, BFS with Queue, and depth calculations for coding interviews.",
+  "language": "csharp",
+  "category": "trees",
+  "order": 11,
+  "sections": [
+    {
+      "id": "csharp-tree-node",
+      "title": "TreeNode Class Definition",
+      "explanation": "Define a binary tree node with `val`, `left`, and `right`. In C# interviews, you typically define this as a simple class at the top. Nodes are created with `new TreeNode(val)` and connected by setting `.Left` and `.Right`. Null represents an empty child. This is the foundation for all tree problems.",
+      "example": "class TreeNode\n{\n    public int Val;\n    public TreeNode Left, Right;\n    public TreeNode(int val) { Val = val; }\n}\n\nclass Program\n{\n    static void Main()\n    {\n        TreeNode root = new TreeNode(1);\n        root.Left = new TreeNode(2);\n        root.Right = new TreeNode(3);\n        root.Left.Left = new TreeNode(4);\n        root.Left.Right = new TreeNode(5);\n\n        Console.WriteLine(root.Val);             // 1\n        Console.WriteLine(root.Left.Val);        // 2\n        Console.WriteLine(root.Right.Val);       // 3\n        Console.WriteLine(root.Left.Left.Val);   // 4\n    }\n}",
+      "exercise": {
+        "prompt": "Build this tree:       1\n                     / \\\n                    2   3\n                   /   / \\\n                  4   5   6\nPrint the root value, its left child, its right child's right child, and the total number of nodes (count manually or write a recursive count function).",
+        "starterCode": "class TreeNode\n{\n    public int Val;\n    public TreeNode Left, Right;\n    public TreeNode(int val) { Val = val; }\n}\n\nclass Program\n{\n    static int CountNodes(TreeNode node)\n    {\n        // Recursive count\n\n        return 0;\n    }\n\n    static void Main()\n    {\n        // Build the tree\n\n        // Print root, left child, right-right child, total count\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "1\n2\n6\n6", "message": "Root: 1, Left: 2, Right-Right: 6, Count: 6."},
+          {"type": "contains", "patterns": ["new TreeNode(", "CountNodes(", ".Left", ".Right"], "message": "Build tree with new TreeNode, implement recursive CountNodes."}
+        ],
+        "testCode": "",
+        "hint": "CountNodes: if (node == null) return 0; return 1 + CountNodes(node.Left) + CountNodes(node.Right);"
+      },
+      "order": 1
+    },
+    {
+      "id": "csharp-tree-dfs",
+      "title": "DFS Traversals: Inorder, Preorder, Postorder",
+      "explanation": "DFS traverses trees depth-first using recursion. **Inorder** (Left, Root, Right): gives sorted order for BST. **Preorder** (Root, Left, Right): useful for serialization. **Postorder** (Left, Right, Root): useful for deletion and bottom-up computation. Each traversal visits every node exactly once in O(n) time.",
+      "example": "class TreeNode\n{\n    public int Val;\n    public TreeNode Left, Right;\n    public TreeNode(int val) { Val = val; }\n}\n\nclass Program\n{\n    static void Inorder(TreeNode node, List<int> result)\n    {\n        if (node == null) return;\n        Inorder(node.Left, result);\n        result.Add(node.Val);\n        Inorder(node.Right, result);\n    }\n\n    static void Preorder(TreeNode node, List<int> result)\n    {\n        if (node == null) return;\n        result.Add(node.Val);\n        Preorder(node.Left, result);\n        Preorder(node.Right, result);\n    }\n\n    static void Main()\n    {\n        TreeNode root = new TreeNode(4);\n        root.Left = new TreeNode(2);\n        root.Right = new TreeNode(6);\n        root.Left.Left = new TreeNode(1);\n        root.Left.Right = new TreeNode(3);\n\n        var inList = new List<int>();\n        Inorder(root, inList);\n        Console.WriteLine(String.Join(\", \", inList)); // 1, 2, 3, 4, 6\n\n        var preList = new List<int>();\n        Preorder(root, preList);\n        Console.WriteLine(String.Join(\", \", preList)); // 4, 2, 1, 3, 6\n    }\n}",
+      "exercise": {
+        "prompt": "Build this BST:     5\n                  / \\\n                 3   7\n                / \\   \\\n               1   4   9\nImplement all three DFS traversals. Print inorder, preorder, and postorder results as comma-separated values on separate lines.",
+        "starterCode": "class TreeNode\n{\n    public int Val;\n    public TreeNode Left, Right;\n    public TreeNode(int val) { Val = val; }\n}\n\nclass Program\n{\n    static void Inorder(TreeNode node, List<int> result)\n    {\n        if (node == null) return;\n        Inorder(node.Left, result);\n        result.Add(node.Val);\n        Inorder(node.Right, result);\n    }\n\n    // Implement Preorder and Postorder\n\n    static void Main()\n    {\n        // Build tree and print traversals\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "1, 3, 4, 5, 7, 9\n5, 3, 1, 4, 7, 9\n1, 4, 3, 9, 7, 5", "message": "Inorder (sorted), Preorder (root first), Postorder (root last)."},
+          {"type": "contains", "patterns": ["Inorder(", "Preorder(", "Postorder(", "result.Add(node.Val)"], "message": "Implement all three traversals with correct visit order."}
+        ],
+        "testCode": "",
+        "hint": "Preorder: add, left, right. Postorder: left, right, add. Inorder: left, add, right."
+      },
+      "order": 2
+    },
+    {
+      "id": "csharp-tree-bfs",
+      "title": "BFS Level-Order Traversal",
+      "explanation": "BFS uses a Queue to traverse trees level by level. Pattern: enqueue root, while queue not empty: dequeue node, process it, enqueue left and right children. For level-by-level grouping, process `queue.Count` nodes per iteration. This is essential for problems like: level-order traversal, right-side view, zigzag traversal.",
+      "example": "class TreeNode\n{\n    public int Val;\n    public TreeNode Left, Right;\n    public TreeNode(int val) { Val = val; }\n}\n\nclass Program\n{\n    static List<List<int>> LevelOrder(TreeNode root)\n    {\n        var result = new List<List<int>>();\n        if (root == null) return result;\n        var queue = new Queue<TreeNode>();\n        queue.Enqueue(root);\n        while (queue.Count > 0)\n        {\n            int size = queue.Count;\n            var level = new List<int>();\n            for (int i = 0; i < size; i++)\n            {\n                TreeNode node = queue.Dequeue();\n                level.Add(node.Val);\n                if (node.Left != null) queue.Enqueue(node.Left);\n                if (node.Right != null) queue.Enqueue(node.Right);\n            }\n            result.Add(level);\n        }\n        return result;\n    }\n\n    static void Main()\n    {\n        TreeNode root = new TreeNode(1);\n        root.Left = new TreeNode(2);\n        root.Right = new TreeNode(3);\n        root.Left.Left = new TreeNode(4);\n        root.Left.Right = new TreeNode(5);\n        root.Right.Right = new TreeNode(6);\n\n        foreach (var level in LevelOrder(root))\n            Console.WriteLine(String.Join(\", \", level));\n    }\n}",
+      "exercise": {
+        "prompt": "Build the tree:     1\n                  / \\\n                 2   3\n                / \\   \\\n               4   5   6\nImplement level-order traversal that returns List<List<int>>. Print each level on its own line. Also print the number of levels.",
+        "starterCode": "class TreeNode\n{\n    public int Val;\n    public TreeNode Left, Right;\n    public TreeNode(int val) { Val = val; }\n}\n\nclass Program\n{\n    static List<List<int>> LevelOrder(TreeNode root)\n    {\n        var result = new List<List<int>>();\n        if (root == null) return result;\n        var queue = new Queue<TreeNode>();\n        queue.Enqueue(root);\n        // Implement level-order BFS\n\n        return result;\n    }\n\n    static void Main()\n    {\n        // Build tree and print levels\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "1\n2, 3\n4, 5, 6\n3", "message": "Level 0: 1, Level 1: 2,3, Level 2: 4,5,6, then 3 levels total."},
+          {"type": "contains", "patterns": ["Queue<TreeNode>", "queue.Dequeue()", "queue.Enqueue("], "message": "Use Queue<TreeNode> for BFS with Enqueue and Dequeue."}
+        ],
+        "testCode": "",
+        "hint": "while queue.Count > 0: int size = queue.Count; loop size times: dequeue, add val, enqueue children."
+      },
+      "order": 3
+    },
+    {
+      "id": "csharp-tree-depth",
+      "title": "Tree Depth and Height",
+      "explanation": "Maximum depth (height) of a binary tree is the longest root-to-leaf path. Recursive formula: `MaxDepth(node) = 1 + Max(MaxDepth(left), MaxDepth(right))`. Base case: null returns 0. Can also compute iteratively using BFS (count levels). Minimum depth is similar but only counts paths to leaf nodes (both children null).",
+      "example": "class TreeNode\n{\n    public int Val;\n    public TreeNode Left, Right;\n    public TreeNode(int val) { Val = val; }\n}\n\nclass Program\n{\n    static int MaxDepth(TreeNode node)\n    {\n        if (node == null) return 0;\n        return 1 + Math.Max(MaxDepth(node.Left), MaxDepth(node.Right));\n    }\n\n    static bool IsBalanced(TreeNode node)\n    {\n        if (node == null) return true;\n        int diff = Math.Abs(MaxDepth(node.Left) - MaxDepth(node.Right));\n        return diff <= 1 && IsBalanced(node.Left) && IsBalanced(node.Right);\n    }\n\n    static void Main()\n    {\n        TreeNode root = new TreeNode(1);\n        root.Left = new TreeNode(2);\n        root.Right = new TreeNode(3);\n        root.Left.Left = new TreeNode(4);\n        root.Left.Left.Left = new TreeNode(5);\n\n        Console.WriteLine(MaxDepth(root));      // 4\n        Console.WriteLine(IsBalanced(root));    // False\n    }\n}",
+      "exercise": {
+        "prompt": "Build two trees. Tree A:  1→(2→(4,5), 3) (depth 3, balanced). Tree B: 1→(2→(3→(4,null),null),null) (depth 4, not balanced). For each tree, print the max depth and whether it is balanced.",
+        "starterCode": "class TreeNode\n{\n    public int Val;\n    public TreeNode Left, Right;\n    public TreeNode(int val) { Val = val; }\n}\n\nclass Program\n{\n    static int MaxDepth(TreeNode node)\n    {\n        if (node == null) return 0;\n        return 1 + Math.Max(MaxDepth(node.Left), MaxDepth(node.Right));\n    }\n\n    static bool IsBalanced(TreeNode node)\n    {\n        // Implement balance check\n\n        return true;\n    }\n\n    static void Main()\n    {\n        // Build Tree A and Tree B, print depth and balance\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "3\nTrue\n4\nFalse", "message": "Tree A: depth 3, balanced. Tree B: depth 4, not balanced."},
+          {"type": "contains", "patterns": ["MaxDepth(", "IsBalanced(", "Math.Abs(", "Math.Max("], "message": "Use MaxDepth for depth calculation and check balance with height difference."}
+        ],
+        "testCode": "",
+        "hint": "IsBalanced: if null return true. Check |depth(left) - depth(right)| <= 1 AND both subtrees balanced."
+      },
+      "order": 4
+    }
+  ]
+}

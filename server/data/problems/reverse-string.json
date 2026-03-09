@@ -1,0 +1,35 @@
+{
+  "id": "reverse-string",
+  "title": "Reverse String",
+  "difficulty": "Easy",
+  "tags": ["strings", "two-pointers"],
+  "prompt": "Write a function that reverses a string. The input string is given as an array of characters `s`.\n\nYou must do this by modifying the input array in-place with O(1) extra memory.",
+  "examples": [
+    {"input": "s = [\"h\",\"e\",\"l\",\"l\",\"o\"]", "output": "[\"o\",\"l\",\"l\",\"e\",\"h\"]"},
+    {"input": "s = [\"H\",\"a\",\"n\",\"n\",\"a\",\"h\"]", "output": "[\"h\",\"a\",\"n\",\"n\",\"a\",\"H\"]"}
+  ],
+  "constraints": [
+    "1 <= s.length <= 10^5",
+    "s[i] is a printable ascii character."
+  ],
+  "starterCode": {
+    "python": "def solve(s):\n    # Modify s in-place and return it\n    pass",
+    "javascript": "function solve(s) {\n  \n}",
+    "typescript": "export function solve(s: string[]): void {\n  \n}",
+    "java": "class Solution {\n    public void solve(char[] s) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public void Solve(char[] s) {\n        \n    }\n}",
+    "go": "func solve(s []byte) {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([\"h\",\"e\",\"l\",\"l\",\"o\"]))"}, "expectedStdout": "['o', 'l', 'l', 'e', 'h']"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([\"H\",\"a\",\"n\",\"n\",\"a\",\"h\"]))"}, "expectedStdout": "['h', 'a', 'n', 'n', 'a', 'H']"},
+    {"stdin": {"python": "print(solve([\"\"]))"}, "expectedStdout": "['']"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use two pointers (left and right). Swap elements at left and right, then move left forward and right backward until they meet.",
+    "commonBugs": ["Creating a new array instead of modifying in-place", "Off-by-one in the loop condition (should be left < right, not left <= right for odd-length strings)"],
+    "expectedComplexity": "O(n)"
+  }
+}

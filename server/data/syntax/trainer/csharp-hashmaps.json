@@ -1,0 +1,78 @@
+{
+  "id": "csharp-hashmaps",
+  "title": "Hashmaps / Dictionaries",
+  "description": "Master C# Dictionary<TKey,TValue> for key-value storage, lookups, and frequency counting in coding interviews.",
+  "language": "csharp",
+  "category": "hashmaps",
+  "order": 5,
+  "sections": [
+    {
+      "id": "csharp-hm-basics",
+      "title": "Dictionary Basics: Add, Access, ContainsKey",
+      "explanation": "C# uses `Dictionary<TKey, TValue>` for hash maps. Create with `new Dictionary<string, int>()`. Add entries with `dict[key] = value` or `dict.Add(key, value)` (Add throws if key exists). Access with `dict[key]` (throws if missing) or use `ContainsKey()` first. `.Count` gives the number of entries. In interviews, Dictionary gives O(1) average lookup, insert, and delete.",
+      "example": "class Program\n{\n    static void Main()\n    {\n        var ages = new Dictionary<string, int>();\n        ages[\"Alice\"] = 30;\n        ages[\"Bob\"] = 25;\n        ages.Add(\"Charlie\", 35);\n\n        Console.WriteLine(ages[\"Alice\"]);          // 30\n        Console.WriteLine(ages.ContainsKey(\"Bob\")); // True\n        Console.WriteLine(ages.Count);              // 3\n\n        ages[\"Alice\"] = 31;  // update\n        Console.WriteLine(ages[\"Alice\"]);           // 31\n    }\n}",
+      "exercise": {
+        "prompt": "Create a Dictionary<string, string> mapping country codes to names: \"US\" → \"United States\", \"JP\" → \"Japan\", \"DE\" → \"Germany\". Print the count, look up \"JP\", check if \"FR\" exists (print the bool), then add \"FR\" → \"France\" and print the new count.",
+        "starterCode": "class Program\n{\n    static void Main()\n    {\n        // Create dictionary and perform operations\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "3\nJapan\nFalse\n4", "message": "Count 3, Japan, False for FR, then count 4 after adding FR."},
+          {"type": "contains", "patterns": ["Dictionary<string, string>", "ContainsKey(", ".Count"], "message": "Use Dictionary<string, string>, ContainsKey, and Count."}
+        ],
+        "testCode": "",
+        "hint": "new Dictionary<string, string> { [\"US\"] = \"United States\", ... }; dict.ContainsKey(\"FR\") returns False."
+      },
+      "order": 1
+    },
+    {
+      "id": "csharp-hm-tryget",
+      "title": "TryGetValue: Safe Lookups",
+      "explanation": "`TryGetValue(key, out value)` returns true if the key exists and sets the out parameter, false otherwise. This is the preferred pattern in interviews—it avoids the two-step ContainsKey + access. It's also more efficient than catching KeyNotFoundException. Pattern: `if (dict.TryGetValue(key, out var val)) { use val; }`.",
+      "example": "class Program\n{\n    static void Main()\n    {\n        var scores = new Dictionary<string, int>\n        {\n            [\"Alice\"] = 95,\n            [\"Bob\"] = 87\n        };\n\n        if (scores.TryGetValue(\"Alice\", out int aliceScore))\n            Console.WriteLine($\"Alice: {aliceScore}\");  // Alice: 95\n\n        if (scores.TryGetValue(\"Charlie\", out int charlieScore))\n            Console.WriteLine($\"Charlie: {charlieScore}\");\n        else\n            Console.WriteLine(\"Charlie not found\");  // Charlie not found\n    }\n}",
+      "exercise": {
+        "prompt": "Create a Dictionary<string, int> with prices: \"apple\" → 3, \"banana\" → 1, \"cherry\" → 5. Write a static method `int GetPrice(Dictionary<string, int> prices, string item)` that uses TryGetValue to return the price, or -1 if not found. Print results for \"banana\", \"grape\", and \"cherry\".",
+        "starterCode": "class Program\n{\n    static int GetPrice(Dictionary<string, int> prices, string item)\n    {\n        // Use TryGetValue\n\n        return -1;\n    }\n\n    static void Main()\n    {\n        var prices = new Dictionary<string, int>\n        {\n            [\"apple\"] = 3, [\"banana\"] = 1, [\"cherry\"] = 5\n        };\n        Console.WriteLine(GetPrice(prices, \"banana\"));\n        Console.WriteLine(GetPrice(prices, \"grape\"));\n        Console.WriteLine(GetPrice(prices, \"cherry\"));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "1\n-1\n5", "message": "banana=1, grape=-1 (not found), cherry=5."},
+          {"type": "contains", "patterns": ["TryGetValue(", "out int", "return -1"], "message": "Use TryGetValue with out parameter, return -1 for missing keys."}
+        ],
+        "testCode": "",
+        "hint": "if (prices.TryGetValue(item, out int price)) return price; else return -1;"
+      },
+      "order": 2
+    },
+    {
+      "id": "csharp-hm-iterate",
+      "title": "Iterating a Dictionary",
+      "explanation": "Iterate with `foreach (var kvp in dict)` where `kvp.Key` and `kvp.Value` give the pair. You can also destructure: `foreach (var (key, value) in dict)`. Iterate keys only with `dict.Keys`, values with `dict.Values`. Order is not guaranteed (use `SortedDictionary<K,V>` if you need sorted keys). Removing during foreach throws—collect keys first if needed.",
+      "example": "class Program\n{\n    static void Main()\n    {\n        var inventory = new Dictionary<string, int>\n        {\n            [\"sword\"] = 1, [\"potion\"] = 5, [\"shield\"] = 2\n        };\n\n        foreach (var kvp in inventory)\n            Console.WriteLine($\"{kvp.Key}: {kvp.Value}\");\n\n        foreach (var (item, count) in inventory)\n            Console.WriteLine($\"{item} x{count}\");\n\n        Console.WriteLine(String.Join(\", \", inventory.Keys));\n    }\n}",
+      "exercise": {
+        "prompt": "Create a Dictionary<string, int> with scores: \"math\" → 90, \"english\" → 85, \"science\" → 92. Iterate with foreach and print each as \"subject: score\". Then compute and print the average score (as an int).",
+        "starterCode": "class Program\n{\n    static void Main()\n    {\n        var scores = new Dictionary<string, int>\n        {\n            [\"math\"] = 90, [\"english\"] = 85, [\"science\"] = 92\n        };\n\n        // Iterate and print each entry\n\n        // Compute and print average\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "math: 90\nenglish: 85\nscience: 92\n89", "message": "Print each entry then average (267/3 = 89)."},
+          {"type": "contains", "patterns": ["foreach", "kvp.Key", "kvp.Value"], "message": "Use foreach with KeyValuePair to iterate the dictionary."}
+        ],
+        "testCode": "",
+        "hint": "foreach (var kvp in scores) print key: value. Sum values and divide by Count."
+      },
+      "order": 3
+    },
+    {
+      "id": "csharp-hm-frequency",
+      "title": "Frequency Counting Pattern",
+      "explanation": "The most common Dictionary interview pattern: count occurrences. For each element, increment its count: `dict[x] = dict.GetValueOrDefault(x) + 1` or use TryGetValue. C# Dictionary has `GetValueOrDefault(key, defaultValue)` which returns the default if key is missing. This pattern solves: anagram detection, most frequent element, two-sum, and group-by problems.",
+      "example": "class Program\n{\n    static void Main()\n    {\n        string s = \"abracadabra\";\n        var freq = new Dictionary<char, int>();\n        foreach (char c in s)\n            freq[c] = freq.GetValueOrDefault(c) + 1;\n\n        foreach (var (ch, count) in freq)\n            Console.WriteLine($\"{ch}: {count}\");\n        // a: 5, b: 2, r: 2, c: 1, d: 1\n    }\n}",
+      "exercise": {
+        "prompt": "Given int[] nums = {1, 2, 3, 2, 1, 3, 3, 4, 1}, build a frequency dictionary. Print each number and its count sorted by key (use SortedDictionary or sort the keys). Then print the number that appears most frequently.",
+        "starterCode": "class Program\n{\n    static void Main()\n    {\n        int[] nums = { 1, 2, 3, 2, 1, 3, 3, 4, 1 };\n\n        // Build frequency map\n\n        // Print sorted frequencies\n\n        // Find and print the most frequent number\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "1: 3\n2: 2\n3: 3\n4: 1\n3", "message": "Frequency counts sorted by key, then most frequent is 3 (appears 3 times, listed last among ties)."},
+          {"type": "contains", "patterns": ["GetValueOrDefault", "Dictionary<int, int>"], "message": "Use Dictionary<int, int> and GetValueOrDefault for frequency counting."}
+        ],
+        "testCode": "",
+        "hint": "Use SortedDictionary<int, int> or sort Keys. Track maxCount and maxKey while iterating."
+      },
+      "order": 4
+    }
+  ]
+}

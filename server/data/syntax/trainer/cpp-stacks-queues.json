@@ -1,0 +1,95 @@
+{
+  "id": "cpp-stacks-queues",
+  "title": "Stacks & Queues",
+  "description": "Stacks and queues underpin dozens of interview patterns — from valid parentheses to BFS traversal. Master stack<int>, queue<int>, and the standard templates so these problems become automatic.",
+  "language": "cpp",
+  "category": "stacks-queues",
+  "order": 8,
+  "sections": [
+    {
+      "id": "stack-ops",
+      "title": "Stack operations",
+      "explanation": "**stack<int>** provides LIFO access with `.push()`, `.top()`, and `.pop()`. Note: `.pop()` returns void — read `.top()` first, then pop. Always check `.empty()` before calling top/pop. Interviewers expect the STL stack, not a hand-rolled one.",
+      "example": "stack<int> st;\nst.push(10);\nst.push(20);\nst.push(30);\n\ncout << st.top() << endl;  // 30\nst.pop();\ncout << st.top() << endl;  // 20\ncout << st.size() << endl; // 2",
+      "exercise": {
+        "prompt": "Push 5, 10, 15 onto a stack. Print the top element. Pop twice, printing the top after each pop. Then print the remaining stack size.",
+        "starterCode": "int main() {\n    stack<int> st;\n    st.push(5);\n    st.push(10);\n    st.push(15);\n\n    cout << st.() << endl;\n    st.pop();\n    cout << st.() << endl;\n    st.pop();\n    cout << st.() << endl;\n    cout << st.() << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "15\n10\n5\n1", "message": "Top starts at 15, then 10, then 5 after two pops, size = 1"},
+          {"type": "contains", "patterns": ["st.top()", "st.pop()", "st.size()"], "message": "Use .top() to peek, .pop() to remove, and .size() for the count"}
+        ],
+        "testCode": "",
+        "hint": "Fill in top() to peek, then pop() removes the top. After two pops, one element (5) remains. Use size() for the count."
+      },
+      "order": 1
+    },
+    {
+      "id": "queue-ops",
+      "title": "Queue operations",
+      "explanation": "**queue<int>** provides FIFO access. Use `.push()` to enqueue at the back and `.front()` to peek at the front. `.pop()` removes the front element (returns void). Queues are essential for BFS — always reach for queue<int> when you see \"level-by-level\" or \"shortest path in unweighted graph\".",
+      "example": "queue<int> q;\nq.push(1);\nq.push(2);\nq.push(3);\n\ncout << q.front() << endl;  // 1\nq.pop();\ncout << q.front() << endl;  // 2\ncout << q.size() << endl;   // 2",
+      "exercise": {
+        "prompt": "Enqueue values 100, 200, 300 into a queue. Print the front element. Dequeue once, print the new front, then print the remaining size.",
+        "starterCode": "int main() {\n    queue<int> q;\n    q.push(100);\n    q.push(200);\n    q.push(300);\n\n    cout << q.() << endl;\n    q.();\n    cout << q.() << endl;\n    cout << q.() << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "100\n200\n2", "message": "Front is 100, after one dequeue front becomes 200, size is 2"},
+          {"type": "contains", "patterns": ["q.front()", "q.pop()", "q.size()"], "message": "Use .front() to peek, .pop() to dequeue, and .size() for the count"}
+        ],
+        "testCode": "",
+        "hint": "q.front() reads the first element. q.pop() removes it. After one pop, 200 is at the front with size 2."
+      },
+      "order": 2
+    },
+    {
+      "id": "valid-parens",
+      "title": "Valid parentheses pattern",
+      "explanation": "The classic stack problem: push every opening bracket onto the stack and, when you see a closing bracket, check that the top of the stack matches. If the stack is empty at the end with no mismatches, the string is valid. Use an **unordered_map** to store the bracket pairings.",
+      "example": "bool isValid(const string& s) {\n    stack<char> st;\n    unordered_map<char,char> pairs = {{')', '('}, {']', '['}, {'}', '{'}};\n    for (char c : s) {\n        if (c == '(' || c == '[' || c == '{') {\n            st.push(c);\n        } else {\n            if (st.empty() || st.top() != pairs[c]) return false;\n            st.pop();\n        }\n    }\n    return st.empty();\n}\n\nint main() {\n    cout << boolalpha << isValid(\"({[]})\") << endl;  // true\n    cout << boolalpha << isValid(\"([)]\") << endl;     // false\n}",
+      "exercise": {
+        "prompt": "Implement a valid parentheses checker. Test it on \"({[]})\" (should print true) and \"{[}\" (should print false).",
+        "starterCode": "bool isValid(const string& s) {\n    stack<char> st;\n    unordered_map<char,char> pairs = {{')', '('}, {']', '['}, {'}', '{'}};\n    for (char c : s) {\n        if (c == '(' || c == '[' || c == '{') {\n            st.(c);\n        } else {\n            if (st.empty() || st.() != pairs[c]) return false;\n            st.();\n        }\n    }\n    return st.();\n}\n\nint main() {\n    cout << boolalpha << isValid(\"({[]})\") << endl;\n    cout << boolalpha << isValid(\"{[}\") << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "true\nfalse", "message": "\"({[]})\" is valid (true), \"{[}\" is invalid (false)"},
+          {"type": "contains", "patterns": ["st.push(", "st.top()", "st.pop()", "st.empty()"], "message": "Use push to store opening brackets, top to compare, pop on match, empty to check at the end"}
+        ],
+        "testCode": "",
+        "hint": "Push opening brackets with st.push(c). Compare st.top() with pairs[c]. Pop on match. Return st.empty() at the end."
+      },
+      "order": 3
+    },
+    {
+      "id": "bfs-template",
+      "title": "BFS with queue",
+      "explanation": "BFS explores nodes level by level using a queue. Start by enqueuing the source, then loop: dequeue the front node, process it, and enqueue all unvisited neighbors. Always use an **unordered_set** or visited array to avoid revisiting nodes. This pattern solves shortest-path problems on unweighted graphs.",
+      "example": "void bfs(unordered_map<int, vector<int>>& graph, int start) {\n    queue<int> q;\n    unordered_set<int> visited;\n    q.push(start);\n    visited.insert(start);\n    while (!q.empty()) {\n        int node = q.front();\n        q.pop();\n        cout << node << \" \";\n        for (int nbr : graph[node]) {\n            if (!visited.count(nbr)) {\n                visited.insert(nbr);\n                q.push(nbr);\n            }\n        }\n    }\n}",
+      "exercise": {
+        "prompt": "Perform BFS on the graph {0: [1,2], 1: [3], 2: [3], 3: []} starting from node 0. Print each visited node separated by spaces.",
+        "starterCode": "int main() {\n    unordered_map<int, vector<int>> graph = {{0,{1,2}}, {1,{3}}, {2,{3}}, {3,{}}};\n    queue<int> q;\n    unordered_set<int> visited;\n    q.push(0);\n    visited.insert(0);\n\n    while (!q.()) {\n        int node = q.();\n        q.();\n        cout << node << \" \";\n        for (int nbr : graph[node]) {\n            if (!visited.(nbr)) {\n                visited.(nbr);\n                q.(nbr);\n            }\n        }\n    }\n    cout << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "0 1 2 3", "message": "BFS visits nodes in order: 0 1 2 3"},
+          {"type": "contains", "patterns": ["q.front()", "q.pop()", "visited.count(", "visited.insert("], "message": "Use queue front/pop for FIFO and a visited set to avoid revisits"}
+        ],
+        "testCode": "",
+        "hint": "q.empty() checks the loop condition. q.front() reads, q.pop() removes. Use visited.count(nbr) to check and visited.insert(nbr) to mark seen."
+      },
+      "order": 4
+    },
+    {
+      "id": "monotonic-stack",
+      "title": "Monotonic stack pattern",
+      "explanation": "A monotonic stack keeps elements in sorted order and is the key technique for **next greater element** problems. Iterate through the array: while the stack is non-empty and the top element is smaller than the current value, pop and record the answer. Then push the current index. This reduces O(n^2) brute force to O(n).",
+      "example": "vector<int> nextGreater(const vector<int>& nums) {\n    int n = nums.size();\n    vector<int> result(n, -1);\n    stack<int> st;  // stores indices\n    for (int i = 0; i < n; i++) {\n        while (!st.empty() && nums[st.top()] < nums[i]) {\n            result[st.top()] = nums[i];\n            st.pop();\n        }\n        st.push(i);\n    }\n    return result;\n}\n// nextGreater({2, 1, 2, 4, 3}) -> {4, 2, 4, -1, -1}",
+      "exercise": {
+        "prompt": "Find the next greater element for each item in {4, 5, 2, 10, 8} using a monotonic stack. Print the result vector space-separated.",
+        "starterCode": "int main() {\n    vector<int> nums = {4, 5, 2, 10, 8};\n    int n = nums.size();\n    vector<int> result(n, -1);\n    stack<int> st;\n\n    for (int i = 0; i < n; i++) {\n        while (!st.empty() && nums[st.()] < nums[i]) {\n            result[st.()] = nums[i];\n            st.();\n        }\n        st.(i);\n    }\n    for (int x : result) cout << x << \" \";\n    cout << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "5 10 10 -1 -1", "message": "Next greater: 4->5, 5->10, 2->10, 10->none(-1), 8->none(-1)"},
+          {"type": "contains", "patterns": ["st.top()", "st.pop()", "st.push("], "message": "Use top() to peek at the index, pop() to remove, push(i) to add the current index"}
+        ],
+        "testCode": "",
+        "hint": "st.top() peeks at the top index. Record result[st.top()] = nums[i], then st.pop(). Finally st.push(i)."
+      },
+      "order": 5
+    }
+  ]
+}

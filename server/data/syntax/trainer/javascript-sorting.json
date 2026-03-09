@@ -1,0 +1,61 @@
+{
+  "id": "javascript-sorting",
+  "title": "Sorting",
+  "description": "Sorting is fundamental to interview problem-solving. Master JavaScript's sort() with custom comparators, understand the numeric sort gotcha, and know how to sort complex data by specific keys.",
+  "language": "javascript",
+  "category": "sorting",
+  "order": 7,
+  "sections": [
+    {
+      "id": "comparator",
+      "title": "sort() with comparator functions",
+      "explanation": "JavaScript's sort() mutates the array in-place and takes an optional comparator. The comparator `(a, b) => a - b` sorts ascending, `(a, b) => b - a` sorts descending. Without a comparator, sort() converts elements to strings — a critical trap for numbers.",
+      "example": "const nums = [3, 1, 4, 1, 5];\nnums.sort((a, b) => a - b);  // ascending: [1, 1, 3, 4, 5]\nnums.sort((a, b) => b - a);  // descending: [5, 4, 3, 1, 1]\n\nconst words = [\"banana\", \"apple\", \"cherry\"];\nwords.sort(); // alphabetical: [\"apple\", \"banana\", \"cherry\"]",
+      "exercise": {
+        "prompt": "Sort `[30, 5, 20, 1, 10]` ascending with a comparator and print joined by commas. Then sort descending and print joined by commas.",
+        "starterCode": "const nums = [30, 5, 20, 1, 10];\n\nnums.sort((a, b) => a _____ b);\nconsole.log(nums.join(\",\"));\n\nnums.sort((a, b) => b _____ a);\nconsole.log(nums.join(\",\"));",
+        "validation": [
+          {"type": "output", "expected": "1,5,10,20,30\n30,20,10,5,1", "message": "Ascending: 1,5,10,20,30. Descending: 30,20,10,5,1"},
+          {"type": "contains", "patterns": ["sort(", "=>"], "message": "Use sort with an arrow function comparator"}
+        ],
+        "testCode": "",
+        "hint": "a - b for ascending, b - a for descending."
+      },
+      "order": 1
+    },
+    {
+      "id": "sort-by-key",
+      "title": "Sorting by a specific key",
+      "explanation": "For arrays of objects or tuples, pass a comparator that extracts the sort key. Sort by one property, or by multiple properties for tie-breaking. This pattern appears in problems like meeting intervals, task scheduling, and leaderboard ranking.",
+      "example": "const intervals = [[3, 5], [1, 3], [2, 8]];\nintervals.sort((a, b) => a[0] - b[0]);\n// [[1,3], [2,8], [3,5]] — sorted by start time\n\nconst people = [{name: \"Bob\", age: 25}, {name: \"Ann\", age: 30}];\npeople.sort((a, b) => a.age - b.age);",
+      "exercise": {
+        "prompt": "Sort intervals `[[3,6],[1,4],[2,5]]` by their start value (index 0). Print each interval as \"start-end\" on its own line.",
+        "starterCode": "const intervals = [[3, 6], [1, 4], [2, 5]];\n\nintervals.sort((a, b) => a[_____] - b[_____]);\n\nfor (const iv of intervals) {\n  console.log(iv[0] + \"-\" + iv[1]);\n}",
+        "validation": [
+          {"type": "output", "expected": "1-4\n2-5\n3-6", "message": "Sorted by start: [1,4], [2,5], [3,6]"},
+          {"type": "contains", "patterns": ["sort(", "[0]"], "message": "Use index [0] in the comparator to sort by start value"}
+        ],
+        "testCode": "",
+        "hint": "Compare a[0] - b[0] to sort by the first element of each interval."
+      },
+      "order": 2
+    },
+    {
+      "id": "numeric-gotcha",
+      "title": "Numeric sort gotcha",
+      "explanation": "The biggest JavaScript sort trap: without a comparator, sort() converts numbers to strings and sorts lexicographically. So [10, 9, 80] sorts to [10, 80, 9] because \"10\" < \"80\" < \"9\" as strings. Always provide a numeric comparator when sorting numbers.",
+      "example": "const bad = [10, 9, 80, 3];\nbad.sort();  // [10, 3, 80, 9] — WRONG! String sort\n\nconst good = [10, 9, 80, 3];\ngood.sort((a, b) => a - b); // [3, 9, 10, 80] — correct",
+      "exercise": {
+        "prompt": "Show the gotcha: sort `[10, 9, 80, 3]` without a comparator and print joined by commas. Then sort correctly with a numeric comparator and print joined by commas.",
+        "starterCode": "const wrong = [10, 9, 80, 3];\nwrong.sort();\nconsole.log(wrong.join(\",\"));\n\nconst right = [10, 9, 80, 3];\nright.sort((a, b) => _____);\nconsole.log(right.join(\",\"));",
+        "validation": [
+          {"type": "output", "expected": "10,3,80,9\n3,9,10,80", "message": "String sort gives 10,3,80,9. Numeric sort gives 3,9,10,80"},
+          {"type": "contains", "patterns": ["a - b"], "message": "Use (a, b) => a - b for correct numeric sorting"}
+        ],
+        "testCode": "",
+        "hint": "Default sort is lexicographic — gives wrong results for numbers. Use a - b."
+      },
+      "order": 3
+    }
+  ]
+}

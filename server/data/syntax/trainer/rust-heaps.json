@@ -1,0 +1,78 @@
+{
+  "id": "rust-heaps",
+  "title": "Heaps",
+  "description": "BinaryHeap is Rust's priority queue — a max-heap by default. Wrap values in Reverse for a min-heap. Master push, pop, peek, and the top-K pattern to handle priority-based interview problems efficiently.",
+  "language": "rust",
+  "category": "heaps",
+  "order": 9,
+  "sections": [
+    {
+      "id": "max-heap",
+      "title": "BinaryHeap (max-heap by default)",
+      "explanation": "**BinaryHeap<T>** is a max-heap: `.push()` inserts, `.pop()` removes and returns the largest element (as Option<T>), and `.peek()` views the max without removing. All operations are O(log n). Create from a Vec with `BinaryHeap::from(vec)` or push one at a time.",
+      "example": "fn main() {\n    let mut heap = BinaryHeap::new();\n    heap.push(3);\n    heap.push(1);\n    heap.push(4);\n    heap.push(1);\n    heap.push(5);\n\n    println!(\"{:?}\", heap.peek());  // Some(5)\n    println!(\"{:?}\", heap.pop());   // Some(5)\n    println!(\"{:?}\", heap.pop());   // Some(4)\n    println!(\"{}\", heap.len());     // 3\n}",
+      "exercise": {
+        "prompt": "Create a BinaryHeap and push values 10, 30, 20, 50, 40. Peek at the max, then pop elements one at a time and print them (should come out in descending order).",
+        "starterCode": "fn main() {\n    let mut heap = BinaryHeap::new();\n    heap.push(10);\n    heap.push(30);\n    heap.push(20);\n    heap.push(50);\n    heap.push(40);\n\n    println!(\"{:?}\", heap.peek());\n    while let Some(val) = heap.pop() {\n        print!(\"{} \", val);\n    }\n    println!();\n}",
+        "validation": [
+          {"type": "output", "expected": "Some(50)\n50 40 30 20 10", "message": "Max is 50, elements come out: 50, 40, 30, 20, 10"},
+          {"type": "contains", "patterns": ["BinaryHeap::new()", ".push(", ".peek()", ".pop()"], "message": "Use BinaryHeap::new(), push, peek, and pop for heap operations"}
+        ],
+        "testCode": "",
+        "hint": "BinaryHeap is a max-heap, so pop always returns the largest remaining element."
+      },
+      "order": 1
+    },
+    {
+      "id": "min-heap",
+      "title": "Min-heap with Reverse",
+      "explanation": "Rust's BinaryHeap is max-only, but wrapping elements in `std::cmp::Reverse(val)` inverts the ordering to create a **min-heap**. Push `Reverse(val)`, pop returns `Reverse(val)` — extract with `.0`. This pattern appears in Dijkstra's algorithm, merge-K-lists, and median finding.",
+      "example": "use std::cmp::Reverse;\n\nfn main() {\n    let mut min_heap = BinaryHeap::new();\n    min_heap.push(Reverse(3));\n    min_heap.push(Reverse(1));\n    min_heap.push(Reverse(4));\n\n    println!(\"{}\", min_heap.peek().unwrap().0);  // 1\n    println!(\"{}\", min_heap.pop().unwrap().0);    // 1\n    println!(\"{}\", min_heap.pop().unwrap().0);    // 3\n}",
+      "exercise": {
+        "prompt": "Create a min-heap using Reverse. Push values 50, 10, 30, 20, 40. Pop all elements and print them (should come out in ascending order).",
+        "starterCode": "use std::cmp::Reverse;\n\nfn main() {\n    let mut min_heap = BinaryHeap::new();\n    min_heap.push(Reverse(50));\n    min_heap.push(Reverse(10));\n    min_heap.push(Reverse(30));\n    min_heap.push(Reverse(20));\n    min_heap.push(Reverse(40));\n\n    while let Some(Reverse(val)) = min_heap.pop() {\n        print!(\"{} \", val);\n    }\n    println!();\n}",
+        "validation": [
+          {"type": "output", "expected": "10 20 30 40 50", "message": "Min-heap pops in ascending order: 10, 20, 30, 40, 50"},
+          {"type": "contains", "patterns": ["Reverse(", "BinaryHeap::new()", "Reverse(val)"], "message": "Wrap values in Reverse() and destructure with Reverse(val) when popping"}
+        ],
+        "testCode": "",
+        "hint": "Reverse inverts the ordering so the smallest value has the highest priority."
+      },
+      "order": 2
+    },
+    {
+      "id": "top-k-elements",
+      "title": "Top-K elements pattern",
+      "explanation": "To find the **K largest** elements: use a min-heap of size K — push each element, and if the heap exceeds K, pop the smallest. After processing all elements, the heap contains the K largest. For **K smallest**, use a max-heap with the same logic. This runs in O(n log K).",
+      "example": "use std::cmp::Reverse;\n\nfn top_k_largest(nums: &[i32], k: usize) -> Vec<i32> {\n    let mut heap = BinaryHeap::new();\n    for &num in nums {\n        heap.push(Reverse(num));\n        if heap.len() > k {\n            heap.pop();\n        }\n    }\n    heap.into_iter().map(|Reverse(x)| x).collect()\n}\n\nfn main() {\n    let mut result = top_k_largest(&[3, 1, 5, 2, 4, 8, 7], 3);\n    result.sort();\n    println!(\"{:?}\", result);  // [5, 7, 8]\n}",
+      "exercise": {
+        "prompt": "Complete the top_k_largest function that finds the K largest elements. Test with nums = [10, 4, 3, 8, 7, 1, 9] and k = 3. Print the sorted result.",
+        "starterCode": "use std::cmp::Reverse;\n\nfn top_k_largest(nums: &[i32], k: usize) -> Vec<i32> {\n    let mut heap = BinaryHeap::new();\n    for &num in nums {\n        heap.push(Reverse(num));\n        if heap.len() > k {\n            heap.();\n        }\n    }\n    heap.into_iter().map(|Reverse(x)| x).collect()\n}\n\nfn main() {\n    let mut result = top_k_largest(&[10, 4, 3, 8, 7, 1, 9], 3);\n    result.sort();\n    println!(\"{:?}\", result);\n}",
+        "validation": [
+          {"type": "output", "expected": "[8, 9, 10]", "message": "Top 3 largest from [10,4,3,8,7,1,9] are [8, 9, 10]"},
+          {"type": "contains", "patterns": ["Reverse(num)", "heap.len() > k", "heap.pop()"], "message": "Push Reverse(num), evict when size exceeds k with pop()"}
+        ],
+        "testCode": "",
+        "hint": "Call .pop() to evict the smallest when heap grows beyond k."
+      },
+      "order": 3
+    },
+    {
+      "id": "heap-from-vec",
+      "title": "Building a heap from a Vec",
+      "explanation": "Use `BinaryHeap::from(vec)` to convert a Vec into a heap in O(n) time — faster than pushing one by one (O(n log n)). The resulting heap can be drained in sorted order with repeated `.pop()` calls, which is essentially heapsort.",
+      "example": "fn main() {\n    let nums = vec![5, 3, 8, 1, 9, 2];\n    let mut heap = BinaryHeap::from(nums);\n\n    println!(\"{:?}\", heap.peek());  // Some(9)\n\n    let mut sorted = Vec::new();\n    while let Some(val) = heap.pop() {\n        sorted.push(val);\n    }\n    println!(\"{:?}\", sorted);  // [9, 8, 5, 3, 2, 1]\n}",
+      "exercise": {
+        "prompt": "Create a BinaryHeap from vec![7, 2, 5, 1, 8, 3]. Peek at the max. Drain the heap into a Vec and print it (descending order).",
+        "starterCode": "fn main() {\n    let nums = vec![7, 2, 5, 1, 8, 3];\n    let mut heap = BinaryHeap::from(nums);\n\n    println!(\"{:?}\", heap.peek());\n\n    let mut sorted = Vec::new();\n    while let Some(val) = heap.() {\n        sorted.push(val);\n    }\n    println!(\"{:?}\", sorted);\n}",
+        "validation": [
+          {"type": "output", "expected": "Some(8)\n[8, 7, 5, 3, 2, 1]", "message": "Max is 8, draining gives descending order: [8,7,5,3,2,1]"},
+          {"type": "contains", "patterns": ["BinaryHeap::from(", "heap.pop()", "sorted.push(val)"], "message": "Use BinaryHeap::from() to build, pop() to drain in order"}
+        ],
+        "testCode": "",
+        "hint": "Call .pop() in the while let loop to drain elements in descending order."
+      },
+      "order": 4
+    }
+  ]
+}

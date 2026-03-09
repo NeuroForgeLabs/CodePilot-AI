@@ -1,0 +1,78 @@
+{
+  "id": "python-sets",
+  "title": "Sets",
+  "description": "Master Python sets for O(1) membership checks, deduplication, and set math — essential tools for efficient interview solutions.",
+  "language": "python",
+  "category": "sets",
+  "order": 6,
+  "sections": [
+    {
+      "id": "creating",
+      "title": "Creating sets",
+      "explanation": "Sets store unique elements with O(1) lookup, making them ideal when you need fast membership checks or deduplication. You can create them with `set()`, literal `{1, 2, 3}` syntax, or by passing an iterable like a list to `set()` to strip duplicates instantly. Note that `{}` creates an empty dict, not a set — always use `set()` for empty sets.",
+      "example": "# Literal syntax\ncolors = {\"red\", \"green\", \"blue\"}\nprint(colors)  # order may vary\n\n# From a list — duplicates removed\nnums = [1, 2, 2, 3, 3, 3]\nunique = set(nums)\nprint(unique)  # {1, 2, 3}\n\n# Empty set (NOT {} which is a dict)\nempty = set()\nprint(type(empty))  # <class 'set'>",
+      "exercise": {
+        "prompt": "Given `nums = [4, 1, 2, 1, 3, 4, 2]`, remove duplicates by converting to a set, then print the result as a sorted list.",
+        "starterCode": "nums = [4, 1, 2, 1, 3, 4, 2]\n\n# Remove duplicates using set, then sort\nresult = sorted()\n\nprint(result)",
+        "validation": [
+          {"type": "output", "expected": "[1, 2, 3, 4]", "message": "Convert to set to remove duplicates, then sort"},
+          {"type": "contains", "patterns": ["set(", "sorted("], "message": "Use set() for dedup and sorted() for ordering"}
+        ],
+        "testCode": "",
+        "hint": "Pass nums to set() to remove duplicates, then wrap in sorted(): sorted(set(nums))."
+      },
+      "order": 1
+    },
+    {
+      "id": "operations",
+      "title": "Add, remove, and membership",
+      "explanation": "The three core set operations in interviews are `add()` to insert, `discard()` to safely remove (no error if missing), and `in` for O(1) membership checks. Prefer `discard()` over `remove()` since `remove()` raises a KeyError on missing elements. The `in` operator on sets is O(1) vs O(n) on lists — interviewers notice when you choose the right data structure.",
+      "example": "seen = set()\n\n# Add elements\nseen.add(10)\nseen.add(20)\nseen.add(10)  # no effect, already present\nprint(seen)   # {10, 20}\n\n# Membership check — O(1)\nprint(20 in seen)   # True\nprint(99 in seen)   # False\n\n# Safe remove\nseen.discard(20)\nseen.discard(99)  # no error\nprint(seen)       # {10}",
+      "exercise": {
+        "prompt": "Iterate through `nums = [1, 5, 3, 1, 5, 7]` and use a set to track seen elements. When you encounter a duplicate, print `Duplicate: X` for that element.",
+        "starterCode": "nums = [1, 5, 3, 1, 5, 7]\nseen = set()\n\nfor num in nums:\n    if num  seen:\n        print(f\"Duplicate: {num}\")\n    seen.(num)",
+        "validation": [
+          {"type": "output", "expected": "Duplicate: 1\nDuplicate: 5", "message": "Check membership with 'in' before adding"},
+          {"type": "contains", "patterns": ["in seen", ".add("], "message": "Use 'in' for membership check and .add() to track elements"}
+        ],
+        "testCode": "",
+        "hint": "Check `if num in seen` to detect duplicates, then `seen.add(num)` to track it."
+      },
+      "order": 2
+    },
+    {
+      "id": "set-math",
+      "title": "Intersection, union, and difference",
+      "explanation": "Set math operators let you combine or compare groups in O(n) time — far better than nested loops. Use `&` (intersection) to find common elements, `|` (union) to merge, and `-` (difference) to find what's in one set but not the other. These appear in interview problems like common characters, mutual friends, and permission systems.",
+      "example": "a = {1, 2, 3, 4}\nb = {3, 4, 5, 6}\n\nprint(a & b)   # {3, 4}  — intersection\nprint(a | b)   # {1, 2, 3, 4, 5, 6}  — union\nprint(a - b)   # {1, 2}  — in a but not b\nprint(b - a)   # {5, 6}  — in b but not a\n\n# Method syntax also works\nprint(a.intersection(b))  # {3, 4}",
+      "exercise": {
+        "prompt": "Given `list_a = [1, 2, 3, 4, 5]` and `list_b = [4, 5, 6, 7, 8]`, find and print the common elements as a sorted list using set intersection.",
+        "starterCode": "list_a = [1, 2, 3, 4, 5]\nlist_b = [4, 5, 6, 7, 8]\n\n# Find common elements using set intersection\ncommon = set()  set()\n\nprint(sorted(common))",
+        "validation": [
+          {"type": "output", "expected": "[4, 5]", "message": "Use set intersection to find elements in both lists"},
+          {"type": "contains", "patterns": ["set(", "&"], "message": "Convert to sets and use & for intersection"}
+        ],
+        "testCode": "",
+        "hint": "Convert both lists to sets and use &: set(list_a) & set(list_b)."
+      },
+      "order": 3
+    },
+    {
+      "id": "dedup-pattern",
+      "title": "Dedup pattern for interviews",
+      "explanation": "The \"seen set\" pattern is a staple in coding interviews: maintain a set as you iterate, checking membership before processing each element. This gives you O(n) time and O(n) space for problems like finding the first duplicate, first missing, or first unique element — all situations where brute-force nested loops would be O(n^2).",
+      "example": "def first_duplicate(nums):\n    seen = set()\n    for num in nums:\n        if num in seen:\n            return num\n        seen.add(num)\n    return -1\n\nprint(first_duplicate([2, 1, 3, 5, 3, 2]))  # 3\nprint(first_duplicate([1, 2, 3]))            # -1",
+      "exercise": {
+        "prompt": "Given `nums = [7, 3, 5, 3, 1, 5]`, find and print the first duplicate value using a seen set. If no duplicate exists, print -1.",
+        "starterCode": "nums = [7, 3, 5, 3, 1, 5]\nseen = set()\nresult = -1\n\nfor num in nums:\n    if num in :\n        result = num\n        \n    .(num)\n\nprint(result)",
+        "validation": [
+          {"type": "output", "expected": "3", "message": "3 is the first value that appears twice"},
+          {"type": "contains", "patterns": ["in seen", ".add(", "break"], "message": "Use 'in seen' for check, .add() to track, and break on first duplicate"}
+        ],
+        "testCode": "",
+        "hint": "Check `if num in seen`, set result and break. Otherwise `seen.add(num)`."
+      },
+      "order": 4
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "id": "rust-interview-templates",
+  "title": "Interview Templates",
+  "description": "Drill the most common algorithmic templates that appear in coding interviews. Each pattern provides a reusable Rust skeleton you can adapt to dozens of problems, so recognizing and applying them becomes second nature.",
+  "language": "rust",
+  "category": "interview-templates",
+  "order": 13,
+  "sections": [
+    {
+      "id": "sliding-window",
+      "title": "Sliding window",
+      "explanation": "The sliding window maintains a fixed- or variable-size window over a sequence, updating the result incrementally. Instead of recalculating from scratch, subtract the element leaving and add the one entering. This turns O(n*k) brute force into O(n), which interviewers expect you to recognize immediately.",
+      "example": "fn max_sum_subarray(nums: &[i32], k: usize) -> i32 {\n    let mut window: i32 = nums[..k].iter().sum();\n    let mut best = window;\n    for i in k..nums.len() {\n        window += nums[i] - nums[i - k];\n        best = best.max(window);\n    }\n    best\n}\n\nfn main() {\n    println!(\"{}\", max_sum_subarray(&[2, 1, 5, 1, 3, 2], 3));  // 9\n}",
+      "exercise": {
+        "prompt": "Complete the sliding window function to find the maximum sum of any contiguous subarray of size k. Print the result for nums = [2, 3, 1, 5, 4, 2] with k = 3.",
+        "starterCode": "fn main() {\n    let nums = vec![2, 3, 1, 5, 4, 2];\n    let k = 3;\n\n    let mut window: i32 = nums[..k].iter().sum();\n    let mut best = window;\n\n    for i in k..nums.len() {\n        window += nums[i] - nums[i - ];\n        best = best.max();\n    }\n    println!(\"{}\", best);\n}",
+        "validation": [
+          {"type": "output", "expected": "11", "message": "Maximum sum subarray of size 3 is [5,4,2]=11"},
+          {"type": "contains", "patterns": ["nums[i - k]", "best.max(window)"], "message": "Subtract the leaving element with nums[i-k] and track best with .max()"}
+        ],
+        "testCode": "",
+        "hint": "Subtract nums[i - k] (the element sliding out). Use best.max(window) to track the running maximum."
+      },
+      "order": 1
+    },
+    {
+      "id": "binary-search",
+      "title": "Binary search",
+      "explanation": "Binary search halves the search space each iteration. Use `left` and `right` pointers with `while left <= right`. Compute `mid = left + (right - left) / 2` to avoid overflow. Rust's usize can't go negative, so be careful with `right = mid - 1` when mid is 0 — use i32 or check before subtracting.",
+      "example": "fn binary_search(nums: &[i32], target: i32) -> i32 {\n    let (mut left, mut right) = (0i32, nums.len() as i32 - 1);\n    while left <= right {\n        let mid = left + (right - left) / 2;\n        if nums[mid as usize] == target {\n            return mid;\n        } else if nums[mid as usize] < target {\n            left = mid + 1;\n        } else {\n            right = mid - 1;\n        }\n    }\n    -1\n}\n\nfn main() {\n    println!(\"{}\", binary_search(&[1, 3, 5, 7, 9, 11], 7));  // 3\n}",
+      "exercise": {
+        "prompt": "Complete the binary search function. Find the index of target 10 in [2, 4, 6, 8, 10, 12]. Print the result.",
+        "starterCode": "fn binary_search(nums: &[i32], target: i32) -> i32 {\n    let (mut left, mut right) = (0i32, nums.len() as i32 - 1);\n    while left <= right {\n        let mid = left + (right - left) / 2;\n        if nums[mid as usize] == target {\n            return mid;\n        } else if nums[mid as usize] < target {\n            left = mid + ;\n        } else {\n            right = mid - ;\n        }\n    }\n    -1\n}\n\nfn main() {\n    let nums = vec![2, 4, 6, 8, 10, 12];\n    println!(\"{}\", binary_search(&nums, 10));\n}",
+        "validation": [
+          {"type": "output", "expected": "4", "message": "10 is at index 4 in the sorted array"},
+          {"type": "contains", "patterns": ["left <= right", "mid + 1", "mid - 1"], "message": "Use <= in the loop condition, and move left/right by mid +/- 1"}
+        ],
+        "testCode": "",
+        "hint": "Move left = mid + 1 when too small, right = mid - 1 when too large."
+      },
+      "order": 2
+    },
+    {
+      "id": "two-pointer",
+      "title": "Two pointers",
+      "explanation": "The two-pointer technique places one pointer at the start and one at the end of a sorted array, moving them inward based on a condition. For pair-sum: if the sum is too small, advance left; too large, retreat right. This solves in O(n) time with O(1) space.",
+      "example": "fn two_sum_sorted(nums: &[i32], target: i32) -> Option<(usize, usize)> {\n    let (mut left, mut right) = (0, nums.len() - 1);\n    while left < right {\n        let s = nums[left] + nums[right];\n        if s == target {\n            return Some((left, right));\n        } else if s < target {\n            left += 1;\n        } else {\n            right -= 1;\n        }\n    }\n    None\n}\n\nfn main() {\n    println!(\"{:?}\", two_sum_sorted(&[1, 3, 5, 7, 10], 8));\n    // Some((0, 4))\n}",
+      "exercise": {
+        "prompt": "Complete the two-pointer function to find indices of two numbers that sum to target. Test with nums = [1, 2, 4, 6, 8, 11] and target = 10. Print the two indices.",
+        "starterCode": "fn main() {\n    let nums = vec![1, 2, 4, 6, 8, 11];\n    let target = 10;\n    let (mut left, mut right) = (0usize, nums.len() - 1);\n\n    while left < right {\n        let s = nums[left] + nums[right];\n        if s == target {\n            println!(\"{} {}\", left, right);\n            break;\n        } else if s < target {\n            left += ;\n        } else {\n            right -= ;\n        }\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "1 4", "message": "nums[1]=2 + nums[4]=8 = 10"},
+          {"type": "contains", "patterns": ["left += 1", "right -= 1"], "message": "Increment left by 1 when sum too small, decrement right by 1 when too large"}
+        ],
+        "testCode": "",
+        "hint": "When sum < target, increment left by 1. When sum > target, decrement right by 1."
+      },
+      "order": 3
+    },
+    {
+      "id": "prefix-sum",
+      "title": "Prefix sum",
+      "explanation": "A prefix sum array stores cumulative sums so that any range-sum query becomes O(1). Build as `prefix[i+1] = prefix[i] + nums[i]`, then `range_sum(l, r) = prefix[r+1] - prefix[l]`. Building is O(n), each query is O(1). This pattern underlies subarray-sum problems.",
+      "example": "fn main() {\n    let nums = vec![3, 1, 4, 1, 5];\n    let n = nums.len();\n    let mut prefix = vec![0; n + 1];\n    for i in 0..n {\n        prefix[i + 1] = prefix[i] + nums[i];\n    }\n    // Sum of nums[1..=3] = 1 + 4 + 1 = 6\n    println!(\"{}\", prefix[4] - prefix[1]);  // 6\n}",
+      "exercise": {
+        "prompt": "Build a prefix sum array for [2, 5, 1, 7, 3]. Print the sum of elements from index 1 to 3 (inclusive), which should be 5+1+7 = 13.",
+        "starterCode": "fn main() {\n    let nums = vec![2, 5, 1, 7, 3];\n    let n = nums.len();\n    let mut prefix = vec![0; n + 1];\n\n    for i in 0..n {\n        prefix[i + 1] = prefix[] + nums[i];\n    }\n\n    let l = 1;\n    let r = 3;\n    println!(\"{}\", prefix[r + 1] - prefix[]);\n}",
+        "validation": [
+          {"type": "output", "expected": "13", "message": "Sum from index 1 to 3 = 5 + 1 + 7 = 13"},
+          {"type": "contains", "patterns": ["prefix[i]", "prefix[l]"], "message": "Build with prefix[i] and query with prefix[r+1] - prefix[l]"}
+        ],
+        "testCode": "",
+        "hint": "prefix[i+1] = prefix[i] + nums[i]. Range sum from l to r = prefix[r+1] - prefix[l]."
+      },
+      "order": 4
+    },
+    {
+      "id": "backtracking-template",
+      "title": "Backtracking",
+      "explanation": "Backtracking explores all candidate solutions with the **choose-explore-unchoose** pattern. For each candidate, push it to the path, recurse deeper, then pop it and try the next. This template drives permutation, combination, and constraint-satisfaction problems. Prune branches early to stay tractable.",
+      "example": "fn permute(nums: &[i32], path: &mut Vec<i32>, used: &mut Vec<bool>, result: &mut Vec<Vec<i32>>) {\n    if path.len() == nums.len() {\n        result.push(path.clone());\n        return;\n    }\n    for i in 0..nums.len() {\n        if used[i] { continue; }\n        used[i] = true;\n        path.push(nums[i]);\n        permute(nums, path, used, result);\n        path.pop();\n        used[i] = false;\n    }\n}",
+      "exercise": {
+        "prompt": "Generate all permutations of [1, 2, 3] using backtracking. Print the total count of permutations.",
+        "starterCode": "fn permute(nums: &[i32], path: &mut Vec<i32>, used: &mut Vec<bool>, result: &mut Vec<Vec<i32>>) {\n    if path.len() == nums.len() {\n        result.push(path.clone());\n        return;\n    }\n    for i in 0..nums.len() {\n        if used[i] { continue; }\n        used[i] = true;\n        path.push(nums[i]);\n        permute(nums, path, used, result);\n        path.();\n        used[i] = ;\n    }\n}\n\nfn main() {\n    let nums = vec![1, 2, 3];\n    let mut path = Vec::new();\n    let mut used = vec![false; 3];\n    let mut result = Vec::new();\n    permute(&nums, &mut path, &mut used, &mut result);\n    println!(\"{}\", result.len());\n}",
+        "validation": [
+          {"type": "output", "expected": "6", "message": "3! = 6 permutations of [1, 2, 3]"},
+          {"type": "contains", "patterns": ["path.pop()", "used[i] = false"], "message": "Unchoose with pop() and reset used[i] = false after recursion"}
+        ],
+        "testCode": "",
+        "hint": "After the recursive call, unchoose: path.pop() and used[i] = false."
+      },
+      "order": 5
+    }
+  ]
+}

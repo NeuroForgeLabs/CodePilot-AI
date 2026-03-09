@@ -1,0 +1,95 @@
+{
+  "id": "typescript-graphs",
+  "title": "Graphs",
+  "description": "Graph problems are interview favorites — from connected components to shortest paths. Master the adjacency list representation with Map<number, number[]>, DFS, BFS, and component counting in TypeScript.",
+  "language": "typescript",
+  "category": "graphs",
+  "order": 12,
+  "sections": [
+    {
+      "id": "adjacency-list",
+      "title": "Map-based adjacency list",
+      "explanation": "The standard interview graph representation is an adjacency list using `Map<number, number[]>`. Each key is a node, and its value is an array of neighbors. For undirected graphs, add the edge in both directions. Building the graph from an edge list is the first step of almost every graph problem.",
+      "example": "function buildGraph(n: number, edges: [number, number][]): Map<number, number[]> {\n  const graph: Map<number, number[]> = new Map();\n  for (let i = 0; i < n; i++) graph.set(i, []);\n  for (const [u, v] of edges) {\n    graph.get(u)!.push(v);\n    graph.get(v)!.push(u);\n  }\n  return graph;\n}\n\nconst g = buildGraph(4, [[0,1],[1,2],[2,3]]);\nfor (const [node, neighbors] of g) {\n  console.log(`${node}: [${neighbors.join(\",\")}]`);\n}",
+      "exercise": {
+        "prompt": "Build an undirected graph with 5 nodes (0-4) and edges [[0,1],[0,2],[1,3],[3,4]]. Print each node's neighbor list as \"node: [neighbors]\".",
+        "starterCode": "function buildGraph(n: number, edges: [number, number][]): Map<number, number[]> {\n  const graph: Map<number, number[]> = new Map()\n  for (let i = 0; i < n; i++) graph.set(i, [])\n  for (const [u, v] of edges) {\n    graph.get(u)!.push(___)\n    graph.get(v)!.push(___)\n  }\n  return graph\n}\n\nconst g = buildGraph(5, [[0,1],[0,2],[1,3],[3,4]])\nfor (const [node, neighbors] of g) {\n  console.log(`${node}: [${neighbors.join(\",\")}]`)\n}",
+        "validation": [
+          {"type": "output", "expected": "0: [1,2]\n1: [0,3]\n2: [0]\n3: [1,4]\n4: [3]", "message": "Each node should list its neighbors from the undirected edges"},
+          {"type": "contains", "patterns": ["Map<number, number[]>", "graph.get(u)!", "graph.get(v)!"], "message": "Use Map adjacency list with bidirectional edge insertion"}
+        ],
+        "testCode": "",
+        "hint": "For edge [u,v], push v into u's list and u into v's list. This makes it undirected."
+      },
+      "order": 1
+    },
+    {
+      "id": "graph-dfs",
+      "title": "Graph DFS",
+      "explanation": "DFS explores as deep as possible before backtracking. Use a `Set<number>` to track visited nodes and prevent cycles. The recursive pattern: mark as visited, process the node, then recurse on unvisited neighbors. DFS is used for pathfinding, cycle detection, and topological sorting.",
+      "example": "function dfs(graph: Map<number, number[]>, start: number): number[] {\n  const visited: Set<number> = new Set();\n  const order: number[] = [];\n  function visit(node: number): void {\n    visited.add(node);\n    order.push(node);\n    for (const neighbor of graph.get(node) ?? []) {\n      if (!visited.has(neighbor)) visit(neighbor);\n    }\n  }\n  visit(start);\n  return order;\n}\n\nconst graph: Map<number, number[]> = new Map([\n  [0, [1, 2]], [1, [0, 3]], [2, [0]], [3, [1]]\n]);\nconsole.log(dfs(graph, 0));  // [0, 1, 3, 2]",
+      "exercise": {
+        "prompt": "Implement DFS traversal starting from node 0. Build a graph with edges [[0,1],[0,2],[1,3],[2,4]]. Print the DFS visit order as comma-separated values.",
+        "starterCode": "function dfs(graph: Map<number, number[]>, start: number): number[] {\n  const visited: Set<number> = new Set()\n  const order: number[] = []\n  function visit(node: number): void {\n    visited.___(node)\n    order.push(node)\n    for (const neighbor of graph.get(node) ?? []) {\n      if (!visited.___(neighbor)) visit(neighbor)\n    }\n  }\n  visit(start)\n  return order\n}\n\nconst graph: Map<number, number[]> = new Map()\nfor (let i = 0; i < 5; i++) graph.set(i, [])\nfor (const [u, v] of [[0,1],[0,2],[1,3],[2,4]] as [number, number][]) {\n  graph.get(u)!.push(v)\n  graph.get(v)!.push(u)\n}\n\nconsole.log(dfs(graph, 0).join(\",\"))",
+        "validation": [
+          {"type": "output", "expected": "0,1,3,2,4", "message": "DFS from 0 visits: 0, 1, 3, 2, 4"},
+          {"type": "contains", "patterns": ["Set<number>", "visited.add(", "visited.has("], "message": "Use a visited Set to prevent revisiting nodes"}
+        ],
+        "testCode": "",
+        "hint": "visited.add(node) marks it seen. visited.has(neighbor) checks if already visited before recursing."
+      },
+      "order": 2
+    },
+    {
+      "id": "graph-bfs",
+      "title": "Graph BFS",
+      "explanation": "BFS explores nodes level by level using a queue. It finds shortest paths in unweighted graphs. Use a `Set<number>` for visited nodes and a `number[]` queue (shift from front, push to back). Mark nodes as visited when enqueuing, not when dequeuing — this prevents duplicates.",
+      "example": "function bfs(graph: Map<number, number[]>, start: number): number[] {\n  const visited: Set<number> = new Set([start]);\n  const queue: number[] = [start];\n  const order: number[] = [];\n  while (queue.length > 0) {\n    const node = queue.shift()!;\n    order.push(node);\n    for (const neighbor of graph.get(node) ?? []) {\n      if (!visited.has(neighbor)) {\n        visited.add(neighbor);\n        queue.push(neighbor);\n      }\n    }\n  }\n  return order;\n}\n\nconst graph: Map<number, number[]> = new Map([\n  [0, [1, 2]], [1, [0, 3]], [2, [0, 3]], [3, [1, 2]]\n]);\nconsole.log(bfs(graph, 0));  // [0, 1, 2, 3]",
+      "exercise": {
+        "prompt": "Implement BFS that also tracks distance from the start node. Build a graph with edges [[0,1],[0,2],[1,3],[3,4]]. Print each node and its distance from node 0.",
+        "starterCode": "function bfsDistance(graph: Map<number, number[]>, start: number): Map<number, number> {\n  const dist: Map<number, number> = new Map()\n  dist.set(start, 0)\n  const queue: number[] = [start]\n  while (queue.length > 0) {\n    const node = queue.___()!\n    for (const neighbor of graph.get(node) ?? []) {\n      if (!dist.___(neighbor)) {\n        dist.set(neighbor, dist.get(node)! + ___)\n        queue.push(neighbor)\n      }\n    }\n  }\n  return dist\n}\n\nconst graph: Map<number, number[]> = new Map()\nfor (let i = 0; i < 5; i++) graph.set(i, [])\nfor (const [u, v] of [[0,1],[0,2],[1,3],[3,4]] as [number, number][]) {\n  graph.get(u)!.push(v)\n  graph.get(v)!.push(u)\n}\n\nconst distances = bfsDistance(graph, 0)\nfor (const [node, d] of [...distances.entries()].sort((a, b) => a[0] - b[0])) {\n  console.log(`${node}: ${d}`)\n}",
+        "validation": [
+          {"type": "output", "expected": "0: 0\n1: 1\n2: 1\n3: 2\n4: 3", "message": "BFS distances from node 0: 0=0, 1=1, 2=1, 3=2, 4=3"},
+          {"type": "contains", "patterns": ["queue.shift()", "dist.has(", "dist.set(", "Map<number, number>"], "message": "Use BFS with distance tracking via Map"}
+        ],
+        "testCode": "",
+        "hint": "shift() dequeues. Use dist.has() instead of a separate visited set — if a node has a distance, it's been visited. Each neighbor's distance is parent's distance + 1."
+      },
+      "order": 3
+    },
+    {
+      "id": "connected-components",
+      "title": "Connected components",
+      "explanation": "Counting connected components means finding how many separate clusters of nodes exist. Iterate all nodes; for each unvisited node, run a DFS/BFS to mark all reachable nodes, then increment the component count. This is O(V + E) and appears in island-counting and friend-group problems.",
+      "example": "function countComponents(n: number, edges: [number, number][]): number {\n  const graph: Map<number, number[]> = new Map();\n  for (let i = 0; i < n; i++) graph.set(i, []);\n  for (const [u, v] of edges) {\n    graph.get(u)!.push(v);\n    graph.get(v)!.push(u);\n  }\n  const visited: Set<number> = new Set();\n  let count = 0;\n  function dfs(node: number): void {\n    visited.add(node);\n    for (const neighbor of graph.get(node)!) {\n      if (!visited.has(neighbor)) dfs(neighbor);\n    }\n  }\n  for (let i = 0; i < n; i++) {\n    if (!visited.has(i)) { dfs(i); count++; }\n  }\n  return count;\n}\n\nconsole.log(countComponents(5, [[0,1],[2,3]]));  // 3",
+      "exercise": {
+        "prompt": "Count the number of connected components in a graph with 7 nodes and edges [[0,1],[1,2],[3,4],[5,6]]. Print the count.",
+        "starterCode": "function countComponents(n: number, edges: [number, number][]): number {\n  const graph: Map<number, number[]> = new Map()\n  for (let i = 0; i < n; i++) graph.set(i, [])\n  for (const [u, v] of edges) {\n    graph.get(u)!.push(v)\n    graph.get(v)!.push(u)\n  }\n  const visited: Set<number> = new Set()\n  let count = 0\n  function dfs(node: number): void {\n    visited.add(node)\n    for (const neighbor of graph.get(node)!) {\n      if (!visited.has(neighbor)) ___(neighbor)\n    }\n  }\n  for (let i = 0; i < n; i++) {\n    if (!visited.___(i)) {\n      dfs(i)\n      ___++\n    }\n  }\n  return count\n}\n\nconsole.log(countComponents(7, [[0,1],[1,2],[3,4],[5,6]]))",
+        "validation": [
+          {"type": "output", "expected": "3", "message": "Three components: {0,1,2}, {3,4}, {5,6}"},
+          {"type": "contains", "patterns": ["Set<number>", "dfs(neighbor)", "count++"], "message": "Use DFS to explore each component and count total components"}
+        ],
+        "testCode": "",
+        "hint": "Call dfs(neighbor) to recurse. Check !visited.has(i) to find unvisited nodes. Increment count after each new DFS call."
+      },
+      "order": 4
+    },
+    {
+      "id": "cycle-detection",
+      "title": "Cycle detection",
+      "explanation": "To detect cycles in an undirected graph, track the parent of each node during DFS. If you visit a neighbor that's already visited and it's not your parent, you've found a cycle. For directed graphs, use three states: unvisited, in-progress, and completed.",
+      "example": "function hasCycle(n: number, edges: [number, number][]): boolean {\n  const graph: Map<number, number[]> = new Map();\n  for (let i = 0; i < n; i++) graph.set(i, []);\n  for (const [u, v] of edges) {\n    graph.get(u)!.push(v);\n    graph.get(v)!.push(u);\n  }\n  const visited: Set<number> = new Set();\n  function dfs(node: number, parent: number): boolean {\n    visited.add(node);\n    for (const neighbor of graph.get(node)!) {\n      if (!visited.has(neighbor)) {\n        if (dfs(neighbor, node)) return true;\n      } else if (neighbor !== parent) {\n        return true;\n      }\n    }\n    return false;\n  }\n  for (let i = 0; i < n; i++) {\n    if (!visited.has(i) && dfs(i, -1)) return true;\n  }\n  return false;\n}\n\nconsole.log(hasCycle(4, [[0,1],[1,2],[2,0]]));  // true\nconsole.log(hasCycle(4, [[0,1],[1,2],[2,3]]));  // false",
+      "exercise": {
+        "prompt": "Implement cycle detection for an undirected graph. Test with two graphs: one with a cycle (edges [[0,1],[1,2],[2,0]]) and one without ([[0,1],[1,2],[2,3]]). Print true/false for each.",
+        "starterCode": "function hasCycle(n: number, edges: [number, number][]): boolean {\n  const graph: Map<number, number[]> = new Map()\n  for (let i = 0; i < n; i++) graph.set(i, [])\n  for (const [u, v] of edges) {\n    graph.get(u)!.push(v)\n    graph.get(v)!.push(u)\n  }\n  const visited: Set<number> = new Set()\n  function dfs(node: number, parent: number): boolean {\n    visited.add(node)\n    for (const neighbor of graph.get(node)!) {\n      if (!visited.has(neighbor)) {\n        if (dfs(neighbor, ___)) return true\n      } else if (neighbor !== ___) {\n        return true\n      }\n    }\n    return false\n  }\n  for (let i = 0; i < n; i++) {\n    if (!visited.has(i) && dfs(i, -1)) return true\n  }\n  return false\n}\n\nconsole.log(hasCycle(3, [[0,1],[1,2],[2,0]]))\nconsole.log(hasCycle(4, [[0,1],[1,2],[2,3]]))",
+        "validation": [
+          {"type": "output", "expected": "true\nfalse", "message": "First graph has a cycle (0-1-2-0), second is a simple chain"},
+          {"type": "contains", "patterns": ["neighbor !== parent", "dfs(neighbor, node)", "Set<number>"], "message": "Track parent to distinguish back-edges from tree-edges"}
+        ],
+        "testCode": "",
+        "hint": "Pass the current node as the parent when recursing: dfs(neighbor, node). A visited neighbor that isn't the parent means a cycle exists."
+      },
+      "order": 5
+    }
+  ]
+}

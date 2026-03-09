@@ -1,0 +1,39 @@
+{
+  "id": "remove-duplicates-from-sorted-array",
+  "title": "Remove Duplicates from Sorted Array",
+  "difficulty": "Easy",
+  "tags": ["arrays", "two-pointers"],
+  "prompt": "Given a sorted integer array `nums`, remove the duplicates in-place such that each unique element appears only once. Return the number of unique elements.\n\nAfter removing duplicates, the first `k` elements of `nums` should hold the unique elements in their original order. Return `k`.\n\nFor simplicity with testing, return the count of unique elements as an integer.",
+  "examples": [
+    {"input": "nums = [1, 1, 2]", "output": "2\nExplanation: The unique elements are [1, 2], so the function returns k = 2."},
+    {"input": "nums = [0, 0, 1, 1, 1, 2, 2, 3, 3, 4]", "output": "5\nExplanation: The unique elements are [0, 1, 2, 3, 4], so the function returns k = 5."},
+    {"input": "nums = [1, 2, 3]", "output": "3\nExplanation: All elements are already unique."}
+  ],
+  "constraints": [
+    "1 <= nums.length <= 3 * 10^4",
+    "-100 <= nums[i] <= 100",
+    "nums is sorted in non-decreasing order."
+  ],
+  "starterCode": {
+    "python": "def solve(nums):\n    pass",
+    "javascript": "function solve(nums) {\n  \n}",
+    "typescript": "export function solve(nums: number[]): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(int[] nums) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(int[] nums) {\n        \n    }\n}",
+    "go": "func solve(nums []int) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([1, 1, 2]))"}, "expectedStdout": "2"},
+    {"stdin": {"python": "print(solve([0, 0, 1, 1, 1, 2, 2, 3, 3, 4]))"}, "expectedStdout": "5"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([1, 2, 3]))"}, "expectedStdout": "3"},
+    {"stdin": {"python": "print(solve([1]))"}, "expectedStdout": "1"},
+    {"stdin": {"python": "print(solve([-1, -1, 0, 0, 1, 1, 2]))"}, "expectedStdout": "4"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use two pointers: a slow pointer tracking the position for the next unique element, and a fast pointer scanning through the array. When fast finds a new value different from slow's, increment slow and copy the value.",
+    "commonBugs": ["Forgetting that the array is already sorted (no need for a hash set)", "Off-by-one in the returned count (slow pointer index vs count)", "Not handling the single-element array edge case"],
+    "expectedComplexity": "O(n)"
+  }
+}

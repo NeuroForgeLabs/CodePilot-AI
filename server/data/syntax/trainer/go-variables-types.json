@@ -1,0 +1,78 @@
+{
+  "id": "go-variables-types",
+  "title": "Variables & Types",
+  "description": "Master Go's type system — var vs :=, fundamental types, type conversions, and nil. Getting these right prevents subtle bugs and shows interviewers you know idiomatic Go.",
+  "language": "go",
+  "category": "variables-types",
+  "order": 1,
+  "sections": [
+    {
+      "id": "declaring",
+      "title": "Declaring variables",
+      "explanation": "Go is statically typed. Use **var** for explicit declarations and **:=** for short declarations that infer the type. The five types you'll use constantly: **int**, **float64**, **string**, **bool**, and pointers/nil. Short declarations are preferred inside functions for conciseness.",
+      "example": "func main() {\n    var count int = 0        // explicit type\n    ratio := 0.5             // short declare, inferred float64\n    name := \"target\"         // inferred string\n    found := false           // inferred bool\n    var result *int = nil    // pointer, nil by default\n\n    fmt.Println(count)       // 0\n    fmt.Println(ratio)       // 0.5\n    fmt.Println(name)        // target\n    fmt.Println(found)       // false\n    fmt.Println(result)      // <nil>\n}",
+      "exercise": {
+        "prompt": "Declare five variables using short declaration (:=): `count` (int 42), `ratio` (float64 3.14), `name` (string \"alice\"), `found` (bool true), and `result` set to nil (use a *int type with var). Print each on its own line.",
+        "starterCode": "func main() {\n    count := \n    ratio := \n    name := \n    found := \n    var result *int = \n\n    fmt.Println(count)\n    fmt.Println(ratio)\n    fmt.Println(name)\n    fmt.Println(found)\n    fmt.Println(result)\n}",
+        "validation": [
+          {"type": "output", "expected": "42\n3.14\nalice\ntrue\n<nil>", "message": "Each variable should print its value on a separate line"},
+          {"type": "contains", "patterns": ["count :=", "ratio :=", "name :=", "found :=", "var result"], "message": "Use := for short declarations and var for the nil pointer"}
+        ],
+        "testCode": "",
+        "hint": "count := 42, ratio := 3.14, name := \"alice\", found := true, var result *int = nil."
+      },
+      "order": 1
+    },
+    {
+      "id": "type-conversion",
+      "title": "Type conversion",
+      "explanation": "Go has no implicit conversions — you must cast explicitly with **T(value)**. Common conversions: **int()** / **float64()** between numeric types, and **strconv.Itoa()** / **strconv.Atoi()** between strings and ints. Atoi returns two values (value, error), which is idiomatic Go.",
+      "example": "func main() {\n    a := 7\n    b := 2\n    result := float64(a) / float64(b)\n    fmt.Println(result)               // 3.5\n\n    num, _ := strconv.Atoi(\"42\")\n    fmt.Println(num + 1)              // 43\n\n    text := strconv.Itoa(256)\n    fmt.Println(text)                 // 256\n}",
+      "exercise": {
+        "prompt": "Convert the string \"99\" to an int using strconv.Atoi (ignore the error with _). Convert the int 256 to a string using strconv.Itoa. Divide 7 by 2 as float64. Print all three results.",
+        "starterCode": "func main() {\n    num, _ := strconv.(\"99\")\n    text := strconv.(256)\n    result := float64(7) / float64(2)\n\n    fmt.Println(num)\n    fmt.Println(text)\n    fmt.Println(result)\n}",
+        "validation": [
+          {"type": "output", "expected": "99\n256\n3.5", "message": "Check your conversions — Atoi for string->int, Itoa for int->string"},
+          {"type": "contains", "patterns": ["strconv.Atoi", "strconv.Itoa", "float64("], "message": "Use strconv.Atoi, strconv.Itoa, and float64() for conversions"}
+        ],
+        "testCode": "",
+        "hint": "strconv.Atoi(\"99\") returns (99, nil). strconv.Itoa(256) returns \"256\". float64(7) / float64(2) gives 3.5."
+      },
+      "order": 2
+    },
+    {
+      "id": "zero-values",
+      "title": "Zero values and nil",
+      "explanation": "In Go, every declared variable gets a **zero value** if not initialized: **0** for numbers, **\"\"** for strings, **false** for bools, and **nil** for pointers, slices, maps, and interfaces. Understanding zero values prevents null-pointer panics and clarifies when you need explicit initialization with `make()`.",
+      "example": "func main() {\n    var n int\n    var f float64\n    var s string\n    var b bool\n    var p *int\n    var sl []int\n\n    fmt.Println(n)        // 0\n    fmt.Println(f)        // 0\n    fmt.Println(s == \"\")  // true\n    fmt.Println(b)        // false\n    fmt.Println(p)        // <nil>\n    fmt.Println(sl)       // []\n    fmt.Println(sl == nil) // true\n}",
+      "exercise": {
+        "prompt": "Declare variables with var (no initial value): an int `n`, a string `s`, a bool `b`, and a slice `nums` ([]int). Print each, then print whether `s == \"\"` and whether `nums == nil`.",
+        "starterCode": "func main() {\n    var n int\n    var s string\n    var b bool\n    var nums []int\n\n    fmt.Println(n)\n    fmt.Println(s)\n    fmt.Println(b)\n    fmt.Println(nums)\n    fmt.Println(s == \"\")\n    fmt.Println(nums == nil)\n}",
+        "validation": [
+          {"type": "output", "expected": "0\n\nfalse\n[]\ntrue\ntrue", "message": "Zero values: int is 0, string is empty, bool is false, nil slice prints as []"},
+          {"type": "contains", "patterns": ["var n int", "var s string", "var b bool", "var nums []int"], "message": "Use var declarations without initial values to get zero values"}
+        ],
+        "testCode": "",
+        "hint": "Just declare with var and no value. Go assigns zero values automatically. s == \"\" is true, nums == nil is true."
+      },
+      "order": 3
+    },
+    {
+      "id": "constants",
+      "title": "Constants and iota",
+      "explanation": "Use **const** for values that never change. Go's **iota** auto-increments within a const block, perfect for enumerations. In interviews, constants are used for MOD arithmetic, infinity approximations, and direction arrays in grid problems.",
+      "example": "func main() {\n    const MOD = 1000000007\n    const INF = int(^uint(0) >> 1)  // max int\n\n    const (\n        North = iota  // 0\n        East          // 1\n        South         // 2\n        West          // 3\n    )\n\n    fmt.Println(MOD)              // 1000000007\n    fmt.Println(123456789 % MOD)  // 123456789\n    fmt.Println(North, East, South, West)\n}",
+      "exercise": {
+        "prompt": "Define a constant MOD as 1000000007. Define an iota block with constants Small, Medium, Large (starting at 0). Print MOD, the result of 123456789 % MOD, and the three size constants.",
+        "starterCode": "const MOD = \n\nconst (\n    Small = \n    Medium\n    Large\n)\n\nfunc main() {\n    fmt.Println(MOD)\n    fmt.Println(123456789 % MOD)\n    fmt.Println(Small, Medium, Large)\n}",
+        "validation": [
+          {"type": "output", "expected": "1000000007\n123456789\n0 1 2", "message": "MOD should be 1000000007, and iota starts at 0 incrementing by 1"},
+          {"type": "contains", "patterns": ["const MOD", "iota", "Small", "Medium", "Large"], "message": "Use const for MOD and iota for the enumeration"}
+        ],
+        "testCode": "",
+        "hint": "const MOD = 1000000007. Use Small = iota to start the enumeration at 0. Medium and Large auto-increment."
+      },
+      "order": 4
+    }
+  ]
+}

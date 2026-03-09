@@ -1,0 +1,42 @@
+{
+  "id": "search-in-rotated-sorted-array",
+  "title": "Search in Rotated Sorted Array",
+  "difficulty": "Medium",
+  "tags": ["arrays", "binary-search"],
+  "prompt": "There is an integer array `nums` sorted in ascending order (with distinct values).\n\nPrior to being passed to your function, `nums` is possibly rotated at an unknown pivot index `k` (1 <= k < nums.length) such that the resulting array is `[nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]` (0-indexed).\n\nGiven the array `nums` after the possible rotation and an integer `target`, return the index of `target` if it is in `nums`, or `-1` if it is not in `nums`.\n\nYou must write an algorithm with O(log n) runtime complexity.",
+  "examples": [
+    {"input": "nums = [4, 5, 6, 7, 0, 1, 2], target = 0", "output": "4\nExplanation: 0 is at index 4."},
+    {"input": "nums = [4, 5, 6, 7, 0, 1, 2], target = 3", "output": "-1\nExplanation: 3 is not in the array."},
+    {"input": "nums = [1], target = 0", "output": "-1"}
+  ],
+  "constraints": [
+    "1 <= nums.length <= 5000",
+    "-10^4 <= nums[i] <= 10^4",
+    "All values of nums are unique.",
+    "nums is an ascending array that is possibly rotated.",
+    "-10^4 <= target <= 10^4"
+  ],
+  "starterCode": {
+    "python": "def solve(nums: list[int], target: int) -> int:\n    pass",
+    "javascript": "function solve(nums, target) {\n  \n}",
+    "typescript": "export function solve(nums: number[], target: number): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(int[] nums, int target) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(int[] nums, int target) {\n        \n    }\n}",
+    "go": "func solve(nums []int, target int) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([4, 5, 6, 7, 0, 1, 2], 0))"}, "expectedStdout": "4"},
+    {"stdin": {"python": "print(solve([4, 5, 6, 7, 0, 1, 2], 3))"}, "expectedStdout": "-1"},
+    {"stdin": {"python": "print(solve([1], 0))"}, "expectedStdout": "-1"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([1], 1))"}, "expectedStdout": "0"},
+    {"stdin": {"python": "print(solve([3, 1], 1))"}, "expectedStdout": "1"},
+    {"stdin": {"python": "print(solve([5, 1, 2, 3, 4], 1))"}, "expectedStdout": "1"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Modified binary search. At each step, determine which half is sorted. If target lies within the sorted half, search there; otherwise search the other half. One half is always sorted in a rotated array.",
+    "commonBugs": ["Incorrect boundary conditions when determining which half is sorted", "Not handling the case where the array is not rotated at all", "Using <= vs < incorrectly in comparisons", "Infinite loop when left and right are adjacent"],
+    "expectedComplexity": "O(log n)"
+  }
+}

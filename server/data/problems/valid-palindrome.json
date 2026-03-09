@@ -1,0 +1,39 @@
+{
+  "id": "valid-palindrome",
+  "title": "Valid Palindrome",
+  "difficulty": "Easy",
+  "tags": ["strings", "two-pointers"],
+  "prompt": "A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.\n\nGiven a string `s`, return `True` if it is a palindrome, or `False` otherwise.",
+  "examples": [
+    {"input": "s = \"A man, a plan, a canal: Panama\"", "output": "True\nExplanation: After filtering: \"amanaplanacanalpanama\", which is a palindrome."},
+    {"input": "s = \"race a car\"", "output": "False\nExplanation: After filtering: \"raceacar\", which is not a palindrome."},
+    {"input": "s = \" \"", "output": "True\nExplanation: After removing non-alphanumeric characters, s is an empty string. An empty string is a palindrome."}
+  ],
+  "constraints": [
+    "1 <= s.length <= 2 * 10^5",
+    "s consists only of printable ASCII characters."
+  ],
+  "starterCode": {
+    "python": "def solve(s):\n    pass",
+    "javascript": "function solve(s) {\n  \n}",
+    "typescript": "export function solve(s: string): boolean {\n  \n}",
+    "java": "class Solution {\n    public boolean solve(String s) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public bool Solve(string s) {\n        \n    }\n}",
+    "go": "func solve(s string) bool {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve(\"A man, a plan, a canal: Panama\"))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve(\"race a car\"))"}, "expectedStdout": "False"},
+    {"stdin": {"python": "print(solve(\" \"))"}, "expectedStdout": "True"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve(\"ab@ba\"))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve(\"0P\"))"}, "expectedStdout": "False"},
+    {"stdin": {"python": "print(solve(\"12321\"))"}, "expectedStdout": "True"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use two pointers from both ends. Skip non-alphanumeric characters. Compare lowercased characters at both pointers. If all pairs match, it is a palindrome.",
+    "commonBugs": ["Forgetting to handle digits as valid alphanumeric characters", "Not converting to lowercase before comparing", "Not skipping non-alphanumeric characters properly leading to false negatives"],
+    "expectedComplexity": "O(n)"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "jump-game",
+  "title": "Jump Game",
+  "difficulty": "Medium",
+  "tags": ["arrays", "greedy", "dynamic-programming"],
+  "prompt": "You are given an integer array `nums`. You are initially positioned at the array's first index, and each element in the array represents your maximum jump length at that position.\n\nReturn `True` if you can reach the last index, or `False` otherwise.\n\nFor example, given `nums = [2, 3, 1, 1, 4]`, you can jump 1 step from index 0 to 1, then 3 steps to the last index. So the answer is `True`.",
+  "examples": [
+    {"input": "nums = [2, 3, 1, 1, 4]", "output": "True\nExplanation: Jump 1 step from index 0 to 1, then 3 steps to the last index."},
+    {"input": "nums = [3, 2, 1, 0, 4]", "output": "False\nExplanation: You will always arrive at index 3 no matter what. Its maximum jump length is 0, so you can never reach the last index."}
+  ],
+  "constraints": [
+    "1 <= nums.length <= 10^4",
+    "0 <= nums[i] <= 10^5"
+  ],
+  "starterCode": {
+    "python": "def solve(nums):\n    pass",
+    "javascript": "function solve(nums) {\n  \n}",
+    "typescript": "export function solve(nums: number[]): boolean {\n  \n}",
+    "java": "class Solution {\n    public boolean solve(int[] nums) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public bool Solve(int[] nums) {\n        \n    }\n}",
+    "go": "func solve(nums []int) bool {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([2, 3, 1, 1, 4]))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve([3, 2, 1, 0, 4]))"}, "expectedStdout": "False"},
+    {"stdin": {"python": "print(solve([0]))"}, "expectedStdout": "True"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([2, 0, 0]))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve([1, 1, 1, 0]))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve([1, 0, 1, 0]))"}, "expectedStdout": "False"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Greedy approach: track the farthest reachable index. Iterate through the array; at each index i, if i > farthest you cannot proceed so return False. Otherwise update farthest = max(farthest, i + nums[i]). If farthest >= last index, return True.",
+    "commonBugs": ["Not returning True early when farthest already reaches or exceeds the last index", "Forgetting the single-element edge case (always True)", "Using O(n^2) DP when greedy O(n) suffices"],
+    "expectedComplexity": "O(n) greedy"
+  }
+}

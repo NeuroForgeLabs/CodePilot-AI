@@ -1,0 +1,78 @@
+{
+  "id": "java-functions",
+  "title": "Functions",
+  "description": "Learn Java static methods, parameters, return types, and lambda expressions for clean interview code.",
+  "language": "java",
+  "category": "functions",
+  "order": 4,
+  "sections": [
+    {
+      "id": "java-fn-static",
+      "title": "Static Methods",
+      "explanation": "In interview code, you write `static` methods inside the Main class so they can be called from `main` without creating an object. Syntax: `static returnType methodName(params)`. Use `void` for no return value. Methods should do one thing clearly. Name them descriptively: `isValid`, `findMax`, `countOccurrences`.",
+      "example": "public class Main {\n    static int square(int n) {\n        return n * n;\n    }\n\n    static void greet(String name) {\n        System.out.println(\"Hello, \" + name + \"!\");\n    }\n\n    public static void main(String[] args) {\n        System.out.println(square(5));  // 25\n        greet(\"Alice\");                // Hello, Alice!\n    }\n}",
+      "exercise": {
+        "prompt": "Write a static method `add` that takes two int parameters and returns their sum, and a static method `isEven` that takes an int and returns a boolean. Call add(3, 7) and print the result. Call isEven(4) and isEven(5) and print both results.",
+        "starterCode": "public class Main {\n    // Write add and isEven methods\n\n    public static void main(String[] args) {\n        System.out.println(add(3, 7));\n        System.out.println(isEven(4));\n        System.out.println(isEven(5));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "10\ntrue\nfalse", "message": "add(3,7)=10, isEven(4)=true, isEven(5)=false."},
+          {"type": "contains", "patterns": ["static int add", "static boolean isEven", "return"], "message": "Define static methods with correct return types and use return statements."}
+        ],
+        "testCode": "",
+        "hint": "static int add(int a, int b) { return a + b; } and static boolean isEven(int n) { return n % 2 == 0; }"
+      },
+      "order": 1
+    },
+    {
+      "id": "java-fn-params",
+      "title": "Array and String Parameters",
+      "explanation": "Methods can accept arrays and strings as parameters. Arrays are passed by reference (the method can modify the original array). Strings are immutable so changes inside the method don't affect the original. Common interview pattern: write a helper that processes an array and returns a result. Use `int[]` or `String` as parameter types.",
+      "example": "public class Main {\n    static int findMax(int[] arr) {\n        int max = arr[0];\n        for (int n : arr) {\n            if (n > max) max = n;\n        }\n        return max;\n    }\n\n    static boolean isPalindrome(String s) {\n        int left = 0, right = s.length() - 1;\n        while (left < right) {\n            if (s.charAt(left) != s.charAt(right)) return false;\n            left++;\n            right--;\n        }\n        return true;\n    }\n\n    public static void main(String[] args) {\n        System.out.println(findMax(new int[]{3, 7, 1, 9, 2}));  // 9\n        System.out.println(isPalindrome(\"racecar\"));             // true\n        System.out.println(isPalindrome(\"hello\"));               // false\n    }\n}",
+      "exercise": {
+        "prompt": "Write a static method `sum(int[] arr)` that returns the sum of all elements. Write a static method `countChar(String s, char c)` that returns how many times char c appears in s. Test: sum of {1,2,3,4,5} and count of 'l' in \"hello world\".",
+        "starterCode": "public class Main {\n    // Write sum and countChar methods\n\n    public static void main(String[] args) {\n        System.out.println(sum(new int[]{1, 2, 3, 4, 5}));\n        System.out.println(countChar(\"hello world\", 'l'));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "15\n3", "message": "Sum of 1-5 is 15. 'l' appears 3 times in 'hello world'."},
+          {"type": "contains", "patterns": ["static int sum(int[]", "static int countChar(String"], "message": "Define methods accepting int[] and String parameters."}
+        ],
+        "testCode": "",
+        "hint": "Loop through arr adding each element. Loop through s.toCharArray() counting matches to c."
+      },
+      "order": 2
+    },
+    {
+      "id": "java-fn-overload",
+      "title": "Method Overloading and Default Logic",
+      "explanation": "Java supports method overloading: same name, different parameter lists. The compiler picks the right version based on argument types and count. Java doesn't have default parameter values like Python, but you can simulate them by having one overload call another. Common in interviews for providing flexible APIs.",
+      "example": "public class Main {\n    static String repeat(String s, int times) {\n        StringBuilder sb = new StringBuilder();\n        for (int i = 0; i < times; i++) sb.append(s);\n        return sb.toString();\n    }\n\n    static String repeat(String s) {\n        return repeat(s, 2);\n    }\n\n    static int max(int a, int b) {\n        return a > b ? a : b;\n    }\n\n    static int max(int a, int b, int c) {\n        return max(max(a, b), c);\n    }\n\n    public static void main(String[] args) {\n        System.out.println(repeat(\"ab\", 3));  // ababab\n        System.out.println(repeat(\"xy\"));     // xyxy\n        System.out.println(max(3, 7));        // 7\n        System.out.println(max(3, 7, 5));     // 7\n    }\n}",
+      "exercise": {
+        "prompt": "Write two overloaded static methods called `format`: one that takes a String and returns it wrapped in brackets like \"[text]\", another that takes a String and an int `width` and pads the string with spaces on the right to the given width before wrapping in brackets. Test with format(\"hi\") and format(\"hi\", 5).",
+        "starterCode": "public class Main {\n    // Write overloaded format methods\n\n    public static void main(String[] args) {\n        System.out.println(format(\"hi\"));\n        System.out.println(format(\"hi\", 5));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "[hi]\n[hi   ]", "message": "format(\"hi\") returns [hi], format(\"hi\",5) pads to width 5: [hi   ]."},
+          {"type": "contains", "patterns": ["static String format(String s)", "static String format(String s, int"], "message": "Define two overloaded format methods with different parameter lists."}
+        ],
+        "testCode": "",
+        "hint": "For padding, use String.format(\"%-\" + width + \"s\", s) or a loop to add spaces until length equals width."
+      },
+      "order": 3
+    },
+    {
+      "id": "java-fn-lambda",
+      "title": "Lambda Expressions",
+      "explanation": "Lambdas provide concise anonymous functions: `(params) -> expression` or `(params) -> { statements }`. Most commonly used with functional interfaces like Comparator, Predicate, Function. Syntax: `(a, b) -> a - b` for a Comparator, `x -> x > 0` for a Predicate. Lambdas make sorting, filtering, and callbacks clean in interview code.",
+      "example": "import java.util.ArrayList;\nimport java.util.Collections;\nimport java.util.Arrays;\n\npublic class Main {\n    public static void main(String[] args) {\n        ArrayList<String> names = new ArrayList<>(Arrays.asList(\"Charlie\", \"Alice\", \"Bob\"));\n\n        Collections.sort(names, (a, b) -> a.length() - b.length());\n        System.out.println(names);  // [Bob, Alice, Charlie]\n\n        names.forEach(name -> System.out.println(name.toUpperCase()));\n    }\n}",
+      "exercise": {
+        "prompt": "Create an ArrayList<Integer> with values 5, 2, 8, 1, 9. Sort it in descending order using Collections.sort with a lambda comparator (b - a). Print the sorted list. Then use forEach with a lambda to print each element doubled (multiplied by 2), each on its own line.",
+        "starterCode": "import java.util.ArrayList;\nimport java.util.Arrays;\nimport java.util.Collections;\n\npublic class Main {\n    public static void main(String[] args) {\n        ArrayList<Integer> nums = new ArrayList<>(Arrays.asList(5, 2, 8, 1, 9));\n\n        // Sort descending with lambda\n\n        // Print sorted list\n\n        // forEach to print each element doubled\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "[9, 8, 5, 2, 1]\n18\n16\n10\n4\n2", "message": "Sorted descending: [9,8,5,2,1]. Doubled values: 18,16,10,4,2."},
+          {"type": "contains", "patterns": ["->", "Collections.sort", ".forEach("], "message": "Use lambda expressions with Collections.sort and forEach."}
+        ],
+        "testCode": "",
+        "hint": "Collections.sort(nums, (a, b) -> b - a) sorts descending. nums.forEach(n -> System.out.println(n * 2))."
+      },
+      "order": 4
+    }
+  ]
+}

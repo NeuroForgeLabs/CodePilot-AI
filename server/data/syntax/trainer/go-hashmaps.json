@@ -1,0 +1,78 @@
+{
+  "id": "go-hashmaps",
+  "title": "Hashmaps / Dictionaries",
+  "description": "Go's map[K]V is the go-to data structure for O(1) lookups in interviews. Master creation, the comma-ok idiom, deletion, and iteration — these patterns appear in nearly every hashmap problem.",
+  "language": "go",
+  "category": "hashmaps",
+  "order": 5,
+  "sections": [
+    {
+      "id": "creating",
+      "title": "Creating maps",
+      "explanation": "Create maps with a **literal** `map[K]V{...}` or **make()** for an empty map. Maps must be initialized before use — a nil map panics on write. Use `make(map[string]int)` or a literal. Keys must be comparable types (no slices or maps as keys).",
+      "example": "func main() {\n    // Literal\n    ages := map[string]int{\"alice\": 30, \"bob\": 25}\n    fmt.Println(ages)  // map[alice:30 bob:25]\n\n    // make()\n    counts := make(map[string]int)\n    counts[\"x\"] = 1\n    fmt.Println(counts)  // map[x:1]\n    fmt.Println(len(ages))  // 2\n}",
+      "exercise": {
+        "prompt": "Create a map `scores` with literal syntax mapping \"math\" to 95, \"english\" to 88, and \"science\" to 92. Print the map and its length.",
+        "starterCode": "func main() {\n    scores := map[string]int{\n        \"math\":    ,\n        \"english\": ,\n        \"science\": ,\n    }\n\n    fmt.Println(scores)\n    fmt.Println(len(scores))\n}",
+        "validation": [
+          {"type": "output", "expected": "map[english:88 math:95 science:92]\n3", "message": "Map should have 3 entries with correct values"},
+          {"type": "contains", "patterns": ["map[string]int{", "\"math\"", "\"english\"", "\"science\""], "message": "Use map literal syntax with all three entries"}
+        ],
+        "testCode": "",
+        "hint": "Fill in the values: 95, 88, 92. Go prints maps with keys in alphabetical order."
+      },
+      "order": 1
+    },
+    {
+      "id": "comma-ok",
+      "title": "Check existence with comma-ok",
+      "explanation": "The **comma-ok idiom** `val, ok := m[key]` is Go's way to check if a key exists. `ok` is true if the key was found, false otherwise. This avoids the ambiguity of getting a zero value for a missing key. It's the equivalent of Python's `key in dict` or Java's `containsKey()`.",
+      "example": "func main() {\n    m := map[string]int{\"a\": 1, \"b\": 2}\n\n    val, ok := m[\"a\"]\n    fmt.Println(val, ok)   // 1 true\n\n    val, ok = m[\"z\"]\n    fmt.Println(val, ok)   // 0 false\n\n    if v, ok := m[\"b\"]; ok {\n        fmt.Println(\"found:\", v)  // found: 2\n    }\n}",
+      "exercise": {
+        "prompt": "Given a map `m` with \"x\"->10 and \"y\"->20, use the comma-ok idiom to check for key \"x\" (print value and ok), check for key \"z\" (print value and ok), and use an if-statement with comma-ok to print \"found: 20\" for key \"y\".",
+        "starterCode": "func main() {\n    m := map[string]int{\"x\": 10, \"y\": 20}\n\n    val, ok := m[\"x\"]\n    fmt.Println(val, ok)\n\n    val, ok = m[\"z\"]\n    fmt.Println(val, ok)\n\n    if v,  := m[\"y\"];  {\n        fmt.Println(\"found:\", v)\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "10 true\n0 false\nfound: 20", "message": "Comma-ok returns true for existing keys, false for missing"},
+          {"type": "contains", "patterns": ["val, ok :=", "if v, ok := m[\"y\"]; ok"], "message": "Use the comma-ok idiom for map lookups"}
+        ],
+        "testCode": "",
+        "hint": "val, ok := m[\"x\"] gives (10, true). For \"z\" it's (0, false). if v, ok := m[\"y\"]; ok checks and uses v."
+      },
+      "order": 2
+    },
+    {
+      "id": "delete-range",
+      "title": "Delete and iterate",
+      "explanation": "**delete(m, key)** removes a key (no-op if missing, never panics). **for k, v := range m** iterates over all entries. Map iteration order is randomized in Go by design. For frequency counting, use `m[key]++` which relies on zero-value initialization.",
+      "example": "func main() {\n    m := map[string]int{\"a\": 1, \"b\": 2, \"c\": 3}\n    delete(m, \"b\")\n    fmt.Println(m)  // map[a:1 c:3]\n\n    for k, v := range m {\n        fmt.Printf(\"%s -> %d\\n\", k, v)\n    }\n}",
+      "exercise": {
+        "prompt": "Create a map with \"red\"->1, \"green\"->2, \"blue\"->3. Delete \"green\". Then range over the map and print each key-value pair. Finally print the length.",
+        "starterCode": "func main() {\n    colors := map[string]int{\"red\": 1, \"green\": 2, \"blue\": 3}\n    (colors, \"green\")\n\n    for k, v := range colors {\n        fmt.Printf(\"%s -> %d\\n\", k, v)\n    }\n\n    fmt.Println(len(colors))\n}",
+        "validation": [
+          {"type": "output", "expected": "2", "message": "After deleting green, length should be 2"},
+          {"type": "contains", "patterns": ["delete(colors", "range colors"], "message": "Use delete() to remove and range to iterate"}
+        ],
+        "testCode": "",
+        "hint": "delete(colors, \"green\") removes the entry. range colors iterates remaining key-value pairs."
+      },
+      "order": 3
+    },
+    {
+      "id": "frequency",
+      "title": "Frequency counting",
+      "explanation": "The most common map pattern: counting occurrences. In Go, `m[key]++` works because missing keys return the zero value (0 for int). No need to check existence first. This is used in anagram problems, character counting, and duplicate detection.",
+      "example": "func main() {\n    s := \"abracadabra\"\n    freq := make(map[rune]int)\n    for _, ch := range s {\n        freq[ch]++\n    }\n    for ch, count := range freq {\n        fmt.Printf(\"%c: %d\\n\", ch, count)\n    }\n}",
+      "exercise": {
+        "prompt": "Count the frequency of each character in \"mississippi\" using a map[rune]int. Print the count of 's' and the count of 'p'.",
+        "starterCode": "func main() {\n    s := \"mississippi\"\n    freq := make(map[rune]int)\n    for _, ch := range s {\n        freq[ch]\n    }\n\n    fmt.Println(freq['s'])\n    fmt.Println(freq['p'])\n}",
+        "validation": [
+          {"type": "output", "expected": "4\n2", "message": "'s' appears 4 times, 'p' appears 2 times in mississippi"},
+          {"type": "contains", "patterns": ["freq[ch]++", "map[rune]int"], "message": "Use freq[ch]++ for counting and map[rune]int as the type"}
+        ],
+        "testCode": "",
+        "hint": "freq[ch]++ increments the count. Zero value for int is 0, so no initialization needed."
+      },
+      "order": 4
+    }
+  ]
+}

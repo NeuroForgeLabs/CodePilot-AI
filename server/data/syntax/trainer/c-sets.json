@@ -1,0 +1,78 @@
+{
+  "id": "c-sets",
+  "title": "Sets",
+  "description": "C has no built-in set type — use boolean arrays and bit manipulation to implement set operations efficiently for interview problems.",
+  "language": "c",
+  "category": "sets",
+  "order": 6,
+  "sections": [
+    {
+      "id": "boolean-array-set",
+      "title": "Boolean array as a set",
+      "explanation": "The simplest set in C: a boolean (int) array where `set[x] = 1` means x is in the set. Works perfectly when values are bounded integers. O(1) add, remove, and membership check. This is the go-to approach for \"has duplicate\" and \"visited\" problems.",
+      "example": "int set[100] = {0};\nset[5] = 1;\nset[10] = 1;\nset[5] = 1;  // already in set, no effect\n\nif (set[5])  printf(\"5 is in set\\n\");   // yes\nif (!set[7]) printf(\"7 not in set\\n\");  // yes\n\nset[5] = 0;  // remove\nif (!set[5]) printf(\"5 removed\\n\");     // yes",
+      "exercise": {
+        "prompt": "Create a boolean set array. Add values 3, 7, and 15. Check membership of 7 (print \"found\") and 9 (print \"not found\"). Then remove 7 and verify it's gone.",
+        "starterCode": "int main() {\n    int set[20] = {0};\n    set[3] = 1;\n    set[7] = 1;\n    set[15] = 1;\n\n    if (set[7]) printf(\"found\\n\");\n    if (!set[9]) printf(\"not found\\n\");\n\n    set[7] = 0;\n    if (!set[7]) printf(\"removed\\n\");\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "found\nnot found\nremoved", "message": "7 is found, 9 is not found, then 7 is removed"},
+          {"type": "contains", "patterns": ["set[7] = 1", "set[7] = 0", "!set[9]"], "message": "Use array assignment for add/remove and direct access for membership check"}
+        ],
+        "testCode": "",
+        "hint": "set[x] = 1 to add, set[x] = 0 to remove. Check with if(set[x]) or if(!set[x])."
+      },
+      "order": 1
+    },
+    {
+      "id": "duplicate-detection",
+      "title": "Finding duplicates with a set",
+      "explanation": "Classic interview pattern: iterate through an array, check if each element was seen before using a boolean set. If `seen[x]` is already 1, it's a duplicate. This is O(n) time with O(max_val) space — the C equivalent of using a HashSet.",
+      "example": "int nums[] = {1, 3, 5, 3, 7, 1};\nint n = 6;\nint seen[100] = {0};\nfor (int i = 0; i < n; i++) {\n    if (seen[nums[i]]) {\n        printf(\"%d is duplicate\\n\", nums[i]);\n    }\n    seen[nums[i]] = 1;\n}\n// 3 is duplicate\n// 1 is duplicate",
+      "exercise": {
+        "prompt": "Find and print all duplicate values in {4, 2, 7, 2, 8, 4, 9} using a seen array. Print each duplicate once when first re-encountered.",
+        "starterCode": "int main() {\n    int nums[] = {4, 2, 7, 2, 8, 4, 9};\n    int n = 7;\n    int seen[10] = {0};\n\n    for (int i = 0; i < n; i++) {\n        if (seen[nums[i]]) {\n            printf(\"%d\\n\", nums[i]);\n        }\n        seen[nums[i]] = 1;\n    }\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "2\n4", "message": "2 and 4 are the duplicate values"},
+          {"type": "contains", "patterns": ["seen[nums[i]]", "seen[10]"], "message": "Use a seen array to detect duplicates on second occurrence"}
+        ],
+        "testCode": "",
+        "hint": "Check if seen[nums[i]] is already 1 before setting it. Duplicates are 2 and 4."
+      },
+      "order": 2
+    },
+    {
+      "id": "bitmask-set",
+      "title": "Bit manipulation as a set",
+      "explanation": "An `unsigned int` gives you a 32-element set in a single variable. **Add**: `set |= (1 << x)`. **Remove**: `set &= ~(1 << x)`. **Check**: `set & (1 << x)`. This is ultra-compact and fast — perfect for subsets, combinations, and problems with up to 32 elements.",
+      "example": "unsigned int set = 0;\nset |= (1 << 3);  // add 3\nset |= (1 << 7);  // add 7\nset |= (1 << 3);  // add 3 again (no change)\n\nif (set & (1 << 3)) printf(\"3 in set\\n\");   // yes\nif (!(set & (1 << 5))) printf(\"5 not in set\\n\"); // yes\n\nset &= ~(1 << 3); // remove 3\nif (!(set & (1 << 3))) printf(\"3 removed\\n\"); // yes",
+      "exercise": {
+        "prompt": "Use a bitmask to create a set. Add elements 1, 4, and 6. Check if 4 is present (print \"yes\"), check if 5 is present (print \"no\"). Remove 4 and verify (print \"removed\").",
+        "starterCode": "int main() {\n    unsigned int set = 0;\n    set |= (1 << 1);\n    set |= (1 << 4);\n    set |= (1 << 6);\n\n    if (set & (1 << 4)) printf(\"yes\\n\");\n    if (!(set & (1 << 5))) printf(\"no\\n\");\n\n    set &= ~(1 << 4);\n    if (!(set & (1 << 4))) printf(\"removed\\n\");\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "yes\nno\nremoved", "message": "4 is in set, 5 is not, then 4 is removed"},
+          {"type": "contains", "patterns": ["1 << 4", "set |=", "set &= ~"], "message": "Use bit OR to add, AND with complement to remove, AND to check membership"}
+        ],
+        "testCode": "",
+        "hint": "Add with |= (1 << x), check with & (1 << x), remove with &= ~(1 << x)."
+      },
+      "order": 3
+    },
+    {
+      "id": "set-operations",
+      "title": "Set union, intersection, difference",
+      "explanation": "With bitmask sets, set operations are single bitwise operations. **Union**: `a | b`. **Intersection**: `a & b`. **Difference**: `a & ~b`. **Subset check**: `(a & b) == a`. These are O(1) and extremely useful for subset enumeration problems.",
+      "example": "unsigned int a = (1 << 1) | (1 << 2) | (1 << 3);  // {1,2,3}\nunsigned int b = (1 << 2) | (1 << 3) | (1 << 4);  // {2,3,4}\n\nunsigned int u = a | b;   // union: {1,2,3,4}\nunsigned int inter = a & b; // intersection: {2,3}\nunsigned int diff = a & ~b; // difference: {1}\n\nfor (int i = 0; i < 8; i++)\n    if (inter & (1 << i)) printf(\"%d \", i);\n// 2 3",
+      "exercise": {
+        "prompt": "Create two bitmask sets: A = {1, 3, 5} and B = {3, 5, 7}. Compute and print the intersection elements, then the union elements, each space-separated on their own line.",
+        "starterCode": "int main() {\n    unsigned int a = (1 << 1) | (1 << 3) | (1 << 5);\n    unsigned int b = (1 << 3) | (1 << 5) | (1 << 7);\n\n    unsigned int inter = a & b;\n    unsigned int uni = a | b;\n\n    for (int i = 0; i < 8; i++)\n        if (inter & (1 << i)) printf(\"%d \", i);\n    printf(\"\\n\");\n\n    for (int i = 0; i < 8; i++)\n        if (uni & (1 << i)) printf(\"%d \", i);\n    printf(\"\\n\");\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "3 5 \n1 3 5 7", "message": "Intersection is {3,5}, union is {1,3,5,7}"},
+          {"type": "contains", "patterns": ["a & b", "a | b", "1 << "], "message": "Use & for intersection, | for union, and bit shifts for element encoding"}
+        ],
+        "testCode": "",
+        "hint": "Intersection: a & b. Union: a | b. Iterate bits 0-7 and print those set."
+      },
+      "order": 4
+    }
+  ]
+}

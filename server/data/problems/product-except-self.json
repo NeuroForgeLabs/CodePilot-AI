@@ -1,0 +1,38 @@
+{
+  "id": "product-except-self",
+  "title": "Product of Array Except Self",
+  "difficulty": "Medium",
+  "tags": ["arrays"],
+  "prompt": "Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i].\n\nYou must write an algorithm that runs in O(n) time and without using the division operation.\n\nFor example, if nums = [1, 2, 3, 4], then answer = [24, 12, 8, 6] because:\n- answer[0] = 2 * 3 * 4 = 24\n- answer[1] = 1 * 3 * 4 = 12\n- answer[2] = 1 * 2 * 4 = 8\n- answer[3] = 1 * 2 * 3 = 6",
+  "examples": [
+    {"input": "nums = [1, 2, 3, 4]", "output": "[24, 12, 8, 6]"},
+    {"input": "nums = [-1, 1, 0, -3, 3]", "output": "[0, 0, 9, 0, 0]"}
+  ],
+  "constraints": [
+    "2 <= nums.length <= 10^5",
+    "-30 <= nums[i] <= 30",
+    "The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer."
+  ],
+  "starterCode": {
+    "python": "def solve(nums: list[int]) -> list[int]:\n    pass",
+    "javascript": "function solve(nums) {\n  \n}",
+    "typescript": "export function solve(nums: number[]): number[] {\n  \n}",
+    "java": "class Solution {\n    public int[] solve(int[] nums) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int[] Solve(int[] nums) {\n        \n    }\n}",
+    "go": "func solve(nums []int) []int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([1, 2, 3, 4]))"}, "expectedStdout": "[24, 12, 8, 6]"},
+    {"stdin": {"python": "print(solve([-1, 1, 0, -3, 3]))"}, "expectedStdout": "[0, 0, 9, 0, 0]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([0, 0]))"}, "expectedStdout": "[0, 0]"},
+    {"stdin": {"python": "print(solve([1, 1]))"}, "expectedStdout": "[1, 1]"},
+    {"stdin": {"python": "print(solve([2, 3]))"}, "expectedStdout": "[3, 2]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use two passes: left-to-right for prefix products, right-to-left for suffix products. Combine them in-place.",
+    "commonBugs": ["Using division (forbidden)", "Handling zeros incorrectly", "Output array counting as extra space (usually allowed)"],
+    "expectedComplexity": "O(n)"
+  }
+}

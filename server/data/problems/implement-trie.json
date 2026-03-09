@@ -1,0 +1,40 @@
+{
+  "id": "implement-trie",
+  "title": "Implement Trie (Prefix Tree)",
+  "difficulty": "Medium",
+  "tags": ["strings", "hash-table"],
+  "prompt": "A trie (prefix tree) is a tree data structure used to efficiently store and retrieve keys in a dataset of strings.\n\nImplement a function that processes a list of trie operations and returns the results. The operations are:\n- [\"insert\", word] — Inserts the string word into the trie.\n- [\"search\", word] — Returns True if the string word is in the trie (i.e., was inserted before), and False otherwise.\n- [\"startsWith\", prefix] — Returns True if there is a previously inserted string that has the prefix prefix, and False otherwise.\n\nGiven a list of operations, return a list of results. For \"insert\" operations, the result is None. For \"search\" and \"startsWith\", the result is True or False.\n\nExample: operations = [[\"insert\",\"apple\"],[\"search\",\"apple\"],[\"search\",\"app\"],[\"startsWith\",\"app\"],[\"insert\",\"app\"],[\"search\",\"app\"]] returns [None, True, False, True, None, True].",
+  "examples": [
+    {"input": "operations = [[\"insert\",\"apple\"],[\"search\",\"apple\"],[\"search\",\"app\"],[\"startsWith\",\"app\"],[\"insert\",\"app\"],[\"search\",\"app\"]]", "output": "[None, True, False, True, None, True]"},
+    {"input": "operations = [[\"insert\",\"hello\"],[\"search\",\"hell\"],[\"startsWith\",\"hell\"],[\"search\",\"hello\"]]", "output": "[None, False, True, True]"}
+  ],
+  "constraints": [
+    "1 <= operations.length <= 3 * 10^4",
+    "1 <= word.length, prefix.length <= 2000",
+    "word and prefix consist only of lowercase English letters",
+    "At most 3 * 10^4 calls in total will be made to insert, search, and startsWith"
+  ],
+  "starterCode": {
+    "python": "def solve(operations):\n    pass",
+    "javascript": "function solve(operations) {\n  \n}",
+    "typescript": "export function solve(operations: string[][]): (boolean | null)[] {\n  \n}",
+    "java": "class Solution {\n    public List<Boolean> solve(String[][] operations) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public List<bool?> Solve(string[][] operations) {\n        \n    }\n}",
+    "go": "func solve(operations [][]string) []*bool {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([[\"insert\",\"apple\"],[\"search\",\"apple\"],[\"search\",\"app\"],[\"startsWith\",\"app\"],[\"insert\",\"app\"],[\"search\",\"app\"]]))"}, "expectedStdout": "[None, True, False, True, None, True]"},
+    {"stdin": {"python": "print(solve([[\"insert\",\"hello\"],[\"search\",\"hell\"],[\"startsWith\",\"hell\"],[\"search\",\"hello\"]]))"}, "expectedStdout": "[None, False, True, True]"},
+    {"stdin": {"python": "print(solve([[\"insert\",\"a\"],[\"search\",\"a\"],[\"startsWith\",\"a\"]]))"}, "expectedStdout": "[None, True, True]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([[\"search\",\"empty\"],[\"startsWith\",\"emp\"]]))"}, "expectedStdout": "[False, False]"},
+    {"stdin": {"python": "print(solve([[\"insert\",\"abc\"],[\"insert\",\"abd\"],[\"search\",\"abc\"],[\"search\",\"abd\"],[\"search\",\"ab\"],[\"startsWith\",\"ab\"]]))"}, "expectedStdout": "[None, None, True, True, False, True]"},
+    {"stdin": {"python": "print(solve([[\"insert\",\"apple\"],[\"insert\",\"apple\"],[\"search\",\"apple\"],[\"startsWith\",\"appl\"],[\"startsWith\",\"b\"]]))"}, "expectedStdout": "[None, None, True, True, False]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Build a trie using nested dictionaries (or TrieNode objects). Each node has children and an is_end flag. Insert walks the trie creating nodes. Search walks and checks is_end. StartsWith walks and just checks existence.",
+    "commonBugs": ["Forgetting the is_end flag (search returns True for prefixes that weren't fully inserted)", "Not initializing the trie root before processing operations", "Returning wrong types (should be None for insert, bool for search/startsWith)"],
+    "expectedComplexity": "O(m) per operation where m is word length"
+  }
+}

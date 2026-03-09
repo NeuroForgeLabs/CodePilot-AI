@@ -1,0 +1,15 @@
+[
+  {"id": "variables-types", "title": "Variables & Types", "order": 1},
+  {"id": "arrays-loops", "title": "Arrays & Loops", "order": 2},
+  {"id": "strings", "title": "Strings", "order": 3},
+  {"id": "functions", "title": "Functions", "order": 4},
+  {"id": "hashmaps", "title": "Hashmaps / Dictionaries", "order": 5},
+  {"id": "sets", "title": "Sets", "order": 6},
+  {"id": "sorting", "title": "Sorting", "order": 7},
+  {"id": "stacks-queues", "title": "Stacks & Queues", "order": 8},
+  {"id": "heaps", "title": "Heaps / Priority Queues", "order": 9},
+  {"id": "recursion", "title": "Recursion", "order": 10},
+  {"id": "trees", "title": "Trees", "order": 11},
+  {"id": "graphs", "title": "Graphs", "order": 12},
+  {"id": "interview-templates", "title": "Interview Templates", "order": 13}
+]

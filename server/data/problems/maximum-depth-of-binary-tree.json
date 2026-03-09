@@ -1,0 +1,40 @@
+{
+  "id": "maximum-depth-of-binary-tree",
+  "title": "Maximum Depth of Binary Tree",
+  "difficulty": "Easy",
+  "tags": ["tree", "recursion", "bfs"],
+  "prompt": "Given a binary tree represented as an array (level-order), return its maximum depth.\n\nThe maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.\n\nThe tree is represented as an array where index `0` is the root, and for a node at index `i`, its left child is at `2*i + 1` and right child at `2*i + 2`. `None` values represent absent nodes.",
+  "examples": [
+    {"input": "tree = [3, 9, 20, None, None, 15, 7]", "output": "3\nExplanation: The tree has root 3, with children 9 and 20. Node 20 has children 15 and 7. The longest path is 3 -> 20 -> 15 (or 7), which has depth 3."},
+    {"input": "tree = [1, None, 2]", "output": "2\nExplanation: Root 1 has only a right child 2. Depth is 2."},
+    {"input": "tree = []", "output": "0\nExplanation: An empty tree has depth 0."}
+  ],
+  "constraints": [
+    "0 <= number of nodes <= 10^4",
+    "-100 <= Node.val <= 100",
+    "The tree is given as an array in level-order with None for missing nodes."
+  ],
+  "starterCode": {
+    "python": "def solve(tree):\n    pass",
+    "javascript": "function solve(tree) {\n  \n}",
+    "typescript": "export function solve(tree: (number | null)[]): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(Integer[] tree) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(int?[] tree) {\n        \n    }\n}",
+    "go": "func solve(tree []*int) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([3, 9, 20, None, None, 15, 7]))"}, "expectedStdout": "3"},
+    {"stdin": {"python": "print(solve([1, None, 2]))"}, "expectedStdout": "2"},
+    {"stdin": {"python": "print(solve([]))"}, "expectedStdout": "0"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([1]))"}, "expectedStdout": "1"},
+    {"stdin": {"python": "print(solve([1, 2, 3, 4, 5]))"}, "expectedStdout": "3"},
+    {"stdin": {"python": "print(solve([1, None, 2, None, None, None, 3]))"}, "expectedStdout": "3"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Recursively compute depth: for a node at index i, depth = 1 + max(depth(left), depth(right)). Base case: if index is out of bounds or node is None, return 0. Alternatively, use BFS level-by-level counting.",
+    "commonBugs": ["Not handling None nodes in the array representation", "Off-by-one in computing child indices (left = 2*i+1, right = 2*i+2)", "Forgetting to handle the empty tree case"],
+    "expectedComplexity": "O(n)"
+  }
+}

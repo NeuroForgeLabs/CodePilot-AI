@@ -1,0 +1,78 @@
+{
+  "id": "java-graphs",
+  "title": "Graphs",
+  "description": "Build graphs with HashMap adjacency lists, implement DFS and BFS traversals, and find connected components.",
+  "language": "java",
+  "category": "graphs",
+  "order": 12,
+  "sections": [
+    {
+      "id": "java-graph-adjlist",
+      "title": "HashMap Adjacency List Representation",
+      "explanation": "Graphs are most commonly represented as adjacency lists: `HashMap<Integer, List<Integer>>`. Each key is a node, its value is a list of neighbors. For undirected graphs, add edges in both directions. Build from edge list: for each edge (u,v), add v to graph[u] and u to graph[v]. Use `computeIfAbsent` for clean initialization.",
+      "example": "import java.util.ArrayList;\nimport java.util.HashMap;\nimport java.util.List;\n\npublic class Main {\n    public static void main(String[] args) {\n        HashMap<Integer, List<Integer>> graph = new HashMap<>();\n        int[][] edges = {{0, 1}, {0, 2}, {1, 3}, {2, 3}};\n\n        for (int[] edge : edges) {\n            graph.computeIfAbsent(edge[0], k -> new ArrayList<>()).add(edge[1]);\n            graph.computeIfAbsent(edge[1], k -> new ArrayList<>()).add(edge[0]);\n        }\n\n        System.out.println(graph.get(0));  // [1, 2]\n        System.out.println(graph.get(3));  // [1, 2]\n        System.out.println(graph.size());  // 4 nodes\n    }\n}",
+      "exercise": {
+        "prompt": "Build an undirected graph from edges: {0,1}, {0,2}, {1,2}, {2,3}. Print the neighbors of node 0, the neighbors of node 2, and the total number of nodes in the graph.",
+        "starterCode": "import java.util.ArrayList;\nimport java.util.HashMap;\nimport java.util.List;\n\npublic class Main {\n    public static void main(String[] args) {\n        HashMap<Integer, List<Integer>> graph = new HashMap<>();\n        int[][] edges = {{0, 1}, {0, 2}, {1, 2}, {2, 3}};\n\n        // Build adjacency list\n\n        // Print neighbors of 0, neighbors of 2, total nodes\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "[1, 2]\n[0, 1, 3]\n4", "message": "Node 0: [1,2]. Node 2: [0,1,3]. Total nodes: 4."},
+          {"type": "contains", "patterns": ["computeIfAbsent", "HashMap<Integer, List<Integer>>"], "message": "Use HashMap adjacency list with computeIfAbsent for initialization."}
+        ],
+        "testCode": "",
+        "hint": "For each edge, add both directions. computeIfAbsent(node, k -> new ArrayList<>()).add(neighbor)."
+      },
+      "order": 1
+    },
+    {
+      "id": "java-graph-dfs",
+      "title": "Graph DFS Traversal",
+      "explanation": "DFS explores as deep as possible before backtracking. Use a `HashSet<Integer>` for visited nodes to avoid cycles. Recursive: mark visited, process node, recurse on unvisited neighbors. Iterative: use a stack. DFS is used for path finding, cycle detection, topological sort, and connected components.",
+      "example": "import java.util.ArrayList;\nimport java.util.HashMap;\nimport java.util.HashSet;\nimport java.util.List;\n\npublic class Main {\n    static void dfs(int node, HashMap<Integer, List<Integer>> graph, HashSet<Integer> visited, List<Integer> order) {\n        visited.add(node);\n        order.add(node);\n        for (int neighbor : graph.getOrDefault(node, new ArrayList<>())) {\n            if (!visited.contains(neighbor)) {\n                dfs(neighbor, graph, visited, order);\n            }\n        }\n    }\n\n    public static void main(String[] args) {\n        HashMap<Integer, List<Integer>> graph = new HashMap<>();\n        int[][] edges = {{0, 1}, {0, 2}, {1, 3}, {2, 3}, {3, 4}};\n        for (int[] e : edges) {\n            graph.computeIfAbsent(e[0], k -> new ArrayList<>()).add(e[1]);\n            graph.computeIfAbsent(e[1], k -> new ArrayList<>()).add(e[0]);\n        }\n\n        List<Integer> order = new ArrayList<>();\n        dfs(0, graph, new HashSet<>(), order);\n        System.out.println(order);  // [0, 1, 3, 2, 4]\n    }\n}",
+      "exercise": {
+        "prompt": "Build a graph from edges: {0,1}, {0,2}, {1,3}, {2,4}. Implement DFS starting from node 0. Collect visited nodes in order and print the list. Then print the total number of visited nodes.",
+        "starterCode": "import java.util.ArrayList;\nimport java.util.HashMap;\nimport java.util.HashSet;\nimport java.util.List;\n\npublic class Main {\n    static void dfs(int node, HashMap<Integer, List<Integer>> graph, HashSet<Integer> visited, List<Integer> order) {\n        // Implement DFS\n    }\n\n    public static void main(String[] args) {\n        HashMap<Integer, List<Integer>> graph = new HashMap<>();\n        int[][] edges = {{0, 1}, {0, 2}, {1, 3}, {2, 4}};\n        for (int[] e : edges) {\n            graph.computeIfAbsent(e[0], k -> new ArrayList<>()).add(e[1]);\n            graph.computeIfAbsent(e[1], k -> new ArrayList<>()).add(e[0]);\n        }\n\n        List<Integer> order = new ArrayList<>();\n        HashSet<Integer> visited = new HashSet<>();\n        dfs(0, graph, visited, order);\n        System.out.println(order);\n        System.out.println(visited.size());\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "[0, 1, 3, 2, 4]\n5", "message": "DFS order: [0,1,3,2,4]. All 5 nodes visited."},
+          {"type": "contains", "patterns": ["visited.add(", "visited.contains(", "dfs(neighbor"], "message": "Mark nodes as visited and recurse on unvisited neighbors."}
+        ],
+        "testCode": "",
+        "hint": "Add node to visited and order. For each neighbor in graph.getOrDefault(node, []), if not visited, recurse."
+      },
+      "order": 2
+    },
+    {
+      "id": "java-graph-bfs",
+      "title": "Graph BFS Traversal",
+      "explanation": "BFS explores all nodes at distance d before distance d+1. Use a Queue and a visited set. Add start to queue and visited. While queue not empty: poll node, process it, add unvisited neighbors to queue and visited. BFS finds shortest path in unweighted graphs. Mark visited when adding to queue (not when polling) to avoid duplicates.",
+      "example": "import java.util.ArrayList;\nimport java.util.HashMap;\nimport java.util.HashSet;\nimport java.util.LinkedList;\nimport java.util.List;\nimport java.util.Queue;\n\npublic class Main {\n    static List<Integer> bfs(int start, HashMap<Integer, List<Integer>> graph) {\n        List<Integer> order = new ArrayList<>();\n        HashSet<Integer> visited = new HashSet<>();\n        Queue<Integer> queue = new LinkedList<>();\n        queue.offer(start);\n        visited.add(start);\n        while (!queue.isEmpty()) {\n            int node = queue.poll();\n            order.add(node);\n            for (int neighbor : graph.getOrDefault(node, new ArrayList<>())) {\n                if (!visited.contains(neighbor)) {\n                    visited.add(neighbor);\n                    queue.offer(neighbor);\n                }\n            }\n        }\n        return order;\n    }\n\n    public static void main(String[] args) {\n        HashMap<Integer, List<Integer>> graph = new HashMap<>();\n        int[][] edges = {{0, 1}, {0, 2}, {1, 3}, {2, 4}, {3, 5}, {4, 5}};\n        for (int[] e : edges) {\n            graph.computeIfAbsent(e[0], k -> new ArrayList<>()).add(e[1]);\n            graph.computeIfAbsent(e[1], k -> new ArrayList<>()).add(e[0]);\n        }\n        System.out.println(bfs(0, graph));  // [0, 1, 2, 3, 4, 5]\n    }\n}",
+      "exercise": {
+        "prompt": "Build a graph: {0,1}, {0,2}, {1,3}, {1,4}, {2,5}, {2,6}. Implement BFS from node 0. Print the traversal order. This is a tree-like graph so BFS gives level-order: 0, then 1,2, then 3,4,5,6.",
+        "starterCode": "import java.util.ArrayList;\nimport java.util.HashMap;\nimport java.util.HashSet;\nimport java.util.LinkedList;\nimport java.util.List;\nimport java.util.Queue;\n\npublic class Main {\n    static List<Integer> bfs(int start, HashMap<Integer, List<Integer>> graph) {\n        List<Integer> order = new ArrayList<>();\n        // Implement BFS\n\n        return order;\n    }\n\n    public static void main(String[] args) {\n        HashMap<Integer, List<Integer>> graph = new HashMap<>();\n        int[][] edges = {{0, 1}, {0, 2}, {1, 3}, {1, 4}, {2, 5}, {2, 6}};\n        for (int[] e : edges) {\n            graph.computeIfAbsent(e[0], k -> new ArrayList<>()).add(e[1]);\n            graph.computeIfAbsent(e[1], k -> new ArrayList<>()).add(e[0]);\n        }\n        System.out.println(bfs(0, graph));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "[0, 1, 2, 3, 4, 5, 6]", "message": "BFS from 0: [0, 1, 2, 3, 4, 5, 6] (level order)."},
+          {"type": "contains", "patterns": ["Queue<Integer>", "queue.offer(", "queue.poll()", "visited.add("], "message": "Use Queue with offer/poll and HashSet for visited tracking."}
+        ],
+        "testCode": "",
+        "hint": "Init queue with start, mark visited. While queue not empty: poll, add to order, offer unvisited neighbors."
+      },
+      "order": 3
+    },
+    {
+      "id": "java-graph-components",
+      "title": "Finding Connected Components",
+      "explanation": "To find connected components: iterate all nodes. For each unvisited node, run DFS/BFS to find its entire component. Count how many times you start a new DFS/BFS = number of components. Common interview problem: \"number of islands\", \"number of provinces\". Time: O(V + E) where V is vertices and E is edges.",
+      "example": "import java.util.ArrayList;\nimport java.util.HashMap;\nimport java.util.HashSet;\nimport java.util.List;\n\npublic class Main {\n    static void dfs(int node, HashMap<Integer, List<Integer>> graph, HashSet<Integer> visited) {\n        visited.add(node);\n        for (int neighbor : graph.getOrDefault(node, new ArrayList<>())) {\n            if (!visited.contains(neighbor)) dfs(neighbor, graph, visited);\n        }\n    }\n\n    public static void main(String[] args) {\n        HashMap<Integer, List<Integer>> graph = new HashMap<>();\n        int[][] edges = {{0, 1}, {1, 2}, {3, 4}};\n        for (int[] e : edges) {\n            graph.computeIfAbsent(e[0], k -> new ArrayList<>()).add(e[1]);\n            graph.computeIfAbsent(e[1], k -> new ArrayList<>()).add(e[0]);\n        }\n\n        int[] nodes = {0, 1, 2, 3, 4, 5};\n        HashSet<Integer> visited = new HashSet<>();\n        int components = 0;\n        for (int node : nodes) {\n            if (!visited.contains(node)) {\n                dfs(node, graph, visited);\n                components++;\n            }\n        }\n        System.out.println(components);  // 3 (components: {0,1,2}, {3,4}, {5})\n    }\n}",
+      "exercise": {
+        "prompt": "Given 7 nodes (0-6) and edges: {0,1}, {0,2}, {3,4}, {5,6}. Find the number of connected components using DFS. Print the component count. Then print the size of the largest component.",
+        "starterCode": "import java.util.ArrayList;\nimport java.util.HashMap;\nimport java.util.HashSet;\nimport java.util.List;\n\npublic class Main {\n    static int dfs(int node, HashMap<Integer, List<Integer>> graph, HashSet<Integer> visited) {\n        visited.add(node);\n        int count = 1;\n        for (int neighbor : graph.getOrDefault(node, new ArrayList<>())) {\n            if (!visited.contains(neighbor)) {\n                count += dfs(neighbor, graph, visited);\n            }\n        }\n        return count;\n    }\n\n    public static void main(String[] args) {\n        HashMap<Integer, List<Integer>> graph = new HashMap<>();\n        int[][] edges = {{0, 1}, {0, 2}, {3, 4}, {5, 6}};\n        for (int[] e : edges) {\n            graph.computeIfAbsent(e[0], k -> new ArrayList<>()).add(e[1]);\n            graph.computeIfAbsent(e[1], k -> new ArrayList<>()).add(e[0]);\n        }\n\n        HashSet<Integer> visited = new HashSet<>();\n        int components = 0;\n        int largest = 0;\n\n        // Count components and find largest\n\n        System.out.println(components);\n        System.out.println(largest);\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "3\n3", "message": "3 components: {0,1,2} size 3, {3,4} size 2, {5,6} size 2. Largest is 3."},
+          {"type": "contains", "patterns": ["dfs(", "visited.contains(", "Math.max"], "message": "Use DFS for each unvisited node and Math.max to track the largest component."}
+        ],
+        "testCode": "",
+        "hint": "For each node 0-6: if not visited, run dfs (returns component size), increment components, update largest with Math.max."
+      },
+      "order": 4
+    }
+  ]
+}

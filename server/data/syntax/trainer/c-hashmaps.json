@@ -1,0 +1,78 @@
+{
+  "id": "c-hashmaps",
+  "title": "Hashmaps / Dictionaries",
+  "description": "C has NO built-in hash map — learn practical struct-based and array-based hashing approaches used in interview settings.",
+  "language": "c",
+  "category": "hashmaps",
+  "order": 5,
+  "sections": [
+    {
+      "id": "array-as-map",
+      "title": "Using arrays as hash maps",
+      "explanation": "For small key ranges (characters, small integers), an array IS your hash map. Use `int count[26] = {0}` for lowercase letters (key = `c - 'a'`), or `int count[256] = {0}` for all ASCII. This is O(1) lookup and the simplest interview-friendly approach in C.",
+      "example": "char s[] = \"banana\";\nint freq[26] = {0};\nfor (int i = 0; s[i] != '\\0'; i++) {\n    freq[s[i] - 'a']++;\n}\nfor (int i = 0; i < 26; i++) {\n    if (freq[i] > 0)\n        printf(\"%c: %d\\n\", 'a' + i, freq[i]);\n}\n// a: 3\n// b: 1\n// n: 2",
+      "exercise": {
+        "prompt": "Count the frequency of each letter in \"hello\" using an int array of size 26. Print each letter and its count (only letters that appear), one per line in format \"c: N\".",
+        "starterCode": "int main() {\n    char s[] = \"hello\";\n    int freq[26] = {0};\n    for (int i = 0; s[i] != '\\0'; i++) {\n        freq[s[i] - 'a']++;\n    }\n    for (int i = 0; i < 26; i++) {\n        if (freq[i] > 0)\n            printf(\"%c: %d\\n\", 'a' + i, freq[i]);\n    }\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "e: 1\nh: 1\nl: 2\no: 1", "message": "hello has e:1, h:1, l:2, o:1"},
+          {"type": "contains", "patterns": ["freq[26]", "s[i] - 'a'", "'a' + i"], "message": "Use array index math with 'a' offset for character hashing"}
+        ],
+        "testCode": "",
+        "hint": "freq[s[i] - 'a']++ maps each letter to index 0-25. Print with 'a' + i to get back the character."
+      },
+      "order": 1
+    },
+    {
+      "id": "integer-map",
+      "title": "Array map for integer keys",
+      "explanation": "When keys are bounded integers (0 to N), use a direct-address array. This is common for counting occurrences, marking visited nodes, or building frequency tables. Initialize with `memset(arr, 0, sizeof(arr))` or `= {0}`.",
+      "example": "int nums[] = {1, 2, 2, 3, 3, 3};\nint n = 6;\nint count[10] = {0};\nfor (int i = 0; i < n; i++) {\n    count[nums[i]]++;\n}\nfor (int i = 0; i < 10; i++) {\n    if (count[i] > 0)\n        printf(\"%d appears %d times\\n\", i, count[i]);\n}\n// 1 appears 1 times\n// 2 appears 2 times\n// 3 appears 3 times",
+      "exercise": {
+        "prompt": "Given array {4, 2, 4, 3, 2, 4, 1}, count occurrences of each number using a count array. Print numbers that appear more than once in format \"N: count\".",
+        "starterCode": "int main() {\n    int nums[] = {4, 2, 4, 3, 2, 4, 1};\n    int n = 7;\n    int count[10] = {0};\n\n    for (int i = 0; i < n; i++) {\n        count[nums[i]]++;\n    }\n\n    for (int i = 0; i < 10; i++) {\n        if (count[i] > 1)\n            printf(\"%d: %d\\n\", i, count[i]);\n    }\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "2: 2\n4: 3", "message": "2 appears twice, 4 appears three times"},
+          {"type": "contains", "patterns": ["count[10]", "count[nums[i]]++", "count[i] > 1"], "message": "Use direct-address array counting with count[nums[i]]++"}
+        ],
+        "testCode": "",
+        "hint": "count[nums[i]]++ tallies each number. Then filter with count[i] > 1."
+      },
+      "order": 2
+    },
+    {
+      "id": "struct-hashmap",
+      "title": "Struct-based hash map",
+      "explanation": "For a general-purpose hash map in C interviews, you can build a simple open-addressing or chaining table with structs. A minimal approach: array of key-value structs with a hash function. For most interview problems, the array-based approach is sufficient, but knowing this pattern shows depth.",
+      "example": "#define TABLE_SIZE 100\n#define EMPTY -1\n\nint hash(int key) {\n    return ((key % TABLE_SIZE) + TABLE_SIZE) % TABLE_SIZE;\n}\n\nint keys[TABLE_SIZE];\nint values[TABLE_SIZE];\n\nvoid init() {\n    memset(keys, EMPTY, sizeof(keys));\n}\n\nvoid put(int key, int val) {\n    int idx = hash(key);\n    while (keys[idx] != EMPTY && keys[idx] != key)\n        idx = (idx + 1) % TABLE_SIZE;\n    keys[idx] = key;\n    values[idx] = val;\n}\n\nint get(int key) {\n    int idx = hash(key);\n    while (keys[idx] != EMPTY) {\n        if (keys[idx] == key) return values[idx];\n        idx = (idx + 1) % TABLE_SIZE;\n    }\n    return -1;\n}",
+      "exercise": {
+        "prompt": "Use parallel arrays as a simple hash map. Implement put/get with linear probing. Store mappings 10->100, 20->200, 30->300, then retrieve and print the value for key 20.",
+        "starterCode": "#define TABLE_SIZE 100\n#define EMPTY -1\n\nint ht_keys[TABLE_SIZE];\nint ht_vals[TABLE_SIZE];\n\nint hash(int key) {\n    return ((key % TABLE_SIZE) + TABLE_SIZE) % TABLE_SIZE;\n}\n\nvoid put(int key, int val) {\n    int idx = hash(key);\n    while (ht_keys[idx] != EMPTY && ht_keys[idx] != key)\n        idx = (idx + 1) % TABLE_SIZE;\n    ht_keys[idx] = key;\n    ht_vals[idx] = val;\n}\n\nint get(int key) {\n    int idx = hash(key);\n    while (ht_keys[idx] != EMPTY) {\n        if (ht_keys[idx] == key) return ht_vals[idx];\n        idx = (idx + 1) % TABLE_SIZE;\n    }\n    return -1;\n}\n\nint main() {\n    memset(ht_keys, EMPTY, sizeof(ht_keys));\n    put(10, 100);\n    put(20, 200);\n    put(30, 300);\n    printf(\"%d\\n\", get(20));\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "200", "message": "Key 20 should map to value 200"},
+          {"type": "contains", "patterns": ["hash(key)", "ht_keys[idx]", "put(", "get("], "message": "Implement hash, put, and get using parallel arrays with linear probing"}
+        ],
+        "testCode": "",
+        "hint": "Linear probing: if slot is taken, try (idx + 1) % TABLE_SIZE. get(20) should return 200."
+      },
+      "order": 3
+    },
+    {
+      "id": "two-sum-pattern",
+      "title": "Two Sum with array map",
+      "explanation": "The classic Two Sum problem in C: for small value ranges, use a direct-address array as a lookup. Store the index of each value you've seen. For each number, check if `target - nums[i]` was seen. This demonstrates practical hash map usage in C interviews.",
+      "example": "int nums[] = {2, 7, 11, 15};\nint target = 9, n = 4;\nint seen[1001];\nmemset(seen, -1, sizeof(seen));\n\nfor (int i = 0; i < n; i++) {\n    int complement = target - nums[i];\n    if (complement >= 0 && complement <= 1000 && seen[complement] != -1) {\n        printf(\"[%d, %d]\\n\", seen[complement], i);\n        break;\n    }\n    seen[nums[i]] = i;\n}\n// [0, 1]",
+      "exercise": {
+        "prompt": "Solve Two Sum: find two indices in {3, 5, 2, 8} that sum to 10. Use a seen[] array to track indices. Print the two indices.",
+        "starterCode": "int main() {\n    int nums[] = {3, 5, 2, 8};\n    int target = 10, n = 4;\n    int seen[20];\n    memset(seen, -1, sizeof(seen));\n\n    for (int i = 0; i < n; i++) {\n        int comp = target - nums[i];\n        if (comp >= 0 && comp < 20 && seen[comp] != -1) {\n            printf(\"%d %d\\n\", seen[comp], i);\n            break;\n        }\n        seen[nums[i]] = i;\n    }\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "2 3", "message": "nums[2]=2 and nums[3]=8 sum to 10, so indices are 2 and 3"},
+          {"type": "contains", "patterns": ["seen[comp]", "seen[nums[i]] = i", "target - nums[i]"], "message": "Use complement lookup pattern: check seen[complement], then store seen[nums[i]] = i"}
+        ],
+        "testCode": "",
+        "hint": "For each nums[i], check if target - nums[i] is in seen. 3+8=11? No. Actually 2+8=10, so indices 2 and 3. Or 3+...? Let's see: nums[0]=3, comp=7 not seen. nums[1]=5, comp=5 not seen. nums[2]=2, comp=8 not seen. nums[3]=8, comp=2, seen[2]=2. Output: 2 3."
+      },
+      "order": 4
+    }
+  ]
+}

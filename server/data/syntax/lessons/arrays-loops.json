@@ -1,0 +1,74 @@
+{
+  "id": "arrays-loops",
+  "title": "Arrays & Loops",
+  "description": "Arrays and loop patterns are the foundation of every interview problem. Master these first.",
+  "order": 2,
+  "sections": [
+    {
+      "id": "declaring",
+      "title": "Declaring arrays",
+      "type": "concept",
+      "explanation": "How to create empty arrays, fixed-size arrays, and 2D grids — the three most common setups in interviews.",
+      "snippets": {
+        "python": "# Literal\nnums = [1, 2, 3, 4, 5]\n\n# Fixed size filled with 0\narr = [0] * n\n\n# 2D grid (m rows × n cols)\ngrid = [[0] * n for _ in range(m)]",
+        "javascript": "// Literal\nconst nums = [1, 2, 3, 4, 5];\n\n// Fixed size filled with 0\nconst arr = new Array(n).fill(0);\n\n// 2D grid (m rows × n cols)\nconst grid = Array.from({length: m}, () => new Array(n).fill(0));",
+        "java": "// Literal\nint[] nums = {1, 2, 3, 4, 5};\n\n// Fixed size (defaults to 0)\nint[] arr = new int[n];\n\n// 2D grid\nint[][] grid = new int[m][n];\n\n// ArrayList (dynamic size)\nList<Integer> list = new ArrayList<>();"
+      }
+    },
+    {
+      "id": "access-modify",
+      "title": "Accessing and modifying",
+      "type": "snippet",
+      "explanation": "Getting elements, appending, and removing. Know the time complexity of each operation.",
+      "snippets": {
+        "python": "first = nums[0]\nlast = nums[-1]          # negative indexing\nlength = len(nums)\n\nnums.append(6)            # O(1) append\nnums.pop()                # O(1) remove last\nnums.pop(i)               # O(n) remove at index\nnums.insert(i, val)       # O(n) insert at index",
+        "javascript": "const first = nums[0];\nconst last = nums[nums.length - 1];\nconst length = nums.length;\n\nnums.push(6);             // O(1) append\nnums.pop();               // O(1) remove last\nnums.splice(i, 1);        // O(n) remove at index\nnums.unshift(0);          // O(n) prepend",
+        "java": "int first = nums[0];\nint last = nums[nums.length - 1];\nint length = nums.length;\n\n// ArrayList (dynamic)\nlist.add(6);              // O(1) append\nlist.remove(list.size()-1);// O(1) remove last\nlist.get(i);              // O(1) access\nlist.add(i, val);         // O(n) insert at index"
+      }
+    },
+    {
+      "id": "slicing",
+      "title": "Slicing and copying",
+      "type": "snippet",
+      "explanation": "Creating subarrays and copies. Crucial for sliding window and subarray problems.",
+      "snippets": {
+        "python": "# Slice (does NOT modify original)\nsub = nums[1:4]           # [index 1, 2, 3]\ncopy = nums[:]            # shallow copy\nlast3 = nums[-3:]         # last 3 elements\nrev = nums[::-1]          # reversed copy",
+        "javascript": "// Slice (does NOT modify original)\nconst sub = nums.slice(1, 4);    // [index 1, 2, 3]\nconst copy = nums.slice();       // shallow copy\nconst last3 = nums.slice(-3);    // last 3 elements\nconst rev = [...nums].reverse(); // reversed copy",
+        "java": "// Arrays.copyOfRange\nint[] sub = Arrays.copyOfRange(nums, 1, 4);\nint[] copy = nums.clone();\n\n// ArrayList subList (returns a view, not a copy)\nList<Integer> sub2 = list.subList(1, 4);\n\n// Reverse (Collections)\nCollections.reverse(list);"
+      }
+    },
+    {
+      "id": "for-loops",
+      "title": "Loop patterns",
+      "type": "snippet",
+      "explanation": "The four loop patterns you need in interviews: index-based, value-based, enumerate, and while.",
+      "snippets": {
+        "python": "# Index-based\nfor i in range(len(nums)):\n    print(i, nums[i])\n\n# Value-based\nfor num in nums:\n    print(num)\n\n# Index + value (most useful)\nfor i, num in enumerate(nums):\n    print(i, num)\n\n# While loop\ni = 0\nwhile i < len(nums):\n    print(nums[i])\n    i += 1",
+        "javascript": "// Index-based\nfor (let i = 0; i < nums.length; i++) {\n    console.log(i, nums[i]);\n}\n\n// Value-based\nfor (const num of nums) {\n    console.log(num);\n}\n\n// With index (forEach)\nnums.forEach((num, i) => {\n    console.log(i, num);\n});\n\n// While loop\nlet i = 0;\nwhile (i < nums.length) {\n    console.log(nums[i]);\n    i++;\n}",
+        "java": "// Index-based\nfor (int i = 0; i < nums.length; i++) {\n    System.out.println(i + \" \" + nums[i]);\n}\n\n// Enhanced for (value only)\nfor (int num : nums) {\n    System.out.println(num);\n}\n\n// While loop\nint i = 0;\nwhile (i < nums.length) {\n    System.out.println(nums[i]);\n    i++;\n}"
+      }
+    },
+    {
+      "id": "two-pointer",
+      "title": "Interview Pattern: Two Pointers",
+      "type": "pattern",
+      "explanation": "Two pointers moving toward each other. Used in sorted array pair problems, palindrome checks, and container problems.",
+      "snippets": {
+        "python": "left, right = 0, len(nums) - 1\n\nwhile left < right:\n    total = nums[left] + nums[right]\n    if total == target:\n        return [left, right]\n    elif total < target:\n        left += 1\n    else:\n        right -= 1",
+        "javascript": "let left = 0, right = nums.length - 1;\n\nwhile (left < right) {\n    const total = nums[left] + nums[right];\n    if (total === target) {\n        return [left, right];\n    } else if (total < target) {\n        left++;\n    } else {\n        right--;\n    }\n}",
+        "java": "int left = 0, right = nums.length - 1;\n\nwhile (left < right) {\n    int total = nums[left] + nums[right];\n    if (total == target) {\n        return new int[]{left, right};\n    } else if (total < target) {\n        left++;\n    } else {\n        right--;\n    }\n}"
+      }
+    },
+    {
+      "id": "gotcha-copy",
+      "title": "Gotcha: Shallow vs deep copy",
+      "type": "gotcha",
+      "explanation": "Assigning an array to a new variable does NOT copy it. This causes bugs when you modify the 'copy'.",
+      "snippets": {
+        "python": "# ❌ Both point to same list\na = [1, 2, 3]\nb = a\nb.append(4)  # a is also [1, 2, 3, 4]!\n\n# ✅ Shallow copy\nb = a[:]          # or a.copy() or list(a)\n\n# ✅ Deep copy (for nested lists)\nimport copy\nb = copy.deepcopy(a)",
+        "javascript": "// ❌ Both point to same array\nconst a = [1, 2, 3];\nconst b = a;\nb.push(4);  // a is also [1, 2, 3, 4]!\n\n// ✅ Shallow copy\nconst c = [...a];\nconst d = a.slice();\n\n// ✅ Deep copy (nested arrays)\nconst e = JSON.parse(JSON.stringify(a));",
+        "java": "// ❌ Both point to same array\nint[] a = {1, 2, 3};\nint[] b = a;\nb[0] = 99;  // a[0] is also 99!\n\n// ✅ Copy\nint[] c = a.clone();\nint[] d = Arrays.copyOf(a, a.length);\n\n// ArrayList copy\nList<Integer> copy = new ArrayList<>(original);"
+      }
+    }
+  ]
+}

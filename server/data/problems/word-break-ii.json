@@ -1,0 +1,41 @@
+{
+  "id": "word-break-ii",
+  "title": "Word Break II",
+  "difficulty": "Hard",
+  "tags": ["strings", "dynamic-programming", "backtracking"],
+  "prompt": "Given a string `s` and a list of strings `wordDict`, add spaces in `s` to construct a sentence where each word is a valid dictionary word. Return all such possible sentences in any order.\n\nNote that the same word in the dictionary may be reused multiple times in the segmentation.\n\nReturn the list of sentences sorted lexicographically.",
+  "examples": [
+    {"input": "s = \"catsanddog\", wordDict = [\"cat\",\"cats\",\"and\",\"sand\",\"dog\"]", "output": "[\"cat sand dog\", \"cats and dog\"]\nExplanation: Two valid segmentations exist."},
+    {"input": "s = \"pineapplepenapple\", wordDict = [\"apple\",\"pen\",\"applepen\",\"pine\",\"pineapple\"]", "output": "[\"pine apple pen apple\", \"pine applepen apple\", \"pineapple pen apple\"]"},
+    {"input": "s = \"catsandog\", wordDict = [\"cats\",\"dog\",\"sand\",\"and\",\"cat\"]", "output": "[]\nExplanation: No valid segmentation exists."}
+  ],
+  "constraints": [
+    "1 <= s.length <= 20",
+    "1 <= wordDict.length <= 1000",
+    "1 <= wordDict[i].length <= 10",
+    "s and wordDict[i] consist of only lowercase English letters.",
+    "All the strings of wordDict are unique."
+  ],
+  "starterCode": {
+    "python": "def solve(s: str, wordDict: list[str]) -> list[str]:\n    pass",
+    "javascript": "function solve(s, wordDict) {\n  \n}",
+    "typescript": "export function solve(s: string, wordDict: string[]): string[] {\n  \n}",
+    "java": "class Solution {\n    public List<String> solve(String s, List<String> wordDict) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public IList<string> Solve(string s, IList<string> wordDict) {\n        \n    }\n}",
+    "go": "func solve(s string, wordDict []string) []string {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(sorted(solve(\"catsanddog\", [\"cat\",\"cats\",\"and\",\"sand\",\"dog\"])))"}, "expectedStdout": "['cat sand dog', 'cats and dog']"},
+    {"stdin": {"python": "print(sorted(solve(\"catsandog\", [\"cats\",\"dog\",\"sand\",\"and\",\"cat\"])))"}, "expectedStdout": "[]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(sorted(solve(\"pineapplepenapple\", [\"apple\",\"pen\",\"applepen\",\"pine\",\"pineapple\"])))"}, "expectedStdout": "['pine apple pen apple', 'pine applepen apple', 'pineapple pen apple']"},
+    {"stdin": {"python": "print(sorted(solve(\"a\", [\"a\"])))"}, "expectedStdout": "['a']"},
+    {"stdin": {"python": "print(sorted(solve(\"aaaa\", [\"a\",\"aa\"])))"}, "expectedStdout": "['a a a a', 'a a aa', 'a aa a', 'aa a a', 'aa aa']"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use backtracking with memoization. For each position in the string, try every word in the dictionary. If the substring starting at the current position matches a word, recurse on the remaining string. Memoize results for each starting index to avoid recomputation.",
+    "commonBugs": ["Not handling the case where no segmentation exists (should return empty list)", "Exponential blowup without memoization on adversarial inputs like 'aaaa...a' with dict ['a','aa',...]", "Forgetting to join words with spaces in the final output"],
+    "expectedComplexity": "O(n^2 * 2^n) worst case, but memoization makes practical cases much faster"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "best-time-to-buy-sell-stock",
+  "title": "Best Time to Buy and Sell Stock",
+  "difficulty": "Easy",
+  "tags": ["arrays", "dynamic-programming"],
+  "prompt": "You are given an array `prices` where `prices[i]` is the price of a given stock on the `i`-th day.\n\nYou want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.\n\nReturn the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return `0`.",
+  "examples": [
+    {"input": "prices = [7, 1, 5, 3, 6, 4]", "output": "5\nExplanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6 - 1 = 5."},
+    {"input": "prices = [7, 6, 4, 3, 1]", "output": "0\nExplanation: No profitable transaction is possible, so max profit is 0."},
+    {"input": "prices = [2, 4, 1]", "output": "2\nExplanation: Buy on day 1 (price = 2) and sell on day 2 (price = 4), profit = 4 - 2 = 2."}
+  ],
+  "constraints": [
+    "1 <= prices.length <= 10^5",
+    "0 <= prices[i] <= 10^4"
+  ],
+  "starterCode": {
+    "python": "def solve(prices):\n    pass",
+    "javascript": "function solve(prices) {\n  \n}",
+    "typescript": "export function solve(prices: number[]): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(int[] prices) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(int[] prices) {\n        \n    }\n}",
+    "go": "func solve(prices []int) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([7, 1, 5, 3, 6, 4]))"}, "expectedStdout": "5"},
+    {"stdin": {"python": "print(solve([7, 6, 4, 3, 1]))"}, "expectedStdout": "0"},
+    {"stdin": {"python": "print(solve([2, 4, 1]))"}, "expectedStdout": "2"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([1]))"}, "expectedStdout": "0"},
+    {"stdin": {"python": "print(solve([1, 2]))"}, "expectedStdout": "1"},
+    {"stdin": {"python": "print(solve([3, 1, 4, 8, 7, 2, 5]))"}, "expectedStdout": "7"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Track the minimum price seen so far while iterating. At each step, calculate profit as current price minus minimum so far, and update the maximum profit.",
+    "commonBugs": ["Trying to sell before buying (sell day must be after buy day)", "Using nested loops instead of single-pass tracking", "Not handling the case where prices only decrease"],
+    "expectedComplexity": "O(n)"
+  }
+}

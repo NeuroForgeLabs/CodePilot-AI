@@ -1,0 +1,78 @@
+{
+  "id": "java-sets",
+  "title": "Sets",
+  "description": "Use HashSet for O(1) lookups, deduplication, intersection, and set operations critical in coding interviews.",
+  "language": "java",
+  "category": "sets",
+  "order": 6,
+  "sections": [
+    {
+      "id": "java-set-basics",
+      "title": "HashSet Basics: add, contains, remove",
+      "explanation": "HashSet<T> stores unique elements with O(1) average add/contains/remove. No duplicates—adding an existing element does nothing. No guaranteed order. Import `java.util.HashSet`. Use when you need fast membership checks. `add()` returns true if element was new, false if already present.",
+      "example": "import java.util.HashSet;\n\npublic class Main {\n    public static void main(String[] args) {\n        HashSet<String> set = new HashSet<>();\n        System.out.println(set.add(\"apple\"));     // true\n        System.out.println(set.add(\"banana\"));    // true\n        System.out.println(set.add(\"apple\"));     // false (duplicate)\n\n        System.out.println(set.contains(\"apple\"));   // true\n        System.out.println(set.contains(\"cherry\"));  // false\n        System.out.println(set.size());              // 2\n\n        set.remove(\"banana\");\n        System.out.println(set.size());              // 1\n    }\n}",
+      "exercise": {
+        "prompt": "Create a HashSet<Integer>. Add the values 10, 20, 30, 20, 10. Print the size (should reflect unique count). Check if 20 is in the set and if 40 is in the set. Remove 30 and print the new size.",
+        "starterCode": "import java.util.HashSet;\n\npublic class Main {\n    public static void main(String[] args) {\n        HashSet<Integer> set = new HashSet<>();\n\n        // Add values, print size, check membership, remove\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "3\ntrue\nfalse\n2", "message": "Size=3 (unique), contains 20=true, contains 40=false, after remove size=2."},
+          {"type": "contains", "patterns": [".add(", ".contains(", ".remove(", ".size()"], "message": "Use add(), contains(), remove(), and size() methods."}
+        ],
+        "testCode": "",
+        "hint": "Duplicates are ignored so size is 3 after adding 10,20,30,20,10. remove(30) drops it to 2."
+      },
+      "order": 1
+    },
+    {
+      "id": "java-set-dedup",
+      "title": "Deduplication with Sets",
+      "explanation": "Converting a collection to a HashSet removes duplicates. Pass a List to the HashSet constructor: `new HashSet<>(list)`. Convert back with `new ArrayList<>(set)`. This is O(n) deduplication. Common pattern: \"find unique elements\", \"remove duplicates from array\". For maintaining order, use LinkedHashSet instead.",
+      "example": "import java.util.ArrayList;\nimport java.util.Arrays;\nimport java.util.HashSet;\nimport java.util.LinkedHashSet;\n\npublic class Main {\n    public static void main(String[] args) {\n        ArrayList<Integer> nums = new ArrayList<>(Arrays.asList(3, 1, 4, 1, 5, 9, 2, 6, 5, 3));\n\n        HashSet<Integer> unique = new HashSet<>(nums);\n        System.out.println(unique.size());  // 7\n\n        LinkedHashSet<Integer> ordered = new LinkedHashSet<>(nums);\n        System.out.println(ordered);  // [3, 1, 4, 5, 9, 2, 6]\n    }\n}",
+      "exercise": {
+        "prompt": "Given the array {\"java\", \"python\", \"java\", \"go\", \"python\", \"rust\", \"go\"}, create a HashSet to find the number of unique languages and print it. Then create a LinkedHashSet from the same list to preserve insertion order and print it.",
+        "starterCode": "import java.util.Arrays;\nimport java.util.HashSet;\nimport java.util.LinkedHashSet;\nimport java.util.List;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> langs = Arrays.asList(\"java\", \"python\", \"java\", \"go\", \"python\", \"rust\", \"go\");\n\n        // Deduplicate and print unique count\n\n        // Preserve order and print\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "4\n[java, python, go, rust]", "message": "4 unique languages. Insertion order: java, python, go, rust."},
+          {"type": "contains", "patterns": ["HashSet", "LinkedHashSet"], "message": "Use HashSet for counting uniques and LinkedHashSet for ordered dedup."}
+        ],
+        "testCode": "",
+        "hint": "new HashSet<>(langs).size() gives unique count. new LinkedHashSet<>(langs) preserves first-seen order."
+      },
+      "order": 2
+    },
+    {
+      "id": "java-set-intersection",
+      "title": "Set Intersection with retainAll",
+      "explanation": "`setA.retainAll(setB)` modifies setA to keep only elements also in setB (intersection). `setA.addAll(setB)` gives union. `setA.removeAll(setB)` gives difference. These are destructive operations—they modify the original set. To preserve the original, create a copy first: `new HashSet<>(setA)`. These operations are O(n) and extremely useful in interview problems.",
+      "example": "import java.util.Arrays;\nimport java.util.HashSet;\n\npublic class Main {\n    public static void main(String[] args) {\n        HashSet<Integer> a = new HashSet<>(Arrays.asList(1, 2, 3, 4, 5));\n        HashSet<Integer> b = new HashSet<>(Arrays.asList(3, 4, 5, 6, 7));\n\n        HashSet<Integer> intersection = new HashSet<>(a);\n        intersection.retainAll(b);\n        System.out.println(intersection);  // [3, 4, 5]\n\n        HashSet<Integer> union = new HashSet<>(a);\n        union.addAll(b);\n        System.out.println(union);         // [1, 2, 3, 4, 5, 6, 7]\n\n        HashSet<Integer> diff = new HashSet<>(a);\n        diff.removeAll(b);\n        System.out.println(diff);          // [1, 2]\n    }\n}",
+      "exercise": {
+        "prompt": "Given set1 = {\"apple\", \"banana\", \"cherry\", \"date\"} and set2 = {\"banana\", \"date\", \"fig\", \"grape\"}, find and print the intersection, then find and print elements in set1 but not in set2 (difference). Print the size of each result.",
+        "starterCode": "import java.util.Arrays;\nimport java.util.HashSet;\n\npublic class Main {\n    public static void main(String[] args) {\n        HashSet<String> set1 = new HashSet<>(Arrays.asList(\"apple\", \"banana\", \"cherry\", \"date\"));\n        HashSet<String> set2 = new HashSet<>(Arrays.asList(\"banana\", \"date\", \"fig\", \"grape\"));\n\n        // Find intersection and print its size\n\n        // Find difference (set1 - set2) and print its size\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "2\n2", "message": "Intersection has 2 elements (banana, date). Difference has 2 elements (apple, cherry)."},
+          {"type": "contains", "patterns": [".retainAll(", ".removeAll("], "message": "Use retainAll for intersection and removeAll for difference."}
+        ],
+        "testCode": "",
+        "hint": "Copy set1 before retainAll/removeAll to avoid modifying the original. Print .size() of each result."
+      },
+      "order": 3
+    },
+    {
+      "id": "java-set-interview",
+      "title": "Set-Based Interview Patterns",
+      "explanation": "Common set patterns: (1) \"Contains duplicate\"—add to set, if add() returns false, duplicate found. (2) \"Find missing number\"—put expected in set, remove found ones. (3) \"Happy number\"—detect cycles by tracking seen values. (4) \"Longest consecutive sequence\"—put all in set, for each potential start (n-1 not in set), count consecutive.",
+      "example": "import java.util.HashSet;\n\npublic class Main {\n    static boolean hasDuplicate(int[] nums) {\n        HashSet<Integer> seen = new HashSet<>();\n        for (int n : nums) {\n            if (!seen.add(n)) return true;\n        }\n        return false;\n    }\n\n    static int longestConsecutive(int[] nums) {\n        HashSet<Integer> set = new HashSet<>();\n        for (int n : nums) set.add(n);\n\n        int longest = 0;\n        for (int n : set) {\n            if (!set.contains(n - 1)) {\n                int length = 1;\n                while (set.contains(n + length)) length++;\n                longest = Math.max(longest, length);\n            }\n        }\n        return longest;\n    }\n\n    public static void main(String[] args) {\n        System.out.println(hasDuplicate(new int[]{1, 2, 3, 1}));   // true\n        System.out.println(hasDuplicate(new int[]{1, 2, 3, 4}));   // false\n        System.out.println(longestConsecutive(new int[]{100, 4, 200, 1, 3, 2}));  // 4\n    }\n}",
+      "exercise": {
+        "prompt": "Write a static method `findMissing(int[] nums, int n)` that finds the missing number from 1 to n. Put all expected numbers (1..n) in a set, remove the ones present in nums, and return the remaining one. Test with nums={1,2,4,5}, n=5 (missing is 3).",
+        "starterCode": "import java.util.HashSet;\n\npublic class Main {\n    static int findMissing(int[] nums, int n) {\n        HashSet<Integer> expected = new HashSet<>();\n        // Add 1..n to expected, remove found ones, return the missing one\n\n        return -1;\n    }\n\n    public static void main(String[] args) {\n        System.out.println(findMissing(new int[]{1, 2, 4, 5}, 5));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "3", "message": "The missing number from {1,2,4,5} in range 1-5 is 3."},
+          {"type": "contains", "patterns": ["HashSet", ".add(", ".remove("], "message": "Use HashSet with add() and remove() to find the missing number."}
+        ],
+        "testCode": "",
+        "hint": "Add 1 through n to the set. Then for each num in nums, remove it from the set. The remaining element is the answer."
+      },
+      "order": 4
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "container-with-most-water",
+  "title": "Container With Most Water",
+  "difficulty": "Medium",
+  "tags": ["arrays", "two-pointers", "greedy"],
+  "prompt": "You are given an integer array `height` of length `n`. There are `n` vertical lines drawn such that the two endpoints of the i-th line are `(i, 0)` and `(i, height[i])`.\n\nFind two lines that together with the x-axis form a container, such that the container contains the most water.\n\nReturn the maximum amount of water a container can store.\n\nNotice that you may not slant the container.",
+  "examples": [
+    {"input": "height = [1, 8, 6, 2, 5, 4, 8, 3, 7]", "output": "49\nExplanation: The max area is between lines at index 1 (height 8) and index 8 (height 7). Area = min(8, 7) * (8 - 1) = 49."},
+    {"input": "height = [1, 1]", "output": "1\nExplanation: Area = min(1, 1) * (1 - 0) = 1."}
+  ],
+  "constraints": [
+    "n == height.length",
+    "2 <= n <= 10^5",
+    "0 <= height[i] <= 10^4"
+  ],
+  "starterCode": {
+    "python": "def solve(height: list[int]) -> int:\n    pass",
+    "javascript": "function solve(height) {\n  \n}",
+    "typescript": "export function solve(height: number[]): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(int[] height) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(int[] height) {\n        \n    }\n}",
+    "go": "func solve(height []int) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([1, 8, 6, 2, 5, 4, 8, 3, 7]))"}, "expectedStdout": "49"},
+    {"stdin": {"python": "print(solve([1, 1]))"}, "expectedStdout": "1"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([4, 3, 2, 1, 4]))"}, "expectedStdout": "16"},
+    {"stdin": {"python": "print(solve([1, 2, 1]))"}, "expectedStdout": "2"},
+    {"stdin": {"python": "print(solve([2, 3, 10, 5, 7, 8, 9]))"}, "expectedStdout": "36"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use two pointers starting at both ends. Calculate area as min(height[left], height[right]) * (right - left). Move the pointer with the shorter line inward, since moving the taller one can never increase the area.",
+    "commonBugs": ["Moving the wrong pointer (should move the shorter one)", "Using max instead of min for the height calculation", "Not considering that both pointers could have equal height"],
+    "expectedComplexity": "O(n)"
+  }
+}

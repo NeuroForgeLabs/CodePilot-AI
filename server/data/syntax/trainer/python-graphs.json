@@ -1,0 +1,78 @@
+{
+  "id": "python-graphs",
+  "title": "Graphs",
+  "description": "Master graph representation and traversal in Python — adjacency lists, DFS, BFS, and connected components are foundational patterns that appear in nearly every coding interview.",
+  "language": "python",
+  "category": "graphs",
+  "order": 12,
+  "sections": [
+    {
+      "id": "adjacency-list",
+      "title": "Building an adjacency list",
+      "explanation": "An adjacency list maps each node to its list of neighbors and is the most common graph representation in interviews. Use a `defaultdict(list)` to avoid key-existence checks — just append neighbors directly. Interviewers expect you to build one from an edge list in O(V + E) and handle both directed and undirected variants.",
+      "example": "from collections import defaultdict\n\nedges = [[0, 1], [0, 2], [1, 3], [2, 3]]\ngraph = defaultdict(list)\nfor u, v in edges:\n    graph[u].append(v)\n    graph[v].append(u)\n\nfor node in sorted(graph):\n    print(f\"{node}: {sorted(graph[node])}\")",
+      "exercise": {
+        "prompt": "Given `edges = [[0, 1], [0, 2], [1, 2], [2, 3]]`, build an undirected adjacency list using `defaultdict(list)`. Print each node and its sorted neighbor list, iterating nodes in sorted order.",
+        "starterCode": "from collections import defaultdict\n\nedges = [[0, 1], [0, 2], [1, 2], [2, 3]]\ngraph = defaultdict(list)\nfor u, v in edges:\n    graph[u].append()\n    graph[v].append()\n\nfor node in sorted(graph):\n    print(f\"{node}: {sorted(graph[node])}\")",
+        "validation": [
+          {"type": "output", "expected": "0: [1, 2]\n1: [0, 2]\n2: [0, 1, 3]\n3: [2]", "message": "Each node should list its neighbors in sorted order for the undirected graph"},
+          {"type": "contains", "patterns": ["defaultdict", "append"], "message": "Use defaultdict(list) and append to build the adjacency list"}
+        ],
+        "testCode": "",
+        "hint": "For an undirected graph, append v to graph[u] and u to graph[v] for each edge."
+      },
+      "order": 1
+    },
+    {
+      "id": "dfs-graph",
+      "title": "DFS on a graph",
+      "explanation": "Depth-first search explores as deep as possible before backtracking, using recursion and a `visited` set to avoid cycles. DFS is the backbone of path-finding, cycle detection, and topological sort problems. Interviewers expect O(V + E) time and the ability to switch between recursive and iterative (stack-based) implementations.",
+      "example": "def dfs(graph, node, visited):\n    visited.add(node)\n    print(node, end=' ')\n    for neighbor in sorted(graph[node]):\n        if neighbor not in visited:\n            dfs(graph, neighbor, visited)\n\ngraph = {0: [1, 2], 1: [0, 3], 2: [0, 3], 3: [1, 2]}\nvisited = set()\ndfs(graph, 0, visited)",
+      "exercise": {
+        "prompt": "Implement recursive DFS starting from node 0. Use a `visited` set to track seen nodes. Print each node as you visit it (space-separated on one line). The graph is `{0: [1, 2], 1: [0, 3], 2: [0, 4], 3: [1], 4: [2]}`.",
+        "starterCode": "def dfs(graph, node, visited):\n    visited.add(node)\n    print(node, end=' ')\n    for neighbor in sorted(graph[node]):\n        if neighbor not in :\n            dfs(graph, , visited)\n\ngraph = {0: [1, 2], 1: [0, 3], 2: [0, 4], 3: [1], 4: [2]}\nvisited = set()\ndfs(graph, 0, visited)",
+        "validation": [
+          {"type": "output", "expected": "0 1 3 2 4", "message": "DFS from 0 visiting sorted neighbors should produce 0 1 3 2 4"},
+          {"type": "contains", "patterns": ["visited", "dfs(graph", "visited.add"], "message": "Use a visited set and recurse with dfs(graph, neighbor, visited)"}
+        ],
+        "testCode": "",
+        "hint": "Check `if neighbor not in visited`, then recurse with `dfs(graph, neighbor, visited)`. Sorting neighbors ensures deterministic order."
+      },
+      "order": 2
+    },
+    {
+      "id": "bfs-graph",
+      "title": "BFS on a graph",
+      "explanation": "Breadth-first search explores all neighbors at the current depth before moving deeper, using a `deque` as a FIFO queue and a `visited` set. BFS naturally finds the shortest path in unweighted graphs, making it the go-to for \"minimum steps\" and \"nearest X\" interview problems. Always mark a node visited when you enqueue it, not when you dequeue — this prevents duplicates.",
+      "example": "from collections import deque\n\ndef bfs(graph, start):\n    visited = {start}\n    queue = deque([start])\n    while queue:\n        node = queue.popleft()\n        print(node, end=' ')\n        for neighbor in sorted(graph[node]):\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append(neighbor)\n\ngraph = {0: [1, 2], 1: [0, 3], 2: [0, 3], 3: [1, 2]}\nbfs(graph, 0)",
+      "exercise": {
+        "prompt": "Implement BFS starting from node 0 using a `deque`. Mark nodes visited when enqueuing. Print each node as you dequeue it (space-separated). The graph is `{0: [1, 2], 1: [0, 3], 2: [0, 4], 3: [1], 4: [2]}`.",
+        "starterCode": "from collections import deque\n\ndef bfs(graph, start):\n    visited = {start}\n    queue = deque([start])\n    while queue:\n        node = queue.popleft()\n        print(node, end=' ')\n        for neighbor in sorted(graph[node]):\n            if neighbor not in :\n                visited.add(neighbor)\n                queue.append()\n\ngraph = {0: [1, 2], 1: [0, 3], 2: [0, 4], 3: [1], 4: [2]}\nbfs(graph, 0)",
+        "validation": [
+          {"type": "output", "expected": "0 1 2 3 4", "message": "BFS from 0 visiting sorted neighbors should produce 0 1 2 3 4"},
+          {"type": "contains", "patterns": ["deque", "popleft", "visited"], "message": "Use deque with popleft for FIFO order and a visited set to avoid revisits"}
+        ],
+        "testCode": "",
+        "hint": "Check `if neighbor not in visited`, then add to visited and append `neighbor` to the queue."
+      },
+      "order": 3
+    },
+    {
+      "id": "connected-components",
+      "title": "Connected components",
+      "explanation": "Counting connected components means finding how many separate groups of nodes exist in an undirected graph. Loop through every node — if it hasn't been visited, run DFS (or BFS) from it and increment a counter. This O(V + E) pattern is a staple in interview problems like \"number of islands\" and \"number of provinces.\"",
+      "example": "def dfs(graph, node, visited):\n    visited.add(node)\n    for neighbor in graph[node]:\n        if neighbor not in visited:\n            dfs(graph, neighbor, visited)\n\ngraph = {0: [1], 1: [0], 2: [3], 3: [2], 4: []}\nvisited = set()\ncount = 0\nfor node in graph:\n    if node not in visited:\n        dfs(graph, node, visited)\n        count += 1\nprint(count)  # 3",
+      "exercise": {
+        "prompt": "Count the connected components in the graph `{0: [1], 1: [0, 2], 2: [1], 3: [4], 4: [3], 5: []}`. Loop through all nodes, run DFS on unvisited ones, and increment a counter each time. Print the count.",
+        "starterCode": "def dfs(graph, node, visited):\n    visited.add(node)\n    for neighbor in graph[node]:\n        if neighbor not in visited:\n            dfs(graph, neighbor, visited)\n\ngraph = {0: [1], 1: [0, 2], 2: [1], 3: [4], 4: [3], 5: []}\nvisited = set()\ncount = 0\nfor node in graph:\n    if node not in :\n        dfs(graph, node, )\n        count += \nprint(count)",
+        "validation": [
+          {"type": "output", "expected": "3", "message": "There are 3 connected components: {0,1,2}, {3,4}, and {5}"},
+          {"type": "contains", "patterns": ["visited", "count", "dfs"], "message": "Loop through nodes, run DFS on unvisited ones, and increment count"}
+        ],
+        "testCode": "",
+        "hint": "Check `if node not in visited`, then call `dfs(graph, node, visited)` and add `1` to count."
+      },
+      "order": 4
+    }
+  ]
+}

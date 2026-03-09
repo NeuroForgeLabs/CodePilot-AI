@@ -1,0 +1,78 @@
+{
+  "id": "javascript-functions",
+  "title": "Functions",
+  "description": "Functions are the building blocks of interview solutions. Know function declarations, arrow functions, parameter patterns, and callbacks inside out.",
+  "language": "javascript",
+  "category": "functions",
+  "order": 4,
+  "sections": [
+    {
+      "id": "function-arrow",
+      "title": "Function declarations vs arrow functions",
+      "explanation": "Use function declarations for named helper functions and arrow functions for inline callbacks. Arrow functions are concise — single-expression arrows implicitly return without braces. Interviewers expect you to use arrows fluently, especially with array methods like map, filter, reduce.",
+      "example": "// Function declaration\nfunction add(a, b) {\n  return a + b;\n}\n\n// Arrow function\nconst multiply = (a, b) => a * b;\n\n// Arrow with body\nconst greet = (name) => {\n  const msg = `Hello ${name}`;\n  return msg;\n};",
+      "exercise": {
+        "prompt": "Write a function declaration `square` that returns x*x. Write an arrow function `cube` that returns x*x*x. Print square(5) and cube(3).",
+        "starterCode": "function square(x) {\n  return x _____ x;\n}\n\nconst cube = (x) => x * x _____ x;\n\nconsole.log(square(5));\nconsole.log(cube(3));",
+        "validation": [
+          {"type": "output", "expected": "25\n27", "message": "square(5) = 25, cube(3) = 27"},
+          {"type": "contains", "patterns": ["function", "=>"], "message": "Use a function declaration for square and an arrow function for cube"}
+        ],
+        "testCode": "",
+        "hint": "square returns x * x, cube returns x * x * x."
+      },
+      "order": 1
+    },
+    {
+      "id": "params-rest",
+      "title": "Parameters, defaults, and rest",
+      "explanation": "Default parameters prevent undefined values when arguments are omitted. The rest operator `...args` collects remaining arguments into an array — useful for variadic functions. In interviews, rest is handy for implementing utility functions that accept any number of inputs.",
+      "example": "function greet(name, greeting = \"Hello\") {\n  return `${greeting}, ${name}`;\n}\n\nfunction sum(...nums) {\n  let total = 0;\n  for (const n of nums) total += n;\n  return total;\n}\n\nconsole.log(sum(1, 2, 3, 4)); // 10",
+      "exercise": {
+        "prompt": "Write a function `sum` using rest parameters that sums all arguments. Then call it with (1, 2, 3) and (10, 20, 30, 40) and print both results.",
+        "starterCode": "function sum(_____nums) {\n  let total = 0;\n  for (const n of nums) {\n    total += n;\n  }\n  return total;\n}\n\nconsole.log(sum(1, 2, 3));\nconsole.log(sum(10, 20, 30, 40));",
+        "validation": [
+          {"type": "output", "expected": "6\n100", "message": "sum(1,2,3) = 6, sum(10,20,30,40) = 100"},
+          {"type": "contains", "patterns": ["..."], "message": "Use the rest operator (...) to collect arguments"}
+        ],
+        "testCode": "",
+        "hint": "Use ...nums as the parameter to gather all arguments into an array."
+      },
+      "order": 2
+    },
+    {
+      "id": "return-values",
+      "title": "Return values",
+      "explanation": "JavaScript functions return `undefined` if no return statement is hit. Arrow functions without braces implicitly return the expression. In interviews, always be explicit about what your function returns — especially edge cases like empty input returning null, -1, or an empty array.",
+      "example": "// Explicit return\nfunction findMax(arr) {\n  if (arr.length === 0) return -Infinity;\n  let max = arr[0];\n  for (const val of arr) {\n    if (val > max) max = val;\n  }\n  return max;\n}\n\n// Implicit return with arrow\nconst double = (x) => x * 2;",
+      "exercise": {
+        "prompt": "Write a function `findMin` that returns the minimum value in an array. Return Infinity for empty arrays. Test with [3, 1, 4, 1, 5] and print the result, then test with [] and print the result.",
+        "starterCode": "function findMin(arr) {\n  if (arr.length === 0) return _____;\n  let min = arr[0];\n  for (const val of arr) {\n    if (val _____ min) min = val;\n  }\n  return min;\n}\n\nconsole.log(findMin([3, 1, 4, 1, 5]));\nconsole.log(findMin([]));",
+        "validation": [
+          {"type": "output", "expected": "1\nInfinity", "message": "Min of [3,1,4,1,5] is 1, empty array returns Infinity"},
+          {"type": "contains", "patterns": ["return", "Infinity"], "message": "Return Infinity for the edge case and use < to find the minimum"}
+        ],
+        "testCode": "",
+        "hint": "Return Infinity for empty arrays. Use < to compare: if (val < min)."
+      },
+      "order": 3
+    },
+    {
+      "id": "callbacks",
+      "title": "Callbacks and higher-order functions",
+      "explanation": "A callback is a function passed as an argument. JavaScript's array methods — map, filter, reduce — all use callbacks. Mastering these lets you write concise, readable interview code. reduce() is especially powerful for aggregation problems.",
+      "example": "const nums = [1, 2, 3, 4, 5];\n\nconst doubled = nums.map(x => x * 2);    // [2,4,6,8,10]\nconst evens = nums.filter(x => x % 2 === 0); // [2,4]\nconst sum = nums.reduce((acc, x) => acc + x, 0); // 15",
+      "exercise": {
+        "prompt": "Given `nums = [1, 2, 3, 4, 5]`, use map to create squares, filter to keep only values > 9, and reduce to sum the filtered values. Print the mapped array joined by commas, the filtered array joined by commas, and the sum.",
+        "starterCode": "const nums = [1, 2, 3, 4, 5];\n\nconst squares = nums.map(x => x _____ x);\nconsole.log(squares.join(\",\"));\n\nconst big = squares.filter(x => x _____ 9);\nconsole.log(big.join(\",\"));\n\nconst sum = big.reduce((acc, x) => acc + x, _____);\nconsole.log(sum);",
+        "validation": [
+          {"type": "output", "expected": "1,4,9,16,25\n16,25\n41", "message": "Squares: 1,4,9,16,25. Filter >9: 16,25. Sum: 41"},
+          {"type": "contains", "patterns": ["map(", "filter(", "reduce("], "message": "Use map, filter, and reduce with arrow function callbacks"}
+        ],
+        "testCode": "",
+        "hint": "Map with x * x, filter with x > 9, reduce starting from 0."
+      },
+      "order": 4
+    }
+  ]
+}

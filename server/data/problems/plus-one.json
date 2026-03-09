@@ -1,0 +1,40 @@
+{
+  "id": "plus-one",
+  "title": "Plus One",
+  "difficulty": "Easy",
+  "tags": ["arrays", "math"],
+  "prompt": "You are given a large integer represented as an integer array `digits`, where each `digits[i]` is the `i`th digit of the integer. The digits are ordered from most significant to least significant in left-to-right order. The large integer does not contain any leading zeros.\n\nIncrement the large integer by one and return the resulting array of digits.",
+  "examples": [
+    {"input": "digits = [1, 2, 3]", "output": "[1, 2, 4]\nExplanation: The array represents the integer 123. Incrementing gives 124."},
+    {"input": "digits = [4, 3, 2, 1]", "output": "[4, 3, 2, 2]"},
+    {"input": "digits = [9]", "output": "[1, 0]\nExplanation: 9 + 1 = 10, represented as [1, 0]."}
+  ],
+  "constraints": [
+    "1 <= digits.length <= 100",
+    "0 <= digits[i] <= 9",
+    "digits does not contain any leading zeros"
+  ],
+  "starterCode": {
+    "python": "def solve(digits):\n    pass",
+    "javascript": "function solve(digits) {\n  \n}",
+    "typescript": "export function solve(digits: number[]): number[] {\n  \n}",
+    "java": "class Solution {\n    public int[] solve(int[] digits) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int[] Solve(int[] digits) {\n        \n    }\n}",
+    "go": "func solve(digits []int) []int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([1, 2, 3]))"}, "expectedStdout": "[1, 2, 4]"},
+    {"stdin": {"python": "print(solve([4, 3, 2, 1]))"}, "expectedStdout": "[4, 3, 2, 2]"},
+    {"stdin": {"python": "print(solve([9]))"}, "expectedStdout": "[1, 0]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([9, 9, 9]))"}, "expectedStdout": "[1, 0, 0, 0]"},
+    {"stdin": {"python": "print(solve([0]))"}, "expectedStdout": "[1]"},
+    {"stdin": {"python": "print(solve([1, 9, 9]))"}, "expectedStdout": "[2, 0, 0]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Start from the last digit and add one. If it becomes 10, set to 0 and carry over. Continue until no carry remains. If carry propagates past the first digit, prepend a 1.",
+    "commonBugs": ["Not handling the all-nines case (e.g. [9,9,9] -> [1,0,0,0])", "Converting to integer which may overflow for very large numbers", "Forgetting to propagate the carry through all digits"],
+    "expectedComplexity": "O(n)"
+  }
+}

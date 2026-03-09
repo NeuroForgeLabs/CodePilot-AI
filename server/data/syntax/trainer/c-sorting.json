@@ -1,0 +1,61 @@
+{
+  "id": "c-sorting",
+  "title": "Sorting",
+  "description": "Master qsort() with custom comparator functions — the standard way to sort arrays of ints, strings, and structs in C interviews.",
+  "language": "c",
+  "category": "sorting",
+  "order": 7,
+  "sections": [
+    {
+      "id": "qsort-ints",
+      "title": "Sorting integers with qsort",
+      "explanation": "**qsort()** is C's built-in sort from `<stdlib.h>`. Signature: `qsort(base, count, size, comparator)`. The comparator takes two `const void*` pointers, casts them, and returns negative (a < b), zero (a == b), or positive (a > b). For ascending int sort: `*(int*)a - *(int*)b`.",
+      "example": "int cmp_asc(const void *a, const void *b) {\n    return (*(int*)a - *(int*)b);\n}\n\nint main() {\n    int arr[] = {5, 2, 8, 1, 9};\n    int n = 5;\n    qsort(arr, n, sizeof(int), cmp_asc);\n    for (int i = 0; i < n; i++)\n        printf(\"%d \", arr[i]);\n    // 1 2 5 8 9\n}",
+      "exercise": {
+        "prompt": "Sort the array {7, 3, 9, 1, 5} in ascending order using qsort. Write the comparator function and print the sorted array space-separated.",
+        "starterCode": "int cmp_asc(const void *a, const void *b) {\n    return (*(int*)a - *(int*)b);\n}\n\nint main() {\n    int arr[] = {7, 3, 9, 1, 5};\n    int n = 5;\n    qsort(arr, n, sizeof(int), cmp_asc);\n    for (int i = 0; i < n; i++)\n        printf(\"%d \", arr[i]);\n    printf(\"\\n\");\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "1 3 5 7 9", "message": "Array should be sorted ascending: 1 3 5 7 9"},
+          {"type": "contains", "patterns": ["qsort(", "const void *", "*(int*)"], "message": "Use qsort with a comparator that casts void pointers to int pointers"}
+        ],
+        "testCode": "",
+        "hint": "Comparator: return *(int*)a - *(int*)b for ascending. Pass sizeof(int) as element size."
+      },
+      "order": 1
+    },
+    {
+      "id": "descending-sort",
+      "title": "Descending sort",
+      "explanation": "To sort descending, reverse the comparator: return `*(int*)b - *(int*)a`. This is a common interview trick — just swap a and b in the subtraction. Be careful with integer overflow for very large values; use comparison operators instead of subtraction when needed.",
+      "example": "int cmp_desc(const void *a, const void *b) {\n    return (*(int*)b - *(int*)a);\n}\n\nint main() {\n    int arr[] = {5, 2, 8, 1, 9};\n    int n = 5;\n    qsort(arr, n, sizeof(int), cmp_desc);\n    for (int i = 0; i < n; i++)\n        printf(\"%d \", arr[i]);\n    // 9 8 5 2 1\n}",
+      "exercise": {
+        "prompt": "Sort {4, 8, 2, 6, 10} in descending order using qsort with a descending comparator. Print the result.",
+        "starterCode": "int cmp_desc(const void *a, const void *b) {\n    return (*(int*)b - *(int*)a);\n}\n\nint main() {\n    int arr[] = {4, 8, 2, 6, 10};\n    int n = 5;\n    qsort(arr, n, sizeof(int), cmp_desc);\n    for (int i = 0; i < n; i++)\n        printf(\"%d \", arr[i]);\n    printf(\"\\n\");\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "10 8 6 4 2", "message": "Array should be sorted descending: 10 8 6 4 2"},
+          {"type": "contains", "patterns": ["*(int*)b - *(int*)a", "qsort(", "cmp_desc"], "message": "Swap a and b in the comparator for descending order"}
+        ],
+        "testCode": "",
+        "hint": "For descending: return *(int*)b - *(int*)a — just reverse a and b from ascending."
+      },
+      "order": 2
+    },
+    {
+      "id": "sort-structs",
+      "title": "Sorting structs",
+      "explanation": "To sort an array of structs, write a comparator that casts to the struct pointer type and compares the desired field. This is how you sort edges by weight, intervals by start time, or any custom data in interviews.",
+      "example": "typedef struct { int id; int score; } Student;\n\nint cmp_by_score(const void *a, const void *b) {\n    Student *sa = (Student*)a;\n    Student *sb = (Student*)b;\n    return sb->score - sa->score;  // descending by score\n}\n\nint main() {\n    Student arr[] = {{1, 85}, {2, 92}, {3, 78}};\n    qsort(arr, 3, sizeof(Student), cmp_by_score);\n    for (int i = 0; i < 3; i++)\n        printf(\"id=%d score=%d\\n\", arr[i].id, arr[i].score);\n    // id=2 score=92\n    // id=1 score=85\n    // id=3 score=78\n}",
+      "exercise": {
+        "prompt": "Define a struct Pair with fields `a` and `b`. Sort an array of pairs by field `a` ascending. If `a` is equal, sort by `b` descending. Print each pair as \"a b\".",
+        "starterCode": "typedef struct { int a; int b; } Pair;\n\nint cmp_pair(const void *x, const void *y) {\n    Pair *px = (Pair*)x;\n    Pair *py = (Pair*)y;\n    if (px->a != py->a)\n        return px->a - py->a;\n    return py->b - px->b;\n}\n\nint main() {\n    Pair arr[] = {{2, 5}, {1, 3}, {2, 8}, {1, 7}};\n    qsort(arr, 4, sizeof(Pair), cmp_pair);\n    for (int i = 0; i < 4; i++)\n        printf(\"%d %d\\n\", arr[i].a, arr[i].b);\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "1 7\n1 3\n2 8\n2 5", "message": "Sort by a ascending, then b descending within same a"},
+          {"type": "contains", "patterns": ["typedef struct", "px->a - py->a", "py->b - px->b", "qsort("], "message": "Use struct comparator with two-level comparison"}
+        ],
+        "testCode": "",
+        "hint": "First compare px->a - py->a (ascending). If equal, compare py->b - px->b (descending)."
+      },
+      "order": 3
+    }
+  ]
+}

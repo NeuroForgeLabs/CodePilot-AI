@@ -1,0 +1,40 @@
+{
+  "id": "merge-two-sorted-lists",
+  "title": "Merge Two Sorted Lists",
+  "difficulty": "Easy",
+  "tags": ["linked-list", "recursion"],
+  "prompt": "You are given two sorted arrays `list1` and `list2` (representing sorted linked lists as arrays for simplicity).\n\nMerge the two arrays into one sorted array and return it.\n\nThe resulting array should be made by splicing together the values of the two input arrays in sorted order.",
+  "examples": [
+    {"input": "list1 = [1, 2, 4], list2 = [1, 3, 4]", "output": "[1, 1, 2, 3, 4, 4]\nExplanation: Merging [1,2,4] and [1,3,4] in sorted order gives [1,1,2,3,4,4]."},
+    {"input": "list1 = [], list2 = []", "output": "[]\nExplanation: Both lists are empty, so the merged result is empty."},
+    {"input": "list1 = [], list2 = [0]", "output": "[0]\nExplanation: One list is empty, so the result is the other list."}
+  ],
+  "constraints": [
+    "0 <= list1.length, list2.length <= 50",
+    "-100 <= list1[i], list2[i] <= 100",
+    "Both list1 and list2 are sorted in non-decreasing order."
+  ],
+  "starterCode": {
+    "python": "def solve(list1, list2):\n    pass",
+    "javascript": "function solve(list1, list2) {\n  \n}",
+    "typescript": "export function solve(list1: number[], list2: number[]): number[] {\n  \n}",
+    "java": "class Solution {\n    public int[] solve(int[] list1, int[] list2) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int[] Solve(int[] list1, int[] list2) {\n        \n    }\n}",
+    "go": "func solve(list1 []int, list2 []int) []int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([1, 2, 4], [1, 3, 4]))"}, "expectedStdout": "[1, 1, 2, 3, 4, 4]"},
+    {"stdin": {"python": "print(solve([], []))"}, "expectedStdout": "[]"},
+    {"stdin": {"python": "print(solve([], [0]))"}, "expectedStdout": "[0]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([1], [2]))"}, "expectedStdout": "[1, 2]"},
+    {"stdin": {"python": "print(solve([5, 10, 15], [2, 6, 20]))"}, "expectedStdout": "[2, 5, 6, 10, 15, 20]"},
+    {"stdin": {"python": "print(solve([-3, -1, 0], [-2, 4]))"}, "expectedStdout": "[-3, -2, -1, 0, 4]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use two pointers, one for each list. Compare elements at both pointers, append the smaller one to the result, and advance that pointer. Append remaining elements when one list is exhausted.",
+    "commonBugs": ["Forgetting to append the remaining elements from the non-exhausted list", "Off-by-one errors in pointer comparison", "Not handling empty input lists"],
+    "expectedComplexity": "O(n + m)"
+  }
+}

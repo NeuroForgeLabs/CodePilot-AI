@@ -1,0 +1,37 @@
+{
+  "id": "diameter-of-binary-tree",
+  "title": "Diameter of Binary Tree",
+  "difficulty": "Easy",
+  "tags": ["tree", "recursion"],
+  "prompt": "Given the root of a binary tree as a level-order array (where `null` represents absent nodes), return the length of the diameter of the tree.\n\nThe diameter of a binary tree is the length of the longest path between any two nodes in the tree. This path may or may not pass through the root.\n\nThe length of a path is measured by the number of edges between nodes.",
+  "examples": [
+    {"input": "root = [1, 2, 3, 4, 5]", "output": "3\nExplanation: The longest path is [4, 2, 1, 3] or [5, 2, 1, 3], which has 3 edges."},
+    {"input": "root = [1, 2]", "output": "1\nExplanation: The only path is [2, 1], which has 1 edge."}
+  ],
+  "constraints": [
+    "1 <= number of nodes <= 10^4",
+    "-100 <= Node.val <= 100"
+  ],
+  "starterCode": {
+    "python": "def solve(root):\n    pass",
+    "javascript": "function solve(root) {\n  \n}",
+    "typescript": "export function solve(root: (number | null)[]): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(Integer[] root) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(int?[] root) {\n        \n    }\n}",
+    "go": "func solve(root []interface{}) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([1, 2, 3, 4, 5]))"}, "expectedStdout": "3"},
+    {"stdin": {"python": "print(solve([1, 2]))"}, "expectedStdout": "1"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([1]))"}, "expectedStdout": "0"},
+    {"stdin": {"python": "print(solve([1, 2, 3, 4, 5, None, None, 8]))"}, "expectedStdout": "4"},
+    {"stdin": {"python": "print(solve([1, 2, None, 3, None, 4]))"}, "expectedStdout": "3"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use DFS to compute the height of each subtree. At each node, the diameter passing through that node is leftHeight + rightHeight. Track the global maximum diameter seen. Return the height (1 + max(left, right)) to the parent.",
+    "commonBugs": ["Confusing height (nodes) with depth (edges) — diameter is counted in edges", "Only checking diameter through the root instead of tracking the global max across all nodes", "Incorrect tree construction from level-order array with nulls"],
+    "expectedComplexity": "O(n)"
+  }
+}

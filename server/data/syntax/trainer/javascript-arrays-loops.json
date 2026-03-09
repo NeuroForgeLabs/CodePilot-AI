@@ -1,0 +1,78 @@
+{
+  "id": "javascript-arrays-loops",
+  "title": "Arrays & Loops",
+  "description": "Arrays are the most common data structure in coding interviews. Master declaration, mutation, slicing, spreading, and every loop style JavaScript offers.",
+  "language": "javascript",
+  "category": "arrays-loops",
+  "order": 2,
+  "sections": [
+    {
+      "id": "declare-access",
+      "title": "Declare and access arrays",
+      "explanation": "Declare arrays with `[]` or `Array(n).fill(val)` for pre-sized arrays. Access by index in O(1). Negative indices don't work natively — use `arr.at(-1)` for the last element. Interviewers expect you to know that out-of-bounds access returns `undefined`, not an error.",
+      "example": "const nums = [10, 20, 30, 40];\nconsole.log(nums[0]);       // 10\nconsole.log(nums.at(-1));   // 40 (last element)\nconsole.log(nums.length);   // 4\n\nconst zeros = new Array(3).fill(0);\nconsole.log(zeros);         // [0, 0, 0]",
+      "exercise": {
+        "prompt": "Create an array `nums` with values [5, 10, 15, 20]. Print the first element, the last element using .at(-1), and the length.",
+        "starterCode": "const nums = [5, 10, 15, 20];\n\nconsole.log(nums[_____]);\nconsole.log(nums.at(_____));\nconsole.log(nums._____);",
+        "validation": [
+          {"type": "output", "expected": "5\n20\n4", "message": "First element is 5, last is 20, length is 4"},
+          {"type": "contains", "patterns": [".at(", ".length"], "message": "Use .at(-1) for the last element and .length for size"}
+        ],
+        "testCode": "",
+        "hint": "Index 0 for first, .at(-1) for last, .length for size."
+      },
+      "order": 1
+    },
+    {
+      "id": "push-pop",
+      "title": "push, pop, shift, unshift",
+      "explanation": "push/pop operate on the end in O(1). shift/unshift operate on the front in O(n) because elements must be reindexed. In interviews, prefer push/pop when possible. Know that pop() and shift() return the removed element.",
+      "example": "const stack = [1, 2, 3];\nstack.push(4);         // [1, 2, 3, 4]\nconst last = stack.pop(); // 4, stack is [1, 2, 3]\n\nconst queue = [1, 2, 3];\nqueue.push(4);             // [1, 2, 3, 4]\nconst first = queue.shift(); // 1, queue is [2, 3, 4]",
+      "exercise": {
+        "prompt": "Start with `arr = [10, 20, 30]`. Push 40, then pop the last element and store it. Print the popped value, then print the array. Then shift the first element and print it.",
+        "starterCode": "const arr = [10, 20, 30];\narr.push(_____);\nconst popped = arr._____();\nconsole.log(popped);\nconsole.log(arr.join(\",\"));\n\nconst shifted = arr._____();\nconsole.log(shifted);",
+        "validation": [
+          {"type": "output", "expected": "40\n10,20,30\n10", "message": "Push 40 then pop gets 40 back; shift removes the front element 10"},
+          {"type": "contains", "patterns": ["push(", "pop(", "shift("], "message": "Use push, pop, and shift array methods"}
+        ],
+        "testCode": "",
+        "hint": "push(40), then pop() returns 40, then shift() returns the first element 10."
+      },
+      "order": 2
+    },
+    {
+      "id": "slice-spread",
+      "title": "slice and spread operator",
+      "explanation": "slice(start, end) returns a shallow copy from start to end (exclusive) without modifying the original — essential for interview problems requiring subarrays. The spread operator `...` copies arrays and merges them. Both are O(n).",
+      "example": "const nums = [1, 2, 3, 4, 5];\nconst sub = nums.slice(1, 4);   // [2, 3, 4]\nconst copy = [...nums];          // [1, 2, 3, 4, 5]\nconst merged = [...[1, 2], ...[3, 4]]; // [1, 2, 3, 4]",
+      "exercise": {
+        "prompt": "Given `nums = [10, 20, 30, 40, 50]`, create a slice from index 1 to 4 and print it joined by commas. Then create a copy using spread and print its length.",
+        "starterCode": "const nums = [10, 20, 30, 40, 50];\n\nconst sub = nums.slice(_____, _____);\nconsole.log(sub.join(\",\"));\n\nconst copy = [_____nums];\nconsole.log(copy.length);",
+        "validation": [
+          {"type": "output", "expected": "20,30,40\n5", "message": "slice(1,4) gives [20,30,40], spread copy has length 5"},
+          {"type": "contains", "patterns": ["slice(", "..."], "message": "Use slice for the subarray and spread for the copy"}
+        ],
+        "testCode": "",
+        "hint": "slice(1, 4) for indices 1-3, and [...nums] for the copy."
+      },
+      "order": 3
+    },
+    {
+      "id": "loops",
+      "title": "for, for...of, and forEach",
+      "explanation": "Use a classic `for` loop when you need the index (two-pointer, sliding window). Use `for...of` for clean iteration over values. Use `forEach` for side-effect-only passes. Avoid `for...in` on arrays — it iterates over string keys and includes inherited properties.",
+      "example": "const nums = [10, 20, 30];\n\n// Classic for — when you need index\nfor (let i = 0; i < nums.length; i++) {\n  // use nums[i]\n}\n\n// for...of — clean value iteration\nfor (const val of nums) {\n  // use val\n}\n\n// forEach — callback style\nnums.forEach((val, i) => {\n  // use val and i\n});",
+      "exercise": {
+        "prompt": "Given `nums = [2, 4, 6, 8]`, use a for...of loop to compute the sum and print it. Then use forEach to print each value doubled, each on its own line.",
+        "starterCode": "const nums = [2, 4, 6, 8];\n\nlet sum = 0;\nfor (const val _____ nums) {\n  sum += val;\n}\nconsole.log(sum);\n\nnums.forEach((val) => {\n  console.log(val * _____);\n});",
+        "validation": [
+          {"type": "output", "expected": "20\n4\n8\n12\n16", "message": "Sum is 20, then each value doubled: 4, 8, 12, 16"},
+          {"type": "contains", "patterns": ["for", "of", "forEach"], "message": "Use for...of for the sum and forEach for the doubling"}
+        ],
+        "testCode": "",
+        "hint": "Use 'of' in the for...of loop, and multiply by 2 in forEach."
+      },
+      "order": 4
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "id": "javascript-variables-types",
+  "title": "Variables & Types",
+  "description": "Master JavaScript's variable declarations and type system — interviewers expect you to know let/const/var differences, type coercion traps, and how to check types reliably.",
+  "language": "javascript",
+  "category": "variables-types",
+  "order": 1,
+  "sections": [
+    {
+      "id": "let-const-var",
+      "title": "let, const, and var",
+      "explanation": "In interviews, always default to `const` for values that don't change and `let` for loop counters or reassigned variables. Avoid `var` — it has function scope instead of block scope, which causes subtle bugs. Interviewers notice which declaration you reach for first.",
+      "example": "const target = 5;       // immutable binding\nlet count = 0;          // will be reassigned\n\nfor (let i = 0; i < 3; i++) {\n  count += i;\n}\nconsole.log(count);     // 3\nconsole.log(target);    // 5\n\n// const prevents reassignment, not mutation\nconst arr = [1, 2];\narr.push(3);            // OK — mutating the array\nconsole.log(arr);       // [1, 2, 3]",
+      "exercise": {
+        "prompt": "Declare `maxSize` as a constant set to 100, and `count` with let set to 0. Increment count by 10 three times using a for loop with let. Print maxSize, then count.",
+        "starterCode": "// Declare a constant\n___ maxSize = 100;\n\n// Declare a mutable variable\n___ count = 0;\n\nfor (___ i = 0; i < 3; i++) {\n  count += 10;\n}\n\nconsole.log(maxSize);\nconsole.log(count);",
+        "validation": [
+          {"type": "output", "expected": "100\n30", "message": "maxSize should be 100 and count should be 30 after three increments of 10"},
+          {"type": "contains", "patterns": ["const", "let"], "message": "Use const for maxSize and let for count and the loop variable"}
+        ],
+        "testCode": "",
+        "hint": "Replace the blanks: const for maxSize, let for count and i."
+      },
+      "order": 1
+    },
+    {
+      "id": "type-coercion",
+      "title": "Type coercion",
+      "explanation": "JavaScript coerces types implicitly with `==` and `+`. Interviews test whether you understand these traps. Always use `===` for strict equality. Know that `+` with a string concatenates, while `-`, `*`, `/` convert to numbers.",
+      "example": "// Loose vs strict equality\nconsole.log(1 == \"1\");    // true (coercion)\nconsole.log(1 === \"1\");   // false (no coercion)\n\n// + concatenates with strings\nconsole.log(5 + \"3\");     // \"53\"\nconsole.log(5 - \"3\");     // 2 (converts to number)\n\n// Explicit conversion\nconst num = Number(\"42\"); // 42\nconst str = String(100);  // \"100\"",
+      "exercise": {
+        "prompt": "Print the results of: `5 + \"3\"`, `5 - \"3\"`, `1 === \"1\"`, `Number(\"99\")`, and `String(256)` — each on its own line via console.log.",
+        "starterCode": "console.log(5 + \"3\");\nconsole.log(5 - _____);\nconsole.log(1 === _____);\nconsole.log(Number(_____));\nconsole.log(String(_____));",
+        "validation": [
+          {"type": "output", "expected": "53\n2\nfalse\n99\n256", "message": "Check each coercion result — 5+\"3\" is \"53\", 5-\"3\" is 2, 1===\"1\" is false"},
+          {"type": "contains", "patterns": ["===", "Number(", "String("], "message": "Use strict equality and explicit conversion functions"}
+        ],
+        "testCode": "",
+        "hint": "Fill in: \"3\" for subtraction, \"1\" for strict comparison, \"99\" for Number, 256 for String."
+      },
+      "order": 2
+    },
+    {
+      "id": "null-undefined",
+      "title": "null and undefined",
+      "explanation": "JavaScript has two \"empty\" values. `undefined` means a variable was declared but never assigned; `null` is an intentional absence of value. In interviews, use `null` to represent \"no result found\" from a function and check with `=== null` or `=== undefined`.",
+      "example": "let result;                // undefined\nconst empty = null;        // intentional empty\n\nconsole.log(result === undefined); // true\nconsole.log(empty === null);       // true\n\n// == null catches both null and undefined\nconsole.log(null == undefined);    // true\nconsole.log(null === undefined);   // false",
+      "exercise": {
+        "prompt": "Declare `x` without assigning it. Declare `y` and assign null. Print whether x is undefined using ===, then print whether y is null using ===, then print whether null == undefined.",
+        "starterCode": "let x;\nconst y = _____;\n\nconsole.log(x === undefined);\nconsole.log(y === _____);\nconsole.log(null == undefined);",
+        "validation": [
+          {"type": "output", "expected": "true\ntrue\ntrue", "message": "x should be undefined, y should be null, and null == undefined is true"},
+          {"type": "contains", "patterns": ["null", "undefined"], "message": "Use null for y and undefined for the comparison"}
+        ],
+        "testCode": "",
+        "hint": "Assign null to y, and compare y === null."
+      },
+      "order": 3
+    },
+    {
+      "id": "typeof-operator",
+      "title": "typeof operator",
+      "explanation": "The `typeof` operator returns a string identifying the type. Know the quirks: `typeof null` returns \"object\" (a historical bug), and `typeof` an array returns \"object\" — use `Array.isArray()` instead. Interviewers use this to test your JS depth.",
+      "example": "console.log(typeof 42);          // \"number\"\nconsole.log(typeof \"hello\");     // \"string\"\nconsole.log(typeof true);        // \"boolean\"\nconsole.log(typeof undefined);   // \"undefined\"\nconsole.log(typeof null);        // \"object\" (JS quirk!)\nconsole.log(typeof [1, 2]);      // \"object\"\nconsole.log(Array.isArray([1])); // true",
+      "exercise": {
+        "prompt": "Print typeof for: 42, \"hello\", true, undefined, null. Then print Array.isArray([1, 2, 3]).",
+        "starterCode": "console.log(typeof 42);\nconsole.log(typeof \"hello\");\nconsole.log(typeof _____);\nconsole.log(typeof _____);\nconsole.log(typeof null);\nconsole.log(Array.isArray(_____));",
+        "validation": [
+          {"type": "output", "expected": "number\nstring\nboolean\nundefined\nobject\ntrue", "message": "Remember typeof null is \"object\" — a famous JS quirk"},
+          {"type": "contains", "patterns": ["typeof", "Array.isArray"], "message": "Use typeof for primitives and Array.isArray for arrays"}
+        ],
+        "testCode": "",
+        "hint": "Fill in: true, undefined, and [1, 2, 3] for the three blanks."
+      },
+      "order": 4
+    }
+  ]
+}

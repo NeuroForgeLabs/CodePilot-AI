@@ -1,0 +1,78 @@
+{
+  "id": "c-functions",
+  "title": "Functions",
+  "description": "Functions in C — declaration, passing arrays and pointers as parameters, return values, and function pointers for callbacks like qsort.",
+  "language": "c",
+  "category": "functions",
+  "order": 4,
+  "sections": [
+    {
+      "id": "declaration-return",
+      "title": "Function declaration and return",
+      "explanation": "C functions must be declared before use (or forward-declared with a prototype). Syntax: `return_type name(params) { body }`. Functions return a single value. Use `void` for no return. In interview code, define helper functions above `main()`.",
+      "example": "int add(int a, int b) {\n    return a + b;\n}\n\nint max_val(int a, int b) {\n    return (a > b) ? a : b;\n}\n\nint main() {\n    printf(\"%d\\n\", add(3, 4));       // 7\n    printf(\"%d\\n\", max_val(10, 5));  // 10\n    return 0;\n}",
+      "exercise": {
+        "prompt": "Write a function `multiply` that takes two ints and returns their product. Write a function `absolute` that returns the absolute value of an int. Call both from main and print the results.",
+        "starterCode": "int multiply(int a, int b) {\n    return a * b;\n}\n\nint absolute(int x) {\n    return (x < 0) ? -x : x;\n}\n\nint main() {\n    printf(\"%d\\n\", multiply(6, 7));\n    printf(\"%d\\n\", absolute(-15));\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "42\n15", "message": "6*7=42 and absolute(-15)=15"},
+          {"type": "contains", "patterns": ["int multiply(", "int absolute(", "return"], "message": "Define both functions with correct signatures and return statements"}
+        ],
+        "testCode": "",
+        "hint": "multiply returns a * b. absolute uses the ternary: (x < 0) ? -x : x."
+      },
+      "order": 1
+    },
+    {
+      "id": "pointer-params",
+      "title": "Pointers as parameters",
+      "explanation": "C is pass-by-value — to modify a variable inside a function, pass its **address** with `&` and receive a **pointer** with `*`. This is how you implement swap, modify arrays in-place, and return multiple values. Arrays naturally decay to pointers when passed.",
+      "example": "void swap(int *a, int *b) {\n    int temp = *a;\n    *a = *b;\n    *b = temp;\n}\n\nvoid fill_array(int *arr, int n, int val) {\n    for (int i = 0; i < n; i++)\n        arr[i] = val;\n}\n\nint main() {\n    int x = 5, y = 10;\n    swap(&x, &y);\n    printf(\"%d %d\\n\", x, y);  // 10 5\n}",
+      "exercise": {
+        "prompt": "Write a swap function that takes two int pointers and swaps their values. Use it in main to swap x=3 and y=7, then print both values.",
+        "starterCode": "void swap(int *a, int *b) {\n    int temp = *a;\n    *a = *b;\n    *b = temp;\n}\n\nint main() {\n    int x = 3, y = 7;\n    swap(&x, &y);\n    printf(\"%d %d\\n\", x, y);\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "7 3", "message": "After swap, x should be 7 and y should be 3"},
+          {"type": "contains", "patterns": ["void swap(int *", "&x", "&y", "*a", "*b"], "message": "Use pointer parameters and pass addresses with &"}
+        ],
+        "testCode": "",
+        "hint": "Dereference with *a and *b inside swap. Pass addresses with &x and &y."
+      },
+      "order": 2
+    },
+    {
+      "id": "array-params",
+      "title": "Passing arrays to functions",
+      "explanation": "When you pass an array to a function, it decays to a pointer — the function cannot determine the array's size. Always pass the **length as a separate parameter**. The function receives `int *arr` or `int arr[]` (both are equivalent).",
+      "example": "int sum(int arr[], int n) {\n    int total = 0;\n    for (int i = 0; i < n; i++)\n        total += arr[i];\n    return total;\n}\n\nint find_max(int *arr, int n) {\n    int mx = arr[0];\n    for (int i = 1; i < n; i++)\n        if (arr[i] > mx) mx = arr[i];\n    return mx;\n}\n\nint main() {\n    int nums[] = {3, 1, 4, 1, 5};\n    printf(\"sum: %d\\n\", sum(nums, 5));      // sum: 14\n    printf(\"max: %d\\n\", find_max(nums, 5)); // max: 5\n}",
+      "exercise": {
+        "prompt": "Write a function `find_min` that takes an int array and its length, and returns the minimum value. Call it with {8, 3, 12, 1, 6} and print the result.",
+        "starterCode": "int find_min(int arr[], int n) {\n    int mn = arr[0];\n    for (int i = 1; i < n; i++) {\n        if (arr[i] < mn)\n            mn = arr[i];\n    }\n    return mn;\n}\n\nint main() {\n    int nums[] = {8, 3, 12, 1, 6};\n    printf(\"%d\\n\", find_min(nums, 5));\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "1", "message": "The minimum of {8, 3, 12, 1, 6} is 1"},
+          {"type": "contains", "patterns": ["int find_min(", "arr[i] < mn", "return mn"], "message": "Define find_min with array and length params, track minimum with comparisons"}
+        ],
+        "testCode": "",
+        "hint": "Start mn = arr[0], then compare each arr[i] < mn and update if smaller."
+      },
+      "order": 3
+    },
+    {
+      "id": "function-pointers",
+      "title": "Function pointers",
+      "explanation": "A function pointer stores the address of a function. Syntax: `return_type (*name)(param_types)`. You'll encounter this with **qsort()** which takes a comparator function pointer. This is C's way of doing callbacks and polymorphism.",
+      "example": "int add(int a, int b) { return a + b; }\nint sub(int a, int b) { return a - b; }\n\nint apply(int (*op)(int, int), int x, int y) {\n    return op(x, y);\n}\n\nint main() {\n    printf(\"%d\\n\", apply(add, 10, 3));  // 13\n    printf(\"%d\\n\", apply(sub, 10, 3));  // 7\n}",
+      "exercise": {
+        "prompt": "Create two functions: `square` (returns x*x) and `cube` (returns x*x*x). Write an `apply` function that takes a function pointer and an int, calls the function, and returns the result. Use apply to print square(5) and cube(3).",
+        "starterCode": "int square(int x) { return x * x; }\nint cube(int x) { return x * x * x; }\n\nint apply(int (*fn)(int), int x) {\n    return fn(x);\n}\n\nint main() {\n    printf(\"%d\\n\", apply(square, 5));\n    printf(\"%d\\n\", apply(cube, 3));\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "25\n27", "message": "square(5)=25, cube(3)=27"},
+          {"type": "contains", "patterns": ["int (*fn)(int)", "fn(x)", "apply(square", "apply(cube"], "message": "Use a function pointer parameter and call it with fn(x)"}
+        ],
+        "testCode": "",
+        "hint": "The function pointer syntax is int (*fn)(int). Call it as fn(x) inside apply."
+      },
+      "order": 4
+    }
+  ]
+}

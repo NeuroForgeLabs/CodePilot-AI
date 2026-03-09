@@ -1,0 +1,78 @@
+{
+  "id": "rust-stacks-queues",
+  "title": "Stacks & Queues",
+  "description": "Vec works as a stack (push/pop from the back) and VecDeque as a double-ended queue. These are fundamental for parentheses validation, BFS traversal, and monotonic stack problems in interviews.",
+  "language": "rust",
+  "category": "stacks-queues",
+  "order": 8,
+  "sections": [
+    {
+      "id": "vec-as-stack",
+      "title": "Vec as a stack (LIFO)",
+      "explanation": "Vec naturally behaves as a **stack**: `.push()` adds to the top, `.pop()` removes from the top (returns Option<T>), and `.last()` peeks at the top. This LIFO behavior drives parentheses matching, expression evaluation, and monotonic stack problems.",
+      "example": "fn main() {\n    let mut stack: Vec<i32> = Vec::new();\n    stack.push(1);\n    stack.push(2);\n    stack.push(3);\n\n    println!(\"{:?}\", stack.last());  // Some(3)\n    println!(\"{:?}\", stack.pop());   // Some(3)\n    println!(\"{:?}\", stack.pop());   // Some(2)\n    println!(\"{}\", stack.len());     // 1\n}",
+      "exercise": {
+        "prompt": "Push values 10, 20, 30 onto a Vec stack. Peek at the top with .last(). Pop two elements and print them. Print the remaining stack length.",
+        "starterCode": "fn main() {\n    let mut stack: Vec<i32> = Vec::new();\n    stack.push(10);\n    stack.push(20);\n    stack.push(30);\n\n    println!(\"{:?}\", stack.last());\n    println!(\"{:?}\", stack.pop());\n    println!(\"{:?}\", stack.());\n    println!(\"{}\", stack.len());\n}",
+        "validation": [
+          {"type": "output", "expected": "Some(30)\nSome(30)\nSome(20)\n1", "message": "Peek=30, pop=30, pop=20, remaining length=1"},
+          {"type": "contains", "patterns": [".push(", ".pop()", ".last()", ".len()"], "message": "Use push, pop, last, and len for stack operations"}
+        ],
+        "testCode": "",
+        "hint": "Call .pop() for the second removal. After two pops, only 10 remains."
+      },
+      "order": 1
+    },
+    {
+      "id": "valid-parentheses",
+      "title": "Valid parentheses (classic stack problem)",
+      "explanation": "The valid parentheses problem: for each opening bracket, push the matching closer. For each closing bracket, check if it matches the top of the stack. This O(n) pattern extends to any bracket-matching or nesting validation problem — a staple of coding interviews.",
+      "example": "fn is_valid(s: &str) -> bool {\n    let mut stack = Vec::new();\n    for c in s.chars() {\n        match c {\n            '(' => stack.push(')'),\n            '{' => stack.push('}'),\n            '[' => stack.push(']'),\n            _ => {\n                if stack.pop() != Some(c) {\n                    return false;\n                }\n            }\n        }\n    }\n    stack.is_empty()\n}\n\nfn main() {\n    println!(\"{}\", is_valid(\"({[]})\")); // true\n    println!(\"{}\", is_valid(\"([)]\")); // false\n}",
+      "exercise": {
+        "prompt": "Complete the is_valid function for parentheses checking. Test with \"()[]{}\", \"(]\", and \"{[]}\".",
+        "starterCode": "fn is_valid(s: &str) -> bool {\n    let mut stack = Vec::new();\n    for c in s.chars() {\n        match c {\n            '(' => stack.push(')'),\n            '{' => stack.push('}'),\n            '[' => stack.push(']'),\n            _ => {\n                if stack.pop() != Some() {\n                    return false;\n                }\n            }\n        }\n    }\n    stack.is_empty()\n}\n\nfn main() {\n    println!(\"{}\", is_valid(\"()[]{}\"));\n    println!(\"{}\", is_valid(\"(]\"));\n    println!(\"{}\", is_valid(\"{[]}\"));\n}",
+        "validation": [
+          {"type": "output", "expected": "true\nfalse\ntrue", "message": "\"()[]{}\" is valid, \"(]\" is invalid, \"{[]}\" is valid"},
+          {"type": "contains", "patterns": ["stack.push(')')", "stack.pop() != Some(c)", "stack.is_empty()"], "message": "Push expected closers, compare pop with current char, check empty at end"}
+        ],
+        "testCode": "",
+        "hint": "Compare the popped value with the current character c: stack.pop() != Some(c)."
+      },
+      "order": 2
+    },
+    {
+      "id": "vecdeque-queue",
+      "title": "VecDeque as a queue (FIFO)",
+      "explanation": "**VecDeque** is Rust's double-ended queue. For FIFO queue behavior: `.push_back()` to enqueue and `.pop_front()` to dequeue. Both are O(1) amortized. This is the standard BFS queue — use it whenever you need first-in-first-out ordering.",
+      "example": "fn main() {\n    let mut queue: VecDeque<i32> = VecDeque::new();\n    queue.push_back(1);\n    queue.push_back(2);\n    queue.push_back(3);\n\n    println!(\"{:?}\", queue.front());      // Some(1)\n    println!(\"{:?}\", queue.pop_front());  // Some(1)\n    println!(\"{:?}\", queue.pop_front());  // Some(2)\n    println!(\"{}\", queue.len());          // 1\n}",
+      "exercise": {
+        "prompt": "Create a VecDeque and enqueue 100, 200, 300. Peek at the front. Dequeue two elements and print them. Print the remaining length.",
+        "starterCode": "fn main() {\n    let mut queue: VecDeque<i32> = VecDeque::new();\n    queue.push_back(100);\n    queue.push_back(200);\n    queue.push_back(300);\n\n    println!(\"{:?}\", queue.front());\n    println!(\"{:?}\", queue.pop_front());\n    println!(\"{:?}\", queue.());\n    println!(\"{}\", queue.len());\n}",
+        "validation": [
+          {"type": "output", "expected": "Some(100)\nSome(100)\nSome(200)\n1", "message": "Front=100, dequeue=100, dequeue=200, remaining=1"},
+          {"type": "contains", "patterns": ["push_back(", "pop_front()", ".front()"], "message": "Use push_back to enqueue, pop_front to dequeue, front to peek"}
+        ],
+        "testCode": "",
+        "hint": "Call .pop_front() for the second dequeue. FIFO order: 100 comes out first, then 200."
+      },
+      "order": 3
+    },
+    {
+      "id": "bfs-with-queue",
+      "title": "BFS with VecDeque",
+      "explanation": "BFS uses a queue to explore nodes level by level. Start by pushing the source, then loop: pop from front, process, push unvisited neighbors to back. Track visited nodes with a HashSet to avoid cycles. This pattern solves shortest-path, level-order, and reachability problems.",
+      "example": "fn bfs(graph: &HashMap<i32, Vec<i32>>, start: i32) -> Vec<i32> {\n    let mut visited = HashSet::new();\n    let mut queue = VecDeque::new();\n    let mut order = Vec::new();\n\n    visited.insert(start);\n    queue.push_back(start);\n\n    while let Some(node) = queue.pop_front() {\n        order.push(node);\n        if let Some(neighbors) = graph.get(&node) {\n            for &next in neighbors {\n                if visited.insert(next) {\n                    queue.push_back(next);\n                }\n            }\n        }\n    }\n    order\n}",
+      "exercise": {
+        "prompt": "Complete the BFS traversal. Build a graph: 1->[2,3], 2->[4], 3->[4], 4->[]. Start BFS from node 1 and print the visit order.",
+        "starterCode": "fn main() {\n    let mut graph: HashMap<i32, Vec<i32>> = HashMap::new();\n    graph.insert(1, vec![2, 3]);\n    graph.insert(2, vec![4]);\n    graph.insert(3, vec![4]);\n    graph.insert(4, vec![]);\n\n    let mut visited = HashSet::new();\n    let mut queue = VecDeque::new();\n    let mut order = Vec::new();\n\n    visited.insert(1);\n    queue.push_back(1);\n\n    while let Some(node) = queue.pop_front() {\n        order.push(node);\n        if let Some(neighbors) = graph.get(&node) {\n            for &next in neighbors {\n                if visited.insert(next) {\n                    queue.push_back();\n                }\n            }\n        }\n    }\n    println!(\"{:?}\", order);\n}",
+        "validation": [
+          {"type": "output", "expected": "[1, 2, 3, 4]", "message": "BFS from 1 visits: 1, 2, 3, 4 (level by level)"},
+          {"type": "contains", "patterns": ["queue.pop_front()", "visited.insert(next)", "queue.push_back(next)"], "message": "Pop from front, check visited with insert, push unvisited neighbors to back"}
+        ],
+        "testCode": "",
+        "hint": "Push the neighbor node `next` to the queue: queue.push_back(next)."
+      },
+      "order": 4
+    }
+  ]
+}

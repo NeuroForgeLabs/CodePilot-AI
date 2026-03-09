@@ -1,0 +1,38 @@
+{
+  "id": "find-median-from-data-stream",
+  "title": "Find Median from Data Stream",
+  "difficulty": "Hard",
+  "tags": ["heap", "sorting"],
+  "prompt": "The median is the middle value in an ordered integer list. If the size of the list is even, the median is the average of the two middle values.\n\nImplement a function `solve` that takes a list of operations and returns a list of results. Each operation is either:\n- `[\"add\", x]` — add the integer `x` to the data structure.\n- `[\"find\"]` — return the median of all elements added so far.\n\nFor `add` operations, the result should be `null`. For `find` operations, the result should be the median as a float.\n\nReturn the list of results for all operations.",
+  "examples": [
+    {"input": "operations = [[\"add\",1],[\"add\",2],[\"find\"],[\"add\",3],[\"find\"]]", "output": "[null, null, 1.5, null, 2.0]\nExplanation: After adding 1 and 2, median is (1+2)/2 = 1.5. After adding 3, median is 2.0."},
+    {"input": "operations = [[\"add\",6],[\"find\"],[\"add\",10],[\"find\"],[\"add\",2],[\"find\"]]", "output": "[null, 6.0, null, 8.0, null, 6.0]\nExplanation: After [6], median=6.0. After [6,10], median=8.0. After [2,6,10], median=6.0."}
+  ],
+  "constraints": [
+    "-10^5 <= x <= 10^5",
+    "find is only called after at least one add operation.",
+    "At most 5 * 10^4 operations total."
+  ],
+  "starterCode": {
+    "python": "def solve(operations: list[list]) -> list:\n    pass",
+    "javascript": "function solve(operations) {\n  \n}",
+    "typescript": "export function solve(operations: any[][]): (number | null)[] {\n  \n}",
+    "java": "class Solution {\n    public List<Double> solve(List<List<Object>> operations) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public IList<double?> Solve(IList<IList<object>> operations) {\n        \n    }\n}",
+    "go": "func solve(operations [][]interface{}) []interface{} {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([[\"add\",1],[\"add\",2],[\"find\"],[\"add\",3],[\"find\"]]))"}, "expectedStdout": "[None, None, 1.5, None, 2.0]"},
+    {"stdin": {"python": "print(solve([[\"add\",6],[\"find\"],[\"add\",10],[\"find\"],[\"add\",2],[\"find\"]]))"}, "expectedStdout": "[None, 6.0, None, 8.0, None, 6.0]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([[\"add\",5],[\"find\"]]))"}, "expectedStdout": "[None, 5.0]"},
+    {"stdin": {"python": "print(solve([[\"add\",1],[\"add\",2],[\"add\",3],[\"add\",4],[\"find\"]]))"}, "expectedStdout": "[None, None, None, None, 2.5]"},
+    {"stdin": {"python": "print(solve([[\"add\",-1],[\"add\",-2],[\"find\"],[\"add\",-3],[\"find\"]]))"}, "expectedStdout": "[None, None, -1.5, None, -2.0]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Maintain two heaps: a max-heap for the lower half and a min-heap for the upper half. When adding a number, push to the appropriate heap and rebalance so their sizes differ by at most 1. For find_median: if heaps are equal size, median = average of both tops; otherwise median = top of the larger heap.",
+    "commonBugs": ["Not rebalancing heaps after each insertion (sizes must differ by at most 1)", "In Python, heapq is a min-heap—negate values to simulate a max-heap for the lower half", "Integer division instead of float division when computing the average of two middle elements"],
+    "expectedComplexity": "O(log n) per add, O(1) per find"
+  }
+}

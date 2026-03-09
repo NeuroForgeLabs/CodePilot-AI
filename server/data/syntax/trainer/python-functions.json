@@ -1,0 +1,78 @@
+{
+  "id": "python-functions",
+  "title": "Functions",
+  "description": "Master Python functions — defining, returning values, lambdas, and flexible parameters used throughout interview solutions.",
+  "language": "python",
+  "category": "functions",
+  "order": 4,
+  "sections": [
+    {
+      "id": "defining",
+      "title": "Defining functions",
+      "explanation": "Every interview solution starts with a function definition. Know the `def` keyword, how to declare parameters, and how to `return` a value. Interviewers expect clean function signatures — name your parameters clearly and always return explicitly rather than relying on `None`.",
+      "example": "def greet(name):\n    return f\"Hello, {name}!\"\n\ndef add(a, b):\n    return a + b\n\nprint(greet(\"Alice\"))  # Hello, Alice!\nprint(add(3, 7))       # 10\n\ndef is_even(n):\n    return n % 2 == 0\n\nprint(is_even(4))      # True",
+      "exercise": {
+        "prompt": "Write a function called `add` that takes two numbers `a` and `b` and returns their sum. Then call it with 15 and 25 and print the result.",
+        "starterCode": "# Define a function that returns the sum of two numbers\ndef add(a, b):\n    return \n\nresult = add(15, 25)\nprint(result)",
+        "validation": [
+          {"type": "output", "expected": "40", "message": "The function should return 40 for add(15, 25)"},
+          {"type": "contains", "patterns": ["def add", "return", "a + b"], "message": "Use def to define the function and return a + b"}
+        ],
+        "testCode": "",
+        "hint": "Inside the function body, return a + b."
+      },
+      "order": 1
+    },
+    {
+      "id": "multiple-returns",
+      "title": "Returning multiple values",
+      "explanation": "Python functions can return multiple values as a tuple, which you unpack into separate variables. This pattern appears constantly in interviews — returning both an index and a value, a min and max, or a result with a flag. Tuple unpacking keeps your code clean instead of returning a list and indexing into it.",
+      "example": "def min_max(nums):\n    return min(nums), max(nums)\n\nlo, hi = min_max([3, 1, 7, 2, 9])\nprint(lo)   # 1\nprint(hi)   # 9\n\ndef divide(a, b):\n    quotient = a // b\n    remainder = a % b\n    return quotient, remainder\n\nq, r = divide(17, 5)\nprint(q, r)  # 3 2",
+      "exercise": {
+        "prompt": "Write a function called `min_max` that takes a list `nums` and returns both the minimum and maximum values. Call it with [4, 1, 8, 3, 7] and print the results on separate lines.",
+        "starterCode": "def min_max(nums):\n    return \n\nlo, hi = min_max([4, 1, 8, 3, 7])\nprint(lo)\nprint(hi)",
+        "validation": [
+          {"type": "output", "expected": "1\n8", "message": "Should print 1 and 8 on separate lines"},
+          {"type": "contains", "patterns": ["min(", "max(", "return"], "message": "Use min() and max() and return both values"}
+        ],
+        "testCode": "",
+        "hint": "Return two values separated by a comma: return min(nums), max(nums)."
+      },
+      "order": 2
+    },
+    {
+      "id": "lambda",
+      "title": "Lambda functions",
+      "explanation": "Lambdas are one-line anonymous functions, most commonly used as `key` arguments in `sorted()` or `.sort()`. In interviews, you'll use them to sort by custom criteria — by frequency, by second element, by absolute value, etc. Keep lambdas simple; if the logic is complex, use a regular function.",
+      "example": "double = lambda x: x * 2\nprint(double(5))  # 10\n\n# Sort list of tuples by second element\npairs = [(1, 3), (4, 1), (2, 5)]\nsorted_pairs = sorted(pairs, key=lambda x: x[1])\nprint(sorted_pairs)  # [(4, 1), (1, 3), (2, 5)]\n\n# Sort strings by length\nwords = [\"banana\", \"pie\", \"strawberry\", \"fig\"]\nwords.sort(key=lambda w: len(w))\nprint(words)  # ['fig', 'pie', 'banana', 'strawberry']",
+      "exercise": {
+        "prompt": "Given a list of tuples `pairs = [(3, 'c'), (1, 'a'), (2, 'b')]`, use `sorted()` with a lambda to sort them by the second element (the letter). Print the sorted list.",
+        "starterCode": "pairs = [(3, 'c'), (1, 'a'), (2, 'b')]\n\n# Sort by second element using a lambda\nsorted_pairs = sorted(pairs, key=)\n\nprint(sorted_pairs)",
+        "validation": [
+          {"type": "output", "expected": "[(1, 'a'), (2, 'b'), (3, 'c')]", "message": "List should be sorted alphabetically by the second element"},
+          {"type": "contains", "patterns": ["lambda", "x[1]"], "message": "Use a lambda that accesses the second element with x[1]"}
+        ],
+        "testCode": "",
+        "hint": "Use key=lambda x: x[1] to sort by the second element of each tuple."
+      },
+      "order": 3
+    },
+    {
+      "id": "default-params",
+      "title": "Default parameters and *args",
+      "explanation": "Default parameters let you write flexible functions — callers can override or use the default. `*args` collects extra positional arguments into a tuple, handy for writing utility functions that accept any number of inputs. In interviews, default params appear in helper functions for DFS depth, memo dicts, and configurable comparators.",
+      "example": "def power(base, exp=2):\n    return base ** exp\n\nprint(power(3))      # 9  (uses default exp=2)\nprint(power(3, 3))   # 27 (overrides to exp=3)\n\ndef total(*args):\n    return sum(args)\n\nprint(total(1, 2, 3))       # 6\nprint(total(10, 20, 30, 40)) # 100",
+      "exercise": {
+        "prompt": "Write a function called `power` that takes a `base` and an optional `exp` that defaults to 2. It should return `base ** exp`. Print the results of power(5) and power(2, 10).",
+        "starterCode": "# Define power with a default exponent of 2\ndef power(base, ):\n    return \n\nprint(power(5))\nprint(power(2, 10))",
+        "validation": [
+          {"type": "output", "expected": "25\n1024", "message": "power(5) should be 25, power(2, 10) should be 1024"},
+          {"type": "contains", "patterns": ["exp=2", "base ** exp"], "message": "Use exp=2 as the default parameter and return base ** exp"}
+        ],
+        "testCode": "",
+        "hint": "Set the default with exp=2 in the parameter list, and return base ** exp."
+      },
+      "order": 4
+    }
+  ]
+}

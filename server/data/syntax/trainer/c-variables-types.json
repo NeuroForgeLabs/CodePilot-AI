@@ -1,0 +1,78 @@
+{
+  "id": "c-variables-types",
+  "title": "Variables & Types",
+  "description": "Master C fundamental types, casting, NULL pointers, and const — the building blocks you'll use in every interview problem.",
+  "language": "c",
+  "category": "variables-types",
+  "order": 1,
+  "sections": [
+    {
+      "id": "declaring",
+      "title": "Declaring variables",
+      "explanation": "C is statically typed — every variable needs an explicit type. The core types for interviews: **int** (32-bit), **long** or **long long** (64-bit), **double** (floating-point), and **char** (single character). Always initialize variables to avoid undefined behavior.",
+      "example": "int count = 0;\nlong long big = 1000000000000LL;\ndouble ratio = 0.5;\nchar grade = 'A';\n\nprintf(\"%d\\n\", count);    // 0\nprintf(\"%lld\\n\", big);    // 1000000000000\nprintf(\"%.1f\\n\", ratio);  // 0.5\nprintf(\"%c\\n\", grade);    // A",
+      "exercise": {
+        "prompt": "Declare four variables: `count` (int 42), `big` (long long 1000000000000), `ratio` (double 3.14), and `grade` (char 'B'). Print each on its own line using the correct printf format specifier.",
+        "starterCode": "int main() {\n    int count = ;\n    long long big = ;\n    double ratio = ;\n    char grade = ;\n\n    printf(\"%d\\n\", count);\n    printf(\"%lld\\n\", big);\n    printf(\"%.2f\\n\", ratio);\n    printf(\"%c\\n\", grade);\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "42\n1000000000000\n3.14\nB", "message": "Each variable should print its value on a separate line"},
+          {"type": "contains", "patterns": ["int count", "long long big", "double ratio", "char grade"], "message": "Declare each variable with its correct type"}
+        ],
+        "testCode": "",
+        "hint": "Assign: count = 42, big = 1000000000000LL, ratio = 3.14, grade = 'B'. Use LL suffix for long long literals."
+      },
+      "order": 1
+    },
+    {
+      "id": "casting",
+      "title": "Type casting",
+      "explanation": "C uses explicit casts with the syntax **(type)expr**. You'll need this for integer-to-float division, char-to-int conversions (ASCII values), and avoiding overflow. Use **atoi()** for string-to-int and **sprintf()** for int-to-string.",
+      "example": "int a = 7, b = 2;\ndouble result = (double)a / b;\nprintf(\"%.1f\\n\", result);  // 3.5\n\nchar c = 'A';\nint ascii = (int)c;\nprintf(\"%d\\n\", ascii);  // 65\n\nchar s[] = \"99\";\nint num = atoi(s);\nprintf(\"%d\\n\", num);  // 99",
+      "exercise": {
+        "prompt": "Divide int `a = 7` by int `b = 2` using a cast to get a double result. Then convert char 'Z' to its ASCII int value, and convert the string \"123\" to an int using atoi. Print all three results.",
+        "starterCode": "int main() {\n    int a = 7, b = 2;\n    double result = (double)a / b;\n    printf(\"%.1f\\n\", result);\n\n    char c = 'Z';\n    int ascii = (int)c;\n    printf(\"%d\\n\", ascii);\n\n    char s[] = \"123\";\n    int num = (s);\n    printf(\"%d\\n\", num);\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "3.5\n90\n123", "message": "Division should give 3.5, 'Z' is ASCII 90, atoi(\"123\") gives 123"},
+          {"type": "contains", "patterns": ["(double)", "(int)", "atoi"], "message": "Use (double) cast for division, (int) cast for char, and atoi for string-to-int"}
+        ],
+        "testCode": "",
+        "hint": "Use (double)a / b for float division. (int)'Z' gives 90. atoi(s) converts the string."
+      },
+      "order": 2
+    },
+    {
+      "id": "null-pointers",
+      "title": "NULL pointers",
+      "explanation": "In C, **NULL** represents a null pointer (typically defined as `(void*)0`). You'll check for NULL constantly with linked lists and trees. Always check `if (ptr == NULL)` or `if (!ptr)` before dereferencing. Never dereference a NULL pointer — it causes a segfault.",
+      "example": "int *p = NULL;\nif (p == NULL) {\n    printf(\"pointer is null\\n\");\n}\n\nint x = 42;\np = &x;\nif (p != NULL) {\n    printf(\"value: %d\\n\", *p);  // value: 42\n}",
+      "exercise": {
+        "prompt": "Create an int pointer `p` set to NULL. Print \"null\" if it's NULL. Then point it to variable `x` (value 42) and print the dereferenced value.",
+        "starterCode": "int main() {\n    int *p = NULL;\n    if (p == ) {\n        printf(\"null\\n\");\n    }\n\n    int x = 42;\n    p = &x;\n    if (p != NULL) {\n        printf(\"%d\\n\", *p);\n    }\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "null\n42", "message": "First print 'null' for the NULL check, then print 42 after assigning"},
+          {"type": "contains", "patterns": ["NULL", "&x", "*p"], "message": "Use NULL for comparison, &x to get address, *p to dereference"}
+        ],
+        "testCode": "",
+        "hint": "Compare with NULL in the if condition. Use &x to get the address of x, and *p to read the value."
+      },
+      "order": 3
+    },
+    {
+      "id": "const",
+      "title": "const and common constants",
+      "explanation": "Use **const** for values that should never change. In interviews you'll define constants for MOD arithmetic, infinity approximations, and array sizes. `INT_MAX` and `INT_MIN` are available from `<limits.h>` (included via stdlib.h in most setups).",
+      "example": "const int MOD = 1000000007;\nconst int INF = INT_MAX;\nconst int MAX_N = 1000;\n\nprintf(\"%d\\n\", MOD);  // 1000000007\nprintf(\"%d\\n\", INF);  // 2147483647\n\nlong long result = 123456789LL;\nresult = result % MOD;\nprintf(\"%lld\\n\", result);  // 123456789",
+      "exercise": {
+        "prompt": "Define three constants: `MOD` as 1000000007 (int), `INF` as INT_MAX, and `MAX_N` as 100. Print each, then print 2000000000 % MOD and whether 99 < INF (1 for true, 0 for false).",
+        "starterCode": "int main() {\n    const int MOD = ;\n    const int INF = ;\n    const int MAX_N = ;\n\n    printf(\"%d\\n\", MOD);\n    printf(\"%d\\n\", INF);\n    printf(\"%d\\n\", MAX_N);\n    printf(\"%d\\n\", 2000000000 % MOD);\n    printf(\"%d\\n\", 99 < INF);\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "1000000007\n2147483647\n100\n999999993\n1", "message": "MOD is 1000000007, INF is 2147483647, and 2000000000 % MOD = 999999993"},
+          {"type": "contains", "patterns": ["const int MOD", "INT_MAX", "const int MAX_N"], "message": "Use const for all declarations and INT_MAX for infinity"}
+        ],
+        "testCode": "",
+        "hint": "MOD = 1000000007, INF = INT_MAX, MAX_N = 100. 2000000000 % 1000000007 = 999999993."
+      },
+      "order": 4
+    }
+  ]
+}

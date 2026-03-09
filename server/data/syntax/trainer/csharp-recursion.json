@@ -1,0 +1,78 @@
+{
+  "id": "csharp-recursion",
+  "title": "Recursion",
+  "description": "Master C# recursion patterns: base cases, Dictionary memoization, backtracking, and iterative conversion for coding interviews.",
+  "language": "csharp",
+  "category": "recursion",
+  "order": 10,
+  "sections": [
+    {
+      "id": "csharp-rec-base",
+      "title": "Recursion and Base Cases",
+      "explanation": "Every recursive function needs: (1) a base case that stops recursion, (2) a recursive case that moves toward the base case. Think: what's the simplest input? That's your base case. Common pattern: `if (n <= 1) return result; return f(n-1)`. Always ensure the recursive call reduces the problem size. Stack depth limit is ~1000-10000 in C# depending on stack size.",
+      "example": "class Program\n{\n    static int Factorial(int n)\n    {\n        if (n <= 1) return 1;\n        return n * Factorial(n - 1);\n    }\n\n    static int SumDigits(int n)\n    {\n        if (n < 10) return n;\n        return n % 10 + SumDigits(n / 10);\n    }\n\n    static void Main()\n    {\n        Console.WriteLine(Factorial(5));    // 120\n        Console.WriteLine(SumDigits(1234)); // 10\n    }\n}",
+      "exercise": {
+        "prompt": "Write a recursive method `int Power(int baseVal, int exp)` that computes baseVal^exp. Base case: exp == 0 returns 1. Recursive case: baseVal * Power(baseVal, exp - 1). Print Power(2, 10) and Power(3, 4).",
+        "starterCode": "class Program\n{\n    static int Power(int baseVal, int exp)\n    {\n        // Implement recursive power\n\n        return 0;\n    }\n\n    static void Main()\n    {\n        Console.WriteLine(Power(2, 10));\n        Console.WriteLine(Power(3, 4));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "1024\n81", "message": "2^10 = 1024, 3^4 = 81."},
+          {"type": "contains", "patterns": ["Power(baseVal, exp - 1)", "if (exp == 0)"], "message": "Use base case exp == 0 and recursive case baseVal * Power(baseVal, exp - 1)."}
+        ],
+        "testCode": "",
+        "hint": "if (exp == 0) return 1; return baseVal * Power(baseVal, exp - 1);"
+      },
+      "order": 1
+    },
+    {
+      "id": "csharp-rec-memo",
+      "title": "Memoization with Dictionary",
+      "explanation": "Memoization caches results of expensive recursive calls. Use a `Dictionary<TKey, TResult>` as the cache. Before computing, check if the result exists in the dictionary. After computing, store it. This transforms exponential-time recursion (like naive Fibonacci O(2^n)) into O(n). Pass the dictionary as a parameter or use a static field.",
+      "example": "class Program\n{\n    static long Fib(int n, Dictionary<int, long> memo)\n    {\n        if (n <= 1) return n;\n        if (memo.ContainsKey(n)) return memo[n];\n        memo[n] = Fib(n - 1, memo) + Fib(n - 2, memo);\n        return memo[n];\n    }\n\n    static void Main()\n    {\n        var memo = new Dictionary<int, long>();\n        Console.WriteLine(Fib(10, memo));  // 55\n        Console.WriteLine(Fib(50, memo));  // 12586269025\n    }\n}",
+      "exercise": {
+        "prompt": "Write a memoized recursive method `int ClimbStairs(int n, Dictionary<int, int> memo)` that returns the number of ways to climb n stairs taking 1 or 2 steps at a time. Base cases: n <= 1 returns 1. Print results for n = 5, 10, and 20.",
+        "starterCode": "class Program\n{\n    static int ClimbStairs(int n, Dictionary<int, int> memo)\n    {\n        // Implement with memoization\n\n        return 0;\n    }\n\n    static void Main()\n    {\n        var memo = new Dictionary<int, int>();\n        Console.WriteLine(ClimbStairs(5, memo));\n        Console.WriteLine(ClimbStairs(10, memo));\n        Console.WriteLine(ClimbStairs(20, memo));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "8\n89\n10946", "message": "5 stairs: 8 ways, 10 stairs: 89, 20 stairs: 10946."},
+          {"type": "contains", "patterns": ["Dictionary<int, int>", "memo.ContainsKey(", "memo[n]"], "message": "Use Dictionary for memoization, check before computing, store after computing."}
+        ],
+        "testCode": "",
+        "hint": "if (n <= 1) return 1; Check memo, compute ClimbStairs(n-1) + ClimbStairs(n-2), store in memo."
+      },
+      "order": 2
+    },
+    {
+      "id": "csharp-rec-backtrack",
+      "title": "Backtracking Pattern",
+      "explanation": "Backtracking explores all candidates by building solutions incrementally and abandoning paths that can't lead to valid solutions. Template: (1) if solution complete, save it. (2) for each choice: make the choice, recurse, undo the choice. The \"undo\" step is critical—it restores state for the next iteration. Used for permutations, combinations, subsets, Sudoku, N-Queens.",
+      "example": "class Program\n{\n    static void Permute(int[] nums, List<int> current, bool[] used, List<List<int>> result)\n    {\n        if (current.Count == nums.Length)\n        {\n            result.Add(new List<int>(current));\n            return;\n        }\n        for (int i = 0; i < nums.Length; i++)\n        {\n            if (used[i]) continue;\n            used[i] = true;\n            current.Add(nums[i]);\n            Permute(nums, current, used, result);\n            current.RemoveAt(current.Count - 1);\n            used[i] = false;\n        }\n    }\n\n    static void Main()\n    {\n        var result = new List<List<int>>();\n        Permute(new int[] { 1, 2, 3 }, new List<int>(), new bool[3], result);\n        foreach (var perm in result)\n            Console.WriteLine(String.Join(\", \", perm));\n    }\n}",
+      "exercise": {
+        "prompt": "Use backtracking to generate all combinations of {1,2,3,4} of size 2. Print each combination on its own line as comma-separated values. Print the total count at the end. Should be 6 combinations.",
+        "starterCode": "class Program\n{\n    static void Combine(int n, int k, int start, List<int> current, List<List<int>> result)\n    {\n        // Implement backtracking for combinations\n\n    }\n\n    static void Main()\n    {\n        var result = new List<List<int>>();\n        Combine(4, 2, 1, new List<int>(), result);\n        foreach (var combo in result)\n            Console.WriteLine(String.Join(\", \", combo));\n        Console.WriteLine(result.Count);\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "1, 2\n1, 3\n1, 4\n2, 3\n2, 4\n3, 4\n6", "message": "6 combinations of size 2 from {1,2,3,4}, then count 6."},
+          {"type": "contains", "patterns": ["new List<int>(current)", "current.Add(", "current.RemoveAt(current.Count - 1)"], "message": "Copy current when saving, add candidate, recurse, then remove (backtrack)."}
+        ],
+        "testCode": "",
+        "hint": "if (current.Count == k) add copy to result. Loop from start to n: add i, recurse with i+1, remove last."
+      },
+      "order": 3
+    },
+    {
+      "id": "csharp-rec-iterative",
+      "title": "Converting Recursion to Iteration",
+      "explanation": "Recursive solutions risk stack overflow for large inputs. Convert to iterative using: (1) a Stack to simulate the call stack, (2) bottom-up dynamic programming with an array. Fibonacci: instead of top-down recursion, build from `dp[0]` up. This uses O(n) time and O(1) space with rolling variables. Interviewers often ask for both recursive and iterative solutions.",
+      "example": "class Program\n{\n    static long FibIterative(int n)\n    {\n        if (n <= 1) return n;\n        long a = 0, b = 1;\n        for (int i = 2; i <= n; i++)\n        {\n            long next = a + b;\n            a = b;\n            b = next;\n        }\n        return b;\n    }\n\n    static void Main()\n    {\n        Console.WriteLine(FibIterative(10));  // 55\n        Console.WriteLine(FibIterative(50));  // 12586269025\n    }\n}",
+      "exercise": {
+        "prompt": "Convert the recursive ClimbStairs to an iterative bottom-up approach using O(1) space (just two variables). Print results for n = 5, 10, and 20.",
+        "starterCode": "class Program\n{\n    static int ClimbStairs(int n)\n    {\n        if (n <= 1) return 1;\n        // Iterative with two variables\n\n        return 0;\n    }\n\n    static void Main()\n    {\n        Console.WriteLine(ClimbStairs(5));\n        Console.WriteLine(ClimbStairs(10));\n        Console.WriteLine(ClimbStairs(20));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "8\n89\n10946", "message": "Same results as recursive: 8, 89, 10946."},
+          {"type": "contains", "patterns": ["for (int i", "int a =", "int b ="], "message": "Use iterative loop with two rolling variables for O(1) space."}
+        ],
+        "testCode": "",
+        "hint": "int a = 1, b = 1; for i from 2 to n: int next = a + b; a = b; b = next; return b."
+      },
+      "order": 4
+    }
+  ]
+}

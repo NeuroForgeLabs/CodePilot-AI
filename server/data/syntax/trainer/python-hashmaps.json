@@ -1,0 +1,95 @@
+{
+  "id": "python-hashmaps",
+  "title": "Hashmaps / Dictionaries",
+  "description": "Master Python dictionaries and hashmap patterns — the most common data structure in coding interviews for O(1) lookups.",
+  "language": "python",
+  "category": "hashmaps",
+  "order": 5,
+  "sections": [
+    {
+      "id": "creating",
+      "title": "Creating dictionaries",
+      "explanation": "Dictionaries give you O(1) average lookup, insert, and delete — interviewers expect you to reach for them instinctively. You can build them with `{}` literals, the `dict()` constructor, or `defaultdict` when you need automatic default values for unseen keys (avoids KeyError and extra `if` checks).",
+      "example": "# Literal syntax\nages = {\"alice\": 30, \"bob\": 25}\n\n# dict() constructor from pairs\npairs = dict([(\"x\", 1), (\"y\", 2)])\n\n# Empty dict\ncounts = {}\n\n# defaultdict — auto-initializes missing keys\nfrom collections import defaultdict\ngraph = defaultdict(list)\ngraph[\"a\"].append(\"b\")",
+      "exercise": {
+        "prompt": "Create a dictionary called `fruit_counts` mapping \"apple\" to 3, \"banana\" to 5, and \"cherry\" to 2 using literal syntax. Print the dictionary.",
+        "starterCode": "# Create a dictionary with apple->3, banana->5, cherry->2\nfruit_counts = \n\nprint(fruit_counts)",
+        "validation": [
+          {"type": "output", "expected": "{'apple': 3, 'banana': 5, 'cherry': 2}", "message": "Output should print the dictionary with all three entries"},
+          {"type": "contains", "patterns": ["{", "\"apple\"", "\"banana\"", "\"cherry\""], "message": "Use dict literal syntax with curly braces"}
+        ],
+        "testCode": "",
+        "hint": "Use curly braces: {\"apple\": 3, \"banana\": 5, \"cherry\": 2}."
+      },
+      "order": 1
+    },
+    {
+      "id": "lookup",
+      "title": "Insert, check, and get",
+      "explanation": "Three operations you'll use constantly: `d[key] = val` to insert or update, `key in d` to check existence in O(1), and `d.get(key, default)` to safely retrieve without risking a KeyError. In interviews, prefer `.get()` over bracket access when a key might be missing.",
+      "example": "d = {\"a\": 1, \"b\": 2}\n\n# Insert / update\nd[\"c\"] = 3\n\n# Check existence — O(1)\nprint(\"a\" in d)       # True\nprint(\"z\" in d)       # False\n\n# Safe get with default\nval = d.get(\"z\", 0)   # 0 (no KeyError)\nprint(val)",
+      "exercise": {
+        "prompt": "Given `scores = {\"math\": 95, \"english\": 88}`, add \"science\" with value 92, check if \"history\" exists (print the boolean), and safely get \"history\" with a default of 0 (print the result).",
+        "starterCode": "scores = {\"math\": 95, \"english\": 88}\n\n# Add science -> 92\n\n\n# Check if history exists and print the result\nprint()\n\n# Safely get history with default 0 and print\nprint()\n\nprint(scores)",
+        "validation": [
+          {"type": "output", "expected": "False\n0\n{'math': 95, 'english': 88, 'science': 92}", "message": "Check your key insertion and .get() default"},
+          {"type": "contains", "patterns": ["scores[\"science\"] = 92", "\"history\" in scores", ".get("], "message": "Use bracket assignment, 'in' operator, and .get()"}
+        ],
+        "testCode": "",
+        "hint": "scores[\"science\"] = 92 to insert. \"history\" in scores returns a bool. scores.get(\"history\", 0) returns 0 safely."
+      },
+      "order": 2
+    },
+    {
+      "id": "iterating",
+      "title": "Iterating over dictionaries",
+      "explanation": "Interviewers watch how you traverse dicts. Use `.items()` for key-value pairs (most common), `.keys()` for just keys, and `.values()` for just values. In problems like grouping anagrams or building adjacency lists, efficient iteration is critical.",
+      "example": "d = {\"x\": 10, \"y\": 20, \"z\": 30}\n\n# Key-value pairs (most useful)\nfor key, val in d.items():\n    print(f\"{key} -> {val}\")\n\n# Keys only\nfor key in d.keys():\n    print(key)\n\n# Values only\ntotal = sum(d.values())",
+      "exercise": {
+        "prompt": "Given `inventory = {\"pens\": 14, \"notebooks\": 7, \"erasers\": 23}`, use `.items()` to print each item in the format `item: count` (e.g., `pens: 14`). Then print the total count using `sum()` on `.values()`.",
+        "starterCode": "inventory = {\"pens\": 14, \"notebooks\": 7, \"erasers\": 23}\n\n# Print each item using .items()\nfor item, count in :\n    print(f\"\")\n\n# Print total count using sum() on .values()\nprint()",
+        "validation": [
+          {"type": "output", "expected": "pens: 14\nnotebooks: 7\nerasers: 23\n44", "message": "Check your .items() loop format and sum of .values()"},
+          {"type": "contains", "patterns": [".items()", ".values()"], "message": "Use .items() for iteration and .values() for the sum"}
+        ],
+        "testCode": "",
+        "hint": "Loop with `for item, count in inventory.items()` and print with f\"{item}: {count}\". Use sum(inventory.values()) for the total."
+      },
+      "order": 3
+    },
+    {
+      "id": "frequency",
+      "title": "Frequency counting",
+      "explanation": "Frequency maps appear in string problems, array duplicates, anagram checks, and top-K questions. You can build one manually with `.get()` or a `defaultdict(int)`, but `collections.Counter` does it in one line and gives you `.most_common()` for free.",
+      "example": "from collections import Counter\n\n# Counter — one-line frequency map\nfreq = Counter(\"abracadabra\")\nprint(freq)  # Counter({'a': 5, 'b': 2, 'r': 2, ...})\n\n# Manual approach\nfreq = {}\nfor ch in \"hello\":\n    freq[ch] = freq.get(ch, 0) + 1\nprint(freq)  # {'h': 1, 'e': 1, 'l': 2, 'o': 1}",
+      "exercise": {
+        "prompt": "Count the frequency of each character in `s = \"mississippi\"` using the manual `.get()` approach. Print the resulting dictionary, then print the count of 's' from your dictionary.",
+        "starterCode": "s = \"mississippi\"\n\n# Build frequency map manually\nfreq = {}\nfor ch in s:\n    freq[ch] = \n\nprint(freq)\nprint(freq[\"s\"])",
+        "validation": [
+          {"type": "output", "expected": "{'m': 1, 'i': 4, 's': 4, 'p': 2}\n4", "message": "Check your frequency counting logic"},
+          {"type": "contains", "patterns": [".get(", "freq[ch]"], "message": "Use .get() with a default of 0 for manual counting"}
+        ],
+        "testCode": "",
+        "hint": "Use freq[ch] = freq.get(ch, 0) + 1 to increment the count for each character."
+      },
+      "order": 4
+    },
+    {
+      "id": "complement",
+      "title": "Complement lookup pattern",
+      "explanation": "The Two Sum pattern is the most famous hashmap interview question: store seen values as keys and their indices as values, then check if the complement (`target - num`) already exists. This turns a brute-force O(n^2) nested loop into an elegant O(n) single pass.",
+      "example": "def two_sum(nums, target):\n    seen = {}  # value -> index\n    for i, num in enumerate(nums):\n        complement = target - num\n        if complement in seen:\n            return [seen[complement], i]\n        seen[num] = i\n    return []\n\nprint(two_sum([2, 7, 11, 15], 9))  # [0, 1]",
+      "exercise": {
+        "prompt": "Given `nums = [3, 1, 4, 6, 2]` and `target = 5`, find and print the indices of two numbers that sum to target using the complement lookup pattern. Print the result as a list.",
+        "starterCode": "nums = [3, 1, 4, 6, 2]\ntarget = 5\n\nseen = {}\nfor i, num in enumerate(nums):\n    complement = \n    if  in seen:\n        print([seen[complement], i])\n        break\n    seen[] = i",
+        "validation": [
+          {"type": "output", "expected": "[1, 2]", "message": "Indices 1 and 2 hold values 1 and 4, which sum to 5"},
+          {"type": "contains", "patterns": ["target - num", "complement in seen", "seen[num]"], "message": "Use the complement lookup pattern with target - num"}
+        ],
+        "testCode": "",
+        "hint": "complement = target - num. Check `if complement in seen`. Store with seen[num] = i."
+      },
+      "order": 5
+    }
+  ]
+}

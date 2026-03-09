@@ -1,0 +1,78 @@
+{
+  "id": "typescript-sets",
+  "title": "Sets",
+  "description": "Sets provide O(1) membership testing and automatic deduplication. Master TypeScript's Set<T> to solve duplicate detection, intersection, and union problems that appear frequently in interviews.",
+  "language": "typescript",
+  "category": "sets",
+  "order": 6,
+  "sections": [
+    {
+      "id": "set-basics",
+      "title": "Set<T> basics",
+      "explanation": "A `Set<T>` stores unique values of a specific type with O(1) `add`, `has`, and `delete`. Unlike arrays, sets automatically reject duplicates. In interviews, sets are your go-to for \"have I seen this element before\" checks.",
+      "example": "const seen: Set<number> = new Set();\n\nseen.add(1);\nseen.add(2);\nseen.add(1);  // duplicate ignored\n\nconsole.log(seen.has(1));   // true\nconsole.log(seen.has(3));   // false\nconsole.log(seen.size);     // 2\n\nseen.delete(1);\nconsole.log(seen.size);     // 1",
+      "exercise": {
+        "prompt": "Create a `Set<string>` called `colors`. Add \"red\", \"green\", \"blue\", and \"red\" (duplicate). Print whether \"green\" is in the set, whether \"yellow\" is in the set, and the set size.",
+        "starterCode": "const colors: Set<string> = new Set()\n\ncolors.add(\"red\")\ncolors.add(\"green\")\ncolors.add(\"blue\")\ncolors.add(\"red\")\n\nconsole.log(colors.has(___))\nconsole.log(colors.has(___))\nconsole.log(colors.___)",
+        "validation": [
+          {"type": "output", "expected": "true\nfalse\n3", "message": "green=true, yellow=false, size=3 (duplicate red ignored)"},
+          {"type": "contains", "patterns": ["Set<string>", ".add(", ".has("], "message": "Use Set with add and has methods"}
+        ],
+        "testCode": "",
+        "hint": "Check has(\"green\") and has(\"yellow\"). The size is 3 because the duplicate \"red\" was ignored."
+      },
+      "order": 1
+    },
+    {
+      "id": "dedup-pattern",
+      "title": "Deduplication",
+      "explanation": "The classic dedup pattern: convert an array to a Set (removes duplicates), then spread back to an array. This is a one-liner in interviews and works for any type. For preserving order, the Set maintains insertion order.",
+      "example": "const nums: number[] = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3];\nconst unique: number[] = [...new Set(nums)];\n\nconsole.log(unique);  // [3, 1, 4, 5, 9, 2, 6]\nconsole.log(unique.length);  // 7",
+      "exercise": {
+        "prompt": "Given `words: string[] = [\"the\", \"cat\", \"the\", \"dog\", \"cat\", \"bird\"]`, deduplicate using a Set and print the unique words joined by space, then print the count of unique words.",
+        "starterCode": "const words: string[] = [\"the\", \"cat\", \"the\", \"dog\", \"cat\", \"bird\"]\n\nconst unique: string[] = [...new Set(___)]\n\nconsole.log(unique.join(\" \"))\nconsole.log(unique.length)",
+        "validation": [
+          {"type": "output", "expected": "the cat dog bird\n4", "message": "4 unique words: the cat dog bird"},
+          {"type": "contains", "patterns": ["new Set(", "[...new Set"], "message": "Use the spread-Set dedup pattern"}
+        ],
+        "testCode": "",
+        "hint": "Pass the words array to new Set(), then spread into a new array with [...]. This preserves first-occurrence order."
+      },
+      "order": 2
+    },
+    {
+      "id": "set-intersection",
+      "title": "Type-safe intersection and union",
+      "explanation": "Set intersection (common elements) and union (all elements) are frequent interview operations. Iterate one set and check membership in the other. TypeScript's generics ensure you only compare compatible types.",
+      "example": "function intersection<T>(a: Set<T>, b: Set<T>): Set<T> {\n  const result: Set<T> = new Set();\n  for (const val of a) {\n    if (b.has(val)) result.add(val);\n  }\n  return result;\n}\n\nconst s1: Set<number> = new Set([1, 2, 3, 4]);\nconst s2: Set<number> = new Set([3, 4, 5, 6]);\nconsole.log([...intersection(s1, s2)]);  // [3, 4]",
+      "exercise": {
+        "prompt": "Write a generic `union<T>` function that returns the union of two sets. Write a generic `difference<T>` function that returns elements in the first set but not the second. Test with sets {1,2,3} and {2,3,4}.",
+        "starterCode": "function union<T>(a: Set<T>, b: Set<T>): Set<T> {\n  const result: Set<T> = new Set(a)\n  for (const val of b) {\n    result.___(val)\n  }\n  return result\n}\n\nfunction difference<T>(a: Set<T>, b: Set<T>): Set<T> {\n  const result: Set<T> = new Set()\n  for (const val of a) {\n    if (!b.___(val)) result.add(val)\n  }\n  return result\n}\n\nconst s1: Set<number> = new Set([1, 2, 3])\nconst s2: Set<number> = new Set([2, 3, 4])\n\nconsole.log([...union(s1, s2)].sort().join(\",\"))\nconsole.log([...difference(s1, s2)].join(\",\"))",
+        "validation": [
+          {"type": "output", "expected": "1,2,3,4\n1", "message": "Union is {1,2,3,4}, difference is {1}"},
+          {"type": "contains", "patterns": ["<T>", "Set<T>", ".has("], "message": "Use generic type parameter and Set methods"}
+        ],
+        "testCode": "",
+        "hint": "Union: start with a copy of set a, then add all elements from b. Difference: include only elements from a that are NOT in b."
+      },
+      "order": 3
+    },
+    {
+      "id": "contains-duplicate",
+      "title": "Contains duplicate pattern",
+      "explanation": "A classic interview problem: detect if any value appears more than once. Using a Set, iterate the array — if you've seen the element, return true; otherwise add it. This is O(n) time and O(n) space, the optimal solution interviewers expect.",
+      "example": "function containsDuplicate(nums: number[]): boolean {\n  const seen: Set<number> = new Set();\n  for (const n of nums) {\n    if (seen.has(n)) return true;\n    seen.add(n);\n  }\n  return false;\n}\n\nconsole.log(containsDuplicate([1, 2, 3, 1]));  // true\nconsole.log(containsDuplicate([1, 2, 3, 4]));  // false",
+      "exercise": {
+        "prompt": "Write a function `firstDuplicate` that returns the first value that appears twice in a number array, or -1 if no duplicates exist. Print results for [2,1,3,5,3,2] and [1,2,3,4].",
+        "starterCode": "function firstDuplicate(nums: number[]): number {\n  const seen: Set<number> = new Set()\n  for (const n of nums) {\n    if (seen.___(n)) return n\n    seen.___(n)\n  }\n  return -1\n}\n\nconsole.log(firstDuplicate([2, 1, 3, 5, 3, 2]))\nconsole.log(firstDuplicate([1, 2, 3, 4]))",
+        "validation": [
+          {"type": "output", "expected": "3\n-1", "message": "First duplicate is 3, second array has no duplicates"},
+          {"type": "contains", "patterns": ["Set<number>", ".has(", ".add("], "message": "Use a Set with has/add to track seen elements"}
+        ],
+        "testCode": "",
+        "hint": "Check has() before add(). The first element that's already in the set is the first duplicate."
+      },
+      "order": 4
+    }
+  ]
+}

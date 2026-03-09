@@ -1,0 +1,78 @@
+{
+  "id": "java-heaps",
+  "title": "Heaps",
+  "description": "Use PriorityQueue for min-heaps and max-heaps to solve top-K, merge-K, and streaming median problems.",
+  "language": "java",
+  "category": "heaps",
+  "order": 9,
+  "sections": [
+    {
+      "id": "java-heap-minheap",
+      "title": "PriorityQueue as Min-Heap",
+      "explanation": "PriorityQueue<T> is a min-heap by default—`poll()` always returns the smallest element. O(log n) for add/poll, O(1) for peek. Import `java.util.PriorityQueue`. Use `offer(val)` to add, `poll()` to remove min, `peek()` to view min, `size()` for count. Elements must be Comparable or provide a Comparator.",
+      "example": "import java.util.PriorityQueue;\n\npublic class Main {\n    public static void main(String[] args) {\n        PriorityQueue<Integer> minHeap = new PriorityQueue<>();\n        minHeap.offer(30);\n        minHeap.offer(10);\n        minHeap.offer(20);\n\n        System.out.println(minHeap.peek());   // 10\n        System.out.println(minHeap.poll());   // 10\n        System.out.println(minHeap.poll());   // 20\n        System.out.println(minHeap.poll());   // 30\n    }\n}",
+      "exercise": {
+        "prompt": "Create a PriorityQueue (min-heap) and add the values 50, 20, 40, 10, 30. Print the minimum (peek). Then poll all elements one by one, printing each, to show they come out in sorted ascending order.",
+        "starterCode": "import java.util.PriorityQueue;\n\npublic class Main {\n    public static void main(String[] args) {\n        PriorityQueue<Integer> minHeap = new PriorityQueue<>();\n\n        // Add values, peek, then poll all\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "10\n10\n20\n30\n40\n50", "message": "Peek=10, then poll in order: 10, 20, 30, 40, 50."},
+          {"type": "contains", "patterns": ["PriorityQueue", ".offer(", ".peek()", ".poll()"], "message": "Use PriorityQueue with offer(), peek(), and poll()."}
+        ],
+        "testCode": "",
+        "hint": "Min-heap always returns the smallest. Poll in a loop while !isEmpty() to drain in ascending order."
+      },
+      "order": 1
+    },
+    {
+      "id": "java-heap-maxheap",
+      "title": "Max-Heap with Collections.reverseOrder()",
+      "explanation": "For a max-heap, pass `Collections.reverseOrder()` to the PriorityQueue constructor. Now `poll()` returns the largest element. Alternatively use a lambda: `new PriorityQueue<>((a, b) -> b - a)`. Max-heaps are used for finding the K smallest elements, streaming maximum, and scheduling problems.",
+      "example": "import java.util.Collections;\nimport java.util.PriorityQueue;\n\npublic class Main {\n    public static void main(String[] args) {\n        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());\n        maxHeap.offer(30);\n        maxHeap.offer(10);\n        maxHeap.offer(20);\n\n        System.out.println(maxHeap.peek());   // 30\n        System.out.println(maxHeap.poll());   // 30\n        System.out.println(maxHeap.poll());   // 20\n        System.out.println(maxHeap.poll());   // 10\n    }\n}",
+      "exercise": {
+        "prompt": "Create a max-heap using PriorityQueue with Collections.reverseOrder(). Add 15, 45, 25, 35, 5. Print the maximum (peek), then poll and print the top 3 values.",
+        "starterCode": "import java.util.Collections;\nimport java.util.PriorityQueue;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Create max-heap\n\n        // Add values, peek, poll top 3\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "45\n45\n35\n25", "message": "Peek=45, top 3 polled: 45, 35, 25."},
+          {"type": "contains", "patterns": ["Collections.reverseOrder()", "PriorityQueue"], "message": "Use PriorityQueue with Collections.reverseOrder() for max-heap."}
+        ],
+        "testCode": "",
+        "hint": "new PriorityQueue<>(Collections.reverseOrder()) makes a max-heap. peek/poll return largest first."
+      },
+      "order": 2
+    },
+    {
+      "id": "java-heap-topk",
+      "title": "Top-K Elements Pattern",
+      "explanation": "To find K largest: use a min-heap of size K. Add elements; if heap size > K, poll (removes smallest, keeping K largest). After processing all elements, the heap contains the K largest. For K smallest, use a max-heap of size K. Time: O(n log K) which beats O(n log n) full sort when K << n.",
+      "example": "import java.util.ArrayList;\nimport java.util.PriorityQueue;\n\npublic class Main {\n    static ArrayList<Integer> topK(int[] nums, int k) {\n        PriorityQueue<Integer> minHeap = new PriorityQueue<>();\n        for (int n : nums) {\n            minHeap.offer(n);\n            if (minHeap.size() > k) minHeap.poll();\n        }\n        ArrayList<Integer> result = new ArrayList<>(minHeap);\n        result.sort(null);\n        return result;\n    }\n\n    public static void main(String[] args) {\n        int[] nums = {3, 1, 5, 12, 2, 11};\n        System.out.println(topK(nums, 3));  // [5, 11, 12]\n    }\n}",
+      "exercise": {
+        "prompt": "Given int[] scores = {72, 95, 88, 61, 99, 84, 76, 93}, find the top 3 highest scores using a min-heap of size 3. Print the three scores in ascending order.",
+        "starterCode": "import java.util.ArrayList;\nimport java.util.PriorityQueue;\n\npublic class Main {\n    public static void main(String[] args) {\n        int[] scores = {72, 95, 88, 61, 99, 84, 76, 93};\n\n        // Find top 3 using min-heap\n        PriorityQueue<Integer> minHeap = new PriorityQueue<>();\n\n        // Process scores, maintain heap size <= 3\n\n        // Extract and print in ascending order\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "93\n95\n99", "message": "Top 3 in ascending order: 93, 95, 99."},
+          {"type": "contains", "patterns": ["PriorityQueue", ".offer(", ".poll(", "minHeap.size()"], "message": "Use a min-heap with offer/poll to maintain top K elements."}
+        ],
+        "testCode": "",
+        "hint": "For each score: offer to heap. If size > 3, poll (removes smallest). At end, poll all 3 to get them sorted."
+      },
+      "order": 3
+    },
+    {
+      "id": "java-heap-custom",
+      "title": "Custom Comparator Heaps",
+      "explanation": "PriorityQueue accepts a Comparator for custom ordering. Common: sort int[] pairs by second element, sort strings by length, sort objects by a field. Use `new PriorityQueue<>((a, b) -> expression)`. For complex objects, `Comparator.comparingInt()` is cleaner. Custom heaps are essential for merge-K-sorted, task schedulers, and Dijkstra's algorithm.",
+      "example": "import java.util.PriorityQueue;\n\npublic class Main {\n    public static void main(String[] args) {\n        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);\n        pq.offer(new int[]{1, 30});\n        pq.offer(new int[]{2, 10});\n        pq.offer(new int[]{3, 20});\n\n        while (!pq.isEmpty()) {\n            int[] item = pq.poll();\n            System.out.println(\"id=\" + item[0] + \" priority=\" + item[1]);\n        }\n    }\n}",
+      "exercise": {
+        "prompt": "Create a PriorityQueue of String sorted by string length (shortest first). Add \"elephant\", \"cat\", \"dog\", \"butterfly\", \"ant\". Poll and print all elements to show they come out shortest-to-longest.",
+        "starterCode": "import java.util.PriorityQueue;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Create PQ sorted by string length\n\n        // Add words, poll all and print\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "cat\ndog\nant\nelephant\nbutterfly", "message": "Shortest first: cat(3), dog(3), ant(3), elephant(8), butterfly(9)."},
+          {"type": "contains", "patterns": ["PriorityQueue", ".length()", "->"], "message": "Use PriorityQueue with a lambda comparator based on string length."}
+        ],
+        "testCode": "",
+        "hint": "new PriorityQueue<>((a, b) -> a.length() - b.length()) sorts by length. Same-length order may vary."
+      },
+      "order": 4
+    }
+  ]
+}

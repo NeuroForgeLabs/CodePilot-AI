@@ -1,0 +1,95 @@
+{
+  "id": "typescript-recursion",
+  "title": "Recursion",
+  "description": "Recursion is the foundation of tree traversals, divide-and-conquer, and backtracking. Master typed recursive functions, memoization with Map, and backtracking patterns to solve interview problems confidently.",
+  "language": "typescript",
+  "category": "recursion",
+  "order": 10,
+  "sections": [
+    {
+      "id": "typed-recursive-functions",
+      "title": "Typed recursive functions",
+      "explanation": "Every recursive function needs a base case and a recursive case. In TypeScript, annotate the return type to catch mistakes — if your recursion accidentally returns the wrong type, the compiler flags it. Start with simple examples like factorial and Fibonacci to internalize the pattern.",
+      "example": "function factorial(n: number): number {\n  if (n <= 1) return 1;\n  return n * factorial(n - 1);\n}\n\nfunction fibonacci(n: number): number {\n  if (n <= 1) return n;\n  return fibonacci(n - 1) + fibonacci(n - 2);\n}\n\nconsole.log(factorial(5));   // 120\nconsole.log(fibonacci(6));   // 8",
+      "exercise": {
+        "prompt": "Write a typed recursive function `sumTo` that returns the sum from 1 to n. Write a typed recursive function `power` that computes base^exp. Print sumTo(10) and power(2, 8).",
+        "starterCode": "function sumTo(n: number): number {\n  if (n <= ___) return n\n  return n + sumTo(n - 1)\n}\n\nfunction power(base: number, exp: number): number {\n  if (exp === ___) return 1\n  return base * power(base, exp - 1)\n}\n\nconsole.log(sumTo(10))\nconsole.log(power(2, 8))",
+        "validation": [
+          {"type": "output", "expected": "55\n256", "message": "sumTo(10)=55, power(2,8)=256"},
+          {"type": "contains", "patterns": ["): number", "sumTo(n - 1)", "power(base, exp - 1)"], "message": "Use typed recursion with explicit return types"}
+        ],
+        "testCode": "",
+        "hint": "sumTo base case: n <= 1 returns n (sum of 1 is 1). power base case: exp === 0 returns 1 (anything to the 0th power is 1)."
+      },
+      "order": 1
+    },
+    {
+      "id": "memoization-map",
+      "title": "Memoization with Map",
+      "explanation": "Naive recursion recalculates the same subproblems repeatedly. Memoization caches results in a `Map<number, number>` (or `Map<string, T>` for complex keys). Check the map before computing; store the result after. This converts exponential Fibonacci into O(n) — interviewers expect this optimization.",
+      "example": "function fibMemo(n: number, memo: Map<number, number> = new Map()): number {\n  if (n <= 1) return n;\n  if (memo.has(n)) return memo.get(n)!;\n  const result = fibMemo(n - 1, memo) + fibMemo(n - 2, memo);\n  memo.set(n, result);\n  return result;\n}\n\nconsole.log(fibMemo(10));  // 55\nconsole.log(fibMemo(40));  // 102334155",
+      "exercise": {
+        "prompt": "Write a memoized recursive function `climbStairs` that counts the number of ways to climb n stairs taking 1 or 2 steps at a time. Use a Map<number, number> for memoization. Print results for n=5 and n=10.",
+        "starterCode": "function climbStairs(n: number, memo: Map<number, number> = new Map()): number {\n  if (n <= 1) return 1\n  if (memo.has(n)) return memo.get(n)!\n  const result = climbStairs(n - ___, memo) + climbStairs(n - ___, memo)\n  memo.___(n, result)\n  return result\n}\n\nconsole.log(climbStairs(5))\nconsole.log(climbStairs(10))",
+        "validation": [
+          {"type": "output", "expected": "8\n89", "message": "climbStairs(5)=8, climbStairs(10)=89"},
+          {"type": "contains", "patterns": ["Map<number, number>", "memo.has(", "memo.set("], "message": "Use Map-based memoization to cache results"}
+        ],
+        "testCode": "",
+        "hint": "Climb n-1 (took 1 step) + climb n-2 (took 2 steps). memo.set(n, result) caches the answer."
+      },
+      "order": 2
+    },
+    {
+      "id": "recursive-array-processing",
+      "title": "Recursive array processing",
+      "explanation": "Many interview problems use recursion to process arrays — binary search, merge sort, and generating subsets. The pattern is: base case for empty/single-element arrays, then recurse on subarrays. TypeScript's array types keep the recursion type-safe.",
+      "example": "function binarySearch(nums: number[], target: number, lo: number = 0, hi: number = nums.length - 1): number {\n  if (lo > hi) return -1;\n  const mid = Math.floor((lo + hi) / 2);\n  if (nums[mid] === target) return mid;\n  if (nums[mid] < target) return binarySearch(nums, target, mid + 1, hi);\n  return binarySearch(nums, target, lo, mid - 1);\n}\n\nconsole.log(binarySearch([1, 3, 5, 7, 9], 7));  // 3\nconsole.log(binarySearch([1, 3, 5, 7, 9], 4));  // -1",
+      "exercise": {
+        "prompt": "Write a recursive function `mergeSort` that sorts a number array. Split the array in half, sort each half recursively, then merge them. Print the sorted result for [5, 3, 8, 1, 9, 2].",
+        "starterCode": "function mergeSort(nums: number[]): number[] {\n  if (nums.length <= 1) return nums\n  const mid = Math.floor(nums.length / 2)\n  const left = mergeSort(nums.slice(0, ___))\n  const right = mergeSort(nums.slice(___))\n  return merge(left, right)\n}\n\nfunction merge(a: number[], b: number[]): number[] {\n  const result: number[] = []\n  let i = 0, j = 0\n  while (i < a.length && j < b.length) {\n    if (a[i] <= b[j]) { result.push(a[i]); i++ }\n    else { result.push(b[j]); j++ }\n  }\n  while (i < a.length) { result.push(a[i]); i++ }\n  while (j < b.length) { result.push(b[j]); j++ }\n  return result\n}\n\nconsole.log(mergeSort([5, 3, 8, 1, 9, 2]).join(\",\"))",
+        "validation": [
+          {"type": "output", "expected": "1,2,3,5,8,9", "message": "Sorted array: 1,2,3,5,8,9"},
+          {"type": "contains", "patterns": ["mergeSort(nums.slice", "merge(left, right)", "number[]"], "message": "Use recursive divide-and-conquer with typed merge"}
+        ],
+        "testCode": "",
+        "hint": "Split at mid: left half is slice(0, mid), right half is slice(mid). The merge function combines two sorted arrays."
+      },
+      "order": 3
+    },
+    {
+      "id": "backtracking-pattern",
+      "title": "Backtracking",
+      "explanation": "Backtracking explores all candidates by choosing, recursing, then undoing the choice. In TypeScript, the result array is typed as `T[][]` and the current path as `T[]`. The pattern: if goal is met, push a copy of the path; otherwise loop through options, add to path, recurse, then pop. This solves combinations, permutations, and subset problems.",
+      "example": "function subsets(nums: number[]): number[][] {\n  const result: number[][] = [];\n  function backtrack(start: number, path: number[]): void {\n    result.push([...path]);\n    for (let i = start; i < nums.length; i++) {\n      path.push(nums[i]);\n      backtrack(i + 1, path);\n      path.pop();\n    }\n  }\n  backtrack(0, []);\n  return result;\n}\n\nconsole.log(subsets([1, 2, 3]));",
+      "exercise": {
+        "prompt": "Write a backtracking function `combinations` that generates all combinations of k numbers from 1 to n. Print combinations(4, 2) — all 2-element combos from [1,2,3,4].",
+        "starterCode": "function combinations(n: number, k: number): number[][] {\n  const result: number[][] = []\n  function backtrack(start: number, path: number[]): void {\n    if (path.length === ___) {\n      result.push([...path])\n      return\n    }\n    for (let i = start; i <= n; i++) {\n      path.push(i)\n      backtrack(i + ___, path)\n      path.___()\n    }\n  }\n  backtrack(1, [])\n  return result\n}\n\nconst combos = combinations(4, 2)\nfor (const c of combos) {\n  console.log(c.join(\",\"))\n}",
+        "validation": [
+          {"type": "output", "expected": "1,2\n1,3\n1,4\n2,3\n2,4\n3,4", "message": "All 6 combinations of 2 from [1,2,3,4]"},
+          {"type": "contains", "patterns": ["number[][]", "backtrack(", "path.pop()", "[...path]"], "message": "Use typed backtracking with path copy and pop"}
+        ],
+        "testCode": "",
+        "hint": "Base case: path.length === k. Recurse with i + 1 to avoid reusing elements. Pop after recursion to backtrack."
+      },
+      "order": 4
+    },
+    {
+      "id": "string-memoization",
+      "title": "Memoization with string keys",
+      "explanation": "When the recursive state has multiple parameters, serialize them into a string key for the memo Map. For grid problems, use `${row},${col}`. For string problems, use index pairs. This pattern is the bridge from recursion to dynamic programming.",
+      "example": "function uniquePaths(m: number, n: number, memo: Map<string, number> = new Map()): number {\n  if (m === 1 || n === 1) return 1;\n  const key = `${m},${n}`;\n  if (memo.has(key)) return memo.get(key)!;\n  const result = uniquePaths(m - 1, n, memo) + uniquePaths(m, n - 1, memo);\n  memo.set(key, result);\n  return result;\n}\n\nconsole.log(uniquePaths(3, 3));  // 6\nconsole.log(uniquePaths(3, 7));  // 28",
+      "exercise": {
+        "prompt": "Write a memoized function `minPathSum` that finds the minimum cost path from top-left to bottom-right in a grid (can only move right or down). Print the result for the given grid.",
+        "starterCode": "function minPathSum(grid: number[][]): number {\n  const memo: Map<string, number> = new Map()\n  function dp(r: number, c: number): number {\n    if (r === grid.length - 1 && c === grid[0].length - 1) return grid[r][c]\n    const key = `${r},${c}`\n    if (memo.has(key)) return memo.get(key)!\n    let best = Infinity\n    if (r + 1 < grid.length) best = Math.min(best, dp(r + ___, c))\n    if (c + 1 < grid[0].length) best = Math.min(best, dp(r, c + ___))\n    const result = grid[r][c] + best\n    memo.set(key, result)\n    return result\n  }\n  return dp(0, 0)\n}\n\nconst grid: number[][] = [\n  [1, 3, 1],\n  [1, 5, 1],\n  [4, 2, 1]\n]\nconsole.log(minPathSum(grid))",
+        "validation": [
+          {"type": "output", "expected": "7", "message": "Minimum path: 1 -> 3 -> 1 -> 1 -> 1 = 7"},
+          {"type": "contains", "patterns": ["Map<string, number>", "memo.has(", "memo.set(", "${r},${c}"], "message": "Use string-key memoization for grid coordinates"}
+        ],
+        "testCode": "",
+        "hint": "Move right: dp(r, c + 1). Move down: dp(r + 1, c). The key encodes both coordinates as a string."
+      },
+      "order": 5
+    }
+  ]
+}

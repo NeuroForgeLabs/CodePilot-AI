@@ -1,0 +1,38 @@
+{
+  "id": "daily-temperatures",
+  "title": "Daily Temperatures",
+  "difficulty": "Medium",
+  "tags": ["arrays", "stack"],
+  "prompt": "Given an array of integers temperatures represents the daily temperatures, return an array answer such that answer[i] is the number of days you have to wait after the ith day to get a warmer temperature. If there is no future day for which this is possible, keep answer[i] == 0.\n\nFor example, given temperatures = [73,74,75,71,69,72,76,73], the output is [1,1,4,2,1,1,0,0] because:\n- Day 0 (73°): next warmer is day 1 (74°), wait 1 day\n- Day 2 (75°): next warmer is day 6 (76°), wait 4 days\n- Day 6 (76°): no warmer day exists, answer is 0",
+  "examples": [
+    {"input": "temperatures = [73,74,75,71,69,72,76,73]", "output": "[1, 1, 4, 2, 1, 1, 0, 0]"},
+    {"input": "temperatures = [30,40,50,60]", "output": "[1, 1, 1, 0]"},
+    {"input": "temperatures = [30,60,90]", "output": "[1, 1, 0]"}
+  ],
+  "constraints": [
+    "1 <= temperatures.length <= 10^5",
+    "30 <= temperatures[i] <= 100"
+  ],
+  "starterCode": {
+    "python": "def solve(temperatures: list[int]) -> list[int]:\n    pass",
+    "javascript": "function solve(temperatures) {\n  \n}",
+    "typescript": "export function solve(temperatures: number[]): number[] {\n  \n}",
+    "java": "class Solution {\n    public int[] solve(int[] temperatures) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int[] Solve(int[] temperatures) {\n        \n    }\n}",
+    "go": "func solve(temperatures []int) []int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([73,74,75,71,69,72,76,73]))"}, "expectedStdout": "[1, 1, 4, 2, 1, 1, 0, 0]"},
+    {"stdin": {"python": "print(solve([30,40,50,60]))"}, "expectedStdout": "[1, 1, 1, 0]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([30,60,90]))"}, "expectedStdout": "[1, 1, 0]"},
+    {"stdin": {"python": "print(solve([90,80,70,60]))"}, "expectedStdout": "[0, 0, 0, 0]"},
+    {"stdin": {"python": "print(solve([50]))"}, "expectedStdout": "[0]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use a monotonic decreasing stack of indices. For each temperature, pop all stack entries with lower temperatures, computing their wait times as the difference in indices. Push the current index.",
+    "commonBugs": ["Storing values on the stack instead of indices", "Using a strictly increasing stack instead of decreasing", "O(n^2) brute force that checks every future day"],
+    "expectedComplexity": "O(n)"
+  }
+}

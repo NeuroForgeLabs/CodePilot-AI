@@ -1,0 +1,78 @@
+{
+  "id": "go-recursion",
+  "title": "Recursion",
+  "description": "Recursion is the backbone of tree, graph, and backtracking problems. Master base cases, memoization with maps, the backtracking pattern, and converting to iterative solutions in Go.",
+  "language": "go",
+  "category": "recursion",
+  "order": 10,
+  "sections": [
+    {
+      "id": "base-case",
+      "title": "Base case and recursive calls",
+      "explanation": "Every recursive function needs a **base case** to stop and a **recursive case** that makes progress toward it. In Go, recursive functions are plain func declarations. The base case prevents infinite recursion and stack overflow. Think of it as the simplest input that has a known answer.",
+      "example": "func factorial(n int) int {\n    if n <= 1 {\n        return 1\n    }\n    return n * factorial(n-1)\n}\n\nfunc main() {\n    fmt.Println(factorial(5))  // 120\n    fmt.Println(factorial(0))  // 1\n}",
+      "exercise": {
+        "prompt": "Write a recursive function `sumTo` that returns the sum 1+2+...+n. Base case: n <= 0 returns 0. Print sumTo(5) and sumTo(10).",
+        "starterCode": "func sumTo(n int) int {\n    if n  {\n        return 0\n    }\n    return n + (n-1)\n}\n\nfunc main() {\n    fmt.Println(sumTo(5))\n    fmt.Println(sumTo(10))\n}",
+        "validation": [
+          {"type": "output", "expected": "15\n55", "message": "sumTo(5) = 15, sumTo(10) = 55"},
+          {"type": "contains", "patterns": ["if n <= 0", "sumTo(n-1)"], "message": "Use n <= 0 as base case and sumTo(n-1) for the recursive call"}
+        ],
+        "testCode": "",
+        "hint": "Base case: if n <= 0 { return 0 }. Recursive: return n + sumTo(n-1)."
+      },
+      "order": 1
+    },
+    {
+      "id": "memoization",
+      "title": "Memoization with maps",
+      "explanation": "Memoization caches results of expensive recursive calls. In Go, use a **map[int]int** (or map of appropriate types) as the cache. Check the map before computing, store the result after. This turns exponential fibonacci O(2^n) into linear O(n). Pass the map as a parameter or use a closure.",
+      "example": "func fib(n int, memo map[int]int) int {\n    if n <= 1 {\n        return n\n    }\n    if v, ok := memo[n]; ok {\n        return v\n    }\n    memo[n] = fib(n-1, memo) + fib(n-2, memo)\n    return memo[n]\n}\n\nfunc main() {\n    memo := map[int]int{}\n    fmt.Println(fib(10, memo))  // 55\n    fmt.Println(fib(30, memo))  // 832040\n}",
+      "exercise": {
+        "prompt": "Implement memoized fibonacci. Use a map[int]int to cache results. Print fib(10) and fib(20).",
+        "starterCode": "func fib(n int, memo map[int]int) int {\n    if n <= 1 {\n        return n\n    }\n    if v, ok := memo[n];  {\n        return v\n    }\n    memo[n] = fib(n-1, memo) + fib(n-2, memo)\n    return [n]\n}\n\nfunc main() {\n    memo := map[int]int{}\n    fmt.Println(fib(10, memo))\n    fmt.Println(fib(20, memo))\n}",
+        "validation": [
+          {"type": "output", "expected": "55\n6765", "message": "fib(10) = 55, fib(20) = 6765"},
+          {"type": "contains", "patterns": ["memo[n]", "if v, ok := memo[n]; ok", "map[int]int"], "message": "Use map for memoization with comma-ok check before computing"}
+        ],
+        "testCode": "",
+        "hint": "Check if v, ok := memo[n]; ok to return cached value. Store with memo[n] = result. Return memo[n]."
+      },
+      "order": 2
+    },
+    {
+      "id": "backtracking",
+      "title": "Backtracking pattern",
+      "explanation": "Backtracking explores all possibilities with **choose, explore, unchoose**. Append to a path, recurse, then remove the last element (backtrack). In Go, be careful with slices — you must copy the path before storing results because slices share underlying arrays.",
+      "example": "func permutations(nums []int) [][]int {\n    result := [][]int{}\n    var backtrack func(path []int, used map[int]bool)\n    backtrack = func(path []int, used map[int]bool) {\n        if len(path) == len(nums) {\n            tmp := make([]int, len(path))\n            copy(tmp, path)\n            result = append(result, tmp)\n            return\n        }\n        for _, n := range nums {\n            if used[n] { continue }\n            used[n] = true\n            path = append(path, n)\n            backtrack(path, used)\n            path = path[:len(path)-1]\n            used[n] = false\n        }\n    }\n    backtrack([]int{}, map[int]bool{})\n    return result\n}\n\nfunc main() {\n    fmt.Println(permutations([]int{1, 2, 3}))\n}",
+      "exercise": {
+        "prompt": "Generate all subsets of [1, 2, 3] using backtracking. Start with an empty path, at each step choose to include or skip each element. Print the result.",
+        "starterCode": "func subsets(nums []int) [][]int {\n    result := [][]int{}\n    var backtrack func(start int, path []int)\n    backtrack = func(start int, path []int) {\n        tmp := make([]int, len(path))\n        copy(tmp, path)\n        result = append(result, tmp)\n        for i := start; i < len(nums); i++ {\n            path = append(path, nums[i])\n            backtrack(+1, path)\n            path = path[:len(path)-1]\n        }\n    }\n    backtrack(0, []int{})\n    return result\n}\n\nfunc main() {\n    fmt.Println(subsets([]int{1, 2, 3}))\n}",
+        "validation": [
+          {"type": "output", "expected": "[[] [1] [1 2] [1 2 3] [1 3] [2] [2 3] [3]]", "message": "All 8 subsets of [1,2,3] including empty set"},
+          {"type": "contains", "patterns": ["copy(tmp, path)", "backtrack(i+1", "path[:len(path)-1]"], "message": "Copy path before storing, recurse with i+1, and backtrack by slicing"}
+        ],
+        "testCode": "",
+        "hint": "Copy path with copy(tmp, path) before appending to result. Recurse with backtrack(i+1, path). Undo with path = path[:len(path)-1]."
+      },
+      "order": 3
+    },
+    {
+      "id": "iterative",
+      "title": "Converting recursion to iterative",
+      "explanation": "Some problems are cleaner iteratively. Convert recursion to iteration using an explicit **stack** (for DFS) or **queue** (for BFS). The iterative approach avoids stack overflow and is sometimes faster. In Go, use a slice as your explicit stack.",
+      "example": "func factorialIterative(n int) int {\n    result := 1\n    for i := 2; i <= n; i++ {\n        result *= i\n    }\n    return result\n}\n\nfunc fibIterative(n int) int {\n    if n <= 1 { return n }\n    a, b := 0, 1\n    for i := 2; i <= n; i++ {\n        a, b = b, a+b\n    }\n    return b\n}\n\nfunc main() {\n    fmt.Println(factorialIterative(5))  // 120\n    fmt.Println(fibIterative(10))       // 55\n}",
+      "exercise": {
+        "prompt": "Write an iterative fibonacci function using two variables a, b. Print fib(10) and fib(20).",
+        "starterCode": "func fibIterative(n int) int {\n    if n <= 1 {\n        return n\n    }\n    a, b := 0, 1\n    for i := 2; i <= n; i++ {\n        a,  = b, a+b\n    }\n    return \n}\n\nfunc main() {\n    fmt.Println(fibIterative(10))\n    fmt.Println(fibIterative(20))\n}",
+        "validation": [
+          {"type": "output", "expected": "55\n6765", "message": "fib(10) = 55, fib(20) = 6765"},
+          {"type": "contains", "patterns": ["a, b = b, a+b", "for i := 2"], "message": "Use parallel assignment a, b = b, a+b in the loop"}
+        ],
+        "testCode": "",
+        "hint": "a, b = b, a+b shifts both variables forward. Return b at the end."
+      },
+      "order": 4
+    }
+  ]
+}

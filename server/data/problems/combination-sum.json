@@ -1,0 +1,40 @@
+{
+  "id": "combination-sum",
+  "title": "Combination Sum",
+  "difficulty": "Medium",
+  "tags": ["arrays", "backtracking"],
+  "prompt": "Given an array of distinct integers candidates and a target integer target, return a list of all unique combinations of candidates where the chosen numbers sum to target. You may return the combinations in any order.\n\nThe same number may be chosen from candidates an unlimited number of times. Two combinations are unique if the frequency of at least one of the chosen numbers is different.\n\nThe output combinations should each be sorted in non-decreasing order, and the list of combinations should be sorted lexicographically.\n\nExample: candidates = [2,3,6,7], target = 7 → [[2,2,3],[7]] because 2+2+3=7 and 7=7.",
+  "examples": [
+    {"input": "candidates = [2,3,6,7], target = 7", "output": "[[2,2,3],[7]]"},
+    {"input": "candidates = [2,3,5], target = 8", "output": "[[2,2,2,2],[2,3,3],[3,5]]"}
+  ],
+  "constraints": [
+    "1 <= candidates.length <= 30",
+    "2 <= candidates[i] <= 40",
+    "All elements of candidates are distinct",
+    "1 <= target <= 40"
+  ],
+  "starterCode": {
+    "python": "def solve(candidates, target):\n    pass",
+    "javascript": "function solve(candidates, target) {\n  \n}",
+    "typescript": "export function solve(candidates: number[], target: number): number[][] {\n  \n}",
+    "java": "class Solution {\n    public List<List<Integer>> solve(int[] candidates, int target) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public IList<IList<int>> Solve(int[] candidates, int target) {\n        \n    }\n}",
+    "go": "func solve(candidates []int, target int) [][]int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(sorted(solve([2,3,6,7], 7)))"}, "expectedStdout": "[[2, 2, 3], [7]]"},
+    {"stdin": {"python": "print(sorted(solve([2,3,5], 8)))"}, "expectedStdout": "[[2, 2, 2, 2], [2, 3, 3], [3, 5]]"},
+    {"stdin": {"python": "print(sorted(solve([2], 1)))"}, "expectedStdout": "[]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(sorted(solve([1], 3)))"}, "expectedStdout": "[[1, 1, 1]]"},
+    {"stdin": {"python": "print(sorted(solve([1,2], 4)))"}, "expectedStdout": "[[1, 1, 1, 1], [1, 1, 2], [2, 2]]"},
+    {"stdin": {"python": "print(sorted(solve([7,3,2], 18)))"}, "expectedStdout": "[[2, 2, 2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2, 2, 2, 3, 3], [2, 2, 2, 2, 3, 7], [2, 2, 2, 3, 3, 3, 3], [2, 2, 7, 7], [2, 3, 3, 3, 7], [3, 3, 3, 3, 3, 3]]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Sort candidates first, then use backtracking. At each step pick candidates[i..] (to avoid duplicates), subtract from target, recurse. Base case: target == 0 means valid combo found.",
+    "commonBugs": ["Generating duplicate combinations by not restricting start index", "Not sorting candidates first leading to unordered combos", "Off-by-one: forgetting to include the current element when recursing (should allow reuse)"],
+    "expectedComplexity": "O(n^(T/M)) where T is target and M is min candidate value"
+  }
+}

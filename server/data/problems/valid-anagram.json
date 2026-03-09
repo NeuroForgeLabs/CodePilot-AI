@@ -1,0 +1,39 @@
+{
+  "id": "valid-anagram",
+  "title": "Valid Anagram",
+  "difficulty": "Easy",
+  "tags": ["strings", "hash-table", "sorting"],
+  "prompt": "Given two strings `s` and `t`, return `True` if `t` is an anagram of `s`, and `False` otherwise.\n\nAn anagram is a word or phrase formed by rearranging the letters of a different word or phrase, using all the original letters exactly once.",
+  "examples": [
+    {"input": "s = \"anagram\", t = \"nagaram\"", "output": "True\nExplanation: \"nagaram\" is a rearrangement of \"anagram\"."},
+    {"input": "s = \"rat\", t = \"car\"", "output": "False\nExplanation: \"car\" cannot be formed by rearranging \"rat\"."},
+    {"input": "s = \"listen\", t = \"silent\"", "output": "True"}
+  ],
+  "constraints": [
+    "1 <= s.length, t.length <= 5 * 10^4",
+    "s and t consist of lowercase English letters."
+  ],
+  "starterCode": {
+    "python": "def solve(s, t):\n    pass",
+    "javascript": "function solve(s, t) {\n  \n}",
+    "typescript": "export function solve(s: string, t: string): boolean {\n  \n}",
+    "java": "class Solution {\n    public boolean solve(String s, String t) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public bool Solve(string s, string t) {\n        \n    }\n}",
+    "go": "func solve(s string, t string) bool {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve(\"anagram\", \"nagaram\"))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve(\"rat\", \"car\"))"}, "expectedStdout": "False"},
+    {"stdin": {"python": "print(solve(\"listen\", \"silent\"))"}, "expectedStdout": "True"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve(\"a\", \"a\"))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve(\"ab\", \"a\"))"}, "expectedStdout": "False"},
+    {"stdin": {"python": "print(solve(\"aacc\", \"ccac\"))"}, "expectedStdout": "False"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Count character frequencies using a hash map or fixed-size array of 26 entries. Both strings must have identical character counts to be anagrams.",
+    "commonBugs": ["Forgetting to check if lengths differ first (quick reject)", "Case sensitivity issues if not specified", "Using sorting (O(n log n)) when O(n) hash map approach is optimal"],
+    "expectedComplexity": "O(n)"
+  }
+}

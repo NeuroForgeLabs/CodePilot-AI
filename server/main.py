@@ -41,7 +41,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-PROBLEMS_DIR = Path(__file__).resolve().parent.parent / "data" / "problems"
+_SERVER_DIR = Path(__file__).resolve().parent
+_REPO_ROOT = _SERVER_DIR.parent
+
+PROBLEMS_DIR = (
+    _SERVER_DIR / "data" / "problems"
+    if (_SERVER_DIR / "data" / "problems").is_dir()
+    else _REPO_ROOT / "data" / "problems"
+)
 _problems_cache: dict[str, dict] = {}
 
 

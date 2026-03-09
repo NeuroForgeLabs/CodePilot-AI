@@ -1,0 +1,74 @@
+{
+  "id": "python-recursion",
+  "title": "Recursion",
+  "description": "Master recursive thinking patterns essential for coding interviews: base cases, memoization, backtracking, and converting recursion to iteration.",
+  "language": "python",
+  "category": "recursion",
+  "order": 10,
+  "sections": [
+    {
+      "id": "base-case",
+      "title": "Base Case and Recursive Call",
+      "explanation": "Every recursive function needs a base case that stops recursion and a recursive step that reduces the problem. Interviewers look for your ability to identify these two components immediately. Forgetting a base case is one of the most common mistakes in whiteboard interviews and leads to infinite recursion.",
+      "example": "def factorial(n):\n    if n <= 1:        # base case\n        return 1\n    return n * factorial(n - 1)  # recursive step\n\nprint(factorial(5))  # 120",
+      "exercise": {
+        "prompt": "Write a recursive function `factorial(n)` that returns n!. Print the result of factorial(5).",
+        "starterCode": "def factorial(n):\n    if ___:\n        return ___\n    return n * ___\n\nprint(factorial(5))",
+        "validation": {
+          "output": "120",
+          "contains": ["factorial", "return"]
+        },
+        "testCode": "",
+        "hint": "The base case is when n <= 1, returning 1. The recursive step multiplies n by factorial(n - 1)."
+      }
+    },
+    {
+      "id": "memoization",
+      "title": "Memoization",
+      "explanation": "Memoization caches previously computed results to avoid redundant work in overlapping subproblems. This transforms exponential-time recursion into linear or polynomial time. Interviewers frequently ask you to optimize a naive recursive solution, and memoization using a dict or functools.lru_cache is the standard first step.",
+      "example": "from functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef fib(n):\n    if n < 2:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nprint(fib(10))  # 55",
+      "exercise": {
+        "prompt": "Write a memoized fibonacci function using a dictionary cache. Print fib(10).",
+        "starterCode": "def fib(n, memo={}):\n    if n < 2:\n        return n\n    if n in ___:\n        return ___\n    memo[n] = fib(___) + fib(___)\n    return memo[n]\n\nprint(fib(10))",
+        "validation": {
+          "output": "55",
+          "contains": ["memo", "fib"]
+        },
+        "testCode": "",
+        "hint": "Check if n is already in memo before computing. Store fib(n - 1) + fib(n - 2) in memo[n] and return it."
+      }
+    },
+    {
+      "id": "backtracking",
+      "title": "Backtracking",
+      "explanation": "Backtracking builds solutions incrementally, abandoning a path as soon as it cannot lead to a valid answer. The pattern of choose-explore-unchoose is the backbone of subset, permutation, and combination problems. Interviewers expect you to recognize this template and adapt it to constraints like unique elements or target sums.",
+      "example": "def subsets(nums):\n    result = []\n    def backtrack(start, path):\n        result.append(path[:])\n        for i in range(start, len(nums)):\n            path.append(nums[i])\n            backtrack(i + 1, path)\n            path.pop()\n    backtrack(0, [])\n    return result\n\nprint(sorted(subsets([1, 2])))  # [[], [1], [1, 2], [2]]",
+      "exercise": {
+        "prompt": "Generate all subsets of [1, 2, 3] using backtracking. Print the result sorted.",
+        "starterCode": "def subsets(nums):\n    result = []\n    def backtrack(start, path):\n        result.append(___)\n        for i in range(___, ___):\n            path.append(nums[i])\n            backtrack(___, path)\n            ___\n    backtrack(0, [])\n    return result\n\nprint(sorted(subsets([1, 2, 3])))",
+        "validation": {
+          "output": "[[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]",
+          "contains": ["backtrack", "path", "pop"]
+        },
+        "testCode": "",
+        "hint": "Append a copy of path with path[:]. Loop from start to len(nums). Recurse with i + 1 and pop after returning."
+      }
+    },
+    {
+      "id": "recursion-to-iteration",
+      "title": "Converting Recursion to Iteration",
+      "explanation": "Replacing recursion with an explicit stack avoids stack overflow on deep inputs and is a common interview follow-up. The technique mirrors how the call stack works: push state before a 'call' and pop when returning. Interviewers often ask you to convert a recursive DFS into an iterative one to demonstrate deeper understanding.",
+      "example": "def iterative_dfs(graph, start):\n    visited, stack = set(), [start]\n    result = []\n    while stack:\n        node = stack.pop()\n        if node not in visited:\n            visited.add(node)\n            result.append(node)\n            for neighbor in reversed(graph[node]):\n                stack.append(neighbor)\n    return result\n\ngraph = {0: [1, 2], 1: [3], 2: [], 3: []}\nprint(iterative_dfs(graph, 0))  # [0, 1, 3, 2]",
+      "exercise": {
+        "prompt": "Implement iterative DFS using an explicit stack on the given tree graph. Print the traversal order starting from node 0.",
+        "starterCode": "def iterative_dfs(graph, start):\n    visited, stack = set(), [___]\n    result = []\n    while ___:\n        node = stack.___\n        if node not in visited:\n            visited.add(node)\n            result.append(node)\n            for neighbor in reversed(graph[node]):\n                stack.append(___)\n    return result\n\ngraph = {0: [1, 2], 1: [3], 2: [], 3: []}\nprint(iterative_dfs(graph, 0))",
+        "validation": {
+          "output": "[0, 1, 3, 2]",
+          "contains": ["stack", "pop", "visited"]
+        },
+        "testCode": "",
+        "hint": "Initialize the stack with start. Use stack.pop() to get the next node. Push each neighbor onto the stack."
+      }
+    }
+  ]
+}

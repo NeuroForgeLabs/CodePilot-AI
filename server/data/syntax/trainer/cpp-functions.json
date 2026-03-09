@@ -1,0 +1,78 @@
+{
+  "id": "cpp-functions",
+  "title": "Functions",
+  "description": "Understand C++ function declarations, pass-by-reference vs pass-by-value, auto return types, and lambdas — all essential tools for writing clean, efficient interview code.",
+  "language": "cpp",
+  "category": "functions",
+  "order": 4,
+  "sections": [
+    {
+      "id": "function-declaration",
+      "title": "Function declaration",
+      "explanation": "In C++, functions must declare their return type and parameter types. Place helper functions **before main()** or use forward declarations. Return `void` for no return value. Interviewers expect clean function signatures with appropriate types.",
+      "example": "int add(int a, int b) {\n    return a + b;\n}\n\nbool isEven(int n) {\n    return n % 2 == 0;\n}\n\nvoid greet(string name) {\n    cout << \"Hello, \" << name << endl;\n}\n\nint main() {\n    cout << add(3, 4) << endl;  // 7\n    cout << boolalpha << isEven(6) << endl;  // true\n    greet(\"Alice\");  // Hello, Alice\n}",
+      "exercise": {
+        "prompt": "Write a function `multiply` that takes two ints and returns their product, and a function `isPositive` that returns true if a number is greater than 0. Print multiply(6, 7) and isPositive(-3).",
+        "starterCode": " multiply(int a, int b) {\n    return a * b;\n}\n\n isPositive(int n) {\n    return n > 0;\n}\n\nint main() {\n    cout << multiply(6, 7) << endl;\n    cout << boolalpha << isPositive(-3) << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "42\nfalse", "message": "multiply(6,7) = 42 and isPositive(-3) = false"},
+          {"type": "contains", "patterns": ["int multiply", "bool isPositive"], "message": "Use int return type for multiply and bool for isPositive"}
+        ],
+        "testCode": "",
+        "hint": "multiply returns int (a * b), isPositive returns bool (n > 0)."
+      },
+      "order": 1
+    },
+    {
+      "id": "pass-by-ref",
+      "title": "Pass by reference vs value",
+      "explanation": "By default, C++ passes arguments **by value** (a copy). Use **&** to pass by reference — this avoids copying large objects and allows functions to modify the original. In interviews, pass vectors and strings by `const&` for read-only access, or `&` when you need to modify them.",
+      "example": "// By value — does NOT modify original\nvoid addOneCopy(int x) { x += 1; }\n\n// By reference — DOES modify original\nvoid addOneRef(int& x) { x += 1; }\n\n// const reference — avoids copy, read-only\nint sumVector(const vector<int>& nums) {\n    int total = 0;\n    for (int x : nums) total += x;\n    return total;\n}\n\nint main() {\n    int a = 5;\n    addOneCopy(a);\n    cout << a << endl;  // 5 (unchanged)\n    addOneRef(a);\n    cout << a << endl;  // 6 (modified)\n}",
+      "exercise": {
+        "prompt": "Write a function `doubleAll` that takes a vector<int> by reference and doubles every element. Write a function `getSum` that takes a vector<int> by const reference and returns the sum. Demonstrate both on {1, 2, 3, 4, 5}.",
+        "starterCode": "void doubleAll(vector<int> nums) {\n    for (int& x : nums) {\n        x *= 2;\n    }\n}\n\nint getSum(const vector<int> nums) {\n    int total = 0;\n    for (int x : nums) total += x;\n    return total;\n}\n\nint main() {\n    vector<int> nums = {1, 2, 3, 4, 5};\n    doubleAll(nums);\n    for (int x : nums) cout << x << \" \";\n    cout << endl;\n    cout << getSum(nums) << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "2 4 6 8 10 \n30", "message": "After doubling: 2 4 6 8 10, sum = 30"},
+          {"type": "contains", "patterns": ["vector<int>&", "const vector<int>&"], "message": "Use & for mutable reference in doubleAll and const& for read-only in getSum"}
+        ],
+        "testCode": "",
+        "hint": "Change the parameter to vector<int>& nums in doubleAll and const vector<int>& nums in getSum."
+      },
+      "order": 2
+    },
+    {
+      "id": "auto-return",
+      "title": "Auto return type",
+      "explanation": "C++14 allows **auto** as a return type, letting the compiler deduce it. This is handy for helper functions in interviews where the return type is obvious. Use it sparingly — explicit types are clearer for complex functions.",
+      "example": "auto square(int x) {\n    return x * x;  // compiler deduces int\n}\n\nauto makeGreeting(const string& name) {\n    return \"Hello, \" + name;  // compiler deduces string\n}\n\nint main() {\n    cout << square(5) << endl;  // 25\n    cout << makeGreeting(\"Bob\") << endl;  // Hello, Bob\n}",
+      "exercise": {
+        "prompt": "Write a function `cube` using auto return type that returns x*x*x. Write a function `describe` using auto that returns a string like \"Value: 42\" using to_string. Print cube(3) and describe(42).",
+        "starterCode": " cube(int x) {\n    return x * x * x;\n}\n\n describe(int n) {\n    return \"Value: \" + to_string(n);\n}\n\nint main() {\n    cout << cube(3) << endl;\n    cout << describe(42) << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "27\nValue: 42", "message": "cube(3) = 27 and describe(42) = 'Value: 42'"},
+          {"type": "contains", "patterns": ["auto cube", "auto describe", "to_string"], "message": "Use auto as the return type for both functions"}
+        ],
+        "testCode": "",
+        "hint": "Replace the blank return type with auto. The compiler deduces int for cube and string for describe."
+      },
+      "order": 3
+    },
+    {
+      "id": "lambdas",
+      "title": "Lambda functions",
+      "explanation": "**Lambdas** are anonymous functions: `[capture](params) { body }`. The capture `[]` specifies which outer variables to use: `[&]` captures all by reference, `[=]` all by value. Lambdas are essential for custom comparators in sort() and as inline callbacks.",
+      "example": "// Basic lambda\nauto greet = [](const string& name) {\n    cout << \"Hi \" << name << endl;\n};\ngreet(\"Alice\");\n\n// Lambda with capture\nint factor = 3;\nauto multiply = [factor](int x) { return x * factor; };\ncout << multiply(5) << endl;  // 15\n\n// Lambda in sort\nvector<int> nums = {5, 2, 8, 1};\nsort(nums.begin(), nums.end(), [](int a, int b) {\n    return a > b;  // descending\n});",
+      "exercise": {
+        "prompt": "Create a lambda `square` that takes an int and returns its square. Create a lambda `add` that captures a variable `base = 10` and adds it to its argument. Print square(7) and add(5).",
+        "starterCode": "int main() {\n    auto square = [](int x) {  x * x; };\n    cout << square(7) << endl;\n\n    int base = 10;\n    auto add = [](int x) { return  + x; };\n    cout << add(5) << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "49\n15", "message": "square(7) = 49 and add(5) with base 10 = 15"},
+          {"type": "contains", "patterns": ["return x * x", "[base]"], "message": "Use return in the lambda and [base] to capture the variable"}
+        ],
+        "testCode": "",
+        "hint": "Add 'return' before x * x in square. Capture base with [base] and use return base + x in add."
+      },
+      "order": 4
+    }
+  ]
+}

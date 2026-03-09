@@ -1,0 +1,38 @@
+{
+  "id": "subtree-of-another-tree",
+  "title": "Subtree of Another Tree",
+  "difficulty": "Easy",
+  "tags": ["tree", "recursion"],
+  "prompt": "Given the roots of two binary trees `root` and `subRoot`, return `True` if there is a subtree of `root` with the same structure and node values as `subRoot`, and `False` otherwise.\n\nA subtree of a binary tree is a tree that consists of a node in the tree and all of this node's descendants. The tree could also be considered as a subtree of itself.\n\nBoth trees are given as arrays in level-order representation, where `null` represents an absent node.",
+  "examples": [
+    {"input": "root = [3, 4, 5, 1, 2], subRoot = [4, 1, 2]", "output": "True\nExplanation: The left subtree of root (rooted at 4) matches subRoot exactly."},
+    {"input": "root = [3, 4, 5, 1, 2, null, null, null, null, 0], subRoot = [4, 1, 2]", "output": "False\nExplanation: The subtree rooted at 4 has an extra child (0) under node 2, so it doesn't match."}
+  ],
+  "constraints": [
+    "1 <= number of nodes in root <= 2000",
+    "1 <= number of nodes in subRoot <= 1000",
+    "Node values are integers in the range [-10^4, 10^4]"
+  ],
+  "starterCode": {
+    "python": "def solve(root, subRoot):\n    pass",
+    "javascript": "function solve(root, subRoot) {\n  \n}",
+    "typescript": "export function solve(root: (number | null)[], subRoot: (number | null)[]): boolean {\n  \n}",
+    "java": "class Solution {\n    public boolean solve(Integer[] root, Integer[] subRoot) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public bool Solve(int?[] root, int?[] subRoot) {\n        \n    }\n}",
+    "go": "func solve(root []interface{}, subRoot []interface{}) bool {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([3, 4, 5, 1, 2], [4, 1, 2]))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve([3, 4, 5, 1, 2, None, None, None, None, 0], [4, 1, 2]))"}, "expectedStdout": "False"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([1, 1], [1]))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve([1], [1]))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve([1, 2, 3], [2, 4]))"}, "expectedStdout": "False"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Build tree nodes from the level-order arrays. For each node in root, check if the subtree rooted there is identical to subRoot using a recursive isSameTree helper. Return True if any node matches.",
+    "commonBugs": ["Not handling null nodes correctly during tree construction from array", "Forgetting that a leaf node subtree must also have matching null children", "Confusing level-order indices when building left/right children (2i+1, 2i+2)"],
+    "expectedComplexity": "O(m * n) where m and n are the number of nodes in root and subRoot"
+  }
+}

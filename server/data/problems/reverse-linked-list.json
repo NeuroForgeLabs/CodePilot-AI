@@ -1,0 +1,39 @@
+{
+  "id": "reverse-linked-list",
+  "title": "Reverse Linked List",
+  "difficulty": "Easy",
+  "tags": ["linked-list", "recursion"],
+  "prompt": "Given the head of a singly linked list represented as an array, reverse the list and return the reversed list as an array.\n\nFor example, the array `[1, 2, 3, 4, 5]` represents the linked list `1 -> 2 -> 3 -> 4 -> 5`. Reversing it yields `5 -> 4 -> 3 -> 2 -> 1`, returned as `[5, 4, 3, 2, 1]`.\n\nAn empty array represents an empty list.",
+  "examples": [
+    {"input": "head = [1, 2, 3, 4, 5]", "output": "[5, 4, 3, 2, 1]"},
+    {"input": "head = [1, 2]", "output": "[2, 1]"},
+    {"input": "head = []", "output": "[]"}
+  ],
+  "constraints": [
+    "0 <= list length <= 5000",
+    "-5000 <= Node.val <= 5000"
+  ],
+  "starterCode": {
+    "python": "def solve(head):\n    pass",
+    "javascript": "function solve(head) {\n  \n}",
+    "typescript": "export function solve(head: number[]): number[] {\n  \n}",
+    "java": "class Solution {\n    public int[] solve(int[] head) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int[] Solve(int[] head) {\n        \n    }\n}",
+    "go": "func solve(head []int) []int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([1, 2, 3, 4, 5]))"}, "expectedStdout": "[5, 4, 3, 2, 1]"},
+    {"stdin": {"python": "print(solve([1, 2]))"}, "expectedStdout": "[2, 1]"},
+    {"stdin": {"python": "print(solve([]))"}, "expectedStdout": "[]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([1]))"}, "expectedStdout": "[1]"},
+    {"stdin": {"python": "print(solve([10, 20, 30, 40]))"}, "expectedStdout": "[40, 30, 20, 10]"},
+    {"stdin": {"python": "print(solve([1, 1, 1, 1]))"}, "expectedStdout": "[1, 1, 1, 1]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Iterate through the array and build a new reversed array, or use two-pointer swap from both ends. For a true linked list approach, maintain prev/curr pointers and reverse links one by one.",
+    "commonBugs": ["Not handling the empty list case", "Off-by-one when swapping with two pointers", "Forgetting to return the result instead of modifying in place"],
+    "expectedComplexity": "O(n)"
+  }
+}

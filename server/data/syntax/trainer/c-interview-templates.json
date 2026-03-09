@@ -1,0 +1,78 @@
+{
+  "id": "c-interview-templates",
+  "title": "Interview Templates",
+  "description": "Essential C interview algorithm templates — binary search, two-pointer, sliding window, and prefix sum patterns you'll use in nearly every coding interview.",
+  "language": "c",
+  "category": "interview-templates",
+  "order": 13,
+  "sections": [
+    {
+      "id": "binary-search",
+      "title": "Binary search",
+      "explanation": "Binary search finds a target in a sorted array in O(log n). Use two pointers `lo` and `hi`. Compute `mid = lo + (hi - lo) / 2` (avoids overflow). Compare `arr[mid]` with target: go left or right accordingly. Return the index or -1 if not found.",
+      "example": "int binary_search(int *arr, int n, int target) {\n    int lo = 0, hi = n - 1;\n    while (lo <= hi) {\n        int mid = lo + (hi - lo) / 2;\n        if (arr[mid] == target) return mid;\n        if (arr[mid] < target) lo = mid + 1;\n        else hi = mid - 1;\n    }\n    return -1;\n}",
+      "exercise": {
+        "prompt": "Implement binary search on sorted array {1, 3, 5, 7, 9, 11, 13}. Search for 7 (print its index) and 6 (print -1 for not found).",
+        "starterCode": "int binary_search(int *arr, int n, int target) {\n    int lo = 0, hi = n - 1;\n    while (lo <= hi) {\n        int mid = lo + (hi - lo) / 2;\n        if (arr[mid] == target) return mid;\n        if (arr[mid] < target) lo = mid + 1;\n        else hi = mid - 1;\n    }\n    return -1;\n}\n\nint main() {\n    int arr[] = {1, 3, 5, 7, 9, 11, 13};\n    int n = 7;\n    printf(\"%d\\n\", binary_search(arr, n, 7));\n    printf(\"%d\\n\", binary_search(arr, n, 6));\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "3\n-1", "message": "7 is at index 3, 6 is not found (-1)"},
+          {"type": "contains", "patterns": ["lo + (hi - lo) / 2", "lo <= hi", "lo = mid + 1", "hi = mid - 1"], "message": "Use standard binary search template with overflow-safe mid calculation"}
+        ],
+        "testCode": "",
+        "hint": "mid = lo + (hi - lo) / 2 avoids integer overflow. 7 is at index 3. 6 isn't in the array."
+      },
+      "order": 1
+    },
+    {
+      "id": "two-pointer",
+      "title": "Two-pointer technique",
+      "explanation": "Two pointers move through a sorted array from both ends (or two arrays) to find pairs or partition elements in O(n). Classic uses: pair with target sum, removing duplicates, container with most water. Move left pointer right when sum is too small, right pointer left when too large.",
+      "example": "// Find pair with target sum in sorted array\nint two_sum_sorted(int *arr, int n, int target, int *i, int *j) {\n    int lo = 0, hi = n - 1;\n    while (lo < hi) {\n        int sum = arr[lo] + arr[hi];\n        if (sum == target) { *i = lo; *j = hi; return 1; }\n        if (sum < target) lo++;\n        else hi--;\n    }\n    return 0;\n}",
+      "exercise": {
+        "prompt": "Find two indices in sorted array {1, 2, 4, 6, 8, 10} that sum to 12 using two pointers. Print the two values.",
+        "starterCode": "int main() {\n    int arr[] = {1, 2, 4, 6, 8, 10};\n    int n = 6, target = 12;\n    int lo = 0, hi = n - 1;\n\n    while (lo < hi) {\n        int sum = arr[lo] + arr[hi];\n        if (sum == target) {\n            printf(\"%d %d\\n\", arr[lo], arr[hi]);\n            break;\n        }\n        if (sum < target) lo++;\n        else hi--;\n    }\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "2 10", "message": "2 + 10 = 12"},
+          {"type": "contains", "patterns": ["lo < hi", "arr[lo] + arr[hi]", "lo++", "hi--"], "message": "Use two pointers moving inward: increment lo if sum too small, decrement hi if too large"}
+        ],
+        "testCode": "",
+        "hint": "Start lo=0, hi=5. arr[0]+arr[5]=1+10=11<12, lo++. arr[1]+arr[5]=2+10=12, found!"
+      },
+      "order": 2
+    },
+    {
+      "id": "sliding-window",
+      "title": "Sliding window",
+      "explanation": "Sliding window maintains a window [left, right] over an array, expanding right and shrinking left to find optimal subarrays. **Fixed-size window**: move both pointers together. **Variable-size**: expand right, shrink left while a condition is violated. Track window state incrementally.",
+      "example": "// Maximum sum subarray of size k\nint max_sum_k(int *arr, int n, int k) {\n    int window_sum = 0;\n    for (int i = 0; i < k; i++)\n        window_sum += arr[i];\n    int max_sum = window_sum;\n    for (int i = k; i < n; i++) {\n        window_sum += arr[i] - arr[i - k];\n        if (window_sum > max_sum)\n            max_sum = window_sum;\n    }\n    return max_sum;\n}",
+      "exercise": {
+        "prompt": "Find the maximum sum of any contiguous subarray of size 3 in {2, 1, 5, 1, 3, 2}. Print the maximum sum.",
+        "starterCode": "int main() {\n    int arr[] = {2, 1, 5, 1, 3, 2};\n    int n = 6, k = 3;\n\n    int window = 0;\n    for (int i = 0; i < k; i++)\n        window += arr[i];\n\n    int best = window;\n    for (int i = k; i < n; i++) {\n        window += arr[i] - arr[i - k];\n        if (window > best)\n            best = window;\n    }\n    printf(\"%d\\n\", best);\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "9", "message": "Subarrays of size 3: {2,1,5}=8, {1,5,1}=7, {5,1,3}=9, {1,3,2}=6. Max is 9."},
+          {"type": "contains", "patterns": ["arr[i] - arr[i - k]", "window", "best"], "message": "Use sliding window: add new element, subtract old element, track maximum"}
+        ],
+        "testCode": "",
+        "hint": "Slide window of size 3: add arr[i], subtract arr[i-3]. Sums: 8, 7, 9, 6. Maximum is 9."
+      },
+      "order": 3
+    },
+    {
+      "id": "prefix-sum",
+      "title": "Prefix sum",
+      "explanation": "Prefix sum precomputes cumulative sums so any range sum `arr[l..r]` is answered in O(1): `prefix[r+1] - prefix[l]`. Build with `prefix[i+1] = prefix[i] + arr[i]`. This is essential for subarray sum problems and 2D DP.",
+      "example": "int arr[] = {3, 1, 4, 1, 5};\nint n = 5;\nint prefix[6] = {0};\nfor (int i = 0; i < n; i++)\n    prefix[i+1] = prefix[i] + arr[i];\n// prefix = [0, 3, 4, 8, 9, 14]\n// Sum of arr[1..3] = prefix[4] - prefix[1] = 9 - 3 = 6",
+      "exercise": {
+        "prompt": "Build a prefix sum array for {2, 4, 6, 8, 10}. Use it to compute and print the sum of elements from index 1 to 3 (inclusive), then the sum from index 0 to 4.",
+        "starterCode": "int main() {\n    int arr[] = {2, 4, 6, 8, 10};\n    int n = 5;\n    int prefix[6] = {0};\n    for (int i = 0; i < n; i++)\n        prefix[i + 1] = prefix[i] + arr[i];\n\n    printf(\"%d\\n\", prefix[4] - prefix[1]);\n    printf(\"%d\\n\", prefix[5] - prefix[0]);\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "18\n30", "message": "Sum[1..3] = 4+6+8 = 18, Sum[0..4] = 2+4+6+8+10 = 30"},
+          {"type": "contains", "patterns": ["prefix[i + 1] = prefix[i] + arr[i]", "prefix[4] - prefix[1]"], "message": "Build prefix array incrementally, query with prefix[r+1] - prefix[l]"}
+        ],
+        "testCode": "",
+        "hint": "prefix = [0, 2, 6, 12, 20, 30]. Sum[1..3] = prefix[4] - prefix[1] = 20 - 2 = 18."
+      },
+      "order": 4
+    }
+  ]
+}

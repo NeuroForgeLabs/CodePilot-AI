@@ -1,0 +1,78 @@
+{
+  "id": "csharp-stacks-queues",
+  "title": "Stacks & Queues",
+  "description": "Master C# Stack<T> and Queue<T> for LIFO/FIFO operations, valid parentheses, and BFS in coding interviews.",
+  "language": "csharp",
+  "category": "stacks-queues",
+  "order": 8,
+  "sections": [
+    {
+      "id": "csharp-sq-stack",
+      "title": "Stack<T>: LIFO Operations",
+      "explanation": "Stack<T> provides Last-In-First-Out: `Push()` adds to top, `Pop()` removes and returns top, `Peek()` returns top without removing. `.Count` gives size. `Pop()` and `Peek()` throw on empty—check `.Count > 0` first. Stack is used for: matching brackets, undo operations, DFS, expression evaluation, and monotonic stack problems.",
+      "example": "class Program\n{\n    static void Main()\n    {\n        var stack = new Stack<int>();\n        stack.Push(10);\n        stack.Push(20);\n        stack.Push(30);\n\n        Console.WriteLine(stack.Peek());  // 30\n        Console.WriteLine(stack.Pop());   // 30\n        Console.WriteLine(stack.Pop());   // 20\n        Console.WriteLine(stack.Count);   // 1\n    }\n}",
+      "exercise": {
+        "prompt": "Create a Stack<string>, push \"a\", \"b\", \"c\", \"d\". Print the top element without removing it. Pop twice and print each popped value. Print the remaining count and the new top element.",
+        "starterCode": "class Program\n{\n    static void Main()\n    {\n        var stack = new Stack<string>();\n\n        // Push, peek, pop operations\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "d\nd\nc\n2\nb", "message": "Peek: d, Pop: d, Pop: c, Count: 2, Peek: b."},
+          {"type": "contains", "patterns": ["Stack<string>", ".Push(", ".Pop()", ".Peek()"], "message": "Use Stack<string> with Push, Pop, and Peek."}
+        ],
+        "testCode": "",
+        "hint": "Push a, b, c, d. Peek returns d. First Pop returns d, second Pop returns c. Peek again returns b."
+      },
+      "order": 1
+    },
+    {
+      "id": "csharp-sq-queue",
+      "title": "Queue<T>: FIFO Operations",
+      "explanation": "Queue<T> provides First-In-First-Out: `Enqueue()` adds to back, `Dequeue()` removes and returns front, `Peek()` returns front without removing. Essential for BFS, task scheduling, and level-order traversal. `Dequeue()` and `Peek()` throw on empty—check `.Count > 0` first.",
+      "example": "class Program\n{\n    static void Main()\n    {\n        var queue = new Queue<int>();\n        queue.Enqueue(10);\n        queue.Enqueue(20);\n        queue.Enqueue(30);\n\n        Console.WriteLine(queue.Peek());     // 10\n        Console.WriteLine(queue.Dequeue());  // 10\n        Console.WriteLine(queue.Dequeue());  // 20\n        Console.WriteLine(queue.Count);      // 1\n    }\n}",
+      "exercise": {
+        "prompt": "Simulate a print queue. Enqueue \"report.pdf\", \"photo.jpg\", \"letter.doc\". Print the first item in queue using Peek. Process (dequeue) two items, printing each. Print the remaining count and the next item to be processed.",
+        "starterCode": "class Program\n{\n    static void Main()\n    {\n        var printQueue = new Queue<string>();\n\n        // Enqueue, peek, dequeue operations\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "report.pdf\nreport.pdf\nphoto.jpg\n1\nletter.doc", "message": "Peek: report.pdf, Dequeue: report.pdf, photo.jpg, Count: 1, Peek: letter.doc."},
+          {"type": "contains", "patterns": ["Queue<string>", ".Enqueue(", ".Dequeue()", ".Peek()"], "message": "Use Queue<string> with Enqueue, Dequeue, and Peek."}
+        ],
+        "testCode": "",
+        "hint": "Enqueue all three. Peek shows first. Dequeue returns and removes from front."
+      },
+      "order": 2
+    },
+    {
+      "id": "csharp-sq-parens",
+      "title": "Valid Parentheses with Stack",
+      "explanation": "Classic interview problem: validate matching brackets using a Stack. For each opening bracket, push the expected closing bracket. For each closing bracket, check it matches the stack top. If the stack is empty at the end, all brackets are matched. This handles nested and multiple bracket types: (), [], {}.",
+      "example": "class Program\n{\n    static bool IsValid(string s)\n    {\n        var stack = new Stack<char>();\n        var pairs = new Dictionary<char, char>\n        {\n            { '(', ')' }, { '[', ']' }, { '{', '}' }\n        };\n        foreach (char c in s)\n        {\n            if (pairs.ContainsKey(c))\n                stack.Push(pairs[c]);\n            else if (stack.Count == 0 || stack.Pop() != c)\n                return false;\n        }\n        return stack.Count == 0;\n    }\n\n    static void Main()\n    {\n        Console.WriteLine(IsValid(\"({[]})\")); // True\n        Console.WriteLine(IsValid(\"([)]\"));   // False\n        Console.WriteLine(IsValid(\"(((\"));    // False\n    }\n}",
+      "exercise": {
+        "prompt": "Implement IsValid(string s) that checks if a string has valid matching parentheses (only round brackets for simplicity). Return true if valid. Test with \"(())\", \"()()\", \"(()\", \")(\" and print each result.",
+        "starterCode": "class Program\n{\n    static bool IsValid(string s)\n    {\n        var stack = new Stack<char>();\n        // Implement valid parentheses check\n\n        return false;\n    }\n\n    static void Main()\n    {\n        Console.WriteLine(IsValid(\"(())\"));\n        Console.WriteLine(IsValid(\"()()\"));\n        Console.WriteLine(IsValid(\"(()\"));\n        Console.WriteLine(IsValid(\")(\"));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "True\nTrue\nFalse\nFalse", "message": "(()) and ()() are valid, (() and )( are invalid."},
+          {"type": "contains", "patterns": ["Stack<char>", ".Push(", ".Pop()"], "message": "Use a Stack<char> with Push and Pop to match parentheses."}
+        ],
+        "testCode": "",
+        "hint": "For '(' push it. For ')' check stack is not empty and pop. Return stack.Count == 0."
+      },
+      "order": 3
+    },
+    {
+      "id": "csharp-sq-bfs",
+      "title": "BFS with Queue",
+      "explanation": "Breadth-First Search uses a Queue to explore nodes level by level. Pattern: enqueue start, while queue not empty: dequeue current, process it, enqueue unvisited neighbors. Track visited nodes with a HashSet. BFS finds shortest paths in unweighted graphs. For level-order processing, use `queue.Count` to batch each level.",
+      "example": "class Program\n{\n    static void BFS(Dictionary<int, List<int>> graph, int start)\n    {\n        var visited = new HashSet<int>();\n        var queue = new Queue<int>();\n        queue.Enqueue(start);\n        visited.Add(start);\n\n        while (queue.Count > 0)\n        {\n            int node = queue.Dequeue();\n            Console.Write(node + \" \");\n            if (graph.ContainsKey(node))\n            {\n                foreach (int neighbor in graph[node])\n                {\n                    if (visited.Add(neighbor))\n                        queue.Enqueue(neighbor);\n                }\n            }\n        }\n    }\n\n    static void Main()\n    {\n        var graph = new Dictionary<int, List<int>>\n        {\n            [1] = new List<int> { 2, 3 },\n            [2] = new List<int> { 4 },\n            [3] = new List<int> { 4, 5 },\n            [4] = new List<int>(),\n            [5] = new List<int>()\n        };\n        BFS(graph, 1);  // 1 2 3 4 5\n        Console.WriteLine();\n    }\n}",
+      "exercise": {
+        "prompt": "Implement BFS level-by-level: for each level, print all nodes on one line separated by spaces. Use the graph: 0→{1,2}, 1→{3}, 2→{3,4}, 3→{}, 4→{}. Start from node 0. Print the level number before each level's nodes.",
+        "starterCode": "class Program\n{\n    static void BFSLevels(Dictionary<int, List<int>> graph, int start)\n    {\n        var visited = new HashSet<int>();\n        var queue = new Queue<int>();\n        queue.Enqueue(start);\n        visited.Add(start);\n        int level = 0;\n\n        // BFS with level tracking\n\n    }\n\n    static void Main()\n    {\n        var graph = new Dictionary<int, List<int>>\n        {\n            [0] = new List<int> { 1, 2 },\n            [1] = new List<int> { 3 },\n            [2] = new List<int> { 3, 4 },\n            [3] = new List<int>(),\n            [4] = new List<int>()\n        };\n        BFSLevels(graph, 0);\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "Level 0: 0\nLevel 1: 1 2\nLevel 2: 3 4", "message": "Level 0: 0, Level 1: 1 2, Level 2: 3 4."},
+          {"type": "contains", "patterns": ["Queue<int>", "queue.Count", ".Dequeue()", ".Enqueue("], "message": "Use Queue with level-by-level processing using queue.Count."}
+        ],
+        "testCode": "",
+        "hint": "while queue not empty: int size = queue.Count; loop size times to process one level. Increment level after."
+      },
+      "order": 4
+    }
+  ]
+}

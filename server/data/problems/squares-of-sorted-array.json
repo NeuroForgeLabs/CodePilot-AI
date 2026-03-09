@@ -1,0 +1,38 @@
+{
+  "id": "squares-of-sorted-array",
+  "title": "Squares of a Sorted Array",
+  "difficulty": "Easy",
+  "tags": ["arrays", "two-pointers", "sorting"],
+  "prompt": "Given an integer array `nums` sorted in non-decreasing order, return an array of the squares of each number, also sorted in non-decreasing order.\n\nTry to solve it in O(n) time using a two-pointer approach.",
+  "examples": [
+    {"input": "nums = [-4, -1, 0, 3, 10]", "output": "[0, 1, 9, 16, 100]\nExplanation: Squaring gives [16, 1, 0, 9, 100], and sorting gives [0, 1, 9, 16, 100]."},
+    {"input": "nums = [-7, -3, 2, 3, 11]", "output": "[4, 9, 9, 49, 121]\nExplanation: Squaring gives [49, 9, 4, 9, 121], and sorting gives [4, 9, 9, 49, 121]."}
+  ],
+  "constraints": [
+    "1 <= nums.length <= 10^4",
+    "-10^4 <= nums[i] <= 10^4",
+    "nums is sorted in non-decreasing order"
+  ],
+  "starterCode": {
+    "python": "def solve(nums):\n    pass",
+    "javascript": "function solve(nums) {\n  \n}",
+    "typescript": "export function solve(nums: number[]): number[] {\n  \n}",
+    "java": "class Solution {\n    public int[] solve(int[] nums) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int[] Solve(int[] nums) {\n        \n    }\n}",
+    "go": "func solve(nums []int) []int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([-4, -1, 0, 3, 10]))"}, "expectedStdout": "[0, 1, 9, 16, 100]"},
+    {"stdin": {"python": "print(solve([-7, -3, 2, 3, 11]))"}, "expectedStdout": "[4, 9, 9, 49, 121]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([0]))"}, "expectedStdout": "[0]"},
+    {"stdin": {"python": "print(solve([-5, -3, -1]))"}, "expectedStdout": "[1, 9, 25]"},
+    {"stdin": {"python": "print(solve([1, 2, 3, 4, 5]))"}, "expectedStdout": "[1, 4, 9, 16, 25]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use two pointers at the start and end of the array. Compare absolute values. Place the larger square at the end of the result array and move that pointer inward. Fill the result from right to left.",
+    "commonBugs": ["Filling result left to right instead of right to left (the largest squares are at the ends)", "Forgetting to handle all-negative or all-positive arrays", "Using O(n log n) sort instead of the O(n) two-pointer approach"],
+    "expectedComplexity": "O(n)"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "id": "cpp-graphs",
+  "title": "Graphs",
+  "description": "Graph problems are a staple of technical interviews — master adjacency list representation with unordered_map, DFS, BFS, and connected-component counting to handle any graph question confidently.",
+  "language": "cpp",
+  "category": "graphs",
+  "order": 12,
+  "sections": [
+    {
+      "id": "adjacency-list",
+      "title": "Adjacency list representation",
+      "explanation": "Represent graphs with **unordered_map<int, vector<int>>** — each key is a node, and its value is the list of neighbors. This is the standard interview representation. Build it from an edge list by iterating and pushing neighbors. For undirected graphs, push both directions.",
+      "example": "// Build from edge list\nvector<pair<int,int>> edges = {{0,1}, {0,2}, {1,3}, {2,3}};\nunordered_map<int, vector<int>> graph;\nfor (auto& [u, v] : edges) {\n    graph[u].push_back(v);\n    graph[v].push_back(u);  // undirected\n}\n\n// Print adjacency list\nfor (auto& [node, neighbors] : graph) {\n    cout << node << \": \";\n    for (int nbr : neighbors) cout << nbr << \" \";\n    cout << endl;\n}",
+      "exercise": {
+        "prompt": "Build an undirected adjacency list from edges: (0,1), (1,2), (2,3). Print the neighbors of node 1 space-separated.",
+        "starterCode": "int main() {\n    vector<pair<int,int>> edges = {{0,1}, {1,2}, {2,3}};\n    unordered_map<int, vector<int>> graph;\n    for (auto& [u, v] : edges) {\n        graph[u].push_back();\n        graph[v].push_back();\n    }\n    for (int nbr : graph[1]) {\n        cout << nbr << \" \";\n    }\n    cout << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "0 2", "message": "Node 1 is connected to 0 and 2"},
+          {"type": "contains", "patterns": ["graph[u].push_back(v)", "graph[v].push_back(u)"], "message": "Push both directions for undirected edges"}
+        ],
+        "testCode": "",
+        "hint": "For undirected: graph[u].push_back(v) and graph[v].push_back(u). Node 1's neighbors are 0 and 2."
+      },
+      "order": 1
+    },
+    {
+      "id": "dfs-graph",
+      "title": "DFS on a graph",
+      "explanation": "Graph DFS uses recursion (or an explicit stack) with a **visited set** to avoid cycles. Start at a node, mark it visited, then recurse on each unvisited neighbor. This is the foundation for cycle detection, topological sort, and path-finding problems.",
+      "example": "void dfs(unordered_map<int, vector<int>>& graph, int node,\n         unordered_set<int>& visited) {\n    visited.insert(node);\n    cout << node << \" \";\n    for (int nbr : graph[node]) {\n        if (!visited.count(nbr)) {\n            dfs(graph, nbr, visited);\n        }\n    }\n}\n\nint main() {\n    unordered_map<int, vector<int>> graph = {\n        {0, {1, 2}}, {1, {3}}, {2, {3}}, {3, {}}\n    };\n    unordered_set<int> visited;\n    dfs(graph, 0, visited);\n    // Output: 0 1 3 2\n}",
+      "exercise": {
+        "prompt": "Perform DFS on the directed graph {0: [1,2], 1: [3], 2: [3], 3: []} starting from node 0. Print each visited node separated by spaces.",
+        "starterCode": "void dfs(unordered_map<int, vector<int>>& graph, int node,\n         unordered_set<int>& visited) {\n    visited.(node);\n    cout << node << \" \";\n    for (int nbr : graph[node]) {\n        if (!visited.(nbr)) {\n            dfs(graph, , visited);\n        }\n    }\n}\n\nint main() {\n    unordered_map<int, vector<int>> graph = {\n        {0, {1, 2}}, {1, {3}}, {2, {3}}, {3, {}}\n    };\n    unordered_set<int> visited;\n    dfs(graph, 0, visited);\n    cout << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "0 1 3 2", "message": "DFS from 0 visits: 0, 1, 3, then backtracks to 2"},
+          {"type": "contains", "patterns": ["visited.insert(", "visited.count(", "dfs(graph, nbr"], "message": "Mark visited with insert, check with count, recurse on unvisited neighbors"}
+        ],
+        "testCode": "",
+        "hint": "visited.insert(node) marks it. visited.count(nbr) checks if visited. Recurse with dfs(graph, nbr, visited)."
+      },
+      "order": 2
+    },
+    {
+      "id": "bfs-graph",
+      "title": "BFS on a graph",
+      "explanation": "Graph BFS uses a **queue** and visited set to explore level by level. It finds the shortest path in unweighted graphs — each level corresponds to one step. Enqueue the start node, then loop: dequeue front, process it, and enqueue all unvisited neighbors.",
+      "example": "void bfs(unordered_map<int, vector<int>>& graph, int start) {\n    queue<int> q;\n    unordered_set<int> visited;\n    q.push(start);\n    visited.insert(start);\n    while (!q.empty()) {\n        int node = q.front(); q.pop();\n        cout << node << \" \";\n        for (int nbr : graph[node]) {\n            if (!visited.count(nbr)) {\n                visited.insert(nbr);\n                q.push(nbr);\n            }\n        }\n    }\n}",
+      "exercise": {
+        "prompt": "Perform BFS on the directed graph {0: [1,2], 1: [3], 2: [3], 3: [4], 4: []} starting from node 0. Print each visited node and the total number of nodes visited.",
+        "starterCode": "int main() {\n    unordered_map<int, vector<int>> graph = {\n        {0, {1, 2}}, {1, {3}}, {2, {3}}, {3, {4}}, {4, {}}\n    };\n    queue<int> q;\n    unordered_set<int> visited;\n    q.push(0);\n    visited.insert(0);\n\n    while (!q.empty()) {\n        int node = q.(); q.();\n        cout << node << \" \";\n        for (int nbr : graph[node]) {\n            if (!visited.count()) {\n                visited.insert();\n                q.push();\n            }\n        }\n    }\n    cout << endl;\n    cout << visited.() << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "0 1 2 3 4 \n5", "message": "BFS visits 0 1 2 3 4 in level order, 5 nodes total"},
+          {"type": "contains", "patterns": ["q.front()", "q.pop()", "visited.insert(nbr)", "q.push(nbr)"], "message": "Use front/pop for FIFO, insert to mark visited, push to enqueue neighbors"}
+        ],
+        "testCode": "",
+        "hint": "q.front() reads, q.pop() removes. Check visited.count(nbr), then visited.insert(nbr) and q.push(nbr)."
+      },
+      "order": 3
+    },
+    {
+      "id": "connected-components",
+      "title": "Connected components",
+      "explanation": "To count connected components in an undirected graph, iterate over all nodes: if a node hasn't been visited, start a DFS/BFS from it and increment the component count. Each DFS/BFS marks all reachable nodes as visited. This pattern appears in island-counting, friend-circle, and clustering problems.",
+      "example": "void dfs(unordered_map<int, vector<int>>& graph, int node,\n         unordered_set<int>& visited) {\n    visited.insert(node);\n    for (int nbr : graph[node]) {\n        if (!visited.count(nbr)) dfs(graph, nbr, visited);\n    }\n}\n\nint countComponents(unordered_map<int, vector<int>>& graph,\n                    vector<int>& nodes) {\n    unordered_set<int> visited;\n    int count = 0;\n    for (int node : nodes) {\n        if (!visited.count(node)) {\n            dfs(graph, node, visited);\n            count++;\n        }\n    }\n    return count;\n}",
+      "exercise": {
+        "prompt": "Count connected components in an undirected graph with edges: (0,1), (1,2), (3,4). Nodes are 0-4. Print the number of components.",
+        "starterCode": "void dfs(unordered_map<int, vector<int>>& graph, int node,\n         unordered_set<int>& visited) {\n    visited.insert(node);\n    for (int nbr : graph[node]) {\n        if (!visited.count(nbr)) dfs(graph, nbr, visited);\n    }\n}\n\nint main() {\n    unordered_map<int, vector<int>> graph;\n    vector<pair<int,int>> edges = {{0,1}, {1,2}, {3,4}};\n    for (auto& [u, v] : edges) {\n        graph[u].push_back(v);\n        graph[v].push_back(u);\n    }\n\n    unordered_set<int> visited;\n    int components = 0;\n    for (int node = 0; node < 5; node++) {\n        if (!visited.(node)) {\n            dfs(graph, node, );\n            ++;\n        }\n    }\n    cout << components << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "2", "message": "Two components: {0,1,2} and {3,4}"},
+          {"type": "contains", "patterns": ["visited.count(node)", "components++", "dfs(graph, node, visited)"], "message": "Check if unvisited, run DFS, and increment the component counter"}
+        ],
+        "testCode": "",
+        "hint": "visited.count(node) checks if seen. Pass visited to dfs. Increment components++ after each new DFS."
+      },
+      "order": 4
+    }
+  ]
+}

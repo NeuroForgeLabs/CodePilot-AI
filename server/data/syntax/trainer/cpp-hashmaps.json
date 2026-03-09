@@ -1,0 +1,78 @@
+{
+  "id": "cpp-hashmaps",
+  "title": "Hashmaps / Dictionaries",
+  "description": "unordered_map is your most-used data structure in interviews — master insert, find, count, iteration, and the frequency-counting pattern that appears in countless problems.",
+  "language": "cpp",
+  "category": "hashmaps",
+  "order": 5,
+  "sections": [
+    {
+      "id": "unordered-map-basics",
+      "title": "unordered_map basics",
+      "explanation": "**unordered_map<K,V>** provides O(1) average lookup, insert, and delete. Declare with `unordered_map<string, int> m;`. Access with `m[key]` (creates default if missing) or `m.at(key)` (throws if missing). Use `.count(key)` to check existence (returns 0 or 1).",
+      "example": "unordered_map<string, int> ages;\nages[\"Alice\"] = 30;\nages[\"Bob\"] = 25;\n\ncout << ages[\"Alice\"] << endl;  // 30\ncout << ages.count(\"Bob\") << endl;  // 1\ncout << ages.count(\"Eve\") << endl;  // 0\ncout << ages.size() << endl;  // 2",
+      "exercise": {
+        "prompt": "Create an unordered_map mapping fruits to their prices: \"apple\" -> 3, \"banana\" -> 1, \"cherry\" -> 5. Print the price of \"banana\", whether \"cherry\" exists (using count), and the map size.",
+        "starterCode": "int main() {\n    unordered_map<string, int> prices;\n    prices[\"apple\"] = 3;\n    prices[\"banana\"] = 1;\n    prices[\"cherry\"] = 5;\n\n    cout << prices[] << endl;\n    cout << prices.(\"cherry\") << endl;\n    cout << prices.() << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "1\n1\n3", "message": "banana costs 1, cherry count is 1, map size is 3"},
+          {"type": "contains", "patterns": ["unordered_map<string, int>", "prices[\"banana\"]", ".count(", ".size()"], "message": "Use bracket access, .count(), and .size()"}
+        ],
+        "testCode": "",
+        "hint": "prices[\"banana\"] gives 1. prices.count(\"cherry\") returns 1 (exists). prices.size() returns 3."
+      },
+      "order": 1
+    },
+    {
+      "id": "insert-find",
+      "title": "Insert and find",
+      "explanation": "Besides bracket access, use **.find(key)** which returns an iterator — compare with `m.end()` to check if not found. The iterator has `->first` (key) and `->second` (value). Use `.insert({key, val})` or `.emplace(key, val)` for explicit insertion.",
+      "example": "unordered_map<string, int> m;\nm.insert({\"x\", 10});\nm.emplace(\"y\", 20);\n\nauto it = m.find(\"x\");\nif (it != m.end()) {\n    cout << it->first << \" = \" << it->second << endl;  // x = 10\n}\n\nif (m.find(\"z\") == m.end()) {\n    cout << \"z not found\" << endl;\n}",
+      "exercise": {
+        "prompt": "Insert \"hello\" -> 1 and \"world\" -> 2 into an unordered_map. Use find to look up \"hello\" and print its value. Then check if \"missing\" exists using find and print \"not found\" if it doesn't.",
+        "starterCode": "int main() {\n    unordered_map<string, int> m;\n    m.insert({\"hello\", 1});\n    m.insert({\"world\", 2});\n\n    auto it = m.(\"hello\");\n    if (it != m.()) {\n        cout << it->second << endl;\n    }\n\n    if (m.find(\"missing\") == m.end()) {\n        cout << \"not found\" << endl;\n    }\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "1\nnot found", "message": "hello maps to 1, and 'missing' is not found"},
+          {"type": "contains", "patterns": ["m.find(", "m.end()", "->second"], "message": "Use find(), compare with end(), and access ->second for the value"}
+        ],
+        "testCode": "",
+        "hint": "m.find(\"hello\") returns an iterator. Compare with m.end() to check validity. Use it->second for the value."
+      },
+      "order": 2
+    },
+    {
+      "id": "iteration",
+      "title": "Iterating over a map",
+      "explanation": "Use a range-based for loop with **auto& [key, val]** (structured bindings, C++17) or `auto& p` and access `p.first`, `p.second`. Note: unordered_map iteration order is **not** deterministic — use `map` if you need sorted keys.",
+      "example": "unordered_map<string, int> scores = {{\"Alice\", 90}, {\"Bob\", 85}, {\"Carol\", 95}};\n\n// Structured bindings (C++17)\nfor (auto& [name, score] : scores) {\n    cout << name << \": \" << score << endl;\n}\n\n// Classic style\nfor (auto it = scores.begin(); it != scores.end(); it++) {\n    cout << it->first << \" -> \" << it->second << endl;\n}",
+      "exercise": {
+        "prompt": "Create a map with \"a\" -> 1, \"b\" -> 2, \"c\" -> 3. Iterate using structured bindings and print each key-value pair as \"key: value\". Then print the total sum of all values.",
+        "starterCode": "int main() {\n    unordered_map<string, int> m = {{\"a\", 1}, {\"b\", 2}, {\"c\", 3}};\n    for (auto& [key, val] : m) {\n        cout << key << \": \" << val << endl;\n    }\n\n    int total = 0;\n    for (auto& [key, val] : m) {\n        total += ;\n    }\n    cout << total << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "6", "message": "The sum of values 1+2+3 should be 6 (printed last)"},
+          {"type": "contains", "patterns": ["auto& [key, val]", "total += val"], "message": "Use structured bindings and accumulate val into total"}
+        ],
+        "testCode": "",
+        "hint": "Accumulate with total += val inside the loop. The sum of 1+2+3 = 6."
+      },
+      "order": 3
+    },
+    {
+      "id": "frequency-counting",
+      "title": "Frequency counting pattern",
+      "explanation": "The most common interview pattern with maps: count occurrences of each element. Use `map[key]++` which auto-initializes to 0 for ints. This works for characters in strings, numbers in arrays, and words in text. Many problems (anagrams, duplicates, top-K) start with building a frequency map.",
+      "example": "string s = \"abracadabra\";\nunordered_map<char, int> freq;\nfor (char c : s) {\n    freq[c]++;\n}\nfor (auto& [ch, cnt] : freq) {\n    cout << ch << \": \" << cnt << endl;\n}\n// a: 5, b: 2, r: 2, c: 1, d: 1",
+      "exercise": {
+        "prompt": "Count the frequency of each number in the vector {1, 2, 2, 3, 3, 3, 4, 4, 4, 4}. Print only elements that appear more than 2 times along with their counts, in the format \"num: count\".",
+        "starterCode": "int main() {\n    vector<int> nums = {1, 2, 2, 3, 3, 3, 4, 4, 4, 4};\n    unordered_map<int, int> freq;\n    for (int n : nums) {\n        freq[];\n    }\n    for (auto& [num, cnt] : freq) {\n        if (cnt > 2) {\n            cout << num << \": \" << cnt << endl;\n        }\n    }\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "3: 3", "message": "Only 3 (appears 3 times) and 4 (appears 4 times) have count > 2"},
+          {"type": "contains", "patterns": ["freq[n]++", "cnt > 2"], "message": "Use freq[n]++ for counting and filter with cnt > 2"}
+        ],
+        "testCode": "",
+        "hint": "freq[n]++ increments the count for each number. Then filter: only print when cnt > 2."
+      },
+      "order": 4
+    }
+  ]
+}

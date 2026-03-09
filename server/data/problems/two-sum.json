@@ -1,0 +1,39 @@
+{
+  "id": "two-sum",
+  "title": "Two Sum",
+  "difficulty": "Easy",
+  "tags": ["arrays", "hashmap"],
+  "prompt": "Given an array of integers `nums` and an integer `target`, return the indices of the two numbers such that they add up to `target`.\n\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.\n\nReturn the answer as a list of two indices in ascending order.",
+  "examples": [
+    {"input": "nums = [2, 7, 11, 15], target = 9", "output": "[0, 1]\nExplanation: Because nums[0] + nums[1] == 9, we return [0, 1]."},
+    {"input": "nums = [3, 2, 4], target = 6", "output": "[1, 2]\nExplanation: Because nums[1] + nums[2] == 6, we return [1, 2]."},
+    {"input": "nums = [3, 3], target = 6", "output": "[0, 1]"}
+  ],
+  "constraints": [
+    "2 <= nums.length <= 10^4",
+    "-10^9 <= nums[i] <= 10^9",
+    "-10^9 <= target <= 10^9",
+    "Only one valid answer exists."
+  ],
+  "starterCode": {
+    "python": "def solve(nums, target):\n    pass",
+    "javascript": "function solve(nums, target) {\n  \n}",
+    "typescript": "export function solve(nums: number[], target: number): number[] {\n  \n}",
+    "java": "class Solution {\n    public int[] solve(int[] nums, int target) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int[] Solve(int[] nums, int target) {\n        \n    }\n}",
+    "go": "func solve(nums []int, target int) []int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([2, 7, 11, 15], 9))"}, "expectedStdout": "[0, 1]"},
+    {"stdin": {"python": "print(solve([3, 2, 4], 6))"}, "expectedStdout": "[1, 2]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([3, 3], 6))"}, "expectedStdout": "[0, 1]"},
+    {"stdin": {"python": "print(solve([1, 5, 3, 7], 8))"}, "expectedStdout": "[1, 2]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use a hash map to store seen values and their indices. For each element, check if (target - current) exists in the map. If so, return [map[target-current], current_index] sorted ascending.",
+    "commonBugs": ["Forgetting to sort the result before returning", "Using the same element twice when duplicate values exist", "Off-by-one errors in index tracking"],
+    "expectedComplexity": "O(n)"
+  }
+}

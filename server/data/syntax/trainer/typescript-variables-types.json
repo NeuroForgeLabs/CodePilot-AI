@@ -1,0 +1,78 @@
+{
+  "id": "typescript-variables-types",
+  "title": "Variables & Types",
+  "description": "Master TypeScript's type system — knowing how to annotate variables, narrow types, and use unions prevents runtime bugs and signals competence in interviews.",
+  "language": "typescript",
+  "category": "variables-types",
+  "order": 1,
+  "sections": [
+    {
+      "id": "let-const-annotations",
+      "title": "let/const with type annotations",
+      "explanation": "TypeScript adds optional type annotations to JavaScript's `let` and `const`. While TypeScript can infer types, explicit annotations make your intent clear — interviewers value this because it shows you think about types before writing logic. Use `const` for values that never change and `let` for values that do.",
+      "example": "const count: number = 0;\nlet name: string = \"target\";\nconst found: boolean = false;\nconst ratio: number = 0.5;\nlet result: number | null = null;\n\nconsole.log(count);   // 0\nconsole.log(name);    // \"target\"\nconsole.log(typeof ratio);  // \"number\"",
+      "exercise": {
+        "prompt": "Declare five variables with explicit type annotations: `count` (number, 42), `ratio` (number, 3.14), `name` (string, \"alice\"), `found` (boolean, true), and `result` (null). Print each on its own line using console.log().",
+        "starterCode": "const count: number = \nconst ratio: number = \nconst name: string = \nconst found: boolean = \nconst result: null = \n\nconsole.log(count)\nconsole.log(ratio)\nconsole.log(name)\nconsole.log(found)\nconsole.log(result)",
+        "validation": [
+          {"type": "output", "expected": "42\n3.14\nalice\ntrue\nnull", "message": "Each variable should print its value on a separate line"},
+          {"type": "contains", "patterns": [": number", ": string", ": boolean"], "message": "Use explicit type annotations for each variable"}
+        ],
+        "testCode": "",
+        "hint": "Assign literals directly: count: number = 42, ratio: number = 3.14, name: string = \"alice\", found: boolean = true, result: null = null."
+      },
+      "order": 1
+    },
+    {
+      "id": "union-types",
+      "title": "Union types",
+      "explanation": "Union types let a variable hold one of several types, written with the `|` operator. This is essential in interviews — function return types are often `number | null` or `string | undefined` to indicate missing results. TypeScript forces you to handle all variants before using the value.",
+      "example": "let id: string | number = \"abc\";\nid = 42;  // also valid\n\nfunction findIndex(arr: number[], target: number): number | -1 {\n  for (let i = 0; i < arr.length; i++) {\n    if (arr[i] === target) return i;\n  }\n  return -1;\n}\n\nconst idx: number = findIndex([10, 20, 30], 20);\nconsole.log(idx);  // 1",
+      "exercise": {
+        "prompt": "Create a variable `value` with type `string | number`. Assign it the string \"hello\", print it, then reassign it to 99 and print it again. Then create a variable `maybe` of type `number | null`, assign null, and print it.",
+        "starterCode": "let value: string | number = \nconsole.log(value)\n\nvalue = \nconsole.log(value)\n\nlet maybe: number | null = \nconsole.log(maybe)",
+        "validation": [
+          {"type": "output", "expected": "hello\n99\nnull", "message": "Print hello, then 99, then null on separate lines"},
+          {"type": "contains", "patterns": ["string | number", "number | null"], "message": "Use union type annotations"}
+        ],
+        "testCode": "",
+        "hint": "Assign \"hello\" first, then 99. For maybe, assign null. Union types allow either type in the annotation."
+      },
+      "order": 2
+    },
+    {
+      "id": "type-narrowing",
+      "title": "Type narrowing",
+      "explanation": "When you have a union type, TypeScript requires you to **narrow** the type before using type-specific operations. Use `typeof` checks, equality checks, or truthiness checks. Interviewers test this because it mirrors real problem-solving: validate input before processing it.",
+      "example": "function format(input: string | number): string {\n  if (typeof input === \"string\") {\n    return input.toUpperCase();\n  }\n  return input.toFixed(2);\n}\n\nconsole.log(format(\"hello\"));  // HELLO\nconsole.log(format(3.14159)); // 3.14",
+      "exercise": {
+        "prompt": "Write a function `describe` that takes a parameter of type `string | number | boolean`. Use typeof narrowing to return: for strings return the length, for numbers return double the value, for booleans return \"yes\" or \"no\". Print the result for each type.",
+        "starterCode": "function describe(val: string | number | boolean): string | number {\n  if (typeof val === \"string\") {\n    return val.___\n  } else if (typeof val === \"number\") {\n    return val * ___\n  } else {\n    return val ? \"yes\" : \"no\"\n  }\n}\n\nconsole.log(describe(\"hello\"))\nconsole.log(describe(7))\nconsole.log(describe(true))",
+        "validation": [
+          {"type": "output", "expected": "5\n14\nyes", "message": "String length should be 5, doubled number 14, boolean yes"},
+          {"type": "contains", "patterns": ["typeof val", "string | number | boolean"], "message": "Use typeof for type narrowing with a triple union type"}
+        ],
+        "testCode": "",
+        "hint": "Use val.length for strings, val * 2 for numbers. typeof checks narrow the union so TypeScript knows which methods are safe."
+      },
+      "order": 3
+    },
+    {
+      "id": "type-aliases-interfaces",
+      "title": "Type aliases and interfaces",
+      "explanation": "Use `type` aliases to name complex types and `interface` to define object shapes. In interviews, defining a clear type for your data structures (like graph nodes or DP state) shows structured thinking. Interfaces can be extended; type aliases support unions.",
+      "example": "type Result = {\n  index: number;\n  found: boolean;\n};\n\ninterface ListNode {\n  val: number;\n  next: ListNode | null;\n}\n\nconst res: Result = { index: 3, found: true };\nconsole.log(res.index);  // 3\nconsole.log(res.found);  // true",
+      "exercise": {
+        "prompt": "Define a type alias `Pair` with fields `first: number` and `second: number`. Define an interface `SearchResult` with fields `index: number` and `found: boolean`. Create one of each and print their fields.",
+        "starterCode": "type Pair = {\n  first: number;\n  second: number;\n};\n\ninterface SearchResult {\n  index: ___;\n  found: ___;\n}\n\nconst pair: Pair = { first: 1, second: 2 }\nconsole.log(pair.first)\nconsole.log(pair.second)\n\nconst result: SearchResult = { index: 5, found: true }\nconsole.log(result.index)\nconsole.log(result.found)",
+        "validation": [
+          {"type": "output", "expected": "1\n2\n5\ntrue", "message": "Print pair fields then result fields"},
+          {"type": "contains", "patterns": ["type Pair", "interface SearchResult"], "message": "Use a type alias for Pair and an interface for SearchResult"}
+        ],
+        "testCode": "",
+        "hint": "Fill in the types: index: number and found: boolean. Both type aliases and interfaces define object shapes."
+      },
+      "order": 4
+    }
+  ]
+}

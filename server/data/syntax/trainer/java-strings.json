@@ -1,0 +1,95 @@
+{
+  "id": "java-strings",
+  "title": "Strings",
+  "description": "Master Java String manipulation including charAt, substring, split/join, StringBuilder, and immutability concepts for interviews.",
+  "language": "java",
+  "category": "strings",
+  "order": 3,
+  "sections": [
+    {
+      "id": "java-str-charat",
+      "title": "charAt and Character Iteration",
+      "explanation": "Access individual characters with `s.charAt(i)` (returns `char`). Characters are compared with `==` since char is a primitive. Convert char to int for ASCII value. `s.length()` returns the length (note: parentheses, unlike arrays). Common pattern: iterate characters with `for (int i = 0; i < s.length(); i++)` or `for (char c : s.toCharArray())`.",
+      "example": "public class Main {\n    public static void main(String[] args) {\n        String s = \"Hello\";\n        System.out.println(s.charAt(0));    // H\n        System.out.println(s.charAt(4));    // o\n        System.out.println(s.length());     // 5\n\n        int vowels = 0;\n        for (char c : s.toCharArray()) {\n            if (\"aeiouAEIOU\".indexOf(c) != -1) vowels++;\n        }\n        System.out.println(vowels);         // 2\n    }\n}",
+      "exercise": {
+        "prompt": "Given String s = \"interview\", print the first character, the last character (use s.length()-1), and the total length. Then count and print the number of vowels (a,e,i,o,u) in the string.",
+        "starterCode": "public class Main {\n    public static void main(String[] args) {\n        String s = \"interview\";\n\n        // Print first char, last char, length\n\n        // Count and print vowels\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "i\nw\n9\n3", "message": "First=i, Last=w, Length=9, Vowels=3 (i, e, i)."},
+          {"type": "contains", "patterns": [".charAt(", ".length()"], "message": "Use charAt() to access characters and length() for the string length."}
+        ],
+        "testCode": "",
+        "hint": "The vowels in 'interview' are i, e, i = 3 vowels. Use charAt or toCharArray to iterate."
+      },
+      "order": 1
+    },
+    {
+      "id": "java-str-substring",
+      "title": "Substring Operations",
+      "explanation": "`s.substring(start)` returns from start to end. `s.substring(start, end)` returns from start to end-1 (exclusive end). This matches the half-open interval convention used throughout Java. Also useful: `s.indexOf(\"sub\")` returns first index or -1, `s.contains(\"sub\")` returns boolean, `s.toLowerCase()` and `s.toUpperCase()` for case conversion.",
+      "example": "public class Main {\n    public static void main(String[] args) {\n        String s = \"HelloWorld\";\n        System.out.println(s.substring(5));       // World\n        System.out.println(s.substring(0, 5));    // Hello\n        System.out.println(s.indexOf(\"World\"));   // 5\n        System.out.println(s.contains(\"oWo\"));    // true\n        System.out.println(s.toLowerCase());      // helloworld\n    }\n}",
+      "exercise": {
+        "prompt": "Given String s = \"JavaProgramming\", extract and print \"Java\" (first 4 chars), then \"Programming\" (from index 4 onward). Print the index of \"gram\" in the string. Print the string in uppercase.",
+        "starterCode": "public class Main {\n    public static void main(String[] args) {\n        String s = \"JavaProgramming\";\n\n        // Print \"Java\", \"Programming\", index of \"gram\", uppercase\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "Java\nProgramming\n7\nJAVAPROGRAMMING", "message": "Extract substrings, find index of 'gram' (7), and convert to uppercase."},
+          {"type": "contains", "patterns": [".substring(", ".indexOf(", ".toUpperCase()"], "message": "Use substring(), indexOf(), and toUpperCase() methods."}
+        ],
+        "testCode": "",
+        "hint": "substring(0,4) gives first 4 chars. substring(4) gives the rest. indexOf returns the starting position."
+      },
+      "order": 2
+    },
+    {
+      "id": "java-str-splitjoin",
+      "title": "Split and Join",
+      "explanation": "`s.split(regex)` splits a string into a String[] array. Common: `s.split(\" \")` splits by space, `s.split(\",\")` by comma. `String.join(delimiter, array)` joins an array back into a string. These are essential for parsing interview input and formatting output. Split takes a regex, so escape special chars with `\\\\` (e.g., `\\\\.` to split on dots).",
+      "example": "public class Main {\n    public static void main(String[] args) {\n        String csv = \"apple,banana,cherry\";\n        String[] fruits = csv.split(\",\");\n        System.out.println(fruits.length);   // 3\n        System.out.println(fruits[1]);       // banana\n\n        String joined = String.join(\" - \", fruits);\n        System.out.println(joined);          // apple - banana - cherry\n\n        String sentence = \"the quick brown fox\";\n        String[] words = sentence.split(\" \");\n        System.out.println(words[2]);        // brown\n    }\n}",
+      "exercise": {
+        "prompt": "Given String data = \"10:20:30:40:50\", split it by \":\" into an array. Print the number of parts, the third element, then join the array back with \"-\" as delimiter and print the result.",
+        "starterCode": "public class Main {\n    public static void main(String[] args) {\n        String data = \"10:20:30:40:50\";\n\n        // Split, print count, third element, rejoin with \"-\"\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "5\n30\n10-20-30-40-50", "message": "5 parts, third element is 30, joined with hyphens."},
+          {"type": "contains", "patterns": [".split(", "String.join("], "message": "Use split() to separate and String.join() to recombine."}
+        ],
+        "testCode": "",
+        "hint": "split(\":\") gives 5 elements. Index 2 is the third element. String.join(\"-\", parts) rejoins."
+      },
+      "order": 3
+    },
+    {
+      "id": "java-str-builder",
+      "title": "StringBuilder for Efficient Concatenation",
+      "explanation": "String is immutable—each concatenation creates a new object, making loop concatenation O(n^2). StringBuilder is mutable and efficient: `sb.append(x)` adds to the end, `sb.insert(i, x)` inserts at position, `sb.reverse()` reverses in place, `sb.toString()` converts back to String. Always use StringBuilder when building strings in loops during interviews.",
+      "example": "public class Main {\n    public static void main(String[] args) {\n        StringBuilder sb = new StringBuilder();\n        for (int i = 1; i <= 5; i++) {\n            sb.append(i);\n            if (i < 5) sb.append(\"-\");\n        }\n        System.out.println(sb.toString());  // 1-2-3-4-5\n\n        sb.reverse();\n        System.out.println(sb.toString());  // 5-4-3-2-1\n\n        System.out.println(sb.length());    // 9\n    }\n}",
+      "exercise": {
+        "prompt": "Use a StringBuilder to build the string \"a,b,c,d,e\" by appending each letter in a loop (characters 'a' through 'e') with commas between them. Print the result, then reverse the StringBuilder and print the reversed version.",
+        "starterCode": "public class Main {\n    public static void main(String[] args) {\n        StringBuilder sb = new StringBuilder();\n\n        // Build \"a,b,c,d,e\" using a loop\n\n        // Print the result\n\n        // Reverse and print\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "a,b,c,d,e\ne,d,c,b,a", "message": "First line: a,b,c,d,e. Second line: reversed."},
+          {"type": "contains", "patterns": ["StringBuilder", ".append(", ".reverse()"], "message": "Use StringBuilder with append() and reverse() methods."}
+        ],
+        "testCode": "",
+        "hint": "Loop char c from 'a' to 'e'. Append the char, then append ',' if c < 'e'. Use sb.reverse() to reverse."
+      },
+      "order": 4
+    },
+    {
+      "id": "java-str-immutability",
+      "title": "String Immutability and Common Pitfalls",
+      "explanation": "Strings in Java are immutable—methods like `replace()`, `trim()`, `toLowerCase()` return NEW strings without modifying the original. A common interview mistake is calling `s.trim()` without capturing the return value. This immutability also means strings are safe as HashMap keys. Use `.equals()` not `==`, `.isEmpty()` or `.length() == 0` to check empty strings.",
+      "example": "public class Main {\n    public static void main(String[] args) {\n        String s = \"  Hello World  \";\n        String trimmed = s.trim();\n        System.out.println(trimmed);               // Hello World\n        System.out.println(s);                     // still \"  Hello World  \"\n\n        String replaced = trimmed.replace(\"World\", \"Java\");\n        System.out.println(replaced);              // Hello Java\n        System.out.println(trimmed);               // still Hello World\n\n        System.out.println(\"\".isEmpty());           // true\n        System.out.println(\" \".isEmpty());          // false\n    }\n}",
+      "exercise": {
+        "prompt": "Given String s = \"  Java Interview  \", trim it and store in `trimmed`. Replace \"Interview\" with \"Coding\" and store in `result`. Print trimmed, then result, then print whether the original s still has leading spaces (check if s.charAt(0) == ' ').",
+        "starterCode": "public class Main {\n    public static void main(String[] args) {\n        String s = \"  Java Interview  \";\n\n        // Trim, replace, and demonstrate immutability\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "Java Interview\nJava Coding\ntrue", "message": "trimmed removes spaces, result has 'Coding', original s still starts with space."},
+          {"type": "contains", "patterns": [".trim()", ".replace("], "message": "Use trim() and replace() and capture their return values."}
+        ],
+        "testCode": "",
+        "hint": "s.trim() returns a new string. s.replace(\"Interview\", \"Coding\") also returns a new string. s itself is unchanged."
+      },
+      "order": 5
+    }
+  ]
+}

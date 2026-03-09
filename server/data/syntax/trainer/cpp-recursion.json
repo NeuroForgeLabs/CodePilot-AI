@@ -1,0 +1,78 @@
+{
+  "id": "cpp-recursion",
+  "title": "Recursion",
+  "description": "Recursion is the backbone of tree traversals, backtracking, and divide-and-conquer — master base cases, memoization with unordered_map, the backtracking template, and recognizing when to convert to iteration.",
+  "language": "cpp",
+  "category": "recursion",
+  "order": 10,
+  "sections": [
+    {
+      "id": "base-case",
+      "title": "Base case and recursive calls",
+      "explanation": "Every recursive function needs a **base case** that stops recursion and a **recursive case** that makes progress toward it. The classic examples are factorial and Fibonacci. Always define the base case first, then think about how to reduce the problem. Forgetting the base case causes stack overflow — interviewers watch for this.",
+      "example": "int factorial(int n) {\n    if (n <= 1) return 1;         // base case\n    return n * factorial(n - 1);  // recursive case\n}\n\nint fibonacci(int n) {\n    if (n <= 1) return n;  // base: fib(0)=0, fib(1)=1\n    return fibonacci(n - 1) + fibonacci(n - 2);\n}\n\nint main() {\n    cout << factorial(5) << endl;   // 120\n    cout << fibonacci(6) << endl;   // 8\n}",
+      "exercise": {
+        "prompt": "Write a recursive function `sumTo` that returns the sum 1 + 2 + ... + n. Base case: sumTo(0) = 0. Print sumTo(10).",
+        "starterCode": "int sumTo(int n) {\n    if (n <= 0) return ;\n    return n + sumTo(n - );\n}\n\nint main() {\n    cout << sumTo(10) << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "55", "message": "sumTo(10) = 1+2+...+10 = 55"},
+          {"type": "contains", "patterns": ["return 0", "sumTo(n - 1)"], "message": "Base case returns 0, recursive call uses n - 1"}
+        ],
+        "testCode": "",
+        "hint": "Base case: return 0 when n <= 0. Recursive: return n + sumTo(n - 1)."
+      },
+      "order": 1
+    },
+    {
+      "id": "memoization",
+      "title": "Memoization with unordered_map",
+      "explanation": "Naive recursion recomputes subproblems (e.g., Fibonacci is O(2^n)). **Memoization** caches results in an **unordered_map** — check if the answer is already stored before computing. This brings Fibonacci down to O(n). In interviews, pass the memo map by reference or declare it globally.",
+      "example": "unordered_map<int, long long> memo;\n\nlong long fib(int n) {\n    if (n <= 1) return n;\n    if (memo.count(n)) return memo[n];\n    memo[n] = fib(n - 1) + fib(n - 2);\n    return memo[n];\n}\n\nint main() {\n    cout << fib(50) << endl;  // 12586269025\n}",
+      "exercise": {
+        "prompt": "Write a memoized recursive function to compute the nth Fibonacci number. Use an unordered_map<int, long long>. Print fib(40).",
+        "starterCode": "unordered_map<int, long long> memo;\n\nlong long fib(int n) {\n    if (n <= 1) return n;\n    if (memo.(n)) return memo[n];\n    memo[n] = fib(n - 1) + fib(n - );\n    return memo[n];\n}\n\nint main() {\n    cout << fib(40) << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "102334155", "message": "fib(40) = 102334155"},
+          {"type": "contains", "patterns": ["memo.count(", "memo[n]", "fib(n - 2)"], "message": "Check memo with .count(), store results in memo[n], recurse on n-1 and n-2"}
+        ],
+        "testCode": "",
+        "hint": "memo.count(n) checks the cache. Store fib(n-1) + fib(n-2) in memo[n] before returning."
+      },
+      "order": 2
+    },
+    {
+      "id": "backtracking",
+      "title": "Backtracking template",
+      "explanation": "Backtracking builds solutions incrementally: **choose** an option, **explore** recursively, then **unchoose** (undo) to try the next option. The template is: for each candidate, push it to the path, recurse, then pop it. Use this for permutations, combinations, subsets, and constraint-satisfaction problems.",
+      "example": "void permute(vector<int>& nums, vector<int>& path,\n            vector<bool>& used, vector<vector<int>>& result) {\n    if ((int)path.size() == (int)nums.size()) {\n        result.push_back(path);\n        return;\n    }\n    for (int i = 0; i < (int)nums.size(); i++) {\n        if (used[i]) continue;\n        used[i] = true;\n        path.push_back(nums[i]);\n        permute(nums, path, used, result);\n        path.pop_back();   // unchoose\n        used[i] = false;    // unchoose\n    }\n}\n\nint main() {\n    vector<int> nums = {1, 2, 3};\n    vector<int> path;\n    vector<bool> used(3, false);\n    vector<vector<int>> result;\n    permute(nums, path, used, result);\n    cout << result.size() << endl;  // 6\n}",
+      "exercise": {
+        "prompt": "Generate all subsets of {1, 2, 3} using backtracking. Print the total number of subsets (should be 8).",
+        "starterCode": "void subsets(vector<int>& nums, int start, vector<int>& path,\n             vector<vector<int>>& result) {\n    result.push_back(path);\n    for (int i = start; i < (int)nums.size(); i++) {\n        path.push_back(nums[i]);\n        subsets(nums, i + , path, result);\n        path.pop_back();\n    }\n}\n\nint main() {\n    vector<int> nums = {1, 2, 3};\n    vector<int> path;\n    vector<vector<int>> result;\n    subsets(nums, 0, path, result);\n    cout << result.size() << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "8", "message": "There are 2^3 = 8 subsets of {1, 2, 3}"},
+          {"type": "contains", "patterns": ["push_back(nums[i])", "pop_back()", "i + 1"], "message": "Choose with push_back, recurse with i+1 to avoid duplicates, unchoose with pop_back"}
+        ],
+        "testCode": "",
+        "hint": "Recurse with i + 1 to only consider elements after the current one. push_back to choose, pop_back to unchoose."
+      },
+      "order": 3
+    },
+    {
+      "id": "iterative-conversion",
+      "title": "Converting recursion to iteration",
+      "explanation": "Some interviewers ask you to convert recursive solutions to iterative ones to avoid stack overflow on deep inputs. Use an explicit **stack** to simulate the call stack. Push the initial state, then loop: pop the top state, process it, and push child states. This works for DFS, tree traversals, and many recursive patterns.",
+      "example": "// Recursive factorial\nint factRec(int n) {\n    if (n <= 1) return 1;\n    return n * factRec(n - 1);\n}\n\n// Iterative factorial\nint factIter(int n) {\n    int result = 1;\n    for (int i = 2; i <= n; i++) {\n        result *= i;\n    }\n    return result;\n}\n\n// Iterative DFS using explicit stack\nvoid dfsIterative(unordered_map<int,vector<int>>& graph, int start) {\n    stack<int> st;\n    unordered_set<int> visited;\n    st.push(start);\n    while (!st.empty()) {\n        int node = st.top(); st.pop();\n        if (visited.count(node)) continue;\n        visited.insert(node);\n        cout << node << \" \";\n        for (int nbr : graph[node]) st.push(nbr);\n    }\n}",
+      "exercise": {
+        "prompt": "Convert the recursive sum 1+2+...+n to an iterative version. Print the result for n = 100.",
+        "starterCode": "int main() {\n    int n = 100;\n    int result = 0;\n    for (int i = ; i <= ; i++) {\n        result += i;\n    }\n    cout << result << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "5050", "message": "Sum of 1 to 100 = 5050"},
+          {"type": "contains", "patterns": ["for (int i = 1", "result += i"], "message": "Use a for loop from 1 to n, accumulating into result"}
+        ],
+        "testCode": "",
+        "hint": "Loop from i = 1 to i <= n, adding each i to result. The sum of 1 to 100 is 5050."
+      },
+      "order": 4
+    }
+  ]
+}

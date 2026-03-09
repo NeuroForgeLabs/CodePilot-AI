@@ -1,0 +1,39 @@
+{
+  "id": "backspace-string-compare",
+  "title": "Backspace String Compare",
+  "difficulty": "Easy",
+  "tags": ["strings", "stack", "two-pointers"],
+  "prompt": "Given two strings `s` and `t`, return `True` if they are equal when both are typed into empty text editors. The character `#` means a backspace character, which deletes the previous character.\n\nNote that after backspacing an empty text, the text will remain empty.",
+  "examples": [
+    {"input": "s = \"ab#c\", t = \"ad#c\"", "output": "True\nExplanation: Both s and t produce \"ac\"."},
+    {"input": "s = \"ab##\", t = \"c#d#\"", "output": "True\nExplanation: Both s and t produce \"\"."},
+    {"input": "s = \"a#c\", t = \"b\"", "output": "False\nExplanation: s produces \"c\" while t produces \"b\"."}
+  ],
+  "constraints": [
+    "1 <= s.length, t.length <= 200",
+    "s and t only contain lowercase letters and '#' characters"
+  ],
+  "starterCode": {
+    "python": "def solve(s, t):\n    pass",
+    "javascript": "function solve(s, t) {\n  \n}",
+    "typescript": "export function solve(s: string, t: string): boolean {\n  \n}",
+    "java": "class Solution {\n    public boolean solve(String s, String t) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public bool Solve(string s, string t) {\n        \n    }\n}",
+    "go": "func solve(s string, t string) bool {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve(\"ab#c\", \"ad#c\"))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve(\"ab##\", \"c#d#\"))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve(\"a#c\", \"b\"))"}, "expectedStdout": "False"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve(\"a##b\", \"b\"))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve(\"###\", \"\"))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve(\"abc\", \"abc\"))"}, "expectedStdout": "True"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Simulate typing with a stack: iterate through each string, pushing characters and popping on '#'. Compare the final stack contents. Alternatively, use O(1) space by walking backwards with skip counters.",
+    "commonBugs": ["Popping from an empty stack when '#' appears with nothing to delete", "Not handling consecutive backspaces (e.g., '##' deleting two characters)", "Comparing strings character by character without fully processing backspaces first"],
+    "expectedComplexity": "O(n + m) where n and m are the lengths of s and t"
+  }
+}

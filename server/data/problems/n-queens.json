@@ -1,0 +1,36 @@
+{
+  "id": "n-queens",
+  "title": "N-Queens",
+  "difficulty": "Hard",
+  "tags": ["backtracking", "matrix"],
+  "prompt": "The N-Queens puzzle is the problem of placing `n` queens on an `n x n` chessboard such that no two queens attack each other.\n\nGiven an integer `n`, return the number of distinct solutions to the N-Queens puzzle.\n\nA queen can attack horizontally, vertically, and diagonally.",
+  "examples": [
+    {"input": "n = 4", "output": "2\nExplanation: There are two distinct solutions to the 4-queens puzzle."},
+    {"input": "n = 1", "output": "1\nExplanation: A single queen on a 1x1 board is the only solution."}
+  ],
+  "constraints": [
+    "1 <= n <= 9"
+  ],
+  "starterCode": {
+    "python": "def solve(n):\n    pass",
+    "javascript": "function solve(n) {\n  \n}",
+    "typescript": "export function solve(n: number): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(int n) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(int n) {\n        \n    }\n}",
+    "go": "func solve(n int) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve(4))"}, "expectedStdout": "2"},
+    {"stdin": {"python": "print(solve(1))"}, "expectedStdout": "1"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve(5))"}, "expectedStdout": "10"},
+    {"stdin": {"python": "print(solve(8))"}, "expectedStdout": "92"},
+    {"stdin": {"python": "print(solve(9))"}, "expectedStdout": "352"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Backtracking row by row. For each row, try placing a queen in each column. Track occupied columns, main diagonals (row - col), and anti-diagonals (row + col) using sets. If a position is safe, place the queen and recurse to the next row. When all rows are filled, increment the solution count.",
+    "commonBugs": ["Incorrect diagonal identification: main diagonal is row-col, anti-diagonal is row+col", "Forgetting to remove the queen from tracking sets during backtracking", "Off-by-one errors in board indexing", "Only checking column conflicts but missing diagonal conflicts"],
+    "expectedComplexity": "O(n!) time with pruning, O(n) space for tracking sets"
+  }
+}

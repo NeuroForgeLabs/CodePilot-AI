@@ -1,0 +1,39 @@
+{
+  "id": "number-of-islands",
+  "title": "Number of Islands",
+  "difficulty": "Medium",
+  "tags": ["matrix", "bfs", "graph"],
+  "prompt": "Given an `m x n` 2D grid `grid` which represents a map of `'1'`s (land) and `'0'`s (water), return the number of islands.\n\nAn island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.\n\nThe grid is given as a list of lists of strings (each cell is \"1\" or \"0\").",
+  "examples": [
+    {"input": "grid = [[\"1\",\"1\",\"1\",\"1\",\"0\"],[\"1\",\"1\",\"0\",\"1\",\"0\"],[\"1\",\"1\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\"]]", "output": "1\nExplanation: There is one island formed by all the connected 1s."},
+    {"input": "grid = [[\"1\",\"1\",\"0\",\"0\",\"0\"],[\"1\",\"1\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"1\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"1\",\"1\"]]", "output": "3\nExplanation: There are three separate islands."}
+  ],
+  "constraints": [
+    "m == grid.length",
+    "n == grid[i].length",
+    "1 <= m, n <= 300",
+    "grid[i][j] is '0' or '1'."
+  ],
+  "starterCode": {
+    "python": "def solve(grid: list[list[str]]) -> int:\n    pass",
+    "javascript": "function solve(grid) {\n  \n}",
+    "typescript": "export function solve(grid: string[][]): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(char[][] grid) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(char[][] grid) {\n        \n    }\n}",
+    "go": "func solve(grid [][]byte) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([['1','1','1','1','0'],['1','1','0','1','0'],['1','1','0','0','0'],['0','0','0','0','0']]))"}, "expectedStdout": "1"},
+    {"stdin": {"python": "print(solve([['1','1','0','0','0'],['1','1','0','0','0'],['0','0','1','0','0'],['0','0','0','1','1']]))"}, "expectedStdout": "3"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([['1']]))"}, "expectedStdout": "1"},
+    {"stdin": {"python": "print(solve([['0','0'],['0','0']]))"}, "expectedStdout": "0"},
+    {"stdin": {"python": "print(solve([['1','0','1'],['0','1','0'],['1','0','1']]))"}, "expectedStdout": "5"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Iterate through each cell. When a '1' is found, increment the island count and use BFS or DFS to mark all connected '1' cells as visited (e.g., set them to '0').",
+    "commonBugs": ["Forgetting to mark cells as visited, causing infinite loops", "Checking diagonal neighbors (only horizontal/vertical count)", "Not handling empty grid edge case", "Comparing with integer 1 instead of string '1'"],
+    "expectedComplexity": "O(m * n)"
+  }
+}

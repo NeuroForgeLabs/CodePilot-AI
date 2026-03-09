@@ -1,0 +1,78 @@
+{
+  "id": "csharp-heaps",
+  "title": "Heaps / Priority Queues",
+  "description": "Master C# PriorityQueue (.NET 6+), SortedSet as heap alternative, and manual heap operations for coding interviews.",
+  "language": "csharp",
+  "category": "heaps",
+  "order": 9,
+  "sections": [
+    {
+      "id": "csharp-heap-pq",
+      "title": "PriorityQueue<TElement, TPriority> (.NET 6+)",
+      "explanation": "C# .NET 6+ provides `PriorityQueue<TElement, TPriority>` which is a min-heap by default. `Enqueue(element, priority)` adds with a priority. `Dequeue()` removes and returns the element with the lowest priority. `Peek()` views without removing. For a max-heap, negate the priority. This is the cleanest heap in C# for interviews.",
+      "example": "class Program\n{\n    static void Main()\n    {\n        var pq = new PriorityQueue<string, int>();\n        pq.Enqueue(\"low\", 3);\n        pq.Enqueue(\"high\", 1);\n        pq.Enqueue(\"medium\", 2);\n\n        while (pq.Count > 0)\n            Console.WriteLine(pq.Dequeue());\n        // high (priority 1)\n        // medium (priority 2)\n        // low (priority 3)\n    }\n}",
+      "exercise": {
+        "prompt": "Create a PriorityQueue<string, int> for a task scheduler. Enqueue: (\"email\", 3), (\"bug fix\", 1), (\"meeting\", 2), (\"deploy\", 1). Dequeue all items and print each on its own line (lowest priority number = highest urgency, processed first).",
+        "starterCode": "class Program\n{\n    static void Main()\n    {\n        var pq = new PriorityQueue<string, int>();\n\n        // Enqueue tasks with priorities\n\n        // Dequeue and print all\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "bug fix\ndeploy\nmeeting\nemail", "message": "Tasks in priority order: bug fix and deploy (pri 1), meeting (pri 2), email (pri 3)."},
+          {"type": "contains", "patterns": ["PriorityQueue<string, int>", ".Enqueue(", ".Dequeue()"], "message": "Use PriorityQueue with Enqueue and Dequeue."}
+        ],
+        "testCode": "",
+        "hint": "PriorityQueue is a min-heap. Priority 1 items come out before priority 2 and 3."
+      },
+      "order": 1
+    },
+    {
+      "id": "csharp-heap-maxheap",
+      "title": "Max-Heap via Negated Priority",
+      "explanation": "PriorityQueue is min-heap only. For max-heap behavior, negate the priority: `pq.Enqueue(val, -val)`. This makes larger values come out first. For non-numeric priorities, implement `IComparer<T>` and pass to the constructor. This pattern is essential for top-K largest, merge-K sorted, and median-finding problems.",
+      "example": "class Program\n{\n    static void Main()\n    {\n        var maxHeap = new PriorityQueue<int, int>();\n        int[] nums = { 3, 1, 4, 1, 5, 9, 2, 6 };\n        foreach (int n in nums)\n            maxHeap.Enqueue(n, -n);\n\n        Console.Write(\"Top 3: \");\n        for (int i = 0; i < 3; i++)\n            Console.Write(maxHeap.Dequeue() + \" \");\n        Console.WriteLine();  // Top 3: 9 6 5\n    }\n}",
+      "exercise": {
+        "prompt": "Given int[] scores = {72, 95, 88, 63, 91, 85}, use a PriorityQueue as a max-heap (negate priorities) to extract and print the top 3 scores in descending order, one per line.",
+        "starterCode": "class Program\n{\n    static void Main()\n    {\n        int[] scores = { 72, 95, 88, 63, 91, 85 };\n\n        // Use PriorityQueue as max-heap\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "95\n91\n88", "message": "Top 3 descending: 95, 91, 88."},
+          {"type": "contains", "patterns": ["PriorityQueue<int, int>", "Enqueue(", "-"], "message": "Use PriorityQueue with negated priorities for max-heap behavior."}
+        ],
+        "testCode": "",
+        "hint": "Enqueue each score with -score as priority. Dequeue 3 times to get the 3 largest."
+      },
+      "order": 2
+    },
+    {
+      "id": "csharp-heap-sortedset",
+      "title": "SortedSet as Heap Alternative",
+      "explanation": "`SortedSet<T>` maintains elements in sorted order with O(log n) add/remove. Use `.Min` and `.Max` for smallest/largest, mimicking heap Peek. However, SortedSet requires unique elements—for duplicates, use a wrapper tuple like `(value, index)`. It supports `GetViewBetween()` for range queries. Use when you need both min and max access.",
+      "example": "class Program\n{\n    static void Main()\n    {\n        var set = new SortedSet<int> { 5, 3, 8, 1, 9 };\n        Console.WriteLine(set.Min);   // 1\n        Console.WriteLine(set.Max);   // 9\n\n        set.Remove(set.Min);\n        Console.WriteLine(set.Min);   // 3\n\n        var tupleSet = new SortedSet<(int val, int idx)>();\n        tupleSet.Add((5, 0));\n        tupleSet.Add((5, 1));\n        Console.WriteLine(tupleSet.Count);  // 2 (duplicates via index)\n    }\n}",
+      "exercise": {
+        "prompt": "Use a SortedSet<(int val, int idx)> to simulate a min-heap that handles duplicates. Insert values {4, 1, 7, 1, 3} with unique indices. Extract the minimum 3 times (remove Min), printing each value.",
+        "starterCode": "class Program\n{\n    static void Main()\n    {\n        var heap = new SortedSet<(int val, int idx)>();\n        int[] nums = { 4, 1, 7, 1, 3 };\n\n        // Insert with unique indices\n\n        // Extract min 3 times\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "1\n1\n3", "message": "Three minimums: 1, 1, 3."},
+          {"type": "contains", "patterns": ["SortedSet<(int", ".Min", ".Remove("], "message": "Use SortedSet with tuple for duplicate support, Min for peek, Remove for extract."}
+        ],
+        "testCode": "",
+        "hint": "Add (nums[i], i) for each element. heap.Min.val gives the minimum. Remove(heap.Min) extracts it."
+      },
+      "order": 3
+    },
+    {
+      "id": "csharp-heap-topk",
+      "title": "Top-K Pattern with PriorityQueue",
+      "explanation": "The top-K pattern: maintain a min-heap of size K. For each new element, if heap size < K, add it. If element > heap minimum, remove min and add element. At the end, the heap contains the K largest elements. Time: O(n log k). This is more efficient than sorting when K << n.",
+      "example": "class Program\n{\n    static int[] TopK(int[] nums, int k)\n    {\n        var pq = new PriorityQueue<int, int>();\n        foreach (int n in nums)\n        {\n            pq.Enqueue(n, n);\n            if (pq.Count > k)\n                pq.Dequeue();\n        }\n        int[] result = new int[k];\n        for (int i = k - 1; i >= 0; i--)\n            result[i] = pq.Dequeue();\n        return result;\n    }\n\n    static void Main()\n    {\n        int[] nums = { 3, 7, 1, 9, 4, 6, 2, 8, 5 };\n        int[] top3 = TopK(nums, 3);\n        Console.WriteLine(String.Join(\", \", top3));  // 7, 8, 9\n    }\n}",
+      "exercise": {
+        "prompt": "Implement `int KthLargest(int[] nums, int k)` that returns the k-th largest element using a min-heap of size k. After processing all elements, the heap top is the answer. Test with nums = {3, 2, 1, 5, 6, 4} for k=2 (answer: 5) and k=4 (answer: 3).",
+        "starterCode": "class Program\n{\n    static int KthLargest(int[] nums, int k)\n    {\n        var pq = new PriorityQueue<int, int>();\n        // Maintain min-heap of size k\n\n        return 0;\n    }\n\n    static void Main()\n    {\n        int[] nums = { 3, 2, 1, 5, 6, 4 };\n        Console.WriteLine(KthLargest(nums, 2));\n        Console.WriteLine(KthLargest(nums, 4));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "5\n3", "message": "2nd largest is 5, 4th largest is 3."},
+          {"type": "contains", "patterns": ["PriorityQueue<int, int>", "pq.Count > k", "pq.Dequeue()"], "message": "Use PriorityQueue, evict when size exceeds k, return the top at the end."}
+        ],
+        "testCode": "",
+        "hint": "Enqueue each with itself as priority. If Count > k, Dequeue (removes smallest). Final Dequeue is kth largest."
+      },
+      "order": 4
+    }
+  ]
+}

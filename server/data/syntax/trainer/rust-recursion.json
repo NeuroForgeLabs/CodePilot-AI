@@ -1,0 +1,78 @@
+{
+  "id": "rust-recursion",
+  "title": "Recursion",
+  "description": "Recursion is the foundation of divide-and-conquer, tree traversal, and backtracking. Master base cases, HashMap memoization to avoid recomputation, backtracking with choose/unchoose, and converting recursive solutions to iterative ones.",
+  "language": "rust",
+  "category": "recursion",
+  "order": 10,
+  "sections": [
+    {
+      "id": "base-case",
+      "title": "Base case and recursive structure",
+      "explanation": "Every recursive function needs a **base case** (when to stop) and a **recursive case** (how to reduce the problem). In Rust, the function signature and return type must be explicit. Classic examples: factorial (base: n <= 1 returns 1) and Fibonacci (base: n <= 1 returns n).",
+      "example": "fn factorial(n: i64) -> i64 {\n    if n <= 1 {\n        return 1;\n    }\n    n * factorial(n - 1)\n}\n\nfn fibonacci(n: i32) -> i32 {\n    if n <= 1 {\n        return n;\n    }\n    fibonacci(n - 1) + fibonacci(n - 2)\n}\n\nfn main() {\n    println!(\"{}\", factorial(5));    // 120\n    println!(\"{}\", fibonacci(10));   // 55\n}",
+      "exercise": {
+        "prompt": "Write a recursive `sum_to` function that returns the sum 1 + 2 + ... + n. Base case: n <= 0 returns 0. Test with n = 10 (should print 55).",
+        "starterCode": "fn sum_to(n: i32) -> i32 {\n    if n <= 0 {\n        return ;\n    }\n    n + sum_to(n - )\n}\n\nfn main() {\n    println!(\"{}\", sum_to(10));\n    println!(\"{}\", sum_to(0));\n}",
+        "validation": [
+          {"type": "output", "expected": "55\n0", "message": "sum_to(10) = 55, sum_to(0) = 0"},
+          {"type": "contains", "patterns": ["return 0", "sum_to(n - 1)"], "message": "Base case returns 0, recursive case adds n to sum_to(n-1)"}
+        ],
+        "testCode": "",
+        "hint": "Base case returns 0. Recursive step: n + sum_to(n - 1)."
+      },
+      "order": 1
+    },
+    {
+      "id": "memoization",
+      "title": "HashMap memoization",
+      "explanation": "Naive recursion (like Fibonacci) has exponential time complexity due to overlapping subproblems. Use a **HashMap** as a memo cache: before computing, check if the result is cached. If yes, return it. If not, compute, store, and return. This brings Fibonacci from O(2^n) to O(n).",
+      "example": "fn fib(n: i32, memo: &mut HashMap<i32, i64>) -> i64 {\n    if n <= 1 {\n        return n as i64;\n    }\n    if let Some(&val) = memo.get(&n) {\n        return val;\n    }\n    let result = fib(n - 1, memo) + fib(n - 2, memo);\n    memo.insert(n, result);\n    result\n}\n\nfn main() {\n    let mut memo = HashMap::new();\n    println!(\"{}\", fib(50, &mut memo));  // 12586269025\n}",
+      "exercise": {
+        "prompt": "Implement memoized Fibonacci using a HashMap. Compute fib(40) and fib(45). Print both results.",
+        "starterCode": "fn fib(n: i32, memo: &mut HashMap<i32, i64>) -> i64 {\n    if n <= 1 {\n        return n as i64;\n    }\n    if let Some(&val) = memo.get(&n) {\n        return val;\n    }\n    let result = fib(n - 1, memo) + fib(n - 2, memo);\n    memo.insert(n, );\n    result\n}\n\nfn main() {\n    let mut memo = HashMap::new();\n    println!(\"{}\", fib(40, &mut memo));\n    println!(\"{}\", fib(45, &mut memo));\n}",
+        "validation": [
+          {"type": "output", "expected": "102334155\n1134903170", "message": "fib(40) = 102334155, fib(45) = 1134903170"},
+          {"type": "contains", "patterns": ["memo.get(&n)", "memo.insert(n, result)"], "message": "Check memo with get(), store result with insert()"}
+        ],
+        "testCode": "",
+        "hint": "Store the computed result: memo.insert(n, result)."
+      },
+      "order": 2
+    },
+    {
+      "id": "backtracking",
+      "title": "Backtracking (subsets)",
+      "explanation": "Backtracking explores all candidates with the **choose-explore-unchoose** pattern. For subsets: at each element, decide to include or exclude it. Push the element, recurse, pop (backtrack), then recurse without it. This drives subset, permutation, and combination problems.",
+      "example": "fn subsets(nums: &[i32], idx: usize, path: &mut Vec<i32>, result: &mut Vec<Vec<i32>>) {\n    result.push(path.clone());\n    for i in idx..nums.len() {\n        path.push(nums[i]);\n        subsets(nums, i + 1, path, result);\n        path.pop();\n    }\n}\n\nfn main() {\n    let mut result = Vec::new();\n    subsets(&[1, 2, 3], 0, &mut Vec::new(), &mut result);\n    println!(\"{}\", result.len());  // 8\n    for s in &result {\n        println!(\"{:?}\", s);\n    }\n}",
+      "exercise": {
+        "prompt": "Complete the subsets function that generates all subsets of [1, 2, 3]. Print the total count (should be 8).",
+        "starterCode": "fn subsets(nums: &[i32], idx: usize, path: &mut Vec<i32>, result: &mut Vec<Vec<i32>>) {\n    result.push(path.clone());\n    for i in idx..nums.len() {\n        path.push(nums[i]);\n        subsets(nums, i + 1, path, result);\n        path.();\n    }\n}\n\nfn main() {\n    let mut result = Vec::new();\n    subsets(&[1, 2, 3], 0, &mut Vec::new(), &mut result);\n    println!(\"{}\", result.len());\n}",
+        "validation": [
+          {"type": "output", "expected": "8", "message": "2^3 = 8 subsets of [1, 2, 3]"},
+          {"type": "contains", "patterns": ["path.push(", "path.pop()", "path.clone()"], "message": "Push to choose, recurse, pop to unchoose, clone to save current subset"}
+        ],
+        "testCode": "",
+        "hint": "Call path.pop() after the recursive call to undo the choice (backtrack)."
+      },
+      "order": 3
+    },
+    {
+      "id": "iterative-conversion",
+      "title": "Converting recursion to iteration",
+      "explanation": "Some recursive solutions can cause stack overflow for large inputs. Convert to iterative using an explicit stack or tabulation (bottom-up DP). For Fibonacci: build the answer from the bottom up with a simple loop and two variables, achieving O(n) time and O(1) space.",
+      "example": "fn fib_iterative(n: i32) -> i64 {\n    if n <= 1 {\n        return n as i64;\n    }\n    let mut a: i64 = 0;\n    let mut b: i64 = 1;\n    for _ in 2..=n {\n        let temp = a + b;\n        a = b;\n        b = temp;\n    }\n    b\n}\n\nfn main() {\n    println!(\"{}\", fib_iterative(50));  // 12586269025\n}",
+      "exercise": {
+        "prompt": "Convert Fibonacci to an iterative solution using two variables. Compute fib(10) and fib(50). Print both.",
+        "starterCode": "fn fib_iterative(n: i32) -> i64 {\n    if n <= 1 {\n        return n as i64;\n    }\n    let mut a: i64 = 0;\n    let mut b: i64 = 1;\n    for _ in 2..=n {\n        let temp = a + b;\n        a = ;\n        b = ;\n    }\n    b\n}\n\nfn main() {\n    println!(\"{}\", fib_iterative(10));\n    println!(\"{}\", fib_iterative(50));\n}",
+        "validation": [
+          {"type": "output", "expected": "55\n12586269025", "message": "fib(10) = 55, fib(50) = 12586269025"},
+          {"type": "contains", "patterns": ["a = b", "b = temp", "a + b"], "message": "Shift variables: temp = a+b, a = b, b = temp"}
+        ],
+        "testCode": "",
+        "hint": "After computing temp = a + b, shift: a becomes b, and b becomes temp."
+      },
+      "order": 4
+    }
+  ]
+}

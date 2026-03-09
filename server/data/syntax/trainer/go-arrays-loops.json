@@ -1,0 +1,78 @@
+{
+  "id": "go-arrays-loops",
+  "title": "Arrays & Loops",
+  "description": "Slices are Go's workhorse collection. Master slice creation, append, range loops, and 2D slices — these appear in nearly every interview problem.",
+  "language": "go",
+  "category": "arrays-loops",
+  "order": 2,
+  "sections": [
+    {
+      "id": "slices-basics",
+      "title": "Slices and append",
+      "explanation": "Go arrays have fixed length, but **slices** are dynamic. Create with a literal `[]int{...}` or `make([]int, len, cap)`. **append()** adds elements and returns a new slice (always reassign the result). Slices are reference types — they point to an underlying array.",
+      "example": "func main() {\n    nums := []int{1, 2, 3}\n    fmt.Println(nums)          // [1 2 3]\n    fmt.Println(len(nums))     // 3\n\n    nums = append(nums, 4, 5)\n    fmt.Println(nums)          // [1 2 3 4 5]\n\n    zeros := make([]int, 5)    // [0 0 0 0 0]\n    fmt.Println(zeros)\n}",
+      "exercise": {
+        "prompt": "Create a slice `nums` with values [10, 20, 30]. Append 40 and 50. Create a zero slice of length 3 using make. Print all three: nums, its length, and the zero slice.",
+        "starterCode": "func main() {\n    nums := []int{10, 20, 30}\n    nums = (nums, 40, 50)\n\n    zeros := ([]int, 3)\n\n    fmt.Println(nums)\n    fmt.Println(len(nums))\n    fmt.Println(zeros)\n}",
+        "validation": [
+          {"type": "output", "expected": "[10 20 30 40 50]\n5\n[0 0 0]", "message": "Slice should have 5 elements after append, zeros should be [0 0 0]"},
+          {"type": "contains", "patterns": ["append(", "make("], "message": "Use append() to add elements and make() for zero-initialized slices"}
+        ],
+        "testCode": "",
+        "hint": "nums = append(nums, 40, 50) adds two elements. make([]int, 3) creates [0 0 0]."
+      },
+      "order": 1
+    },
+    {
+      "id": "range-loop",
+      "title": "Range loops",
+      "explanation": "**for i, v := range slice** gives both index and value. Use **_** to discard the index or value. Go has only one loop keyword — **for** — which covers while-loops, C-style for-loops, and range iteration. Interviewers expect you to pick the right form for each situation.",
+      "example": "func main() {\n    nums := []int{10, 20, 30}\n\n    // Index and value\n    for i, v := range nums {\n        fmt.Println(i, v)\n    }\n\n    // Value only\n    for _, v := range nums {\n        fmt.Println(v)\n    }\n\n    // C-style\n    for i := 0; i < len(nums); i++ {\n        fmt.Println(nums[i])\n    }\n}",
+      "exercise": {
+        "prompt": "Given `fruits := []string{\"apple\", \"banana\", \"cherry\"}`, use a range loop to print each fruit with its index in the format `0: apple`. Then use a second range loop with _ to print just the values.",
+        "starterCode": "func main() {\n    fruits := []string{\"apple\", \"banana\", \"cherry\"}\n\n    for i, v := range fruits {\n        fmt.Printf(\"%d: %s\\n\", , )\n    }\n\n    for , v := range fruits {\n        fmt.Println(v)\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "0: apple\n1: banana\n2: cherry\napple\nbanana\ncherry", "message": "First loop prints index: value, second prints just values"},
+          {"type": "contains", "patterns": ["range fruits", "fmt.Printf"], "message": "Use range for iteration and Printf for formatted output"}
+        ],
+        "testCode": "",
+        "hint": "fmt.Printf(\"%d: %s\\n\", i, v) formats the index and value. Use _ to discard the index in the second loop."
+      },
+      "order": 2
+    },
+    {
+      "id": "slicing",
+      "title": "Slice operations",
+      "explanation": "Slicing with **s[low:high]** creates a sub-slice (half-open interval, excluding high). **copy()** makes a true copy to avoid shared memory. **append(s[:i], s[i+1:]...)** removes element at index i. These are essential for in-place array manipulation problems.",
+      "example": "func main() {\n    nums := []int{1, 2, 3, 4, 5}\n\n    sub := nums[1:4]       // [2 3 4]\n    fmt.Println(sub)\n\n    // Copy to avoid aliasing\n    clone := make([]int, len(nums))\n    copy(clone, nums)\n\n    // Remove element at index 2\n    nums = append(nums[:2], nums[3:]...)\n    fmt.Println(nums)      // [1 2 4 5]\n}",
+      "exercise": {
+        "prompt": "Given `nums := []int{10, 20, 30, 40, 50}`, extract a sub-slice from index 1 to 3 (inclusive of 1, exclusive of 4). Then remove the element at index 2 (value 30) from the original. Print the sub-slice and the modified nums.",
+        "starterCode": "func main() {\n    nums := []int{10, 20, 30, 40, 50}\n\n    sub := nums[1:]\n    fmt.Println(sub)\n\n    nums = append(nums[:], nums[:]...)\n    fmt.Println(nums)\n}",
+        "validation": [
+          {"type": "output", "expected": "[20 30 40]\n[10 20 40 50]", "message": "Sub-slice should be [20 30 40], modified slice should skip 30"},
+          {"type": "contains", "patterns": ["nums[1:", "append(nums[:", "nums[3:]"], "message": "Use slice notation and append with spread for removal"}
+        ],
+        "testCode": "",
+        "hint": "sub := nums[1:4] gets elements at indices 1,2,3. nums = append(nums[:2], nums[3:]...) removes index 2."
+      },
+      "order": 3
+    },
+    {
+      "id": "two-d-slices",
+      "title": "2D slices",
+      "explanation": "Go has no built-in 2D arrays for dynamic sizes. Build them as a **slice of slices**: allocate the outer slice, then each row individually. This pattern appears in grid/matrix problems like BFS on a board, DP tables, and image rotation.",
+      "example": "func main() {\n    rows, cols := 3, 4\n    grid := make([][]int, rows)\n    for i := range grid {\n        grid[i] = make([]int, cols)\n    }\n    grid[0][1] = 5\n    grid[2][3] = 9\n    fmt.Println(grid)\n    // [[0 5 0 0] [0 0 0 0] [0 0 0 9]]\n}",
+      "exercise": {
+        "prompt": "Create a 2x3 grid (2 rows, 3 columns) initialized to zeros. Set grid[0][2] = 7 and grid[1][0] = 4. Print the grid.",
+        "starterCode": "func main() {\n    rows, cols := 2, 3\n    grid := make([][]int, )\n    for i := range grid {\n        grid[i] = make([]int, )\n    }\n\n    grid[][] = 7\n    grid[][] = 4\n    fmt.Println(grid)\n}",
+        "validation": [
+          {"type": "output", "expected": "[[0 0 7] [4 0 0]]", "message": "Grid should be 2x3 with 7 at [0][2] and 4 at [1][0]"},
+          {"type": "contains", "patterns": ["make([][]int", "make([]int"], "message": "Use make for both the outer slice and each inner row"}
+        ],
+        "testCode": "",
+        "hint": "make([][]int, rows) creates the outer slice. Each grid[i] = make([]int, cols) creates a row. Set grid[0][2] = 7 and grid[1][0] = 4."
+      },
+      "order": 4
+    }
+  ]
+}

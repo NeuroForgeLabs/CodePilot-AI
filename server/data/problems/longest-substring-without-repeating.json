@@ -1,0 +1,40 @@
+{
+  "id": "longest-substring-without-repeating",
+  "title": "Longest Substring Without Repeating Characters",
+  "difficulty": "Medium",
+  "tags": ["strings", "sliding-window"],
+  "prompt": "Given a string s, find the length of the longest substring without repeating characters.\n\nA substring is a contiguous sequence of characters within the string. For example, in \"abcabcbb\", the substrings \"abc\", \"bca\", \"cab\" are valid, but \"abca\" contains a repeating 'a'.\n\nReturn the length of the longest such substring.",
+  "examples": [
+    {"input": "s = \"abcabcbb\"", "output": "3"},
+    {"input": "s = \"bbbbb\"", "output": "1"},
+    {"input": "s = \"pwwkew\"", "output": "3"}
+  ],
+  "constraints": [
+    "0 <= s.length <= 5 * 10^4",
+    "s consists of English letters, digits, symbols and spaces.",
+    "s may be empty"
+  ],
+  "starterCode": {
+    "python": "def solve(s: str) -> int:\n    pass",
+    "javascript": "function solve(s) {\n  \n}",
+    "typescript": "export function solve(s: string): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(String s) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(string s) {\n        \n    }\n}",
+    "go": "func solve(s string) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve(\"abcabcbb\"))"}, "expectedStdout": "3"},
+    {"stdin": {"python": "print(solve(\"bbbbb\"))"}, "expectedStdout": "1"},
+    {"stdin": {"python": "print(solve(\"pwwkew\"))"}, "expectedStdout": "3"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve(\"\"))"}, "expectedStdout": "0"},
+    {"stdin": {"python": "print(solve(\"au\"))"}, "expectedStdout": "2"},
+    {"stdin": {"python": "print(solve(\"dvdf\"))"}, "expectedStdout": "3"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Sliding window with a hash set to track characters in current window. Expand right pointer, shrink left when duplicate found.",
+    "commonBugs": ["Forgetting to handle empty string", "Off-by-one when computing window length", "Not removing left-bound characters when shrinking window"],
+    "expectedComplexity": "O(n)"
+  }
+}

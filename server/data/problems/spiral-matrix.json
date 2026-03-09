@@ -1,0 +1,39 @@
+{
+  "id": "spiral-matrix",
+  "title": "Spiral Matrix",
+  "difficulty": "Medium",
+  "tags": ["arrays", "matrix"],
+  "prompt": "Given an `m x n` matrix, return all elements of the matrix in spiral order.\n\nSpiral order starts from the top-left corner, goes right across the top row, then down the right column, then left across the bottom row, then up the left column, and repeats inward.",
+  "examples": [
+    {"input": "matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]", "output": "[1, 2, 3, 6, 9, 8, 7, 4, 5]\nExplanation: Start top-left, go right (1,2,3), down (6,9), left (8,7), up (4), right (5)."},
+    {"input": "matrix = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]", "output": "[1, 2, 3, 4, 8, 12, 11, 10, 9, 5, 6, 7]"}
+  ],
+  "constraints": [
+    "m == matrix.length",
+    "n == matrix[i].length",
+    "1 <= m, n <= 10",
+    "-100 <= matrix[i][j] <= 100"
+  ],
+  "starterCode": {
+    "python": "def solve(matrix: list[list[int]]) -> list[int]:\n    pass",
+    "javascript": "function solve(matrix) {\n  \n}",
+    "typescript": "export function solve(matrix: number[][]): number[] {\n  \n}",
+    "java": "class Solution {\n    public List<Integer> solve(int[][] matrix) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public IList<int> Solve(int[][] matrix) {\n        \n    }\n}",
+    "go": "func solve(matrix [][]int) []int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([[1, 2, 3], [4, 5, 6], [7, 8, 9]]))"}, "expectedStdout": "[1, 2, 3, 6, 9, 8, 7, 4, 5]"},
+    {"stdin": {"python": "print(solve([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]))"}, "expectedStdout": "[1, 2, 3, 4, 8, 12, 11, 10, 9, 5, 6, 7]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([[1]]))"}, "expectedStdout": "[1]"},
+    {"stdin": {"python": "print(solve([[1, 2], [3, 4]]))"}, "expectedStdout": "[1, 2, 4, 3]"},
+    {"stdin": {"python": "print(solve([[1], [2], [3]]))"}, "expectedStdout": "[1, 2, 3]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Maintain four boundaries: top, bottom, left, right. Traverse right along top row, down along right column, left along bottom row, up along left column. Shrink boundaries after each pass. Stop when boundaries cross.",
+    "commonBugs": ["Not checking if boundaries have crossed before the bottom or left traversal (causes duplicates in non-square matrices)", "Off-by-one errors when updating boundaries", "Not handling single-row or single-column matrices"],
+    "expectedComplexity": "O(m * n)"
+  }
+}

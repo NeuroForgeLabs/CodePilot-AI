@@ -1,0 +1,52 @@
+{
+  "id": "sorting",
+  "title": "Sorting",
+  "description": "Built-in sorting, custom comparators, and sort-based interview patterns.",
+  "order": 4,
+  "sections": [
+    {
+      "id": "basic-sort",
+      "title": "Built-in sort",
+      "type": "concept",
+      "explanation": "Every language has O(n log n) built-in sort. Know both in-place and copy variants.",
+      "snippets": {
+        "python": "nums = [3, 1, 4, 1, 5]\n\n# In-place sort\nnums.sort()              # [1, 1, 3, 4, 5]\n\n# Return new sorted list (original unchanged)\nsorted_nums = sorted(nums)\n\n# Reverse sort\nnums.sort(reverse=True)  # [5, 4, 3, 1, 1]",
+        "javascript": "const nums = [3, 1, 4, 1, 5];\n\n// ⚠️ Default sort is lexicographic!\nnums.sort();              // [1, 1, 3, 4, 5] (works for small ints)\n\n// Always use comparator for numbers\nnums.sort((a, b) => a - b);  // ascending\nnums.sort((a, b) => b - a);  // descending\n\n// Non-mutating copy\nconst sorted = [...nums].sort((a, b) => a - b);",
+        "java": "int[] nums = {3, 1, 4, 1, 5};\n\n// Sort primitive array (in-place)\nArrays.sort(nums);       // [1, 1, 3, 4, 5]\n\n// Sort ArrayList\nList<Integer> list = new ArrayList<>(List.of(3, 1, 4));\nCollections.sort(list);\n\n// Reverse sort\nArrays.sort(boxedNums, Collections.reverseOrder());\nlist.sort(Collections.reverseOrder());"
+      }
+    },
+    {
+      "id": "custom-comparator",
+      "title": "Custom comparators",
+      "type": "snippet",
+      "explanation": "Sort by a custom key — most interview sorting problems need this. Sort by second element, by string length, by frequency, etc.",
+      "snippets": {
+        "python": "# Sort by second element\nintervals = [[1,3], [2,1], [4,2]]\nintervals.sort(key=lambda x: x[1])\n\n# Sort by length\nwords = [\"banana\", \"pie\", \"kiwi\"]\nwords.sort(key=len)\n\n# Sort by multiple keys\nstudents = [(\"Alice\", 90), (\"Bob\", 90), (\"Charlie\", 85)]\nstudents.sort(key=lambda x: (-x[1], x[0]))\n# Sort by grade descending, then name ascending",
+        "javascript": "// Sort by second element\nintervals.sort((a, b) => a[1] - b[1]);\n\n// Sort by string length\nwords.sort((a, b) => a.length - b.length);\n\n// Sort by multiple keys\nstudents.sort((a, b) => {\n    if (a[1] !== b[1]) return b[1] - a[1]; // grade desc\n    return a[0].localeCompare(b[0]);       // name asc\n});",
+        "java": "// Sort by second element\nArrays.sort(intervals, (a, b) -> a[1] - b[1]);\n\n// Sort ArrayList by property\nlist.sort(Comparator.comparingInt(String::length));\n\n// Sort by multiple keys\nlist.sort(Comparator\n    .comparingInt((int[] x) -> -x[1])  // grade desc\n    .thenComparing(x -> x[0])           // name asc\n);"
+      }
+    },
+    {
+      "id": "merge-intervals",
+      "title": "Interview Pattern: Merge Intervals",
+      "type": "pattern",
+      "explanation": "Sort intervals by start, then merge overlapping ones. A top-10 interview pattern.",
+      "snippets": {
+        "python": "def merge(intervals):\n    intervals.sort(key=lambda x: x[0])\n    merged = [intervals[0]]\n\n    for start, end in intervals[1:]:\n        if start <= merged[-1][1]:\n            merged[-1][1] = max(merged[-1][1], end)\n        else:\n            merged.append([start, end])\n\n    return merged",
+        "javascript": "function merge(intervals) {\n    intervals.sort((a, b) => a[0] - b[0]);\n    const merged = [intervals[0]];\n\n    for (let i = 1; i < intervals.length; i++) {\n        const [start, end] = intervals[i];\n        const last = merged[merged.length - 1];\n        if (start <= last[1]) {\n            last[1] = Math.max(last[1], end);\n        } else {\n            merged.push([start, end]);\n        }\n    }\n    return merged;\n}",
+        "java": "public int[][] merge(int[][] intervals) {\n    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);\n    List<int[]> merged = new ArrayList<>();\n    merged.add(intervals[0]);\n\n    for (int i = 1; i < intervals.length; i++) {\n        int[] last = merged.get(merged.size() - 1);\n        if (intervals[i][0] <= last[1]) {\n            last[1] = Math.max(last[1], intervals[i][1]);\n        } else {\n            merged.add(intervals[i]);\n        }\n    }\n    return merged.toArray(new int[0][]);\n}"
+      }
+    },
+    {
+      "id": "gotcha-js-sort",
+      "title": "Gotcha: JavaScript default sort is lexicographic",
+      "type": "gotcha",
+      "explanation": "JavaScript's default .sort() converts elements to strings. This breaks numeric sorting. Always pass a comparator.",
+      "snippets": {
+        "python": "# Python just works\nnums = [10, 9, 2, 100]\nnums.sort()  # [2, 9, 10, 100] ✅",
+        "javascript": "// ❌ Default sort is lexicographic!\nconst nums = [10, 9, 2, 100];\nnums.sort();\n// [10, 100, 2, 9] — WRONG!\n\n// ✅ Always use numeric comparator\nnums.sort((a, b) => a - b);\n// [2, 9, 10, 100]",
+        "java": "// Java primitive sort works correctly\nint[] nums = {10, 9, 2, 100};\nArrays.sort(nums); // [2, 9, 10, 100] ✅"
+      }
+    }
+  ]
+}

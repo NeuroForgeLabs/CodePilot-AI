@@ -1,0 +1,40 @@
+{
+  "id": "longest-common-prefix",
+  "title": "Longest Common Prefix",
+  "difficulty": "Easy",
+  "tags": ["strings"],
+  "prompt": "Write a function to find the longest common prefix string amongst an array of strings.\n\nIf there is no common prefix, return an empty string `\"\"`.",
+  "examples": [
+    {"input": "strs = [\"flower\", \"flow\", \"flight\"]", "output": "fl\nExplanation: The longest common prefix is \"fl\"."},
+    {"input": "strs = [\"dog\", \"racecar\", \"car\"]", "output": "\nExplanation: There is no common prefix among the input strings, so the output is an empty string."},
+    {"input": "strs = [\"interspecies\", \"interstellar\", \"interstate\"]", "output": "inters"}
+  ],
+  "constraints": [
+    "1 <= strs.length <= 200",
+    "0 <= strs[i].length <= 200",
+    "strs[i] consists of only lowercase English letters."
+  ],
+  "starterCode": {
+    "python": "def solve(strs):\n    pass",
+    "javascript": "function solve(strs) {\n  \n}",
+    "typescript": "export function solve(strs: string[]): string {\n  \n}",
+    "java": "class Solution {\n    public String solve(String[] strs) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public string Solve(string[] strs) {\n        \n    }\n}",
+    "go": "func solve(strs []string) string {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([\"flower\", \"flow\", \"flight\"]))"}, "expectedStdout": "fl"},
+    {"stdin": {"python": "print(solve([\"dog\", \"racecar\", \"car\"]))"}, "expectedStdout": ""},
+    {"stdin": {"python": "print(solve([\"interspecies\", \"interstellar\", \"interstate\"]))"}, "expectedStdout": "inters"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([\"a\"]))"}, "expectedStdout": "a"},
+    {"stdin": {"python": "print(solve([\"ab\", \"a\"]))"}, "expectedStdout": "a"},
+    {"stdin": {"python": "print(solve([\"\", \"b\"]))"}, "expectedStdout": ""}
+  ],
+  "notesForAI": {
+    "coreIdea": "Compare characters column by column across all strings. Start from index 0, check if all strings have the same character at that index. Stop when a mismatch is found or any string is exhausted.",
+    "commonBugs": ["Index out of bounds when one string is shorter than the current comparison index", "Not handling an empty strings array or an array with empty strings", "Returning the wrong substring slice boundaries"],
+    "expectedComplexity": "O(S) where S is the sum of all characters in all strings"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "id": "clone-graph",
+  "title": "Clone Graph",
+  "difficulty": "Medium",
+  "tags": ["graph", "bfs", "hash-table"],
+  "prompt": "Given a reference of a node in a connected undirected graph, return a deep copy (clone) of the graph.\n\nThe graph is represented as an adjacency list. Each node has a value (integer) and a list of its neighbors. The input is given as an adjacency list where adj[i] is a list of neighbors for node i+1 (1-indexed). Your function receives the adjacency list and should return a new adjacency list representing the cloned graph.\n\nNodes are numbered from 1 to n. The adjacency list has exactly n entries. The graph is connected and has no duplicate edges or self-loops.\n\nFor example, given adj = [[2,4],[1,3],[2,4],[1,3]], this represents a 4-node graph where node 1 connects to 2 and 4, node 2 connects to 1 and 3, etc. The output should be an identical adjacency list.",
+  "examples": [
+    {"input": "adj = [[2,4],[1,3],[2,4],[1,3]]", "output": "[[2, 4], [1, 3], [2, 4], [1, 3]]"},
+    {"input": "adj = [[]]", "output": "[[]]"},
+    {"input": "adj = [[2],[1]]", "output": "[[2], [1]]"}
+  ],
+  "constraints": [
+    "1 <= n <= 100 (number of nodes)",
+    "1 <= Node.val <= n",
+    "There are no duplicate edges or self-loops in the graph",
+    "The graph is connected"
+  ],
+  "starterCode": {
+    "python": "def solve(adj: list[list[int]]) -> list[list[int]]:\n    pass",
+    "javascript": "function solve(adj) {\n  \n}",
+    "typescript": "export function solve(adj: number[][]): number[][] {\n  \n}",
+    "java": "class Solution {\n    public int[][] solve(int[][] adj) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int[][] Solve(int[][] adj) {\n        \n    }\n}",
+    "go": "func solve(adj [][]int) [][]int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "r = solve([[2,4],[1,3],[2,4],[1,3]]); print([sorted(x) for x in r])"}, "expectedStdout": "[[2, 4], [1, 3], [2, 4], [1, 3]]"},
+    {"stdin": {"python": "print(solve([[]]))"}, "expectedStdout": "[[]]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "r = solve([[2],[1]]); print([sorted(x) for x in r])"}, "expectedStdout": "[[2], [1]]"},
+    {"stdin": {"python": "r = solve([[2,3],[1,3],[1,2]]); print([sorted(x) for x in r])"}, "expectedStdout": "[[2, 3], [1, 3], [1, 2]]"},
+    {"stdin": {"python": "inp = [[2,4],[1,3],[2,4],[1,3]]; r = solve(inp); inp[0].append(999); print(999 not in r[0])"}, "expectedStdout": "True"}
+  ],
+  "notesForAI": {
+    "coreIdea": "BFS or DFS with a hash map mapping original node to its clone. For each visited node, create a clone and copy its neighbor list. The hash map prevents infinite loops and ensures each node is cloned exactly once.",
+    "commonBugs": ["Shallow copy instead of deep copy (just copying references)", "Infinite loop from not tracking visited nodes", "Not handling the single-node case with empty neighbor list"],
+    "expectedComplexity": "O(V + E) where V is nodes and E is edges"
+  }
+}

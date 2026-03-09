@@ -1,0 +1,78 @@
+{
+  "id": "javascript-trees",
+  "title": "Trees",
+  "description": "Tree problems are interview favorites. Master the TreeNode class, DFS traversals (preorder, inorder, postorder), BFS level-order traversal, and depth computation in JavaScript.",
+  "language": "javascript",
+  "category": "trees",
+  "order": 11,
+  "sections": [
+    {
+      "id": "treenode-class",
+      "title": "TreeNode class",
+      "explanation": "Define a simple TreeNode with `val`, `left`, and `right`. In interviews, you'll usually be given this class, but know how to write it from scratch. Default left and right to null. Build trees by linking nodes manually for testing.",
+      "example": "class TreeNode {\n  constructor(val, left = null, right = null) {\n    this.val = val;\n    this.left = left;\n    this.right = right;\n  }\n}\n\nconst root = new TreeNode(1);\nroot.left = new TreeNode(2);\nroot.right = new TreeNode(3);",
+      "exercise": {
+        "prompt": "Define a TreeNode class. Build a tree:  1 -> left: 2, right: 3. Node 2 -> left: 4, right: 5. Print root.val, root.left.val, root.right.val, root.left.left.val, root.left.right.val.",
+        "starterCode": "class TreeNode {\n  constructor(val, left = null, right = null) {\n    this.val = val;\n    this.left = left;\n    this.right = right;\n  }\n}\n\nconst root = new TreeNode(1);\nroot.left = new TreeNode(_____);\nroot.right = new TreeNode(_____);\nroot.left.left = new TreeNode(4);\nroot.left.right = new TreeNode(5);\n\nconsole.log(root.val);\nconsole.log(root.left.val);\nconsole.log(root.right.val);\nconsole.log(root.left.left.val);\nconsole.log(root.left.right.val);",
+        "validation": [
+          {"type": "output", "expected": "1\n2\n3\n4\n5", "message": "Tree structure: root=1, left=2, right=3, left.left=4, left.right=5"},
+          {"type": "contains", "patterns": ["class TreeNode", "this.val", "this.left", "this.right"], "message": "Define TreeNode with val, left, and right properties"}
+        ],
+        "testCode": "",
+        "hint": "root.left = new TreeNode(2), root.right = new TreeNode(3)."
+      },
+      "order": 1
+    },
+    {
+      "id": "dfs-traversals",
+      "title": "DFS traversals (preorder, inorder, postorder)",
+      "explanation": "DFS traversals visit nodes in different orders: preorder (root, left, right) for copying trees, inorder (left, root, right) for BST sorted order, postorder (left, right, root) for deletion and bottom-up computation. Know all three — interviewers pick whichever fits the problem.",
+      "example": "function inorder(node, result = []) {\n  if (node === null) return result;\n  inorder(node.left, result);\n  result.push(node.val);\n  inorder(node.right, result);\n  return result;\n}",
+      "exercise": {
+        "prompt": "Build tree: 4 -> left: 2, right: 6. Node 2 -> left: 1, right: 3. Node 6 -> left: 5, right: 7. Implement inorder DFS and print the result joined by commas.",
+        "starterCode": "class TreeNode {\n  constructor(val, left = null, right = null) {\n    this.val = val;\n    this.left = left;\n    this.right = right;\n  }\n}\n\nconst root = new TreeNode(4,\n  new TreeNode(2, new TreeNode(1), new TreeNode(3)),\n  new TreeNode(6, new TreeNode(5), new TreeNode(7))\n);\n\nfunction inorder(node, result = []) {\n  if (node === _____) return result;\n  inorder(node.left, result);\n  result.push(node._____);\n  inorder(node.right, result);\n  return result;\n}\n\nconsole.log(inorder(root).join(\",\"));",
+        "validation": [
+          {"type": "output", "expected": "1,2,3,4,5,6,7", "message": "Inorder traversal of this BST gives sorted order: 1,2,3,4,5,6,7"},
+          {"type": "contains", "patterns": ["inorder(node.left", "inorder(node.right"], "message": "Recurse on left and right subtrees with the result array"}
+        ],
+        "testCode": "",
+        "hint": "Base case: node === null. Push node.val between left and right recursive calls."
+      },
+      "order": 2
+    },
+    {
+      "id": "bfs-level-order",
+      "title": "BFS level-order traversal",
+      "explanation": "BFS processes nodes level by level using a queue. For level-order grouping, track the queue size at each level start. This pattern solves level averages, zigzag traversal, and rightmost-node problems. Use shift() for dequeue.",
+      "example": "function levelOrder(root) {\n  if (!root) return [];\n  const result = [];\n  const queue = [root];\n  while (queue.length > 0) {\n    const levelSize = queue.length;\n    const level = [];\n    for (let i = 0; i < levelSize; i++) {\n      const node = queue.shift();\n      level.push(node.val);\n      if (node.left) queue.push(node.left);\n      if (node.right) queue.push(node.right);\n    }\n    result.push(level);\n  }\n  return result;\n}",
+      "exercise": {
+        "prompt": "Build tree: 1 -> left: 2, right: 3. Node 2 -> left: 4, right: 5. Implement BFS level-order and print each level as comma-joined values on its own line.",
+        "starterCode": "class TreeNode {\n  constructor(val, left = null, right = null) {\n    this.val = val;\n    this.left = left;\n    this.right = right;\n  }\n}\n\nconst root = new TreeNode(1,\n  new TreeNode(2, new TreeNode(4), new TreeNode(5)),\n  new TreeNode(3)\n);\n\nconst queue = [root];\nwhile (queue.length > 0) {\n  const size = queue.length;\n  const level = [];\n  for (let i = 0; i < size; i++) {\n    const node = queue._____();\n    level.push(node.val);\n    if (node.left) queue.push(node._____);\n    if (node.right) queue.push(node._____);\n  }\n  console.log(level.join(\",\"));\n}",
+        "validation": [
+          {"type": "output", "expected": "1\n2,3\n4,5", "message": "Level 0: [1], Level 1: [2,3], Level 2: [4,5]"},
+          {"type": "contains", "patterns": ["shift()", "queue.push("], "message": "Use shift for dequeue and push to add children to the queue"}
+        ],
+        "testCode": "",
+        "hint": "shift() dequeues from front. Push node.left and node.right into the queue."
+      },
+      "order": 3
+    },
+    {
+      "id": "depth",
+      "title": "Tree depth",
+      "explanation": "Max depth is the length of the longest path from root to a leaf. This is a classic recursive problem: depth = 1 + max(depth(left), depth(right)). Base case: null node has depth 0. This pattern extends to balanced tree checks and diameter computation.",
+      "example": "function maxDepth(node) {\n  if (node === null) return 0;\n  return 1 + Math.max(maxDepth(node.left), maxDepth(node.right));\n}",
+      "exercise": {
+        "prompt": "Build tree: 1 -> left: 2 -> left: 4 -> left: 8. Right of 1: 3. Compute and print the max depth.",
+        "starterCode": "class TreeNode {\n  constructor(val, left = null, right = null) {\n    this.val = val;\n    this.left = left;\n    this.right = right;\n  }\n}\n\nconst root = new TreeNode(1,\n  new TreeNode(2, new TreeNode(4, new TreeNode(8))),\n  new TreeNode(3)\n);\n\nfunction maxDepth(node) {\n  if (node === null) return _____;\n  return 1 + Math._____(maxDepth(node.left), maxDepth(node.right));\n}\n\nconsole.log(maxDepth(root));",
+        "validation": [
+          {"type": "output", "expected": "4", "message": "Longest path: 1 -> 2 -> 4 -> 8, depth = 4"},
+          {"type": "contains", "patterns": ["Math.max(", "maxDepth(node.left"], "message": "Use Math.max with recursive calls on left and right subtrees"}
+        ],
+        "testCode": "",
+        "hint": "Base case returns 0. Use Math.max to take the deeper subtree."
+      },
+      "order": 4
+    }
+  ]
+}

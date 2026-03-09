@@ -1,0 +1,95 @@
+{
+  "id": "csharp-strings",
+  "title": "Strings",
+  "description": "Master C# string operations: indexing, Substring, Split/Join, StringBuilder, and immutability for coding interviews.",
+  "language": "csharp",
+  "category": "strings",
+  "order": 3,
+  "sections": [
+    {
+      "id": "csharp-str-index",
+      "title": "String Indexing and Properties",
+      "explanation": "Strings in C# are immutable sequences of `char`. Access characters with `s[i]` (zero-indexed). Get length with `.Length`. Use `.IndexOf()` to find positions, `.Contains()` for existence checks. `char` is a value type—compare with `==`. Strings support slicing via `Substring()` but not negative indexing like Python.",
+      "example": "class Program\n{\n    static void Main()\n    {\n        string s = \"interview\";\n        Console.WriteLine(s[0]);           // 'i'\n        Console.WriteLine(s[s.Length - 1]); // 'w'\n        Console.WriteLine(s.Length);        // 9\n        Console.WriteLine(s.IndexOf('r')); // 4\n        Console.WriteLine(s.Contains(\"view\")); // True\n    }\n}",
+      "exercise": {
+        "prompt": "Given string s = \"programming\", print: the first character, the last character, the length, the index of 'g' (first occurrence), and whether it contains \"gram\".",
+        "starterCode": "class Program\n{\n    static void Main()\n    {\n        string s = \"programming\";\n\n        // Print first char, last char, length, index of 'g', contains \"gram\"\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "p\ng\n11\n3\nTrue", "message": "First: p, Last: g, Length: 11, IndexOf 'g': 3, Contains \"gram\": True."},
+          {"type": "contains", "patterns": ["s[0]", "s.Length", ".IndexOf(", ".Contains("], "message": "Use bracket indexing, .Length, .IndexOf(), and .Contains()."}
+        ],
+        "testCode": "",
+        "hint": "s[0] for first, s[s.Length - 1] for last. IndexOf('g') returns 3. Contains(\"gram\") returns True."
+      },
+      "order": 1
+    },
+    {
+      "id": "csharp-str-substring",
+      "title": "Substring and Manipulation",
+      "explanation": "`Substring(start)` returns from start to end. `Substring(start, length)` returns `length` characters from `start`. Note: the second parameter is length, not end index (unlike Java). Other common methods: `ToUpper()`, `ToLower()`, `Trim()`, `Replace()`, `StartsWith()`, `EndsWith()`. All return new strings since strings are immutable.",
+      "example": "class Program\n{\n    static void Main()\n    {\n        string s = \"Hello, World!\";\n        Console.WriteLine(s.Substring(7));       // World!\n        Console.WriteLine(s.Substring(0, 5));    // Hello\n        Console.WriteLine(s.ToUpper());           // HELLO, WORLD!\n        Console.WriteLine(s.Replace(\"World\", \"C#\")); // Hello, C#!\n        Console.WriteLine(s.Trim());              // Hello, World!\n    }\n}",
+      "exercise": {
+        "prompt": "Given string s = \"  Data Structures  \", trim it and store in `trimmed`. Print trimmed. Extract \"Data\" using Substring (starts at index 0, length 4 of trimmed). Print it uppercased. Replace \"Structures\" with \"Algorithms\" in trimmed and print the result.",
+        "starterCode": "class Program\n{\n    static void Main()\n    {\n        string s = \"  Data Structures  \";\n\n        // Trim, extract, transform\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "Data Structures\nDATA\nData Algorithms", "message": "Trimmed string, DATA in uppercase, then replaced string."},
+          {"type": "contains", "patterns": [".Trim()", ".Substring(", ".ToUpper()", ".Replace("], "message": "Use Trim, Substring, ToUpper, and Replace methods."}
+        ],
+        "testCode": "",
+        "hint": "s.Trim() removes whitespace. Substring(0, 4) gets \"Data\". ToUpper() makes it \"DATA\". Replace swaps substrings."
+      },
+      "order": 2
+    },
+    {
+      "id": "csharp-str-split-join",
+      "title": "Split and Join",
+      "explanation": "`Split(char)` or `Split(string)` breaks a string into a `string[]`. `String.Join(separator, array)` combines an array into one string. These are essential for parsing input and formatting output in interviews. `Split` can take `StringSplitOptions.RemoveEmptyEntries` to skip empty results from consecutive delimiters.",
+      "example": "class Program\n{\n    static void Main()\n    {\n        string csv = \"apple,banana,cherry\";\n        string[] parts = csv.Split(',');\n        Console.WriteLine(parts.Length);   // 3\n        Console.WriteLine(parts[1]);       // banana\n\n        string joined = String.Join(\" | \", parts);\n        Console.WriteLine(joined);  // apple | banana | cherry\n\n        string words = \"hello   world\";\n        string[] split = words.Split(' ', StringSplitOptions.RemoveEmptyEntries);\n        Console.WriteLine(split.Length);  // 2\n    }\n}",
+      "exercise": {
+        "prompt": "Given string sentence = \"the quick brown fox\", split it by spaces into an array. Print the number of words and the third word. Reverse the array using Array.Reverse, then join with \"-\" and print the result.",
+        "starterCode": "class Program\n{\n    static void Main()\n    {\n        string sentence = \"the quick brown fox\";\n\n        // Split, inspect, reverse, join\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "4\nbrown\nfox-brown-quick-the", "message": "4 words, third word is brown, reversed and joined with dashes."},
+          {"type": "contains", "patterns": [".Split(", "Array.Reverse(", "String.Join("], "message": "Use Split to tokenize, Array.Reverse, and String.Join."}
+        ],
+        "testCode": "",
+        "hint": "Split(' ') gives array of words. words[2] is \"brown\". Array.Reverse mutates in-place. String.Join(\"-\", words)."
+      },
+      "order": 3
+    },
+    {
+      "id": "csharp-str-builder",
+      "title": "StringBuilder for Efficient Concatenation",
+      "explanation": "Since strings are immutable, concatenation in a loop creates O(n) new strings, making it O(n²). Use `StringBuilder` from `System.Text` for O(n) string building. Key methods: `Append()`, `Insert()`, `Remove()`, `Replace()`, `ToString()`. In interviews, always use StringBuilder when building strings character-by-character in a loop.",
+      "example": "class Program\n{\n    static void Main()\n    {\n        var sb = new System.Text.StringBuilder();\n        for (int i = 0; i < 5; i++)\n        {\n            sb.Append(i);\n            sb.Append(' ');\n        }\n        Console.WriteLine(sb.ToString().Trim());  // 0 1 2 3 4\n\n        var sb2 = new System.Text.StringBuilder(\"Hello World\");\n        sb2.Replace(\"World\", \"C#\");\n        sb2.Insert(0, \">> \");\n        Console.WriteLine(sb2.ToString());  // >> Hello C#\n    }\n}",
+      "exercise": {
+        "prompt": "Use StringBuilder to build a comma-separated string of squares from 1 to 5: \"1,4,9,16,25\". Don't include a trailing comma. Print the result.",
+        "starterCode": "class Program\n{\n    static void Main()\n    {\n        var sb = new System.Text.StringBuilder();\n\n        // Build comma-separated squares 1 to 5\n\n        Console.WriteLine(sb.ToString());\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "1,4,9,16,25", "message": "Comma-separated squares: 1,4,9,16,25"},
+          {"type": "contains", "patterns": ["StringBuilder", ".Append("], "message": "Use StringBuilder with Append for efficient string building."}
+        ],
+        "testCode": "",
+        "hint": "Loop i from 1 to 5. Append i*i. Append comma only if i < 5, or use sb.Length check."
+      },
+      "order": 4
+    },
+    {
+      "id": "csharp-str-immutability",
+      "title": "String Immutability and Comparison",
+      "explanation": "Strings in C# are immutable—every modification returns a new string. Use `==` for content comparison (C# overloads `==` for strings, unlike Java). `String.Equals()` also works, and supports `StringComparison` options for case-insensitive comparison. `string.Compare()` returns -1, 0, or 1 for ordering. Converting to char array with `ToCharArray()` lets you mutate, then create a new string.",
+      "example": "class Program\n{\n    static void Main()\n    {\n        string a = \"hello\";\n        string b = \"HELLO\";\n        Console.WriteLine(a == b);           // False\n        Console.WriteLine(a.Equals(b, StringComparison.OrdinalIgnoreCase)); // True\n\n        char[] chars = a.ToCharArray();\n        Array.Reverse(chars);\n        string reversed = new string(chars);\n        Console.WriteLine(reversed);         // olleh\n    }\n}",
+      "exercise": {
+        "prompt": "Given string s = \"Interview\", convert to a char array, reverse it, and create a new string. Print the reversed string. Then compare \"abc\" and \"ABC\" using == (case sensitive) and Equals with OrdinalIgnoreCase. Print both results.",
+        "starterCode": "class Program\n{\n    static void Main()\n    {\n        string s = \"Interview\";\n\n        // Reverse via char array\n\n        // Case-sensitive and case-insensitive comparison\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "weivretnI\nFalse\nTrue", "message": "Reversed string, then False for == and True for case-insensitive Equals."},
+          {"type": "contains", "patterns": [".ToCharArray()", "Array.Reverse(", "new string(", "StringComparison.OrdinalIgnoreCase"], "message": "Use ToCharArray, Array.Reverse, new string(), and StringComparison.OrdinalIgnoreCase."}
+        ],
+        "testCode": "",
+        "hint": "ToCharArray() gives char[], Array.Reverse mutates it, new string(chars) builds the reversed string."
+      },
+      "order": 5
+    }
+  ]
+}

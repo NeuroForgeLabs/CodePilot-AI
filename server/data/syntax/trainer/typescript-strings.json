@@ -1,0 +1,78 @@
+{
+  "id": "typescript-strings",
+  "title": "Strings",
+  "description": "String manipulation is everywhere in interviews — from palindrome checks to parsing. Master TypeScript's string methods and template literals to handle these problems cleanly.",
+  "language": "typescript",
+  "category": "strings",
+  "order": 3,
+  "sections": [
+    {
+      "id": "string-basics",
+      "title": "String basics and access",
+      "explanation": "TypeScript strings are immutable sequences of characters. Access individual characters with bracket notation or `charAt()`. The `length` property gives the character count. Unlike arrays, you cannot modify a string in place — you build a new one.",
+      "example": "const s: string = \"interview\";\n\nconsole.log(s.length);    // 9\nconsole.log(s[0]);        // i\nconsole.log(s.charAt(3)); // e\nconsole.log(s[s.length - 1]); // w",
+      "exercise": {
+        "prompt": "Given `s: string = \"algorithm\"`, print its length, first character (using bracket notation), fourth character (using charAt), and last character.",
+        "starterCode": "const s: string = \"algorithm\"\n\nconsole.log(s.___)\nconsole.log(s[___])\nconsole.log(s.charAt(___))\nconsole.log(s[s.length - ___])",
+        "validation": [
+          {"type": "output", "expected": "9\na\nr\nm", "message": "length=9, first=a, fourth(index 3)=r, last=m"},
+          {"type": "contains", "patterns": ["charAt(", "s.length"], "message": "Use charAt and length property"}
+        ],
+        "testCode": "",
+        "hint": "s.length for length, s[0] for first, s.charAt(3) for fourth (0-indexed), s[s.length - 1] for last."
+      },
+      "order": 1
+    },
+    {
+      "id": "template-literals",
+      "title": "Template literals",
+      "explanation": "Template literals use backticks and `${expression}` for interpolation. They're cleaner than concatenation and essential for building output strings in interviews. They also support multiline strings without escape characters.",
+      "example": "const name: string = \"Alice\";\nconst score: number = 95;\n\nconsole.log(`${name} scored ${score}`);  // Alice scored 95\nconsole.log(`Result: ${score >= 90 ? \"pass\" : \"fail\"}`);  // Result: pass",
+      "exercise": {
+        "prompt": "Given `item: string = \"array\"` and `count: number = 5`, use template literals to print \"Found 5 array elements\" and \"The array has 5 items (pass)\" where pass/fail depends on count > 0.",
+        "starterCode": "const item: string = \"array\"\nconst count: number = 5\n\nconsole.log(`Found ${___} ${___} elements`)\nconsole.log(`The ${item} has ${count} items (${count > 0 ? \"___\" : \"___\"})`)",
+        "validation": [
+          {"type": "output", "expected": "Found 5 array elements\nThe array has 5 items (pass)", "message": "Use template literals with interpolation"},
+          {"type": "contains", "patterns": ["${", "`"], "message": "Use template literal syntax with backticks and ${}"}
+        ],
+        "testCode": "",
+        "hint": "Interpolate count and item in the first template. Use a ternary inside ${} for the pass/fail check."
+      },
+      "order": 2
+    },
+    {
+      "id": "string-methods",
+      "title": "Common string methods",
+      "explanation": "Key interview methods: `split()` to tokenize, `join()` to reassemble, `slice()` for substrings, `toLowerCase()`/`toUpperCase()` for normalization, and `includes()`/`indexOf()` for searching. These come up in nearly every string problem.",
+      "example": "const s: string = \"Hello World\";\n\nconsole.log(s.toLowerCase());      // hello world\nconsole.log(s.split(\" \"));         // [\"Hello\", \"World\"]\nconsole.log(s.slice(0, 5));        // Hello\nconsole.log(s.includes(\"World\")); // true\nconsole.log(s.indexOf(\"o\"));      // 4\n\nconst words: string[] = [\"a\", \"b\", \"c\"];\nconsole.log(words.join(\"-\"));      // a-b-c",
+      "exercise": {
+        "prompt": "Given `s: string = \"Coding Interview Prep\"`, print: the string lowercased, split into words (joined by comma), the first word using slice, whether it includes \"Interview\", and the index of \"P\".",
+        "starterCode": "const s: string = \"Coding Interview Prep\"\n\nconsole.log(s.toLowerCase())\nconsole.log(s.split(\" \").join(\",\"))\nconsole.log(s.slice(0, ___))\nconsole.log(s.includes(___))\nconsole.log(s.indexOf(___))",
+        "validation": [
+          {"type": "output", "expected": "coding interview prep\nCoding,Interview,Prep\nCoding\ntrue\n16", "message": "Check each string operation result"},
+          {"type": "contains", "patterns": [".toLowerCase()", ".split(", ".slice(", ".includes(", ".indexOf("], "message": "Use the five string methods"}
+        ],
+        "testCode": "",
+        "hint": "slice(0, 6) gets \"Coding\". includes(\"Interview\") returns true. indexOf(\"P\") finds the P in Prep at index 16."
+      },
+      "order": 3
+    },
+    {
+      "id": "string-building",
+      "title": "Building strings from arrays",
+      "explanation": "Since strings are immutable, the interview pattern is to collect characters in an array and `join()` at the end. This avoids O(n²) string concatenation. For character frequency, iterate the string and populate a Map or object.",
+      "example": "function reverseString(s: string): string {\n  const chars: string[] = [];\n  for (let i = s.length - 1; i >= 0; i--) {\n    chars.push(s[i]);\n  }\n  return chars.join(\"\");\n}\n\nconsole.log(reverseString(\"hello\")); // olleh",
+      "exercise": {
+        "prompt": "Write a function `removeVowels` that takes a string and returns a new string with all vowels (a, e, i, o, u) removed. Collect non-vowel characters in an array and join. Print the result for \"interview\".",
+        "starterCode": "function removeVowels(s: string): string {\n  const vowels: string = \"aeiou\"\n  const result: string[] = []\n  for (const ch of s) {\n    if (!vowels.includes(___)) {\n      result.push(___)\n    }\n  }\n  return result.join(\"\")\n}\n\nconsole.log(removeVowels(\"interview\"))",
+        "validation": [
+          {"type": "output", "expected": "ntrvw", "message": "Remove all vowels from 'interview' to get 'ntrvw'"},
+          {"type": "contains", "patterns": [".join(\"\")", ".push(", ".includes("], "message": "Build result array and join at the end"}
+        ],
+        "testCode": "",
+        "hint": "Check if the vowels string includes the current character. If not, push it to the result array. Join with empty string."
+      },
+      "order": 4
+    }
+  ]
+}

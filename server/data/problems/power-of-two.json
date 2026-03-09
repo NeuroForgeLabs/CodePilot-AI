@@ -1,0 +1,38 @@
+{
+  "id": "power-of-two",
+  "title": "Power of Two",
+  "difficulty": "Easy",
+  "tags": ["math", "bit-manipulation"],
+  "prompt": "Given an integer `n`, return `True` if it is a power of two, and `False` otherwise.\n\nAn integer `n` is a power of two if there exists an integer `x` such that `n == 2^x`.",
+  "examples": [
+    {"input": "n = 1", "output": "True\nExplanation: 2^0 = 1."},
+    {"input": "n = 16", "output": "True\nExplanation: 2^4 = 16."},
+    {"input": "n = 3", "output": "False"}
+  ],
+  "constraints": [
+    "-2^31 <= n <= 2^31 - 1"
+  ],
+  "starterCode": {
+    "python": "def solve(n):\n    pass",
+    "javascript": "function solve(n) {\n  \n}",
+    "typescript": "export function solve(n: number): boolean {\n  \n}",
+    "java": "class Solution {\n    public boolean solve(int n) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public bool Solve(int n) {\n        \n    }\n}",
+    "go": "func solve(n int) bool {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve(1))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve(16))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve(3))"}, "expectedStdout": "False"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve(0))"}, "expectedStdout": "False"},
+    {"stdin": {"python": "print(solve(-16))"}, "expectedStdout": "False"},
+    {"stdin": {"python": "print(solve(1024))"}, "expectedStdout": "True"}
+  ],
+  "notesForAI": {
+    "coreIdea": "A power of two in binary has exactly one bit set. Use the trick: n > 0 and (n & (n - 1)) == 0. Subtracting 1 flips all bits below the single set bit, so AND yields zero only for powers of two.",
+    "commonBugs": ["Not handling n <= 0 (zero and negative numbers are not powers of two)", "Using floating point log which can have precision issues", "Forgetting that 1 (2^0) is a valid power of two"],
+    "expectedComplexity": "O(1)"
+  }
+}

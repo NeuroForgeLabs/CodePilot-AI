@@ -1,0 +1,61 @@
+{
+  "id": "go-heaps",
+  "title": "Heaps / Priority Queues",
+  "description": "Go's container/heap package requires implementing an interface. Master the IntHeap pattern, Push/Pop, and min-heap usage — these power top-K, merge-K-sorted, and Dijkstra problems.",
+  "language": "go",
+  "category": "heaps",
+  "order": 9,
+  "sections": [
+    {
+      "id": "heap-interface",
+      "title": "Implementing the heap interface",
+      "explanation": "Go's heap package requires your type to implement **sort.Interface** (Len, Less, Swap) plus **Push** and **Pop**. Define an IntHeap type as `[]int`, implement the five methods, and use `heap.Init()`, `heap.Push()`, `heap.Pop()`. Less determines min vs max: `<` for min-heap, `>` for max-heap.",
+      "example": "type IntHeap []int\n\nfunc (h IntHeap) Len() int           { return len(h) }\nfunc (h IntHeap) Less(i, j int) bool { return h[i] < h[j] }\nfunc (h IntHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }\nfunc (h *IntHeap) Push(x interface{}) { *h = append(*h, x.(int)) }\nfunc (h *IntHeap) Pop() interface{} {\n    old := *h\n    n := len(old)\n    x := old[n-1]\n    *h = old[:n-1]\n    return x\n}\n\nfunc main() {\n    h := &IntHeap{5, 3, 8, 1}\n    heap.Init(h)\n    fmt.Println(heap.Pop(h))  // 1 (min)\n    heap.Push(h, 2)\n    fmt.Println(heap.Pop(h))  // 2\n}",
+      "exercise": {
+        "prompt": "Complete the IntHeap min-heap implementation. Init a heap with [5, 3, 8, 1], pop the minimum twice, and print each popped value.",
+        "starterCode": "type IntHeap []int\n\nfunc (h IntHeap) Len() int           { return len(h) }\nfunc (h IntHeap) Less(i, j int) bool { return h[i]  h[j] }\nfunc (h IntHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }\nfunc (h *IntHeap) Push(x interface{}) { *h = append(*h, x.(int)) }\nfunc (h *IntHeap) Pop() interface{} {\n    old := *h\n    n := len(old)\n    x := old[n-1]\n    *h = old[:n-1]\n    return x\n}\n\nfunc main() {\n    h := &IntHeap{5, 3, 8, 1}\n    heap.Init(h)\n    fmt.Println(heap.(h))\n    fmt.Println(heap.(h))\n}",
+        "validation": [
+          {"type": "output", "expected": "1\n3", "message": "Min-heap pops smallest first: 1 then 3"},
+          {"type": "contains", "patterns": ["h[i] < h[j]", "heap.Init", "heap.Pop"], "message": "Use < in Less for min-heap, heap.Init to heapify, heap.Pop to extract min"}
+        ],
+        "testCode": "",
+        "hint": "h[i] < h[j] makes it a min-heap. heap.Init(h) heapifies. heap.Pop(h) returns the smallest."
+      },
+      "order": 1
+    },
+    {
+      "id": "max-heap",
+      "title": "Max-heap variant",
+      "explanation": "To make a max-heap, simply reverse the Less comparison to **h[i] > h[j]**. Everything else stays the same. This is useful for problems like finding the K largest elements, where you maintain a max-heap and pop the maximum.",
+      "example": "type MaxHeap []int\n\nfunc (h MaxHeap) Len() int           { return len(h) }\nfunc (h MaxHeap) Less(i, j int) bool { return h[i] > h[j] }\nfunc (h MaxHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }\nfunc (h *MaxHeap) Push(x interface{}) { *h = append(*h, x.(int)) }\nfunc (h *MaxHeap) Pop() interface{} {\n    old := *h\n    n := len(old)\n    x := old[n-1]\n    *h = old[:n-1]\n    return x\n}\n\nfunc main() {\n    h := &MaxHeap{5, 3, 8, 1}\n    heap.Init(h)\n    fmt.Println(heap.Pop(h))  // 8 (max)\n}",
+      "exercise": {
+        "prompt": "Create a MaxHeap, init with [10, 40, 20, 30], pop the top two elements (largest first), and print them.",
+        "starterCode": "type MaxHeap []int\n\nfunc (h MaxHeap) Len() int           { return len(h) }\nfunc (h MaxHeap) Less(i, j int) bool { return h[i]  h[j] }\nfunc (h MaxHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }\nfunc (h *MaxHeap) Push(x interface{}) { *h = append(*h, x.(int)) }\nfunc (h *MaxHeap) Pop() interface{} {\n    old := *h\n    n := len(old)\n    x := old[n-1]\n    *h = old[:n-1]\n    return x\n}\n\nfunc main() {\n    h := &MaxHeap{10, 40, 20, 30}\n    heap.(h)\n    fmt.Println(heap.Pop(h))\n    fmt.Println(heap.Pop(h))\n}",
+        "validation": [
+          {"type": "output", "expected": "40\n30", "message": "Max-heap pops largest first: 40 then 30"},
+          {"type": "contains", "patterns": ["h[i] > h[j]", "heap.Init", "heap.Pop"], "message": "Use > in Less for max-heap"}
+        ],
+        "testCode": "",
+        "hint": "h[i] > h[j] makes it a max-heap. heap.Init(h) heapifies. Pop returns 40 then 30."
+      },
+      "order": 2
+    },
+    {
+      "id": "top-k",
+      "title": "Top-K pattern",
+      "explanation": "To find the K smallest elements, maintain a **max-heap of size K**: push each element, and when the heap exceeds K, pop the max. What remains are the K smallest. For K largest, use a min-heap of size K. This is O(n log k) — better than sorting O(n log n) when k is small.",
+      "example": "type MaxHeap []int\nfunc (h MaxHeap) Len() int           { return len(h) }\nfunc (h MaxHeap) Less(i, j int) bool { return h[i] > h[j] }\nfunc (h MaxHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }\nfunc (h *MaxHeap) Push(x interface{}) { *h = append(*h, x.(int)) }\nfunc (h *MaxHeap) Pop() interface{} {\n    old := *h; n := len(old); x := old[n-1]; *h = old[:n-1]; return x\n}\n\nfunc kSmallest(nums []int, k int) []int {\n    h := &MaxHeap{}\n    heap.Init(h)\n    for _, n := range nums {\n        heap.Push(h, n)\n        if h.Len() > k {\n            heap.Pop(h)\n        }\n    }\n    return []int(*h)\n}\n\nfunc main() {\n    result := kSmallest([]int{7, 2, 9, 1, 5, 3}, 3)\n    sort.Ints(result)\n    fmt.Println(result)  // [1 2 3]\n}",
+      "exercise": {
+        "prompt": "Find the 3 smallest elements in [8, 2, 7, 1, 5, 3, 9] using a max-heap of size 3. Sort and print the result.",
+        "starterCode": "type MaxHeap []int\nfunc (h MaxHeap) Len() int           { return len(h) }\nfunc (h MaxHeap) Less(i, j int) bool { return h[i] > h[j] }\nfunc (h MaxHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }\nfunc (h *MaxHeap) Push(x interface{}) { *h = append(*h, x.(int)) }\nfunc (h *MaxHeap) Pop() interface{} {\n    old := *h; n := len(old); x := old[n-1]; *h = old[:n-1]; return x\n}\n\nfunc main() {\n    nums := []int{8, 2, 7, 1, 5, 3, 9}\n    h := &MaxHeap{}\n    heap.Init(h)\n    for _, n := range nums {\n        heap.Push(h, n)\n        if h.Len() >  {\n            heap.Pop(h)\n        }\n    }\n    result := []int(*h)\n    sort.Ints(result)\n    fmt.Println(result)\n}",
+        "validation": [
+          {"type": "output", "expected": "[1 2 3]", "message": "The 3 smallest elements are 1, 2, 3"},
+          {"type": "contains", "patterns": ["h.Len() > 3", "heap.Push", "heap.Pop"], "message": "Maintain heap size at 3 by popping when it exceeds K"}
+        ],
+        "testCode": "",
+        "hint": "Push each element. When heap size exceeds 3, pop the max. The 3 remaining are the smallest."
+      },
+      "order": 3
+    }
+  ]
+}

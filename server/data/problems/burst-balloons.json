@@ -1,0 +1,38 @@
+{
+  "id": "burst-balloons",
+  "title": "Burst Balloons",
+  "difficulty": "Hard",
+  "tags": ["arrays", "dynamic-programming"],
+  "prompt": "You are given `n` balloons, indexed from `0` to `n - 1`. Each balloon is painted with a number on it represented by array `nums`. You are asked to burst all the balloons.\n\nIf you burst the `i`th balloon, you will get `nums[i - 1] * nums[i] * nums[i + 1]` coins. If `i - 1` or `i + 1` goes out of bounds of the array, then treat it as if there is a balloon with a `1` painted on it.\n\nReturn the maximum coins you can collect by bursting the balloons wisely.",
+  "examples": [
+    {"input": "nums = [3,1,5,8]", "output": "167\nExplanation: Burst in order: 1 (3*1*5=15), 5 (3*5*8=120), 3 (1*3*8=24), 8 (1*8*1=8). Total = 167."},
+    {"input": "nums = [1,5]", "output": "10\nExplanation: Burst 1 first (1*1*5=5), then 5 (1*5*1=5). Total = 10."},
+    {"input": "nums = [7]", "output": "7\nExplanation: Only one balloon: 1*7*1 = 7."}
+  ],
+  "constraints": [
+    "1 <= nums.length <= 300",
+    "0 <= nums[i] <= 100"
+  ],
+  "starterCode": {
+    "python": "def solve(nums: list[int]) -> int:\n    pass",
+    "javascript": "function solve(nums) {\n  \n}",
+    "typescript": "export function solve(nums: number[]): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(int[] nums) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(int[] nums) {\n        \n    }\n}",
+    "go": "func solve(nums []int) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([3,1,5,8]))"}, "expectedStdout": "167"},
+    {"stdin": {"python": "print(solve([1,5]))"}, "expectedStdout": "10"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([7]))"}, "expectedStdout": "7"},
+    {"stdin": {"python": "print(solve([9,76,64,21]))"}, "expectedStdout": "116718"},
+    {"stdin": {"python": "print(solve([1,1,1]))"}, "expectedStdout": "3"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Interval DP. Pad nums with 1 on both ends. dp[i][j] = max coins from bursting all balloons between index i and j (exclusive). For each subproblem, choose which balloon k to burst LAST in the range (i,j). dp[i][j] = max(dp[i][k] + dp[k][j] + nums[i]*nums[k]*nums[j]) for all k in (i,j). The key insight is thinking about the last balloon to burst, not the first.",
+    "commonBugs": ["Thinking about which balloon to burst first instead of last (the first-burst approach is much harder because neighbors change)", "Forgetting to pad the array with 1s on both ends", "Incorrect loop ordering—must iterate by increasing interval length"],
+    "expectedComplexity": "O(n^3)"
+  }
+}

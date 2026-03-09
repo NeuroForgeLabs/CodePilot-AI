@@ -1,0 +1,42 @@
+{
+  "id": "word-ladder",
+  "title": "Word Ladder",
+  "difficulty": "Hard",
+  "tags": ["strings", "bfs", "hash-table"],
+  "prompt": "A transformation sequence from word `beginWord` to word `endWord` using a dictionary `wordList` is a sequence of words `beginWord -> s1 -> s2 -> ... -> sk` such that:\n\n- Every adjacent pair of words differs by a single letter.\n- Every `si` for `1 <= i <= k` is in `wordList`. Note that `beginWord` does not need to be in `wordList`.\n- `sk == endWord`\n\nGiven two words `beginWord` and `endWord`, and a list `wordList`, return the number of words in the shortest transformation sequence from `beginWord` to `endWord`, or `0` if no such sequence exists.",
+  "examples": [
+    {"input": "beginWord = \"hit\", endWord = \"cog\", wordList = [\"hot\", \"dot\", \"dog\", \"lot\", \"log\", \"cog\"]", "output": "5\nExplanation: One shortest transformation is \"hit\" -> \"hot\" -> \"dot\" -> \"dog\" -> \"cog\", which is 5 words."},
+    {"input": "beginWord = \"hit\", endWord = \"cog\", wordList = [\"hot\", \"dot\", \"dog\", \"lot\", \"log\"]", "output": "0\nExplanation: The endWord \"cog\" is not in wordList, so no transformation is possible."}
+  ],
+  "constraints": [
+    "1 <= beginWord.length <= 10",
+    "endWord.length == beginWord.length",
+    "1 <= wordList.length <= 5000",
+    "wordList[i].length == beginWord.length",
+    "beginWord, endWord, and wordList[i] consist of lowercase English letters.",
+    "beginWord != endWord",
+    "All the words in wordList are unique."
+  ],
+  "starterCode": {
+    "python": "def solve(beginWord, endWord, wordList):\n    pass",
+    "javascript": "function solve(beginWord, endWord, wordList) {\n  \n}",
+    "typescript": "export function solve(beginWord: string, endWord: string, wordList: string[]): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(String beginWord, String endWord, String[] wordList) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(string beginWord, string endWord, string[] wordList) {\n        \n    }\n}",
+    "go": "func solve(beginWord string, endWord string, wordList []string) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve(\"hit\", \"cog\", [\"hot\", \"dot\", \"dog\", \"lot\", \"log\", \"cog\"]))"}, "expectedStdout": "5"},
+    {"stdin": {"python": "print(solve(\"hit\", \"cog\", [\"hot\", \"dot\", \"dog\", \"lot\", \"log\"]))"}, "expectedStdout": "0"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve(\"a\", \"c\", [\"a\", \"b\", \"c\"]))"}, "expectedStdout": "2"},
+    {"stdin": {"python": "print(solve(\"hot\", \"dog\", [\"hot\", \"dog\", \"dot\"]))"}, "expectedStdout": "3"},
+    {"stdin": {"python": "print(solve(\"game\", \"thee\", [\"frye\", \"toed\", \"thee\", \"teed\", \"gale\", \"gaze\", \"gaze\", \"game\", \"tame\", \"tade\", \"teed\"]))"}, "expectedStdout": "0"}
+  ],
+  "notesForAI": {
+    "coreIdea": "BFS from beginWord. At each level, try changing each character position to every letter a-z. If the new word is in the wordList set, add it to the queue and remove from the set. Return the level count when endWord is reached. Bidirectional BFS is an optimization.",
+    "commonBugs": ["Not checking if endWord is in wordList before starting BFS", "TLE from checking all pairs instead of using wildcard patterns or character substitution", "Forgetting to count beginWord in the sequence length", "Not removing visited words from the set, causing infinite loops"],
+    "expectedComplexity": "O(M^2 * N) where M is word length and N is wordList size"
+  }
+}

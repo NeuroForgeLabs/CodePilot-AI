@@ -1,0 +1,90 @@
+{
+  "id": "python-interview-templates",
+  "title": "Interview Templates",
+  "description": "Drill the most common algorithmic templates that appear in coding interviews. Each pattern provides a reusable skeleton you can adapt to dozens of problems, so recognizing and applying them quickly becomes second nature.",
+  "language": "python",
+  "category": "interview-templates",
+  "order": 13,
+  "sections": [
+    {
+      "id": "sliding-window",
+      "title": "Sliding Window",
+      "explanation": "The sliding window technique maintains a fixed- or variable-size window over a sequence, sliding it forward one element at a time. Instead of recalculating from scratch, you update the result by subtracting the element leaving the window and adding the one entering. This brings many brute-force O(n*k) problems down to O(n), which interviewers expect you to recognize immediately.",
+      "example": "def max_sum_subarray(nums, k):\n    window = sum(nums[:k])\n    best = window\n    for i in range(k, len(nums)):\n        window += nums[i] - nums[i - k]\n        best = max(best, window)\n    return best\n\nprint(max_sum_subarray([2, 1, 5, 1, 3, 2], 3))  # 9",
+      "exercise": {
+        "prompt": "Complete the sliding window function to find the maximum sum of any contiguous subarray of size k. Print the result for nums = [2, 3, 1, 5, 4, 2] with k = 3.",
+        "starterCode": "def max_sum_subarray(nums, k):\n    window = sum(nums[:k])\n    best = window\n    for i in range(k, len(nums)):\n        window += nums[i] - nums[i - ___]\n        best = ___(best, window)\n    return best\n\nprint(max_sum_subarray([2, 3, 1, 5, 4, 2], 3))",
+        "validation": {
+          "output": "11",
+          "contains": ["nums[i - k]", "max("]
+        },
+        "testCode": "",
+        "hint": "Subtract the element leaving the window with nums[i - k] and use max(best, window) to track the largest sum seen so far."
+      }
+    },
+    {
+      "id": "binary-search",
+      "title": "Binary Search",
+      "explanation": "Binary search halves the search space each iteration by comparing the middle element to the target. The template uses two pointers, left and right, with a while left <= right loop. Interviewers test edge cases like off-by-one errors and the choice of mid calculation, so drilling this template until it is automatic is essential.",
+      "example": "def binary_search(nums, target):\n    left, right = 0, len(nums) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if nums[mid] == target:\n            return mid\n        elif nums[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return -1\n\nprint(binary_search([1, 3, 5, 7, 9, 11], 7))  # 3",
+      "exercise": {
+        "prompt": "Complete the binary search function to find the index of target in a sorted array. Return -1 if not found. Print the result for nums = [2, 4, 6, 8, 10, 12] and target = 10.",
+        "starterCode": "def binary_search(nums, target):\n    left, right = 0, len(nums) - 1\n    while left ___ right:\n        mid = (left + right) // 2\n        if nums[mid] == target:\n            return mid\n        elif nums[mid] < target:\n            left = mid + ___\n        else:\n            right = mid - ___\n    return -1\n\nprint(binary_search([2, 4, 6, 8, 10, 12], 10))",
+        "validation": {
+          "output": "4",
+          "contains": ["left <= right", "mid + 1"]
+        },
+        "testCode": "",
+        "hint": "The loop runs while left <= right. When the middle value is too small, move left to mid + 1; when too large, move right to mid - 1."
+      }
+    },
+    {
+      "id": "two-pointer",
+      "title": "Two Pointers",
+      "explanation": "The two-pointer technique places one pointer at the start and one at the end of a sorted array, then moves them inward based on a condition. For a pair-sum problem, if the current sum is too small you advance the left pointer; if too large you retreat the right pointer. This eliminates the need for a hash set and solves the problem in O(n) time with O(1) space, a tradeoff interviewers love to discuss.",
+      "example": "def two_sum_sorted(nums, target):\n    left, right = 0, len(nums) - 1\n    while left < right:\n        s = nums[left] + nums[right]\n        if s == target:\n            return (left, right)\n        elif s < target:\n            left += 1\n        else:\n            right -= 1\n    return (-1, -1)\n\nprint(two_sum_sorted([1, 3, 5, 7, 10], 8))  # (0, 4)",
+      "exercise": {
+        "prompt": "Complete the two-pointer function to find a pair of indices whose values sum to target in a sorted array. Print the result for nums = [1, 2, 4, 6, 8, 11] and target = 10.",
+        "starterCode": "def two_sum_sorted(nums, target):\n    left, right = 0, len(nums) - 1\n    while left < right:\n        s = nums[left] + nums[right]\n        if s == target:\n            return (left, right)\n        elif s < target:\n            left += ___\n        else:\n            right -= ___\n    return (-1, -1)\n\nprint(two_sum_sorted([1, 2, 4, 6, 8, 11], 10))",
+        "validation": {
+          "output": "(1, 4)",
+          "contains": ["left += 1", "right -= 1"]
+        },
+        "testCode": "",
+        "hint": "When the sum is too small, increment left by 1 to increase it. When too large, decrement right by 1 to decrease it."
+      }
+    },
+    {
+      "id": "prefix-sum",
+      "title": "Prefix Sum",
+      "explanation": "A prefix sum array stores the cumulative sum up to each index, turning any range-sum query into a constant-time subtraction. Building the prefix array is O(n), and each query is O(1), which is a dramatic improvement over recalculating from scratch. Interviewers use this pattern in subarray-sum problems, and it often serves as a building block inside more complex solutions.",
+      "example": "def build_prefix(nums):\n    prefix = [0] * (len(nums) + 1)\n    for i in range(len(nums)):\n        prefix[i + 1] = prefix[i] + nums[i]\n    return prefix\n\ndef range_sum(prefix, l, r):\n    return prefix[r + 1] - prefix[l]\n\nnums = [3, 1, 4, 1, 5]\nprefix = build_prefix(nums)\nprint(range_sum(prefix, 1, 3))  # 6",
+      "exercise": {
+        "prompt": "Complete the prefix sum builder and use it to answer a range sum query. Print the sum of elements from index 1 to index 3 (inclusive) for nums = [2, 5, 1, 7, 3].",
+        "starterCode": "def build_prefix(nums):\n    prefix = [0] * (len(nums) + 1)\n    for i in range(len(nums)):\n        prefix[i + 1] = prefix[___] + nums[i]\n    return prefix\n\ndef range_sum(prefix, l, r):\n    return prefix[r + 1] - prefix[___]\n\nnums = [2, 5, 1, 7, 3]\nprefix = build_prefix(nums)\nprint(range_sum(prefix, 1, 3))",
+        "validation": {
+          "output": "13",
+          "contains": ["prefix[i]", "prefix[l]"]
+        },
+        "testCode": "",
+        "hint": "Each prefix entry builds on the previous one: prefix[i + 1] = prefix[i] + nums[i]. The range sum from l to r is prefix[r + 1] - prefix[l]."
+      }
+    },
+    {
+      "id": "backtracking-template",
+      "title": "Backtracking",
+      "explanation": "Backtracking explores every candidate solution by choosing an option, recursing deeper, then undoing the choice to try the next option. This choose-explore-unchoose pattern is the backbone of permutation, combination, and constraint-satisfaction problems in interviews. Pruning branches early keeps the search tractable, and interviewers expect you to articulate the time complexity in terms of the decision tree.",
+      "example": "def permutations(nums):\n    result = []\n    def backtrack(path, remaining):\n        if not remaining:\n            result.append(path[:])\n            return\n        for i in range(len(remaining)):\n            path.append(remaining[i])\n            backtrack(path, remaining[:i] + remaining[i+1:])\n            path.pop()\n    backtrack([], nums)\n    return result\n\nprint(permutations([1, 2, 3]))",
+      "exercise": {
+        "prompt": "Complete the backtracking function to generate all permutations of [1, 2, 3]. Print the resulting list of permutations.",
+        "starterCode": "def permutations(nums):\n    result = []\n    def backtrack(path, remaining):\n        if not remaining:\n            result.append(path[:])\n            return\n        for i in range(len(remaining)):\n            path.append(remaining[i])\n            backtrack(path, remaining[:i] + remaining[___:])\n            path.___()\n    backtrack([], nums)\n    return result\n\nprint(permutations([1, 2, 3]))",
+        "validation": {
+          "output": "[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]",
+          "contains": ["path.pop()", "remaining[i+1:]"]
+        },
+        "testCode": "",
+        "hint": "Skip the chosen element by slicing remaining[:i] + remaining[i+1:]. After the recursive call, undo the choice with path.pop()."
+      }
+    }
+  ]
+}

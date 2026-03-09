@@ -1,0 +1,78 @@
+{
+  "id": "go-sorting",
+  "title": "Sorting",
+  "description": "Master Go's sort package — sort.Ints(), sort.Slice() with custom comparators, and stable sorting. Sorting is a prerequisite for binary search, two-pointer, and greedy interview problems.",
+  "language": "go",
+  "category": "sorting",
+  "order": 7,
+  "sections": [
+    {
+      "id": "basic-sort",
+      "title": "sort.Ints and sort.Strings",
+      "explanation": "**sort.Ints()** and **sort.Strings()** sort slices in-place in ascending order. These are O(n log n). For descending order, use **sort.Sort(sort.Reverse(sort.IntSlice(s)))**. Always remember: sorting mutates the original slice.",
+      "example": "func main() {\n    nums := []int{5, 3, 8, 1, 4}\n    sort.Ints(nums)\n    fmt.Println(nums)  // [1 3 4 5 8]\n\n    words := []string{\"banana\", \"apple\", \"cherry\"}\n    sort.Strings(words)\n    fmt.Println(words)  // [apple banana cherry]\n}",
+      "exercise": {
+        "prompt": "Sort the slice [40, 10, 30, 20, 50] in ascending order and print it. Then sort the strings [\"go\", \"python\", \"c\", \"java\"] and print them.",
+        "starterCode": "func main() {\n    nums := []int{40, 10, 30, 20, 50}\n    sort.(nums)\n    fmt.Println(nums)\n\n    langs := []string{\"go\", \"python\", \"c\", \"java\"}\n    sort.(langs)\n    fmt.Println(langs)\n}",
+        "validation": [
+          {"type": "output", "expected": "[10 20 30 40 50]\n[c go java python]", "message": "Both slices should be sorted in ascending order"},
+          {"type": "contains", "patterns": ["sort.Ints", "sort.Strings"], "message": "Use sort.Ints for int slices and sort.Strings for string slices"}
+        ],
+        "testCode": "",
+        "hint": "sort.Ints(nums) sorts ints. sort.Strings(langs) sorts strings. Both are in-place."
+      },
+      "order": 1
+    },
+    {
+      "id": "custom-sort",
+      "title": "sort.Slice with custom comparator",
+      "explanation": "**sort.Slice(s, less)** sorts any slice using a custom less function. The less function takes two indices and returns true if element i should come before element j. This is the Go equivalent of Python's `key` parameter or Java's `Comparator`.",
+      "example": "func main() {\n    people := []struct{ Name string; Age int }{\n        {\"Charlie\", 30}, {\"Alice\", 25}, {\"Bob\", 35},\n    }\n    sort.Slice(people, func(i, j int) bool {\n        return people[i].Age < people[j].Age\n    })\n    for _, p := range people {\n        fmt.Printf(\"%s: %d\\n\", p.Name, p.Age)\n    }\n}",
+      "exercise": {
+        "prompt": "Sort a slice of ints [5, 2, 8, 1, 9] in descending order using sort.Slice with a custom less function. Print the result.",
+        "starterCode": "func main() {\n    nums := []int{5, 2, 8, 1, 9}\n    sort.Slice(nums, func(i, j int) bool {\n        return nums[i]  nums[j]\n    })\n    fmt.Println(nums)\n}",
+        "validation": [
+          {"type": "output", "expected": "[9 8 5 2 1]", "message": "Descending sort should give [9 8 5 2 1]"},
+          {"type": "contains", "patterns": ["sort.Slice", "func(i, j int) bool", "nums[i] > nums[j]"], "message": "Use sort.Slice with a > comparator for descending order"}
+        ],
+        "testCode": "",
+        "hint": "For descending order, return nums[i] > nums[j] in the less function."
+      },
+      "order": 2
+    },
+    {
+      "id": "sort-structs",
+      "title": "Sorting structs by multiple fields",
+      "explanation": "To sort by multiple criteria, chain comparisons in the less function: compare the primary field first, and only compare the secondary field when the primary fields are equal. This is critical for problems like merge intervals, meeting rooms, and task scheduling.",
+      "example": "func main() {\n    intervals := [][]int{{3, 5}, {1, 4}, {1, 2}}\n    sort.Slice(intervals, func(i, j int) bool {\n        if intervals[i][0] != intervals[j][0] {\n            return intervals[i][0] < intervals[j][0]\n        }\n        return intervals[i][1] < intervals[j][1]\n    })\n    fmt.Println(intervals)  // [[1 2] [1 4] [3 5]]\n}",
+      "exercise": {
+        "prompt": "Sort intervals [[3,6],[1,4],[2,5],[1,2]] by start time, then by end time if start times are equal. Print the sorted result.",
+        "starterCode": "func main() {\n    intervals := [][]int{{3, 6}, {1, 4}, {2, 5}, {1, 2}}\n    sort.Slice(intervals, func(i, j int) bool {\n        if intervals[i][0] != intervals[j][0] {\n            return intervals[i][0]  intervals[j][0]\n        }\n        return intervals[i][1]  intervals[j][1]\n    })\n    fmt.Println(intervals)\n}",
+        "validation": [
+          {"type": "output", "expected": "[[1 2] [1 4] [2 5] [3 6]]", "message": "Sorted by start, then by end for equal starts"},
+          {"type": "contains", "patterns": ["sort.Slice", "intervals[i][0] != intervals[j][0]", "intervals[i][1] <"], "message": "Chain the two comparisons in the less function"}
+        ],
+        "testCode": "",
+        "hint": "First compare [0] (start). If equal, compare [1] (end). Use < for ascending order."
+      },
+      "order": 3
+    },
+    {
+      "id": "stable-sort",
+      "title": "sort.SliceStable",
+      "explanation": "**sort.SliceStable** preserves the original order of equal elements. Use it when the relative order of ties matters — for example, sorting tasks by priority while keeping the original submission order for same-priority tasks. The API is identical to sort.Slice.",
+      "example": "func main() {\n    type Task struct {\n        Name     string\n        Priority int\n    }\n    tasks := []Task{{\"A\", 2}, {\"B\", 1}, {\"C\", 2}, {\"D\", 1}}\n    sort.SliceStable(tasks, func(i, j int) bool {\n        return tasks[i].Priority < tasks[j].Priority\n    })\n    for _, t := range tasks {\n        fmt.Printf(\"%s(%d) \", t.Name, t.Priority)\n    }\n    fmt.Println()\n    // B(1) D(1) A(2) C(2) — ties preserve original order\n}",
+      "exercise": {
+        "prompt": "Given pairs [[\"b\",2],[\"a\",1],[\"d\",2],[\"c\",1]], stable-sort by the number (second element). Print each pair to show that ties preserve original order.",
+        "starterCode": "func main() {\n    type Pair struct {\n        Name string\n        Val  int\n    }\n    pairs := []Pair{{\"b\", 2}, {\"a\", 1}, {\"d\", 2}, {\"c\", 1}}\n    sort.(pairs, func(i, j int) bool {\n        return pairs[i].Val < pairs[j].Val\n    })\n    for _, p := range pairs {\n        fmt.Printf(\"%s:%d \", p.Name, p.Val)\n    }\n    fmt.Println()\n}",
+        "validation": [
+          {"type": "output", "expected": "a:1 c:1 b:2 d:2 ", "message": "Stable sort preserves original order for equal values"},
+          {"type": "contains", "patterns": ["sort.SliceStable", "pairs[i].Val < pairs[j].Val"], "message": "Use SliceStable to preserve order of equal elements"}
+        ],
+        "testCode": "",
+        "hint": "sort.SliceStable preserves the original order of elements with equal values. a and c (value 1) keep their order."
+      },
+      "order": 4
+    }
+  ]
+}

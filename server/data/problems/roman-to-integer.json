@@ -1,0 +1,40 @@
+{
+  "id": "roman-to-integer",
+  "title": "Roman to Integer",
+  "difficulty": "Easy",
+  "tags": ["strings", "hash-table", "math"],
+  "prompt": "Given a roman numeral string `s`, convert it to an integer.\n\nRoman numerals are represented by seven symbols:\n\n| Symbol | Value |\n|--------|-------|\n| I      | 1     |\n| V      | 5     |\n| X      | 10    |\n| L      | 50    |\n| C      | 100   |\n| D      | 500   |\n| M      | 1000  |\n\nRoman numerals are usually written largest to smallest from left to right. However, there are six subtraction cases:\n- `I` before `V` (4) or `X` (9)\n- `X` before `L` (40) or `C` (90)\n- `C` before `D` (400) or `M` (900)",
+  "examples": [
+    {"input": "s = \"III\"", "output": "3\nExplanation: III = 1 + 1 + 1 = 3."},
+    {"input": "s = \"LVIII\"", "output": "58\nExplanation: L = 50, V = 5, III = 3. Total = 58."},
+    {"input": "s = \"MCMXCIV\"", "output": "1994\nExplanation: M = 1000, CM = 900, XC = 90, IV = 4. Total = 1994."}
+  ],
+  "constraints": [
+    "1 <= s.length <= 15",
+    "s contains only the characters ('I', 'V', 'X', 'L', 'C', 'D', 'M')",
+    "It is guaranteed that s is a valid roman numeral in the range [1, 3999]."
+  ],
+  "starterCode": {
+    "python": "def solve(s):\n    pass",
+    "javascript": "function solve(s) {\n  \n}",
+    "typescript": "export function solve(s: string): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(String s) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(string s) {\n        \n    }\n}",
+    "go": "func solve(s string) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve(\"III\"))"}, "expectedStdout": "3"},
+    {"stdin": {"python": "print(solve(\"LVIII\"))"}, "expectedStdout": "58"},
+    {"stdin": {"python": "print(solve(\"MCMXCIV\"))"}, "expectedStdout": "1994"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve(\"IV\"))"}, "expectedStdout": "4"},
+    {"stdin": {"python": "print(solve(\"IX\"))"}, "expectedStdout": "9"},
+    {"stdin": {"python": "print(solve(\"MMMCMXCIX\"))"}, "expectedStdout": "3999"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Iterate through the string. If the current symbol's value is less than the next symbol's value, subtract it (subtraction case). Otherwise, add it. Use a hash map for symbol-to-value lookup.",
+    "commonBugs": ["Not handling the subtraction cases (IV, IX, XL, XC, CD, CM)", "Off-by-one when comparing current and next character at the end of the string", "Hardcoding subtraction pairs instead of using the general rule (current < next means subtract)"],
+    "expectedComplexity": "O(n)"
+  }
+}

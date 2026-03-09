@@ -1,0 +1,78 @@
+{
+  "id": "cpp-trees",
+  "title": "Trees",
+  "description": "Binary trees are among the most tested interview topics — master the TreeNode struct, DFS traversals (inorder/preorder/postorder), BFS with a queue, and recursive depth calculation.",
+  "language": "cpp",
+  "category": "trees",
+  "order": 11,
+  "sections": [
+    {
+      "id": "tree-node",
+      "title": "TreeNode struct and construction",
+      "explanation": "Most C++ interview problems use a simple **TreeNode struct** with `val`, `left`, and `right` pointers. Initialize with `new TreeNode(val)` and link children manually. Always use `nullptr` for null children (not NULL). Interviewers expect you to define this struct from memory.",
+      "example": "struct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}\n};\n\nint main() {\n    TreeNode* root = new TreeNode(1);\n    root->left = new TreeNode(2);\n    root->right = new TreeNode(3);\n\n    cout << root->val << endl;         // 1\n    cout << root->left->val << endl;   // 2\n    cout << root->right->val << endl;  // 3\n}",
+      "exercise": {
+        "prompt": "Define a TreeNode struct. Build a tree with root=10, left child=5, right child=15. Print the root value, left child value, and right child value.",
+        "starterCode": "struct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}\n};\n\nint main() {\n    TreeNode* root = new TreeNode();\n    root->left = new TreeNode();\n    root->right = new TreeNode();\n\n    cout << root->val << endl;\n    cout << root->left->val << endl;\n    cout << root->right->val << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "10\n5\n15", "message": "Tree should have root=10, left=5, right=15"},
+          {"type": "contains", "patterns": ["TreeNode(10)", "TreeNode(5)", "TreeNode(15)"], "message": "Pass the values 10, 5, 15 to the TreeNode constructor"}
+        ],
+        "testCode": "",
+        "hint": "Pass 10, 5, and 15 as arguments to new TreeNode()."
+      },
+      "order": 1
+    },
+    {
+      "id": "dfs-traversals",
+      "title": "DFS traversals (inorder, preorder, postorder)",
+      "explanation": "**Inorder** (left, root, right) produces sorted output for BSTs and is the most commonly tested. **Preorder** (root, left, right) is used for serialization. **Postorder** (left, right, root) is used for deletion and bottom-up computation. All three use the same recursive pattern with a base case of `if (!node) return;`.",
+      "example": "void inorder(TreeNode* node, vector<int>& res) {\n    if (!node) return;\n    inorder(node->left, res);\n    res.push_back(node->val);\n    inorder(node->right, res);\n}\n\nvoid preorder(TreeNode* node, vector<int>& res) {\n    if (!node) return;\n    res.push_back(node->val);\n    preorder(node->left, res);\n    preorder(node->right, res);\n}",
+      "exercise": {
+        "prompt": "Implement inorder DFS traversal. Build a tree: root=4, left=2, right=6. Run the traversal and print the result space-separated.",
+        "starterCode": "struct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}\n};\n\nvoid inorder(TreeNode* node, vector<int>& res) {\n    if (!node) return;\n    inorder(node->, res);\n    res.push_back(node->);\n    inorder(node->, res);\n}\n\nint main() {\n    TreeNode* root = new TreeNode(4);\n    root->left = new TreeNode(2);\n    root->right = new TreeNode(6);\n\n    vector<int> res;\n    inorder(root, res);\n    for (int x : res) cout << x << \" \";\n    cout << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "2 4 6", "message": "Inorder traversal of this BST produces sorted order: 2 4 6"},
+          {"type": "contains", "patterns": ["node->left", "node->val", "node->right"], "message": "Recurse left, push node->val, then recurse right for inorder"}
+        ],
+        "testCode": "",
+        "hint": "Inorder: recurse on node->left, push node->val, recurse on node->right."
+      },
+      "order": 2
+    },
+    {
+      "id": "bfs-level-order",
+      "title": "BFS level-order traversal",
+      "explanation": "Level-order traversal uses a **queue<TreeNode*>** to process nodes breadth-first. To group nodes by level, iterate `queue.size()` times per level before moving to the next. This pattern appears in problems like zigzag traversal, right-side view, and minimum depth.",
+      "example": "vector<vector<int>> levelOrder(TreeNode* root) {\n    if (!root) return {};\n    vector<vector<int>> result;\n    queue<TreeNode*> q;\n    q.push(root);\n    while (!q.empty()) {\n        int sz = q.size();\n        vector<int> level;\n        for (int i = 0; i < sz; i++) {\n            TreeNode* node = q.front(); q.pop();\n            level.push_back(node->val);\n            if (node->left) q.push(node->left);\n            if (node->right) q.push(node->right);\n        }\n        result.push_back(level);\n    }\n    return result;\n}",
+      "exercise": {
+        "prompt": "Implement BFS level-order traversal. Build a tree: root=1, left=2 (children 4,5), right=3. Print each level on its own line, values space-separated.",
+        "starterCode": "struct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}\n};\n\nint main() {\n    TreeNode* root = new TreeNode(1);\n    root->left = new TreeNode(2);\n    root->right = new TreeNode(3);\n    root->left->left = new TreeNode(4);\n    root->left->right = new TreeNode(5);\n\n    queue<TreeNode*> q;\n    q.push(root);\n    while (!q.()) {\n        int sz = q.();\n        for (int i = 0; i < sz; i++) {\n            TreeNode* node = q.(); q.();\n            cout << node->val << \" \";\n            if (node->left) q.push(node->left);\n            if (node->right) q.push(node->right);\n        }\n        cout << endl;\n    }\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "1 \n2 3 \n4 5", "message": "Level 1: [1], Level 2: [2, 3], Level 3: [4, 5]"},
+          {"type": "contains", "patterns": ["q.front()", "q.pop()", "q.push(node->left)"], "message": "Use queue front/pop for FIFO and push children for next level"}
+        ],
+        "testCode": "",
+        "hint": "q.empty() for loop condition. q.size() to count current level. q.front() to read, q.pop() to remove."
+      },
+      "order": 3
+    },
+    {
+      "id": "tree-depth",
+      "title": "Tree depth (recursive)",
+      "explanation": "Maximum depth is the number of nodes on the longest root-to-leaf path. The classic recursive formula: `1 + max(depth(left), depth(right))` with base case 0 for nullptr. This O(n) pattern is a building block for balanced-tree checks, diameter calculations, and subtree problems.",
+      "example": "int maxDepth(TreeNode* node) {\n    if (!node) return 0;\n    return 1 + max(maxDepth(node->left), maxDepth(node->right));\n}\n\nint main() {\n    TreeNode* root = new TreeNode(1);\n    root->left = new TreeNode(2);\n    root->left->left = new TreeNode(4);\n    root->right = new TreeNode(3);\n    cout << maxDepth(root) << endl;  // 3\n}",
+      "exercise": {
+        "prompt": "Implement a recursive maxDepth function. Build a tree: root=1, left=2 (left child=4, which has left child=8), right=3. Print the max depth.",
+        "starterCode": "struct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}\n};\n\nint maxDepth(TreeNode* node) {\n    if (!node) return ;\n    return 1 + max(maxDepth(node->), maxDepth(node->));\n}\n\nint main() {\n    TreeNode* root = new TreeNode(1);\n    root->left = new TreeNode(2);\n    root->left->left = new TreeNode(4);\n    root->left->left->left = new TreeNode(8);\n    root->right = new TreeNode(3);\n    cout << maxDepth(root) << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "4", "message": "Longest path: 1->2->4->8, depth = 4"},
+          {"type": "contains", "patterns": ["return 0", "node->left", "node->right", "max("], "message": "Base case returns 0, recurse on left and right, take the max + 1"}
+        ],
+        "testCode": "",
+        "hint": "Base case: return 0 for nullptr. Recursive: 1 + max(maxDepth(node->left), maxDepth(node->right))."
+      },
+      "order": 4
+    }
+  ]
+}

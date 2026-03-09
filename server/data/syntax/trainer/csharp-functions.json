@@ -1,0 +1,95 @@
+{
+  "id": "csharp-functions",
+  "title": "Functions",
+  "description": "Master C# static methods, parameters, out/ref, lambdas, and Func<>/Action<> delegates for coding interviews.",
+  "language": "csharp",
+  "category": "functions",
+  "order": 4,
+  "sections": [
+    {
+      "id": "csharp-fn-static",
+      "title": "Static Methods",
+      "explanation": "In interview coding, all methods are typically `static` since you work within a single class. Declare with `static returnType MethodName(params)`. Call directly by name within the same class. Use `void` for no return value. C# convention uses PascalCase for method names. Always specify the return type explicitly.",
+      "example": "class Program\n{\n    static int Add(int a, int b)\n    {\n        return a + b;\n    }\n\n    static void Greet(string name)\n    {\n        Console.WriteLine($\"Hello, {name}!\");\n    }\n\n    static void Main()\n    {\n        Console.WriteLine(Add(3, 7));  // 10\n        Greet(\"Alice\");                // Hello, Alice!\n    }\n}",
+      "exercise": {
+        "prompt": "Write a static method `int Max3(int a, int b, int c)` that returns the largest of three integers using Math.Max. Write a static method `void PrintLine(string text, int times)` that prints the text on separate lines `times` times. Call Max3(3, 7, 5) and print the result, then call PrintLine(\"go\", 3).",
+        "starterCode": "class Program\n{\n    // Write Max3 and PrintLine here\n\n    static void Main()\n    {\n        Console.WriteLine(Max3(3, 7, 5));\n        PrintLine(\"go\", 3);\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "7\ngo\ngo\ngo", "message": "Max3 returns 7, PrintLine prints go three times."},
+          {"type": "contains", "patterns": ["static int Max3(", "static void PrintLine(", "Math.Max"], "message": "Declare static methods with correct signatures and use Math.Max."}
+        ],
+        "testCode": "",
+        "hint": "static int Max3(int a, int b, int c) => Math.Max(a, Math.Max(b, c)); Use a for loop in PrintLine."
+      },
+      "order": 1
+    },
+    {
+      "id": "csharp-fn-params",
+      "title": "Parameters: Default, Params, Named",
+      "explanation": "C# supports default parameter values: `void Log(string msg, int level = 1)`. The `params` keyword accepts a variable number of arguments as an array: `int Sum(params int[] nums)`. Named arguments clarify calls: `Log(level: 3, msg: \"error\")`. Default parameters must come after required ones.",
+      "example": "class Program\n{\n    static int Sum(params int[] nums)\n    {\n        int total = 0;\n        foreach (int n in nums) total += n;\n        return total;\n    }\n\n    static string Format(string text, bool upper = false, string prefix = \"\")\n    {\n        string result = prefix + text;\n        return upper ? result.ToUpper() : result;\n    }\n\n    static void Main()\n    {\n        Console.WriteLine(Sum(1, 2, 3));          // 6\n        Console.WriteLine(Sum(10, 20, 30, 40));   // 100\n        Console.WriteLine(Format(\"hello\"));                    // hello\n        Console.WriteLine(Format(\"hello\", upper: true));       // HELLO\n        Console.WriteLine(Format(\"hello\", prefix: \">> \"));     // >> hello\n    }\n}",
+      "exercise": {
+        "prompt": "Write a static method `int Product(params int[] nums)` that returns the product of all arguments (return 1 for empty). Write `string Tag(string text, string tag = \"p\")` that returns \"<tag>text</tag>\". Print Product(2, 3, 4), Product(5), and Tag(\"hello\") and Tag(\"hello\", \"h1\").",
+        "starterCode": "class Program\n{\n    // Write Product and Tag here\n\n    static void Main()\n    {\n        Console.WriteLine(Product(2, 3, 4));\n        Console.WriteLine(Product(5));\n        Console.WriteLine(Tag(\"hello\"));\n        Console.WriteLine(Tag(\"hello\", \"h1\"));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "24\n5\n<p>hello</p>\n<h1>hello</h1>", "message": "Product: 24, 5. Tag with default p, then h1."},
+          {"type": "contains", "patterns": ["params int[]", "string tag = \"p\""], "message": "Use params for variable arguments and default parameter for tag."}
+        ],
+        "testCode": "",
+        "hint": "Product: start with 1, multiply each. Tag: return $\"<{tag}>{text}</{tag}>\"."
+      },
+      "order": 2
+    },
+    {
+      "id": "csharp-fn-out-ref",
+      "title": "Out and Ref Parameters",
+      "explanation": "`out` lets a method return multiple values—the caller must use the `out` keyword, and the method must assign to all out parameters. `ref` passes a variable by reference so the method can modify the original. Common pattern: `int.TryParse(string, out int result)` returns bool and sets result via out. Use `out` for multiple returns; `ref` for in-place modification.",
+      "example": "class Program\n{\n    static bool Divide(int a, int b, out int quotient, out int remainder)\n    {\n        if (b == 0) { quotient = 0; remainder = 0; return false; }\n        quotient = a / b;\n        remainder = a % b;\n        return true;\n    }\n\n    static void Swap(ref int a, ref int b)\n    {\n        int temp = a;\n        a = b;\n        b = temp;\n    }\n\n    static void Main()\n    {\n        if (Divide(17, 5, out int q, out int r))\n            Console.WriteLine($\"{q} remainder {r}\");  // 3 remainder 2\n\n        int x = 10, y = 20;\n        Swap(ref x, ref y);\n        Console.WriteLine($\"{x} {y}\");  // 20 10\n    }\n}",
+      "exercise": {
+        "prompt": "Write a method `bool TryParseAge(string input, out int age)` that tries to parse the string as an int. If it succeeds and the value is between 0 and 150 (inclusive), set age and return true. Otherwise set age to -1 and return false. Test with \"25\", \"200\", and \"abc\".",
+        "starterCode": "class Program\n{\n    static bool TryParseAge(string input, out int age)\n    {\n        // Implement using int.TryParse\n\n        age = -1;\n        return false;\n    }\n\n    static void Main()\n    {\n        Console.WriteLine(TryParseAge(\"25\", out int a1) + \" \" + a1);\n        Console.WriteLine(TryParseAge(\"200\", out int a2) + \" \" + a2);\n        Console.WriteLine(TryParseAge(\"abc\", out int a3) + \" \" + a3);\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "True 25\nFalse -1\nFalse -1", "message": "25 is valid, 200 is out of range, abc is not a number."},
+          {"type": "contains", "patterns": ["out int age", "int.TryParse("], "message": "Use out parameter and int.TryParse for safe parsing."}
+        ],
+        "testCode": "",
+        "hint": "if (int.TryParse(input, out int val) && val >= 0 && val <= 150) { age = val; return true; }"
+      },
+      "order": 3
+    },
+    {
+      "id": "csharp-fn-lambda",
+      "title": "Lambda Expressions",
+      "explanation": "Lambda syntax: `(parameters) => expression` or `(parameters) => { statements }`. Use with LINQ, delegates, and anywhere a function is expected. Single-expression lambdas are concise: `x => x * x`. Multi-statement lambdas need braces and explicit return: `(a, b) => { var sum = a + b; return sum; }`. Lambdas capture outer variables (closures).",
+      "example": "class Program\n{\n    static void Main()\n    {\n        Func<int, int> square = x => x * x;\n        Console.WriteLine(square(5));  // 25\n\n        Func<int, int, int> add = (a, b) => a + b;\n        Console.WriteLine(add(3, 4));  // 7\n\n        var nums = new List<int> { 5, 3, 8, 1, 9 };\n        nums.Sort((a, b) => a.CompareTo(b));\n        Console.WriteLine(String.Join(\", \", nums));  // 1, 3, 5, 8, 9\n    }\n}",
+      "exercise": {
+        "prompt": "Create a Func<string, string> lambda `shout` that uppercases a string and appends \"!\". Create a Func<int, int, bool> lambda `isGreater` that returns whether the first arg is greater than the second. Print shout(\"hello\"), isGreater(5, 3), and isGreater(2, 7).",
+        "starterCode": "class Program\n{\n    static void Main()\n    {\n        // Create shout and isGreater lambdas\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "HELLO!\nTrue\nFalse", "message": "shout produces HELLO!, isGreater returns True then False."},
+          {"type": "contains", "patterns": ["Func<string, string>", "Func<int, int, bool>", "=>"], "message": "Use Func<> delegates with lambda expressions."}
+        ],
+        "testCode": "",
+        "hint": "Func<string, string> shout = s => s.ToUpper() + \"!\"; Func<int, int, bool> isGreater = (a, b) => a > b;"
+      },
+      "order": 4
+    },
+    {
+      "id": "csharp-fn-func-action",
+      "title": "Func<> and Action<> Delegates",
+      "explanation": "`Func<T, TResult>` represents a function with return value—last type parameter is the return type. `Action<T>` represents a void-returning function. These are used extensively with LINQ and as method parameters. `Func<int, int, int>` takes two ints, returns int. `Action<string>` takes a string, returns void. Pass methods or lambdas wherever these types are expected.",
+      "example": "class Program\n{\n    static void ApplyAndPrint(int[] nums, Func<int, int> transform)\n    {\n        foreach (int n in nums)\n            Console.Write(transform(n) + \" \");\n        Console.WriteLine();\n    }\n\n    static void ForEach(int[] nums, Action<int> action)\n    {\n        foreach (int n in nums) action(n);\n    }\n\n    static void Main()\n    {\n        int[] data = { 1, 2, 3, 4, 5 };\n        ApplyAndPrint(data, x => x * x);       // 1 4 9 16 25\n        ApplyAndPrint(data, x => x + 10);      // 11 12 13 14 15\n\n        int sum = 0;\n        ForEach(data, x => sum += x);\n        Console.WriteLine(sum);                 // 15\n    }\n}",
+      "exercise": {
+        "prompt": "Write a static method `List<T> Filter<T>(List<T> items, Func<T, bool> predicate)` that returns a new list of items where predicate returns true. Use it to filter a List<int> {1,2,3,4,5,6,7,8,9,10} to get even numbers, then to get numbers > 5. Print each filtered list joined by commas.",
+        "starterCode": "class Program\n{\n    static List<T> Filter<T>(List<T> items, Func<T, bool> predicate)\n    {\n        // Implement filter\n\n        return new List<T>();\n    }\n\n    static void Main()\n    {\n        var nums = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };\n\n        var evens = Filter(nums, n => n % 2 == 0);\n        Console.WriteLine(String.Join(\", \", evens));\n\n        var big = Filter(nums, n => n > 5);\n        Console.WriteLine(String.Join(\", \", big));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "2, 4, 6, 8, 10\n6, 7, 8, 9, 10", "message": "Evens: 2,4,6,8,10. Greater than 5: 6,7,8,9,10."},
+          {"type": "contains", "patterns": ["Func<T, bool>", "predicate("], "message": "Use Func<T, bool> parameter and call predicate to test each item."}
+        ],
+        "testCode": "",
+        "hint": "Create result list. foreach item, if (predicate(item)) result.Add(item). Return result."
+      },
+      "order": 5
+    }
+  ]
+}
