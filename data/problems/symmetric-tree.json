@@ -1,0 +1,40 @@
+{
+  "id": "symmetric-tree",
+  "title": "Symmetric Tree",
+  "difficulty": "Easy",
+  "tags": ["tree", "recursion", "bfs"],
+  "prompt": "Given the root of a binary tree represented as an array (level-order traversal), check whether it is a mirror of itself (i.e., symmetric around its center).\n\nThe tree is given as an array where index 0 is the root, and for a node at index `i`, its left child is at `2*i + 1` and right child is at `2*i + 2`. Use `null` to represent missing nodes.\n\nReturn `True` if the tree is symmetric, `False` otherwise.",
+  "examples": [
+    {"input": "root = [1, 2, 2, 3, 4, 4, 3]", "output": "True\nExplanation: The tree is symmetric around the center."},
+    {"input": "root = [1, 2, 2, null, 3, null, 3]", "output": "False\nExplanation: The right subtree is not a mirror of the left subtree."},
+    {"input": "root = [1]", "output": "True"}
+  ],
+  "constraints": [
+    "0 <= number of nodes <= 1000",
+    "-100 <= Node.val <= 100",
+    "null represents a missing node in the array"
+  ],
+  "starterCode": {
+    "python": "def solve(root):\n    pass",
+    "javascript": "function solve(root) {\n  \n}",
+    "typescript": "export function solve(root: (number | null)[]): boolean {\n  \n}",
+    "java": "class Solution {\n    public boolean solve(Integer[] root) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public bool Solve(int?[] root) {\n        \n    }\n}",
+    "go": "func solve(root []*int) bool {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([1, 2, 2, 3, 4, 4, 3]))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve([1, 2, 2, None, 3, None, 3]))"}, "expectedStdout": "False"},
+    {"stdin": {"python": "print(solve([1]))"}, "expectedStdout": "True"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([]))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve([1, 2, 2, None, None, None, None]))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve([1, 2, 2, 3, None, None, 3]))"}, "expectedStdout": "True"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use a helper function that compares two subtree positions. For array representation, compare mirrored positions at each level. Alternatively, build the tree and recursively check if left subtree mirrors right subtree.",
+    "commonBugs": ["Not handling null nodes correctly when comparing", "Index out of bounds when accessing child positions in the array", "Forgetting the empty tree is symmetric"],
+    "expectedComplexity": "O(n)"
+  }
+}

@@ -62,3 +62,45 @@ class ReviewResponse(BaseModel):
     complexity: ComplexityInfo
     edgeCases: list[str]
     improvements: list[str]
+
+
+class SyntaxExplainRequest(BaseModel):
+    lessonId: str
+    sectionId: str
+    language: str
+    snippet: str
+    sectionTitle: str = ""
+    sectionExplanation: str = ""
+    action: Literal["explain", "translate", "ask"]
+    targetLanguage: str | None = None
+    question: str | None = None
+    problemId: str | None = None
+    mode: Literal["syntax", "problem"] = "syntax"
+
+
+class SyntaxExplainResponse(BaseModel):
+    explanation: str
+
+
+class ExerciseCheckRequest(BaseModel):
+    lessonId: str
+    sectionId: str
+    language: str
+    code: str
+    expectedOutput: str | None = None
+    requiredPatterns: list[str] = Field(default_factory=list)
+    sectionTitle: str = ""
+    exercisePrompt: str = ""
+
+
+class CheckDetail(BaseModel):
+    label: str
+    passed: bool
+
+
+class ExerciseCheckResponse(BaseModel):
+    passed: bool
+    stdout: str = ""
+    stderr: str = ""
+    checks: list[CheckDetail]
+    aiFeedback: str = ""

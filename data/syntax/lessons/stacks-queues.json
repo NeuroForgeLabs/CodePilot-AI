@@ -1,0 +1,74 @@
+{
+  "id": "stacks-queues",
+  "title": "Stacks & Queues",
+  "description": "Stacks (LIFO) and queues (FIFO) power BFS, DFS, parentheses matching, and monotonic patterns.",
+  "order": 3,
+  "sections": [
+    {
+      "id": "stack-basics",
+      "title": "Stack operations",
+      "type": "concept",
+      "explanation": "A stack is Last-In-First-Out (LIFO). Push to top, pop from top. Think of a stack of plates.",
+      "snippets": {
+        "python": "stack = []\n\nstack.append(1)      # push\nstack.append(2)\ntop = stack[-1]      # peek (2)\nval = stack.pop()    # pop (2)\nis_empty = len(stack) == 0",
+        "javascript": "const stack = [];\n\nstack.push(1);       // push\nstack.push(2);\nconst top = stack[stack.length - 1]; // peek\nconst val = stack.pop();  // pop (2)\nconst isEmpty = stack.length === 0;",
+        "java": "Deque<Integer> stack = new ArrayDeque<>();\n\nstack.push(1);       // push\nstack.push(2);\nint top = stack.peek();   // peek (2)\nint val = stack.pop();    // pop (2)\nboolean empty = stack.isEmpty();"
+      }
+    },
+    {
+      "id": "queue-basics",
+      "title": "Queue operations",
+      "type": "concept",
+      "explanation": "A queue is First-In-First-Out (FIFO). Add to back, remove from front. Essential for BFS.",
+      "snippets": {
+        "python": "from collections import deque\n\nqueue = deque()\n\nqueue.append(1)       # enqueue (add to back)\nqueue.append(2)\nfront = queue[0]      # peek front (1)\nval = queue.popleft() # dequeue (1) — O(1)\nis_empty = len(queue) == 0\n\n# ❌ Never use list.pop(0) — it's O(n)",
+        "javascript": "// Array-based (OK for interviews)\nconst queue = [];\n\nqueue.push(1);        // enqueue\nqueue.push(2);\nconst front = queue[0]; // peek\nconst val = queue.shift(); // dequeue (1)\n// Note: shift() is O(n), acceptable in interviews",
+        "java": "Queue<Integer> queue = new LinkedList<>();\n\nqueue.offer(1);       // enqueue\nqueue.offer(2);\nint front = queue.peek(); // peek (1)\nint val = queue.poll();   // dequeue (1)\nboolean empty = queue.isEmpty();"
+      }
+    },
+    {
+      "id": "valid-parens",
+      "title": "Interview Pattern: Valid Parentheses",
+      "type": "pattern",
+      "explanation": "The classic stack problem. Push opening brackets, pop and match for closing ones.",
+      "snippets": {
+        "python": "def isValid(s):\n    stack = []\n    pairs = {\")\": \"(\", \"}\": \"{\", \"]\": \"[\"}\n\n    for ch in s:\n        if ch in pairs:\n            if not stack or stack[-1] != pairs[ch]:\n                return False\n            stack.pop()\n        else:\n            stack.append(ch)\n\n    return len(stack) == 0",
+        "javascript": "function isValid(s) {\n    const stack = [];\n    const pairs = {\")\": \"(\", \"}\": \"{\", \"]\": \"[\"};\n\n    for (const ch of s) {\n        if (ch in pairs) {\n            if (!stack.length || stack[stack.length-1] !== pairs[ch]) {\n                return false;\n            }\n            stack.pop();\n        } else {\n            stack.push(ch);\n        }\n    }\n    return stack.length === 0;\n}",
+        "java": "public boolean isValid(String s) {\n    Deque<Character> stack = new ArrayDeque<>();\n    Map<Character, Character> pairs = Map.of(\n        ')', '(', '}', '{', ']', '['\n    );\n\n    for (char ch : s.toCharArray()) {\n        if (pairs.containsKey(ch)) {\n            if (stack.isEmpty() || stack.peek() != pairs.get(ch)) {\n                return false;\n            }\n            stack.pop();\n        } else {\n            stack.push(ch);\n        }\n    }\n    return stack.isEmpty();\n}"
+      }
+    },
+    {
+      "id": "bfs-template",
+      "title": "Interview Pattern: BFS Template",
+      "type": "pattern",
+      "explanation": "Breadth-first search using a queue. Memorize this — it appears in 30%+ of medium/hard problems. Used for shortest path, level-order traversal, and connected components.",
+      "snippets": {
+        "python": "from collections import deque\n\ndef bfs(graph, start):\n    visited = set([start])\n    queue = deque([start])\n\n    while queue:\n        node = queue.popleft()\n        # process node\n\n        for neighbor in graph[node]:\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append(neighbor)",
+        "javascript": "function bfs(graph, start) {\n    const visited = new Set([start]);\n    const queue = [start];\n\n    while (queue.length > 0) {\n        const node = queue.shift();\n        // process node\n\n        for (const neighbor of graph[node]) {\n            if (!visited.has(neighbor)) {\n                visited.add(neighbor);\n                queue.push(neighbor);\n            }\n        }\n    }\n}",
+        "java": "void bfs(Map<Integer, List<Integer>> graph, int start) {\n    Set<Integer> visited = new HashSet<>();\n    Queue<Integer> queue = new LinkedList<>();\n    visited.add(start);\n    queue.offer(start);\n\n    while (!queue.isEmpty()) {\n        int node = queue.poll();\n        // process node\n\n        for (int neighbor : graph.get(node)) {\n            if (!visited.contains(neighbor)) {\n                visited.add(neighbor);\n                queue.offer(neighbor);\n            }\n        }\n    }\n}"
+      }
+    },
+    {
+      "id": "bfs-levels",
+      "title": "Interview Pattern: BFS with Level Tracking",
+      "type": "pattern",
+      "explanation": "When you need depth/distance (shortest path, tree levels), process one level at a time.",
+      "snippets": {
+        "python": "from collections import deque\n\ndef bfs_levels(graph, start):\n    visited = set([start])\n    queue = deque([start])\n    level = 0\n\n    while queue:\n        for _ in range(len(queue)):  # process entire level\n            node = queue.popleft()\n            # process node at 'level'\n\n            for neighbor in graph[node]:\n                if neighbor not in visited:\n                    visited.add(neighbor)\n                    queue.append(neighbor)\n        level += 1",
+        "javascript": "function bfsLevels(graph, start) {\n    const visited = new Set([start]);\n    const queue = [start];\n    let level = 0;\n\n    while (queue.length > 0) {\n        const size = queue.length;\n        for (let i = 0; i < size; i++) {\n            const node = queue.shift();\n            // process node at 'level'\n\n            for (const nb of graph[node]) {\n                if (!visited.has(nb)) {\n                    visited.add(nb);\n                    queue.push(nb);\n                }\n            }\n        }\n        level++;\n    }\n}",
+        "java": "void bfsLevels(Map<Integer, List<Integer>> graph, int start) {\n    Set<Integer> visited = new HashSet<>();\n    Queue<Integer> queue = new LinkedList<>();\n    visited.add(start);\n    queue.offer(start);\n    int level = 0;\n\n    while (!queue.isEmpty()) {\n        int size = queue.size();\n        for (int i = 0; i < size; i++) {\n            int node = queue.poll();\n            // process node at 'level'\n\n            for (int nb : graph.get(node)) {\n                if (!visited.contains(nb)) {\n                    visited.add(nb);\n                    queue.offer(nb);\n                }\n            }\n        }\n        level++;\n    }\n}"
+      }
+    },
+    {
+      "id": "gotcha-dfs-vs-bfs",
+      "title": "Gotcha: When to use DFS vs BFS",
+      "type": "gotcha",
+      "explanation": "BFS = shortest path, level order. DFS = explore all paths, detect cycles, recursive structure. If the problem says 'minimum steps' or 'shortest', think BFS first.",
+      "snippets": {
+        "python": "# BFS — use for:\n# - Shortest path in unweighted graph\n# - Level-order tree traversal\n# - Minimum moves/steps\n# Uses: queue (deque)\n\n# DFS — use for:\n# - Explore all paths / permutations\n# - Detect cycles\n# - Topological sort\n# - Tree recursion (inorder, preorder, postorder)\n# Uses: recursion or explicit stack",
+        "javascript": "// BFS → queue, iterative\n// - \"Find shortest path\"\n// - \"Minimum number of steps\"\n// - \"Level by level\"\n\n// DFS → stack or recursion\n// - \"Find all paths\"\n// - \"Does a path exist\"\n// - \"Generate permutations\"\n// - \"Tree depth / height\"",
+        "java": "// BFS → Queue<> + while loop\n// Shortest path, level order, min steps\n\n// DFS → recursion OR Deque<> as stack\n// All paths, cycle detection, backtracking\n\n// Key insight: BFS guarantees shortest path\n// in unweighted graphs. DFS does not."
+      }
+    }
+  ]
+}

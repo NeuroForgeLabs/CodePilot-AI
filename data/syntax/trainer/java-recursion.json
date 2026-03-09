@@ -1,0 +1,78 @@
+{
+  "id": "java-recursion",
+  "title": "Recursion",
+  "description": "Master recursive thinking with base cases, memoization using HashMap, backtracking patterns, and converting recursion to iteration.",
+  "language": "java",
+  "category": "recursion",
+  "order": 10,
+  "sections": [
+    {
+      "id": "java-rec-base",
+      "title": "Base Case and Recursive Case",
+      "explanation": "Every recursive function needs: (1) a base case that returns without recursion, (2) a recursive case that moves toward the base case. Without a proper base case, you get infinite recursion and StackOverflowError. Think of recursion as delegating the smaller subproblem to a recursive call and combining the results. Classic examples: factorial, fibonacci, sum of array.",
+      "example": "public class Main {\n    static int factorial(int n) {\n        if (n <= 1) return 1;\n        return n * factorial(n - 1);\n    }\n\n    static int sumArray(int[] arr, int i) {\n        if (i == arr.length) return 0;\n        return arr[i] + sumArray(arr, i + 1);\n    }\n\n    public static void main(String[] args) {\n        System.out.println(factorial(5));               // 120\n        System.out.println(sumArray(new int[]{1, 2, 3, 4}, 0));  // 10\n    }\n}",
+      "exercise": {
+        "prompt": "Write a recursive static method `power(int base, int exp)` that computes base^exp. Base case: exp == 0 returns 1. Recursive case: base * power(base, exp-1). Test with power(2, 10) and power(3, 4).",
+        "starterCode": "public class Main {\n    static int power(int base, int exp) {\n        // Implement recursively\n\n        return 0;\n    }\n\n    public static void main(String[] args) {\n        System.out.println(power(2, 10));\n        System.out.println(power(3, 4));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "1024\n81", "message": "2^10 = 1024, 3^4 = 81."},
+          {"type": "contains", "patterns": ["power(base, exp - 1)", "if (exp == 0)"], "message": "Include a base case for exp==0 and a recursive call with exp-1."}
+        ],
+        "testCode": "",
+        "hint": "if (exp == 0) return 1; else return base * power(base, exp - 1);"
+      },
+      "order": 1
+    },
+    {
+      "id": "java-rec-memo",
+      "title": "HashMap Memoization",
+      "explanation": "Memoization caches previously computed results to avoid redundant work. Use `HashMap<Input, Result>` passed to the recursive function or as a class field. Before computing, check if the answer is in the memo. After computing, store it. Transforms O(2^n) fibonacci into O(n). Essential for dynamic programming problems in interviews.",
+      "example": "import java.util.HashMap;\n\npublic class Main {\n    static HashMap<Integer, Long> memo = new HashMap<>();\n\n    static long fib(int n) {\n        if (n <= 1) return n;\n        if (memo.containsKey(n)) return memo.get(n);\n        long result = fib(n - 1) + fib(n - 2);\n        memo.put(n, result);\n        return result;\n    }\n\n    public static void main(String[] args) {\n        System.out.println(fib(10));  // 55\n        System.out.println(fib(30));  // 832040\n        System.out.println(fib(50));  // 12586269025\n    }\n}",
+      "exercise": {
+        "prompt": "Write a memoized recursive method `climbStairs(int n, HashMap<Integer, Integer> memo)` that returns the number of ways to climb n stairs taking 1 or 2 steps at a time. Base cases: n==0 returns 1, n<0 returns 0. Test with n=5 and n=10.",
+        "starterCode": "import java.util.HashMap;\n\npublic class Main {\n    static int climbStairs(int n, HashMap<Integer, Integer> memo) {\n        // Implement with memoization\n\n        return 0;\n    }\n\n    public static void main(String[] args) {\n        System.out.println(climbStairs(5, new HashMap<>()));\n        System.out.println(climbStairs(10, new HashMap<>()));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "8\n89", "message": "climbStairs(5)=8, climbStairs(10)=89."},
+          {"type": "contains", "patterns": ["memo.containsKey(", "memo.put(", "climbStairs(n - 1", "climbStairs(n - 2"], "message": "Check memo before computing, store result in memo, recurse with n-1 and n-2."}
+        ],
+        "testCode": "",
+        "hint": "if (n==0) return 1; if (n<0) return 0; Check memo, then result = climbStairs(n-1) + climbStairs(n-2). Store in memo."
+      },
+      "order": 2
+    },
+    {
+      "id": "java-rec-backtrack",
+      "title": "Backtracking",
+      "explanation": "Backtracking builds solutions incrementally and abandons paths that can't lead to a valid solution. Pattern: (1) check if current state is a complete solution, (2) try each option, (3) recurse with the option added, (4) undo the option (backtrack). Used for permutations, subsets, N-queens, Sudoku. Key: always undo your choice after the recursive call.",
+      "example": "import java.util.ArrayList;\nimport java.util.List;\n\npublic class Main {\n    static void subsets(int[] nums, int start, List<Integer> current, List<List<Integer>> result) {\n        result.add(new ArrayList<>(current));\n        for (int i = start; i < nums.length; i++) {\n            current.add(nums[i]);\n            subsets(nums, i + 1, current, result);\n            current.remove(current.size() - 1);\n        }\n    }\n\n    public static void main(String[] args) {\n        List<List<Integer>> result = new ArrayList<>();\n        subsets(new int[]{1, 2, 3}, 0, new ArrayList<>(), result);\n        System.out.println(result.size());  // 8\n        for (List<Integer> s : result) {\n            System.out.println(s);\n        }\n    }\n}",
+      "exercise": {
+        "prompt": "Write a backtracking method that generates all permutations of the string \"abc\". Use a boolean[] used array to track which characters are in the current permutation. Print each permutation on its own line. There should be 6 permutations.",
+        "starterCode": "import java.util.ArrayList;\nimport java.util.List;\n\npublic class Main {\n    static void permute(String s, boolean[] used, StringBuilder current, List<String> result) {\n        // Implement backtracking for permutations\n\n    }\n\n    public static void main(String[] args) {\n        List<String> result = new ArrayList<>();\n        permute(\"abc\", new boolean[3], new StringBuilder(), result);\n        for (String p : result) {\n            System.out.println(p);\n        }\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "abc\nacb\nbac\nbca\ncab\ncba", "message": "All 6 permutations of abc in lexicographic order."},
+          {"type": "contains", "patterns": ["used[i] = true", "used[i] = false", "current.append", "current.deleteCharAt"], "message": "Mark used, append, recurse, then undo both (deleteCharAt and used=false)."}
+        ],
+        "testCode": "",
+        "hint": "Base: current.length()==s.length() -> add to result. Loop i 0..2: if !used[i], set used[i]=true, append s.charAt(i), recurse, deleteCharAt, set used[i]=false."
+      },
+      "order": 3
+    },
+    {
+      "id": "java-rec-iterative",
+      "title": "Converting Recursion to Stack-Based Iteration",
+      "explanation": "Any recursion can be converted to iteration using an explicit stack. This avoids StackOverflowError for deep recursion. Push the initial state onto the stack. While stack is not empty: pop, process, push sub-problems. Order of pushing matters (reverse order to simulate call order). Common interview follow-up: \"can you do it iteratively?\"",
+      "example": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\npublic class Main {\n    static int factorialIterative(int n) {\n        Deque<Integer> stack = new ArrayDeque<>();\n        for (int i = n; i >= 1; i--) stack.push(i);\n\n        int result = 1;\n        while (!stack.isEmpty()) {\n            result *= stack.pop();\n        }\n        return result;\n    }\n\n    static long fibIterative(int n) {\n        if (n <= 1) return n;\n        long a = 0, b = 1;\n        for (int i = 2; i <= n; i++) {\n            long temp = a + b;\n            a = b;\n            b = temp;\n        }\n        return b;\n    }\n\n    public static void main(String[] args) {\n        System.out.println(factorialIterative(5));   // 120\n        System.out.println(fibIterative(10));         // 55\n    }\n}",
+      "exercise": {
+        "prompt": "Convert the recursive sum-of-digits function to iterative using a stack. For a number like 1234, push each digit onto a stack then pop and sum them all. Test with 1234 (sum=10) and 9876 (sum=30).",
+        "starterCode": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\npublic class Main {\n    static int digitSum(int n) {\n        Deque<Integer> stack = new ArrayDeque<>();\n        // Push digits onto stack, then pop and sum\n\n        return 0;\n    }\n\n    public static void main(String[] args) {\n        System.out.println(digitSum(1234));\n        System.out.println(digitSum(9876));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "10\n30", "message": "1+2+3+4=10, 9+8+7+6=30."},
+          {"type": "contains", "patterns": ["stack.push(", "stack.pop(", "% 10"], "message": "Use push/pop with a stack and % 10 to extract digits."}
+        ],
+        "testCode": "",
+        "hint": "While n > 0: push(n % 10), n /= 10. Then while !isEmpty: sum += pop()."
+      },
+      "order": 4
+    }
+  ]
+}

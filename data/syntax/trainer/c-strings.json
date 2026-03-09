@@ -1,0 +1,78 @@
+{
+  "id": "c-strings",
+  "title": "Strings",
+  "description": "C strings are null-terminated char arrays — master strlen, strcmp, strcpy, and manual character manipulation for interview string problems.",
+  "language": "c",
+  "category": "strings",
+  "order": 3,
+  "sections": [
+    {
+      "id": "char-arrays",
+      "title": "Char arrays as strings",
+      "explanation": "In C, strings are just `char` arrays terminated by a null character `'\\0'`. Declare with `char s[] = \"hello\"` (compiler adds the null). You can also declare with a fixed size: `char s[100] = \"hello\"`. Access individual characters with `s[i]`.",
+      "example": "char s[] = \"hello\";\nprintf(\"%s\\n\", s);       // hello\nprintf(\"%c\\n\", s[0]);    // h\nprintf(\"%c\\n\", s[4]);    // o\n\ns[0] = 'H';\nprintf(\"%s\\n\", s);       // Hello\n\nint len = strlen(s);\nprintf(\"length: %d\\n\", len);  // length: 5",
+      "exercise": {
+        "prompt": "Create a string \"world\". Print it, print its first and last characters, then change the first character to 'W' and print the modified string. Finally print its length.",
+        "starterCode": "int main() {\n    char s[] = \"world\";\n    printf(\"%s\\n\", s);\n    printf(\"%c\\n\", s[]);\n    printf(\"%c\\n\", s[]);\n\n    s[0] = 'W';\n    printf(\"%s\\n\", s);\n    printf(\"%d\\n\", (int)strlen(s));\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "world\nw\nd\nWorld\n5", "message": "Print the string, first char 'w', last char 'd', modified 'World', length 5"},
+          {"type": "contains", "patterns": ["s[0]", "s[4]", "strlen"], "message": "Use s[0] for first, s[4] for last, and strlen for length"}
+        ],
+        "testCode": "",
+        "hint": "First char is s[0] = 'w', last is s[4] = 'd'. strlen(\"world\") returns 5."
+      },
+      "order": 1
+    },
+    {
+      "id": "strcmp-strcpy",
+      "title": "strcmp and strcpy",
+      "explanation": "**strcmp(a, b)** compares two strings: returns 0 if equal, negative if a < b, positive if a > b. **strcpy(dest, src)** copies src into dest (dest must be large enough). **strcat(dest, src)** appends src to dest. These are in `<string.h>`.",
+      "example": "char a[] = \"apple\";\nchar b[] = \"banana\";\n\nif (strcmp(a, b) == 0) {\n    printf(\"equal\\n\");\n} else {\n    printf(\"not equal\\n\");  // not equal\n}\n\nchar dest[20];\nstrcpy(dest, a);\nprintf(\"%s\\n\", dest);  // apple\n\nstrcat(dest, b);\nprintf(\"%s\\n\", dest);  // applebanana",
+      "exercise": {
+        "prompt": "Compare strings \"cat\" and \"cat\" using strcmp and print \"equal\" if they match. Then copy \"hello\" into a buffer and concatenate \" world\" onto it. Print the result.",
+        "starterCode": "int main() {\n    char a[] = \"cat\";\n    char b[] = \"cat\";\n\n    if (strcmp(a, b) == ) {\n        printf(\"equal\\n\");\n    }\n\n    char buf[20];\n    strcpy(buf, \"hello\");\n    strcat(buf, \" world\");\n    printf(\"%s\\n\", buf);\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "equal\nhello world", "message": "strcmp returns 0 for equal strings, then concat gives 'hello world'"},
+          {"type": "contains", "patterns": ["strcmp(a, b) == 0", "strcpy(buf", "strcat(buf"], "message": "Use strcmp == 0, strcpy to copy, strcat to concatenate"}
+        ],
+        "testCode": "",
+        "hint": "strcmp returns 0 when strings are equal. strcpy copies, strcat appends."
+      },
+      "order": 2
+    },
+    {
+      "id": "string-iteration",
+      "title": "Iterating and manipulating characters",
+      "explanation": "Loop through a string with `for (int i = 0; s[i] != '\\0'; i++)` or use `strlen`. Character math works because chars are integers: `c - 'a'` gives 0-25 index, `c - '0'` converts digit char to int. Use `tolower()` and `toupper()` from `<ctype.h>` for case conversion.",
+      "example": "char s[] = \"Hello123\";\nint letters = 0, digits = 0;\nfor (int i = 0; s[i] != '\\0'; i++) {\n    if (s[i] >= 'a' && s[i] <= 'z' || s[i] >= 'A' && s[i] <= 'Z')\n        letters++;\n    else if (s[i] >= '0' && s[i] <= '9')\n        digits++;\n}\nprintf(\"letters: %d, digits: %d\\n\", letters, digits);\n// letters: 5, digits: 3",
+      "exercise": {
+        "prompt": "Count the number of vowels (a, e, i, o, u — lowercase only) in the string \"interview\". Print the count.",
+        "starterCode": "int main() {\n    char s[] = \"interview\";\n    int count = 0;\n    for (int i = 0; s[i] != '\\0'; i++) {\n        if (s[i] == 'a' || s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u') {\n            count++;\n        }\n    }\n    printf(\"%d\\n\", );\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "4", "message": "\"interview\" has 4 vowels: i, e, i, e"},
+          {"type": "contains", "patterns": ["s[i] != '\\0'", "count++"], "message": "Iterate until null terminator and increment count for each vowel"}
+        ],
+        "testCode": "",
+        "hint": "\"interview\" has vowels: i, e, i, e — that's 4. Wait: i-n-t-e-r-v-i-e-w. The vowels are i, e, i, e = 4."
+      },
+      "order": 3
+    },
+    {
+      "id": "reverse-string",
+      "title": "Reversing a string in-place",
+      "explanation": "A classic interview task: reverse a C string using two pointers. Swap characters from both ends moving inward. This is O(n) time, O(1) space — the optimal approach. You'll reuse this swap pattern in many problems.",
+      "example": "char s[] = \"abcde\";\nint left = 0, right = strlen(s) - 1;\nwhile (left < right) {\n    char temp = s[left];\n    s[left] = s[right];\n    s[right] = temp;\n    left++;\n    right--;\n}\nprintf(\"%s\\n\", s);  // edcba",
+      "exercise": {
+        "prompt": "Reverse the string \"interview\" in-place using the two-pointer swap technique. Print the reversed string.",
+        "starterCode": "int main() {\n    char s[] = \"interview\";\n    int left = 0, right = strlen(s) - 1;\n    while (left < right) {\n        char temp = s[left];\n        s[left] = s[];\n        s[right] = ;\n        left++;\n        right--;\n    }\n    printf(\"%s\\n\", s);\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "weivretni", "message": "'interview' reversed is 'weivretni'"},
+          {"type": "contains", "patterns": ["left < right", "s[left]", "s[right]", "temp"], "message": "Use two-pointer swap with a temp variable"}
+        ],
+        "testCode": "",
+        "hint": "Swap s[left] and s[right] using temp. s[left] = s[right]; s[right] = temp;"
+      },
+      "order": 4
+    }
+  ]
+}

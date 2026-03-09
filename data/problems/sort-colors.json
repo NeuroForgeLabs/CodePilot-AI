@@ -1,0 +1,39 @@
+{
+  "id": "sort-colors",
+  "title": "Sort Colors",
+  "difficulty": "Medium",
+  "tags": ["arrays", "two-pointers", "sorting"],
+  "prompt": "Given an array `nums` with `n` objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue.\n\nWe will use the integers `0`, `1`, and `2` to represent the color red, white, and blue, respectively.\n\nYou must solve this problem without using the library's sort function.\n\nReturn the sorted array.",
+  "examples": [
+    {"input": "nums = [2, 0, 2, 1, 1, 0]", "output": "[0, 0, 1, 1, 2, 2]"},
+    {"input": "nums = [2, 0, 1]", "output": "[0, 1, 2]"},
+    {"input": "nums = [0]", "output": "[0]"}
+  ],
+  "constraints": [
+    "n == nums.length",
+    "1 <= n <= 300",
+    "nums[i] is either 0, 1, or 2."
+  ],
+  "starterCode": {
+    "python": "def solve(nums: list[int]) -> list[int]:\n    pass",
+    "javascript": "function solve(nums) {\n  \n}",
+    "typescript": "export function solve(nums: number[]): number[] {\n  \n}",
+    "java": "class Solution {\n    public int[] solve(int[] nums) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int[] Solve(int[] nums) {\n        \n    }\n}",
+    "go": "func solve(nums []int) []int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([2, 0, 2, 1, 1, 0]))"}, "expectedStdout": "[0, 0, 1, 1, 2, 2]"},
+    {"stdin": {"python": "print(solve([2, 0, 1]))"}, "expectedStdout": "[0, 1, 2]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([0]))"}, "expectedStdout": "[0]"},
+    {"stdin": {"python": "print(solve([1, 0]))"}, "expectedStdout": "[0, 1]"},
+    {"stdin": {"python": "print(solve([2, 2, 1, 1, 0, 0]))"}, "expectedStdout": "[0, 0, 1, 1, 2, 2]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Dutch National Flag algorithm: use three pointers (low, mid, high). low tracks where the next 0 goes, high tracks where the next 2 goes, mid scans through. Swap 0s to front, 2s to back, skip 1s.",
+    "commonBugs": ["Incrementing mid after swapping with high (the swapped element hasn't been examined yet)", "Not handling the single-element array", "Using a counting approach instead of the required in-place swap approach"],
+    "expectedComplexity": "O(n)"
+  }
+}

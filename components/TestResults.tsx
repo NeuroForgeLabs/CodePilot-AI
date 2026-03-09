@@ -87,7 +87,7 @@ export default function TestResults({
         {tests.map((test, i) => (
           <div
             key={i}
-            className={`rounded-lg border p-3 text-sm ${
+            className={`rounded-xl border p-4 text-sm transition-colors ${
               test.passed
                 ? "border-emerald-500/20 bg-emerald-500/5"
                 : "border-red-500/20 bg-red-500/5"
@@ -118,22 +118,22 @@ export default function TestResults({
               </div>
             </div>
             {!test.passed && (
-              <div className="space-y-1 text-xs">
+              <div className="mt-3 space-y-1.5 text-xs rounded-lg bg-[#0d0f15] border border-gray-800 p-3 font-mono">
                 <div>
-                  <span className="text-gray-400">Expected: </span>
+                  <span className="text-gray-500">Expected: </span>
                   <code className="text-emerald-400">
                     {test.expectedStdout}
                   </code>
                 </div>
                 <div>
-                  <span className="text-gray-400">Got: </span>
+                  <span className="text-gray-500">Got:      </span>
                   <code className="text-red-400">
                     {test.stdout || "(empty)"}
                   </code>
                 </div>
                 {test.stderr && (
                   <div>
-                    <span className="text-gray-400">Stderr: </span>
+                    <span className="text-gray-500">Stderr:   </span>
                     <code className="text-orange-400">{test.stderr}</code>
                   </div>
                 )}

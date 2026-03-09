@@ -22,13 +22,13 @@
     "go": "func solve(nums []int, target int) int {\n    \n}"
   },
   "visibleTests": [
-    {"stdin": "print(solve([-1,0,3,5,9,12], 9))", "expectedStdout": "4"},
-    {"stdin": "print(solve([-1,0,3,5,9,12], 2))", "expectedStdout": "-1"}
+    {"stdin": {"python": "print(solve([-1,0,3,5,9,12], 9))"}, "expectedStdout": "4"},
+    {"stdin": {"python": "print(solve([-1,0,3,5,9,12], 2))"}, "expectedStdout": "-1"}
   ],
   "hiddenTests": [
-    {"stdin": "print(solve([5], 5))", "expectedStdout": "0"},
-    {"stdin": "print(solve([], 0))", "expectedStdout": "-1"},
-    {"stdin": "print(solve([1,2,3,4,5], 1))", "expectedStdout": "0"}
+    {"stdin": {"python": "print(solve([5], 5))"}, "expectedStdout": "0"},
+    {"stdin": {"python": "print(solve([], 0))"}, "expectedStdout": "-1"},
+    {"stdin": {"python": "print(solve([1,2,3,4,5], 1))"}, "expectedStdout": "0"}
   ],
   "notesForAI": {
     "coreIdea": "Classic binary search: maintain left and right pointers. Compute mid = (left + right) // 2. If nums[mid] == target, return mid. If nums[mid] < target, search right half. Otherwise search left half. Handle empty array.",

@@ -1,0 +1,78 @@
+{
+  "id": "rust-strings",
+  "title": "Strings",
+  "description": "Rust has two string types: owned String and borrowed &str. Master the conversions between them, character iteration, splitting/collecting, and format! to handle any string manipulation interview problem.",
+  "language": "rust",
+  "category": "strings",
+  "order": 3,
+  "sections": [
+    {
+      "id": "string-vs-str",
+      "title": "String vs &str",
+      "explanation": "**String** is an owned, heap-allocated, growable UTF-8 string. **&str** is an immutable reference (\"string slice\") to UTF-8 data. String literals are `&str`. Convert with `.to_string()` or `String::from()` to go &str -> String, and `&s` or `.as_str()` to go String -> &str. In interviews, use String when you need to build or modify, &str for read-only parameters.",
+      "example": "fn main() {\n    let s1: &str = \"hello\";\n    let s2: String = s1.to_string();\n    let s3: String = String::from(\"world\");\n    let s4: &str = s3.as_str();\n\n    println!(\"{} {} {} {}\", s1, s2, s3, s4);\n    // hello hello world world\n    println!(\"{}\", s2.len());  // 5\n}",
+      "exercise": {
+        "prompt": "Create a &str \"hello\", convert it to a String. Create a String from \"world\" using String::from. Print both strings and their lengths.",
+        "starterCode": "fn main() {\n    let s1: &str = \"hello\";\n    let s2: String = s1.to_string();\n    let s3: String = String::from(\"\");\n\n    println!(\"{}\", s2);\n    println!(\"{}\", s3);\n    println!(\"{}\", s2.len());\n    println!(\"{}\", s3.());\n}",
+        "validation": [
+          {"type": "output", "expected": "hello\nworld\n5\n5", "message": "Both strings printed followed by their lengths (5 each)"},
+          {"type": "contains", "patterns": [".to_string()", "String::from("], "message": "Use .to_string() and String::from() for the two conversion styles"}
+        ],
+        "testCode": "",
+        "hint": "Pass \"world\" to String::from(). Use .len() on s3 for the last line."
+      },
+      "order": 1
+    },
+    {
+      "id": "chars-iteration",
+      "title": "Character iteration with chars()",
+      "explanation": "Rust strings are UTF-8 encoded, so you can't index them by byte position. Use **.chars()** to iterate over Unicode characters. For interview problems that need character-level access, collect into a `Vec<char>` first: `s.chars().collect::<Vec<char>>()`. This gives O(1) indexing.",
+      "example": "fn main() {\n    let s = \"hello\";\n    for c in s.chars() {\n        print!(\"{} \", c);\n    }\n    println!();  // h e l l o\n\n    let chars: Vec<char> = s.chars().collect();\n    println!(\"{}\", chars[0]);  // h\n    println!(\"{}\", chars.len());  // 5\n}",
+      "exercise": {
+        "prompt": "Given the string \"rust\", iterate over its characters and print each on its own line. Then collect into a Vec<char> and print the character at index 2.",
+        "starterCode": "fn main() {\n    let s = \"rust\";\n\n    for c in s.chars() {\n        println!(\"{}\", c);\n    }\n\n    let chars: Vec<char> = s.chars().();\n    println!(\"{}\", chars[]);\n}",
+        "validation": [
+          {"type": "output", "expected": "r\nu\ns\nt\ns", "message": "Each character on its own line, then chars[2] = 's'"},
+          {"type": "contains", "patterns": [".chars()", ".collect()", "chars[2]"], "message": "Use .chars() to iterate, .collect() to build Vec, and index with [2]"}
+        ],
+        "testCode": "",
+        "hint": "Call .collect() on the chars iterator. Index 2 of \"rust\" is 's'."
+      },
+      "order": 2
+    },
+    {
+      "id": "split-collect",
+      "title": "Split, join, and collect",
+      "explanation": "Use **.split()** to break a string by a delimiter — it returns an iterator of &str slices. Chain with `.collect::<Vec<&str>>()` to get a vector. Use `.join()` on a Vec/slice of strings to combine them back. This pattern appears in parsing problems constantly.",
+      "example": "fn main() {\n    let csv = \"apple,banana,cherry\";\n    let parts: Vec<&str> = csv.split(',').collect();\n    println!(\"{:?}\", parts);  // [\"apple\", \"banana\", \"cherry\"]\n\n    let joined = parts.join(\" - \");\n    println!(\"{}\", joined);  // apple - banana - cherry\n\n    let words: Vec<&str> = \"hello world rust\".split_whitespace().collect();\n    println!(\"{:?}\", words);  // [\"hello\", \"world\", \"rust\"]\n}",
+      "exercise": {
+        "prompt": "Split the string \"one:two:three:four\" by ':' and collect into a Vec. Print the Vec. Then join the parts with a space and print the result. Finally, print the number of parts.",
+        "starterCode": "fn main() {\n    let s = \"one:two:three:four\";\n    let parts: Vec<&str> = s.split(':').collect();\n    println!(\"{:?}\", parts);\n\n    let joined = parts.join(\"\");\n    println!(\"{}\", joined);\n    println!(\"{}\", parts.());\n}",
+        "validation": [
+          {"type": "output", "expected": "[\"one\", \"two\", \"three\", \"four\"]\none two three four\n4", "message": "Split by ':', join with space, and count = 4"},
+          {"type": "contains", "patterns": ["split(':')", ".join(\" \")", ".len()"], "message": "Use split(':') to separate, join(\" \") to rejoin, and len() to count"}
+        ],
+        "testCode": "",
+        "hint": "Join with a space: parts.join(\" \"). Use .len() to get the count."
+      },
+      "order": 3
+    },
+    {
+      "id": "format-building",
+      "title": "format! and string building",
+      "explanation": "Use **format!()** to build formatted strings (like println! but returns a String instead of printing). For building strings incrementally, use `String::new()` with `.push_str()` (append &str) or `.push()` (append char). This is faster than repeated concatenation with `+`.",
+      "example": "fn main() {\n    let name = \"Rust\";\n    let version = 2024;\n    let msg = format!(\"{} v{}\", name, version);\n    println!(\"{}\", msg);  // Rust v2024\n\n    let mut built = String::new();\n    for i in 1..=3 {\n        if !built.is_empty() {\n            built.push_str(\", \");\n        }\n        built.push_str(&i.to_string());\n    }\n    println!(\"{}\", built);  // 1, 2, 3\n}",
+      "exercise": {
+        "prompt": "Use format! to create a string \"Result: 42 (true)\". Then build a comma-separated string from numbers 1 to 5 using push_str. Print both.",
+        "starterCode": "fn main() {\n    let val = 42;\n    let ok = true;\n    let msg = format!(\"Result: {} ({})\", val, ok);\n    println!(\"{}\", msg);\n\n    let mut built = String::new();\n    for i in 1..=5 {\n        if !built.is_empty() {\n            built.push_str(\", \");\n        }\n        built.push_str(&i.());\n    }\n    println!(\"{}\", built);\n}",
+        "validation": [
+          {"type": "output", "expected": "Result: 42 (true)\n1, 2, 3, 4, 5", "message": "format! produces the message, push_str builds the comma-separated list"},
+          {"type": "contains", "patterns": ["format!(", "push_str(", "to_string()"], "message": "Use format! for the message and push_str with to_string() for building"}
+        ],
+        "testCode": "",
+        "hint": "Use i.to_string() to convert the integer to a string before pushing."
+      },
+      "order": 4
+    }
+  ]
+}

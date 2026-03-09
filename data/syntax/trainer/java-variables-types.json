@@ -1,0 +1,95 @@
+{
+  "id": "java-variables-types",
+  "title": "Variables & Types",
+  "description": "Master Java primitive types, String, type casting, null handling, and final variables for interview coding.",
+  "language": "java",
+  "category": "variables-types",
+  "order": 1,
+  "sections": [
+    {
+      "id": "java-vt-primitives",
+      "title": "Primitive Types: int, long, double, boolean",
+      "explanation": "Java has 8 primitive types. In interviews you'll mostly use `int` (32-bit integer), `long` (64-bit integer, suffix L), `double` (64-bit floating-point), and `boolean` (true/false). Declare with the type keyword, assign with `=`. Primitives cannot be null and have default values (0, 0.0, false) when used as class fields.",
+      "example": "public class Main {\n    public static void main(String[] args) {\n        int count = 42;\n        long big = 2_000_000_000L;\n        double pi = 3.14159;\n        boolean found = true;\n        System.out.println(count);  // 42\n        System.out.println(big);    // 2000000000\n        System.out.println(pi);     // 3.14159\n        System.out.println(found);  // true\n    }\n}",
+      "exercise": {
+        "prompt": "Declare an int named `age` set to 25, a long named `population` set to 8000000000L, a double named `rate` set to 0.075, and a boolean named `valid` set to false. Print each on its own line.",
+        "starterCode": "public class Main {\n    public static void main(String[] args) {\n        // Declare age, population, rate, valid here\n\n        System.out.println(age);\n        System.out.println(population);\n        System.out.println(rate);\n        System.out.println(valid);\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "25\n8000000000\n0.075\nfalse", "message": "Print each variable on its own line with the exact values specified."},
+          {"type": "contains", "patterns": ["int age", "long population", "double rate", "boolean valid"], "message": "Use the correct type for each variable: int, long, double, boolean."}
+        ],
+        "testCode": "",
+        "hint": "Declare each variable with its type keyword. Remember the L suffix on long literals."
+      },
+      "order": 1
+    },
+    {
+      "id": "java-vt-strings",
+      "title": "Strings and String Comparison",
+      "explanation": "In Java, `String` is a reference type (not a primitive). Create strings with double quotes. **Never compare strings with `==`** in interviews—use `.equals()` for content comparison. `==` checks reference identity, which can give wrong results. String concatenation uses `+` but is O(n) per concat; prefer StringBuilder in loops.",
+      "example": "public class Main {\n    public static void main(String[] args) {\n        String greeting = \"Hello\";\n        String name = \"World\";\n        String message = greeting + \", \" + name + \"!\";\n        System.out.println(message);  // Hello, World!\n\n        String a = new String(\"test\");\n        String b = new String(\"test\");\n        System.out.println(a == b);       // false (reference check)\n        System.out.println(a.equals(b));  // true (content check)\n    }\n}",
+      "exercise": {
+        "prompt": "Create two String variables `s1` and `s2`, both with value \"interview\". Use `new String(...)` for both so they are different objects. Print the result of `s1 == s2` then `s1.equals(s2)` on separate lines.",
+        "starterCode": "public class Main {\n    public static void main(String[] args) {\n        // Create s1 and s2 using new String(\"interview\")\n\n        System.out.println(s1 == s2);\n        System.out.println(s1.equals(s2));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "false\ntrue", "message": "s1 == s2 should be false (different references), s1.equals(s2) should be true (same content)."},
+          {"type": "contains", "patterns": ["new String", ".equals("], "message": "Use new String() to create both strings and .equals() for comparison."}
+        ],
+        "testCode": "",
+        "hint": "Use `new String(\"interview\")` for both s1 and s2 so they point to different objects."
+      },
+      "order": 2
+    },
+    {
+      "id": "java-vt-casting",
+      "title": "Type Casting",
+      "explanation": "Java does implicit widening (int → long → double) automatically. Narrowing (double → int) requires an explicit cast with `(type)`. Integer division truncates: `7 / 2` gives `3`. To get a double result, cast at least one operand: `(double) 7 / 2` gives `3.5`. Casting double to int truncates toward zero.",
+      "example": "public class Main {\n    public static void main(String[] args) {\n        int a = 7, b = 2;\n        System.out.println(a / b);            // 3 (integer division)\n        System.out.println((double) a / b);   // 3.5\n\n        double x = 9.99;\n        int truncated = (int) x;\n        System.out.println(truncated);        // 9\n\n        int i = 100;\n        long l = i;          // implicit widening\n        System.out.println(l); // 100\n    }\n}",
+      "exercise": {
+        "prompt": "Given int variables `num = 10` and `den = 3`, print the integer division result, then the double division result (cast num to double). Then cast 7.89 to int and print it.",
+        "starterCode": "public class Main {\n    public static void main(String[] args) {\n        int num = 10;\n        int den = 3;\n\n        // Print integer division of num / den\n\n        // Print double division by casting num\n\n        // Cast 7.89 to int and print\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "3\n3.3333333333333335\n7", "message": "First line: integer division (3). Second line: double division. Third line: truncated cast of 7.89."},
+          {"type": "contains", "patterns": ["(double)", "(int)"], "message": "Use explicit casts: (double) for widening, (int) for narrowing."}
+        ],
+        "testCode": "",
+        "hint": "Use (double) num / den for floating division. Use (int) 7.89 for truncation."
+      },
+      "order": 3
+    },
+    {
+      "id": "java-vt-null",
+      "title": "Null Checks and Wrapper Types",
+      "explanation": "Primitives can't be null, but their wrapper classes (Integer, Long, Double, Boolean) can. In interviews, always null-check before calling methods on objects. Use `Integer.parseInt()` to convert strings to ints. Auto-boxing converts between primitives and wrappers automatically, but unboxing null throws NullPointerException.",
+      "example": "public class Main {\n    public static void main(String[] args) {\n        Integer num = null;\n        System.out.println(num == null);  // true\n\n        String s = \"123\";\n        int parsed = Integer.parseInt(s);\n        System.out.println(parsed + 1);   // 124\n\n        Integer boxed = 42;  // auto-boxing\n        int unboxed = boxed; // auto-unboxing\n        System.out.println(unboxed);      // 42\n    }\n}",
+      "exercise": {
+        "prompt": "Create an Integer variable `val` set to null. Print whether val is null. Then parse the string \"256\" into an int named `parsed` using Integer.parseInt(). Print parsed + 10.",
+        "starterCode": "public class Main {\n    public static void main(String[] args) {\n        // Create Integer val = null\n\n        // Print whether val is null\n\n        // Parse \"256\" to int and print parsed + 10\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "true\n266", "message": "First line: true (val is null). Second line: 266 (256 + 10)."},
+          {"type": "contains", "patterns": ["Integer", "null", "Integer.parseInt"], "message": "Use Integer wrapper type, null, and Integer.parseInt()."}
+        ],
+        "testCode": "",
+        "hint": "Integer val = null; then val == null is true. Integer.parseInt(\"256\") returns 256."
+      },
+      "order": 4
+    },
+    {
+      "id": "java-vt-final",
+      "title": "Final Variables and Constants",
+      "explanation": "The `final` keyword makes a variable unmodifiable after assignment. Use it for constants and values that shouldn't change. Convention is UPPER_SNAKE_CASE for class-level constants (`static final`). In interviews, using `final` shows awareness of immutability and helps prevent bugs. Final references can't be reassigned, but the object they point to can still be mutated.",
+      "example": "public class Main {\n    static final int MAX_SIZE = 100;\n    static final String PREFIX = \"ID-\";\n\n    public static void main(String[] args) {\n        final int threshold = 50;\n        System.out.println(MAX_SIZE);           // 100\n        System.out.println(PREFIX + \"001\");     // ID-001\n        System.out.println(threshold);          // 50\n\n        // threshold = 60; // ERROR: cannot reassign final\n    }\n}",
+      "exercise": {
+        "prompt": "Declare a static final int `MAX_RETRIES` set to 3 and a static final String `BASE_URL` set to \"https://api.example.com\". In main, declare a final local int `timeout` set to 30. Print all three on separate lines.",
+        "starterCode": "public class Main {\n    // Declare static final constants here\n\n    public static void main(String[] args) {\n        // Declare final local variable here\n\n        System.out.println(MAX_RETRIES);\n        System.out.println(BASE_URL);\n        System.out.println(timeout);\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "3\nhttps://api.example.com\n30", "message": "Print MAX_RETRIES (3), BASE_URL, and timeout (30) on separate lines."},
+          {"type": "contains", "patterns": ["static final int MAX_RETRIES", "static final String BASE_URL", "final int timeout"], "message": "Use static final for class constants and final for the local variable."}
+        ],
+        "testCode": "",
+        "hint": "Class-level constants use `static final`. Local constants just use `final`."
+      },
+      "order": 5
+    }
+  ]
+}

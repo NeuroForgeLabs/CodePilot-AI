@@ -17,6 +17,9 @@ LANGUAGE_IDS: dict[str, int] = {
     "java": 62,         # Java (OpenJDK)
     "csharp": 51,       # C# (Mono)
     "go": 60,           # Go
+    "c": 50,            # C (GCC)
+    "cpp": 54,          # C++ (GCC)
+    "rust": 73,         # Rust
 }
 
 MAX_RETRIES = 3
@@ -186,6 +189,25 @@ func main() {{
     _ = fmt.Sprintf("")
 }}
 """,
+    "c": """\
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+{user_code}
+""",
+    "cpp": """\
+#include <bits/stdc++.h>
+using namespace std;
+
+{user_code}
+""",
+    "rust": """\
+use std::io::{{self, Read}};
+use std::collections::{{HashMap, HashSet, VecDeque, BinaryHeap}};
+
+{user_code}
+""",
 }
 
 
@@ -205,18 +227,23 @@ def _get_judge0_url() -> str:
 
 def _get_headers() -> dict[str, str]:
     headers: dict[str, str] = {"Content-Type": "application/json"}
-    api_key = os.getenv("JUDGE0_API_KEY", "")
-    if not api_key:
-        url = os.getenv("JUDGE0_URL", "")
-        if "rapidapi" in url.lower():
-            raise EnvironmentError(
-                "JUDGE0_API_KEY is not set but you're using the RapidAPI-hosted Judge0. "
-                "Sign up at https://rapidapi.com/judge0-official/api/judge0-ce and add "
-                "your key to .env.local"
-            )
-    else:
-        headers["X-RapidAPI-Key"] = api_key
-        headers["X-RapidAPI-Host"] = "judge0-ce.p.rapidapi.com"
+    api_key = os.getenv("X_RAPIDAPI_KEY", "") or os.getenv("JUDGE0_API_KEY", "")
+    judge0_url = os.getenv("JUDGE0_URL", "")
+    is_rapidapi = "rapidapi" in judge0_url.lower()
+
+    if not api_key and is_rapidapi:
+        raise EnvironmentError(
+            "X_RAPIDAPI_KEY is not set but you're using the RapidAPI-hosted Judge0. "
+            "Sign up at https://rapidapi.com/judge0-official/api/judge0-ce and add "
+            "your key to .env.local"
+        )
+
+    if api_key and is_rapidapi:
+        headers["x-rapidapi-key"] = api_key
+        headers["x-rapidapi-host"] = "judge0-ce.p.rapidapi.com"
+    elif api_key:
+        headers["X-Auth-Token"] = api_key
+
     return headers
 
 

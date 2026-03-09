@@ -1,0 +1,38 @@
+{
+  "id": "palindrome-number",
+  "title": "Palindrome Number",
+  "difficulty": "Easy",
+  "tags": ["math"],
+  "prompt": "Given an integer `x`, return `True` if `x` is a palindrome, and `False` otherwise.\n\nAn integer is a palindrome when it reads the same forward and backward.\n\n**Follow-up:** Could you solve it without converting the integer to a string?",
+  "examples": [
+    {"input": "x = 121", "output": "True\nExplanation: 121 reads as 121 from left to right and from right to left."},
+    {"input": "x = -121", "output": "False\nExplanation: From left to right, it reads -121. From right to left it reads 121-. Therefore it is not a palindrome."},
+    {"input": "x = 10", "output": "False\nExplanation: Reads 01 from right to left. Therefore it is not a palindrome."}
+  ],
+  "constraints": [
+    "-2^31 <= x <= 2^31 - 1"
+  ],
+  "starterCode": {
+    "python": "def solve(x):\n    pass",
+    "javascript": "function solve(x) {\n  \n}",
+    "typescript": "export function solve(x: number): boolean {\n  \n}",
+    "java": "class Solution {\n    public boolean solve(int x) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public bool Solve(int x) {\n        \n    }\n}",
+    "go": "func solve(x int) bool {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve(121))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve(-121))"}, "expectedStdout": "False"},
+    {"stdin": {"python": "print(solve(10))"}, "expectedStdout": "False"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve(0))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve(12321))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve(1000021))"}, "expectedStdout": "False"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Reverse only the second half of the number mathematically. Extract digits from the end and build the reversed half. Stop when the reversed half >= remaining number. Compare the two halves (handle both even and odd digit counts).",
+    "commonBugs": ["Not handling negative numbers (always false)", "Not handling numbers ending in 0 (e.g., 10 is not a palindrome but 0 is)", "Integer overflow when reversing the entire number (reversing only half avoids this)"],
+    "expectedComplexity": "O(log n)"
+  }
+}

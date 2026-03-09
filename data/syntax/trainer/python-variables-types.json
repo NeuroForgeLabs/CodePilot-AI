@@ -1,0 +1,78 @@
+{
+  "id": "python-variables-types",
+  "title": "Variables & Types",
+  "description": "Nail Python's type system — knowing how variables, types, and None work prevents subtle bugs during interviews.",
+  "language": "python",
+  "category": "variables-types",
+  "order": 1,
+  "sections": [
+    {
+      "id": "declaring",
+      "title": "Declaring variables",
+      "explanation": "Python is dynamically typed — you never declare a type, but interviewers expect you to know what type you're working with. The five types you'll use constantly: **int**, **float**, **str**, **bool**, and **None**.",
+      "example": "count = 0          # int\nratio = 0.5        # float\nname = \"target\"    # str\nfound = False      # bool\nresult = None      # NoneType (placeholder until computed)\n\n# type() reveals the type\nprint(type(count))  # <class 'int'>",
+      "exercise": {
+        "prompt": "Create five variables: `count` (int 42), `ratio` (float 3.14), `name` (str \"alice\"), `found` (bool True), and `result` (None). Print each variable on its own line.",
+        "starterCode": "# Declare all five variables\ncount = \nratio = \nname = \nfound = \nresult = \n\nprint(count)\nprint(ratio)\nprint(name)\nprint(found)\nprint(result)",
+        "validation": [
+          {"type": "output", "expected": "42\n3.14\nalice\nTrue\nNone", "message": "Each variable should print its value on a separate line"},
+          {"type": "contains", "patterns": ["42", "3.14", "\"alice\"", "True", "None"], "message": "Assign the correct literal values to each variable"}
+        ],
+        "testCode": "",
+        "hint": "Assign the literals directly: count = 42, ratio = 3.14, name = \"alice\", found = True, result = None."
+      },
+      "order": 1
+    },
+    {
+      "id": "type-conversion",
+      "title": "Type conversion",
+      "explanation": "Interviews often involve parsing input or building output strings. You'll cast between types with **int()**, **float()**, **str()**, and **bool()**. Know the gotchas: `int(\"3.5\")` raises an error, and `bool(0)` is `False`.",
+      "example": "# str -> int (parsing input)\nnum = int(\"42\")         # 42\n\n# int -> str (building output)\nlabel = str(100)        # \"100\"\n\n# str -> float\nratio = float(\"3.14\")   # 3.14\n\n# Truthiness: 0, \"\", [], None -> False\nprint(bool(0))          # False\nprint(bool(\"\"))         # False\nprint(bool(42))         # True",
+      "exercise": {
+        "prompt": "Convert the string `\"99\"` to an int and store in `num`. Convert the int `256` to a string and store in `text`. Convert the string `\"2.5\"` to a float and store in `decimal`. Print all three, then print `bool(0)` and `bool(\"hello\")`.",
+        "starterCode": "# Convert \"99\" to int\nnum = \n\n# Convert 256 to string\ntext = \n\n# Convert \"2.5\" to float\ndecimal = \n\nprint(num)\nprint(text)\nprint(decimal)\nprint(bool(0))\nprint(bool(\"hello\"))",
+        "validation": [
+          {"type": "output", "expected": "99\n256\n2.5\nFalse\nTrue", "message": "Check your type conversions — each print should match the expected output"},
+          {"type": "contains", "patterns": ["int(", "str(", "float("], "message": "Use int(), str(), and float() for conversions"}
+        ],
+        "testCode": "",
+        "hint": "num = int(\"99\"), text = str(256), decimal = float(\"2.5\"). bool(0) is False, bool(\"hello\") is True."
+      },
+      "order": 2
+    },
+    {
+      "id": "none-checks",
+      "title": "None and null checks",
+      "explanation": "In interviews, `None` represents \"no result\" or \"not yet computed.\" Always check with **`is None`** / **`is not None`** — never use `== None`. This matters because `is` checks identity, which is correct for the singleton `None`.",
+      "example": "def find_target(nums, target):\n    for i, num in enumerate(nums):\n        if num == target:\n            return i\n    return None\n\nresult = find_target([1, 2, 3], 5)\n\nif result is None:\n    print(\"Not found\")\nelse:\n    print(f\"Found at index {result}\")",
+      "exercise": {
+        "prompt": "Write a function `safe_get` that takes a list and an index. Return the element if the index is valid, otherwise return `None`. Then call it twice — once with a valid index (print the result) and once with an invalid index (check with `is None` and print \"Out of bounds\").",
+        "starterCode": "def safe_get(lst, index):\n    if index < len(lst):\n        return lst[index]\n    return \n\nnums = [10, 20, 30]\n\n# Valid access\nval = safe_get(nums, 1)\nprint(val)\n\n# Invalid access\nval = safe_get(nums, 5)\nif val  None:\n    print(\"Out of bounds\")",
+        "validation": [
+          {"type": "output", "expected": "20\nOut of bounds", "message": "First call should print 20, second should trigger the None check"},
+          {"type": "contains", "patterns": ["is None", "return None"], "message": "Use 'is None' for the check and 'return None' for the fallback"}
+        ],
+        "testCode": "",
+        "hint": "Return None when the index is out of bounds. Use `if val is None:` to check the result."
+      },
+      "order": 3
+    },
+    {
+      "id": "constants",
+      "title": "Constants and naming conventions",
+      "explanation": "Python has no true constants, but the convention is **UPPER_CASE** names. Interviewers expect you to extract magic numbers into named constants — it signals clean, readable code and avoids errors in DP tables, MOD arithmetic, and direction arrays.",
+      "example": "# Common interview constants\nMOD = 10**9 + 7       # modular arithmetic\nINF = float('inf')    # infinity for min comparisons\nDIRECTIONS = [(0,1),(0,-1),(1,0),(-1,0)]  # grid traversal\n\n# Usage in DP\nresult = (result + count) % MOD\n\n# Usage in shortest path\ndist = INF\nif new_dist < dist:\n    dist = new_dist",
+      "exercise": {
+        "prompt": "Define three constants: `MOD` as 10**9 + 7, `INF` as float('inf'), and `MAX_SIZE` as 1000. Print each constant, then print the result of `123456789 % MOD` and whether `99 < INF`.",
+        "starterCode": "# Define constants\nMOD = \nINF = \nMAX_SIZE = \n\nprint(MOD)\nprint(INF)\nprint(MAX_SIZE)\nprint(123456789 % MOD)\nprint(99 < INF)",
+        "validation": [
+          {"type": "output", "expected": "1000000007\ninf\n1000\n123456789\nTrue", "message": "Check your constant values — MOD should be 10**9 + 7, INF should be float('inf')"},
+          {"type": "contains", "patterns": ["10**9 + 7", "float('inf')", "MAX_SIZE"], "message": "Use the standard interview constant patterns"}
+        ],
+        "testCode": "",
+        "hint": "MOD = 10**9 + 7, INF = float('inf'), MAX_SIZE = 1000. 123456789 % MOD is 123456789 since it's smaller than MOD."
+      },
+      "order": 4
+    }
+  ]
+}

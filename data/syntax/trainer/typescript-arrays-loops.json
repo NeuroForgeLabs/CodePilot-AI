@@ -1,0 +1,78 @@
+{
+  "id": "typescript-arrays-loops",
+  "title": "Arrays & Loops",
+  "description": "Typed arrays are the backbone of interview problems — master declaring, accessing, and iterating them with proper TypeScript annotations to write confident, bug-free solutions.",
+  "language": "typescript",
+  "category": "arrays-loops",
+  "order": 2,
+  "sections": [
+    {
+      "id": "typed-arrays",
+      "title": "Typed arrays",
+      "explanation": "TypeScript offers two equivalent syntaxes for typed arrays: `number[]` and `Array<number>`. The shorthand `number[]` is more common in interviews. Always annotate array types — it catches wrong-element-type bugs at compile time rather than runtime.",
+      "example": "const nums: number[] = [1, 2, 3, 4, 5];\nconst names: string[] = [\"alice\", \"bob\"];\nconst flags: Array<boolean> = [true, false, true];\n\nconsole.log(nums.length);  // 5\nconsole.log(names[0]);     // alice",
+      "exercise": {
+        "prompt": "Create a `number[]` called `scores` with values [85, 92, 78, 95]. Create a `string[]` called `words` with [\"hello\", \"world\"]. Print the length of each array, then print the first element of each.",
+        "starterCode": "const scores: number[] = [85, 92, 78, 95]\nconst words: string[] = \n\nconsole.log(scores.length)\nconsole.log(words.length)\nconsole.log(scores[0])\nconsole.log(words[0])",
+        "validation": [
+          {"type": "output", "expected": "4\n2\n85\nhello", "message": "Print lengths (4, 2) then first elements (85, hello)"},
+          {"type": "contains", "patterns": ["number[]", "string[]"], "message": "Use typed array annotations"}
+        ],
+        "testCode": "",
+        "hint": "Assign words = [\"hello\", \"world\"]. Array .length gives the count, [0] accesses the first element."
+      },
+      "order": 1
+    },
+    {
+      "id": "array-access-modify",
+      "title": "Access, push, and destructure",
+      "explanation": "In interviews you constantly index into arrays, push new elements, and destructure results. TypeScript ensures you only push values matching the array's element type. Destructuring with type annotations extracts multiple values cleanly.",
+      "example": "const nums: number[] = [10, 20, 30];\nnums.push(40);\n\nconst [first, second] = nums;\nconsole.log(first);  // 10\nconsole.log(second); // 20\n\nconst last: number = nums[nums.length - 1];\nconsole.log(last);   // 40",
+      "exercise": {
+        "prompt": "Create a `number[]` with [5, 10, 15]. Push 20 onto it. Destructure the first two elements into `a` and `b`. Print `a`, `b`, the array length, and the last element.",
+        "starterCode": "const nums: number[] = [5, 10, 15]\nnums.push(___)\n\nconst [a, b] = nums\nconsole.log(a)\nconsole.log(b)\nconsole.log(nums.length)\nconsole.log(nums[nums.length - 1])",
+        "validation": [
+          {"type": "output", "expected": "5\n10\n4\n20", "message": "a=5, b=10, length=4, last=20"},
+          {"type": "contains", "patterns": ["push(", "const [a, b]"], "message": "Use push to add and destructuring to extract"}
+        ],
+        "testCode": "",
+        "hint": "Push 20 onto the array. Destructuring [a, b] grabs the first two elements. nums.length - 1 indexes the last."
+      },
+      "order": 2
+    },
+    {
+      "id": "for-loops",
+      "title": "for and for-of loops",
+      "explanation": "The classic `for` loop gives you index access, essential for two-pointer and sliding-window patterns. `for...of` iterates values directly and is cleaner when you don't need the index. TypeScript infers the loop variable type from the array.",
+      "example": "const nums: number[] = [10, 20, 30];\n\n// Classic for — need index\nfor (let i: number = 0; i < nums.length; i++) {\n  console.log(i, nums[i]);\n}\n\n// for-of — need value only\nfor (const val of nums) {\n  console.log(val);\n}",
+      "exercise": {
+        "prompt": "Given `nums: number[] = [3, 1, 4, 1, 5]`, use a classic for loop to print each element doubled. Then use a for-of loop to print each element as-is.",
+        "starterCode": "const nums: number[] = [3, 1, 4, 1, 5]\n\nfor (let i = 0; i < nums.length; i++) {\n  console.log(nums[i] * ___)\n}\n\nfor (const val of nums) {\n  console.log(val)\n}",
+        "validation": [
+          {"type": "output", "expected": "6\n2\n8\n2\n10\n3\n1\n4\n1\n5", "message": "First five lines are doubled values, next five are originals"},
+          {"type": "contains", "patterns": ["for (let i", "for (const val of"], "message": "Use a classic for loop and a for-of loop"}
+        ],
+        "testCode": "",
+        "hint": "Multiply by 2 in the classic for loop. The for-of loop prints val directly."
+      },
+      "order": 3
+    },
+    {
+      "id": "map-filter-reduce",
+      "title": "map, filter, reduce with types",
+      "explanation": "Functional array methods are concise and type-safe in TypeScript. `map` transforms each element, `filter` selects elements, and `reduce` accumulates a result. TypeScript infers callback parameter types from the array, but you can add annotations for clarity.",
+      "example": "const nums: number[] = [1, 2, 3, 4, 5];\n\nconst doubled: number[] = nums.map((n: number) => n * 2);\nconsole.log(doubled);  // [2, 4, 6, 8, 10]\n\nconst evens: number[] = nums.filter((n: number) => n % 2 === 0);\nconsole.log(evens);    // [2, 4]\n\nconst total: number = nums.reduce((acc: number, n: number) => acc + n, 0);\nconsole.log(total);    // 15",
+      "exercise": {
+        "prompt": "Given `nums: number[] = [1, 2, 3, 4, 5, 6]`, use `map` to create `squares` (each number squared), `filter` to create `odds` (odd numbers only), and `reduce` to compute `sum`. Print each result.",
+        "starterCode": "const nums: number[] = [1, 2, 3, 4, 5, 6]\n\nconst squares: number[] = nums.map((n) => n * ___)\nconst odds: number[] = nums.filter((n) => n % 2 !== ___)\nconst sum: number = nums.reduce((acc, n) => acc + n, ___)\n\nconsole.log(squares.join(\",\"))\nconsole.log(odds.join(\",\"))\nconsole.log(sum)",
+        "validation": [
+          {"type": "output", "expected": "1,4,9,16,25,36\n1,3,5\n21", "message": "squares=[1,4,9,16,25,36], odds=[1,3,5], sum=21"},
+          {"type": "contains", "patterns": [".map(", ".filter(", ".reduce("], "message": "Use map, filter, and reduce methods"}
+        ],
+        "testCode": "",
+        "hint": "Square with n * n, filter odd with n % 2 !== 0, reduce starting from 0."
+      },
+      "order": 4
+    }
+  ]
+}

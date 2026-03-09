@@ -1,0 +1,95 @@
+{
+  "id": "python-strings",
+  "title": "Strings",
+  "description": "Master Python string operations — essential for pattern matching, parsing, and half of all interview problems.",
+  "language": "python",
+  "category": "strings",
+  "order": 3,
+  "sections": [
+    {
+      "id": "iterating",
+      "title": "Iterating characters",
+      "explanation": "Strings are iterable in Python, so `for ch in s` gives you each character. Pair this with `enumerate` when you need the index too — interviewers expect you to know both patterns. Character-level iteration is the backbone of frequency counting and string matching problems.",
+      "example": "s = \"hello\"\n\n# Iterate characters directly\nfor ch in s:\n    print(ch, end=\" \")   # h e l l o\nprint()\n\n# With index (useful for comparing positions)\nfor i, ch in enumerate(s):\n    print(f\"{i}: {ch}\")\n\n# Count a specific character\ncount = sum(1 for ch in s if ch == 'l')\nprint(count)  # 2",
+      "exercise": {
+        "prompt": "Write a function `count_vowels(s)` that returns the number of vowels (a, e, i, o, u) in a lowercase string. Print the result for `\"interview\"`.",
+        "starterCode": "def count_vowels(s):\n    vowels = \"aeiou\"\n    count = 0\n    for ch in ___:\n        if ch in ___:\n            count += 1\n    return count\n\nprint(count_vowels(\"interview\"))",
+        "validation": [
+          {"type": "output", "expected": "4", "message": "\"interview\" has 4 vowels: i, e, i, e"},
+          {"type": "contains", "patterns": ["for ch in", "in vowels"], "message": "Iterate characters and check membership in vowels string"}
+        ],
+        "testCode": "",
+        "hint": "Iterate with `for ch in s` and check `if ch in vowels`. The vowels in \"interview\" are i, e, i, e."
+      },
+      "order": 1
+    },
+    {
+      "id": "substrings",
+      "title": "Substrings and slicing",
+      "explanation": "String slicing works just like list slicing: `s[i:j]` extracts from index `i` up to (not including) `j`. The reverse idiom `s[::-1]` is a one-liner interviewers love for palindrome checks. Slicing creates a new string each time, which is O(n) — keep that in mind for complexity analysis.",
+      "example": "s = \"abcdef\"\n\nsub = s[1:4]     # \"bcd\"\nfirst3 = s[:3]   # \"abc\"\nlast2 = s[-2:]   # \"ef\"\n\n# Reverse a string\nrev = s[::-1]    # \"fedcba\"\n\n# Palindrome check (classic one-liner)\nword = \"racecar\"\nprint(word == word[::-1])  # True",
+      "exercise": {
+        "prompt": "Write a function `is_palindrome(s)` that returns `True` if the string reads the same forwards and backwards using slicing. Print the result for `\"racecar\"` and `\"hello\"`.",
+        "starterCode": "def is_palindrome(s):\n    return s == ___\n\nprint(is_palindrome(\"racecar\"))\nprint(is_palindrome(\"hello\"))",
+        "validation": [
+          {"type": "output", "expected": "True\nFalse", "message": "\"racecar\" is a palindrome, \"hello\" is not"},
+          {"type": "contains", "patterns": ["[::-1]"], "message": "Use slicing to reverse the string"}
+        ],
+        "testCode": "",
+        "hint": "Compare the string to its reverse: `s == s[::-1]`."
+      },
+      "order": 2
+    },
+    {
+      "id": "split-join",
+      "title": "Split and join",
+      "explanation": "`s.split()` breaks a string into a list of words (splitting on whitespace by default), and `\" \".join(lst)` glues a list back into a string with a separator. This split-transform-join pattern appears constantly in interviews — reversing words, reformatting data, and parsing input. Remember that `split()` with no argument handles multiple spaces gracefully.",
+      "example": "s = \"the quick brown fox\"\n\nwords = s.split()        # [\"the\", \"quick\", \"brown\", \"fox\"]\nprint(words)\n\n# Join with a separator\nback = \" \".join(words)   # \"the quick brown fox\"\nprint(back)\n\n# Split on a specific delimiter\ncsv = \"a,b,c,d\"\nparts = csv.split(\",\")   # [\"a\", \"b\", \"c\", \"d\"]\nprint(parts)",
+      "exercise": {
+        "prompt": "Write a function `reverse_words(s)` that reverses the order of words in a sentence. Print the result for `\"hello world python\"`.",
+        "starterCode": "def reverse_words(s):\n    words = s.___\n    words.reverse()\n    return \" \".___\n\nprint(reverse_words(\"hello world python\"))",
+        "validation": [
+          {"type": "output", "expected": "python world hello", "message": "Words should be in reverse order"},
+          {"type": "contains", "patterns": ["split()", ".join("], "message": "Use split() and join() to transform the string"}
+        ],
+        "testCode": "",
+        "hint": "Split with `s.split()`, reverse the list, then rejoin with `\" \".join(words)`."
+      },
+      "order": 3
+    },
+    {
+      "id": "char-codes",
+      "title": "Character codes",
+      "explanation": "`ord(ch)` returns the Unicode code point of a character, and `chr(n)` converts back. This is essential for problems involving alphabetical offsets, Caesar ciphers, and bucket-sorting characters. Know that `ord('a')` is 97 and `ord('z')` is 122 — checking `'a' <= ch <= 'z'` is the Pythonic way to test for lowercase letters.",
+      "example": "# Character to code point\nprint(ord('a'))   # 97\nprint(ord('z'))   # 122\nprint(ord('A'))   # 65\n\n# Code point back to character\nprint(chr(97))    # 'a'\nprint(chr(65))    # 'A'\n\n# Check if lowercase letter\nch = 'g'\nif 'a' <= ch <= 'z':\n    print(f\"{ch} is lowercase\")",
+      "exercise": {
+        "prompt": "Write a function `is_lower(ch)` that returns `True` if the character is a lowercase letter (a-z) using comparison operators. Print the result for `'m'`, `'Z'`, and `'3'`.",
+        "starterCode": "def is_lower(ch):\n    return ___ <= ch <= ___\n\nprint(is_lower('m'))\nprint(is_lower('Z'))\nprint(is_lower('3'))",
+        "validation": [
+          {"type": "output", "expected": "True\nFalse\nFalse", "message": "'m' is lowercase, 'Z' and '3' are not"},
+          {"type": "contains", "patterns": ["'a'", "'z'"], "message": "Use character comparison with 'a' and 'z'"}
+        ],
+        "testCode": "",
+        "hint": "Compare with `'a' <= ch <= 'z'` — Python supports chained comparisons."
+      },
+      "order": 4
+    },
+    {
+      "id": "immutability",
+      "title": "String immutability",
+      "explanation": "Python strings are immutable — you cannot change a character in place with `s[i] = 'x'`. When you need to modify characters, convert to a list with `list(s)`, make changes, then rejoin with `\"\".join(lst)`. This list-roundtrip pattern is required for in-place style string manipulation in interviews.",
+      "example": "s = \"hello\"\n\n# This would raise TypeError:\n# s[0] = 'H'\n\n# Convert to list, modify, rejoin\nchars = list(s)       # ['h', 'e', 'l', 'l', 'o']\nchars[0] = 'H'\nresult = \"\".join(chars)\nprint(result)         # \"Hello\"\n\n# Alternative: rebuild with slicing\nresult = 'H' + s[1:]\nprint(result)         # \"Hello\"",
+      "exercise": {
+        "prompt": "Write a function `replace_at(s, i, ch)` that returns a new string with the character at index `i` replaced by `ch`. Use the list conversion approach. Print the result of replacing index 0 in `\"hello\"` with `'H'`.",
+        "starterCode": "def replace_at(s, i, ch):\n    chars = ___(s)\n    chars[i] = ch\n    return \"\".join(___)\n\nprint(replace_at(\"hello\", 0, 'H'))",
+        "validation": [
+          {"type": "output", "expected": "Hello", "message": "Should replace index 0 with 'H' to get \"Hello\""},
+          {"type": "contains", "patterns": ["list(", "\"\".join("], "message": "Convert to list and rejoin with \"\".join()"}
+        ],
+        "testCode": "",
+        "hint": "Use `list(s)` to get a mutable list of characters, modify with `chars[i] = ch`, then `\"\".join(chars)`."
+      },
+      "order": 5
+    }
+  ]
+}

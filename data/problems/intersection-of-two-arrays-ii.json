@@ -1,0 +1,38 @@
+{
+  "id": "intersection-of-two-arrays-ii",
+  "title": "Intersection of Two Arrays II",
+  "difficulty": "Easy",
+  "tags": ["arrays", "hash-table", "sorting"],
+  "prompt": "Given two integer arrays `nums1` and `nums2`, return an array of their intersection. Each element in the result must appear as many times as it shows in both arrays. You may return the result in any order.\n\nReturn the result sorted in ascending order.",
+  "examples": [
+    {"input": "nums1 = [1, 2, 2, 1], nums2 = [2, 2]", "output": "[2, 2]"},
+    {"input": "nums1 = [4, 9, 5], nums2 = [9, 4, 9, 8, 4]", "output": "[4, 9]"},
+    {"input": "nums1 = [1, 1, 1], nums2 = [1]", "output": "[1]"}
+  ],
+  "constraints": [
+    "1 <= nums1.length, nums2.length <= 1000",
+    "0 <= nums1[i], nums2[i] <= 1000"
+  ],
+  "starterCode": {
+    "python": "def solve(nums1, nums2):\n    pass",
+    "javascript": "function solve(nums1, nums2) {\n  \n}",
+    "typescript": "export function solve(nums1: number[], nums2: number[]): number[] {\n  \n}",
+    "java": "class Solution {\n    public int[] solve(int[] nums1, int[] nums2) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int[] Solve(int[] nums1, int[] nums2) {\n        \n    }\n}",
+    "go": "func solve(nums1 []int, nums2 []int) []int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([1, 2, 2, 1], [2, 2]))"}, "expectedStdout": "[2, 2]"},
+    {"stdin": {"python": "print(solve([4, 9, 5], [9, 4, 9, 8, 4]))"}, "expectedStdout": "[4, 9]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([1, 1, 1], [1]))"}, "expectedStdout": "[1]"},
+    {"stdin": {"python": "print(solve([3, 3, 3], [3, 3]))"}, "expectedStdout": "[3, 3]"},
+    {"stdin": {"python": "print(solve([1, 2, 3], [4, 5, 6]))"}, "expectedStdout": "[]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use a hash map (Counter) to count occurrences in one array. Iterate through the second array, adding to the result if the count is > 0, decrementing each time. Sort the result before returning.",
+    "commonBugs": ["Not accounting for duplicate counts correctly", "Forgetting to sort the output", "Returning a set instead of allowing duplicates"],
+    "expectedComplexity": "O(n + m)"
+  }
+}

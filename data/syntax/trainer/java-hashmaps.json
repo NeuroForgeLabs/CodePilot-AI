@@ -1,0 +1,95 @@
+{
+  "id": "java-hashmaps",
+  "title": "HashMaps",
+  "description": "Master HashMap operations essential for coding interviews: put/get, containsKey, getOrDefault, iteration, and frequency counting.",
+  "language": "java",
+  "category": "hashmaps",
+  "order": 5,
+  "sections": [
+    {
+      "id": "java-hm-basics",
+      "title": "HashMap Basics: put, get, containsKey",
+      "explanation": "HashMap<K,V> stores key-value pairs with O(1) average lookup. Create with `new HashMap<>()`. Use `put(key, val)` to insert/update, `get(key)` to retrieve (returns null if missing), `containsKey(key)` to check existence. Keys must be immutable (String, Integer). Import `java.util.HashMap`.",
+      "example": "import java.util.HashMap;\n\npublic class Main {\n    public static void main(String[] args) {\n        HashMap<String, Integer> ages = new HashMap<>();\n        ages.put(\"Alice\", 30);\n        ages.put(\"Bob\", 25);\n\n        System.out.println(ages.get(\"Alice\"));         // 30\n        System.out.println(ages.containsKey(\"Bob\"));   // true\n        System.out.println(ages.containsKey(\"Eve\"));   // false\n        System.out.println(ages.get(\"Eve\"));           // null\n        System.out.println(ages.size());               // 2\n    }\n}",
+      "exercise": {
+        "prompt": "Create a HashMap<String, String> mapping country codes to names: \"US\"->\"United States\", \"UK\"->\"United Kingdom\", \"JP\"->\"Japan\". Print the value for \"UK\", whether \"FR\" exists as a key, and the size of the map.",
+        "starterCode": "import java.util.HashMap;\n\npublic class Main {\n    public static void main(String[] args) {\n        HashMap<String, String> countries = new HashMap<>();\n\n        // Add mappings and print results\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "United Kingdom\nfalse\n3", "message": "UK maps to United Kingdom, FR doesn't exist, size is 3."},
+          {"type": "contains", "patterns": [".put(", ".get(", ".containsKey("], "message": "Use put(), get(), and containsKey() methods."}
+        ],
+        "testCode": "",
+        "hint": "put each code-name pair. get(\"UK\") returns the name. containsKey(\"FR\") returns false."
+      },
+      "order": 1
+    },
+    {
+      "id": "java-hm-getordefault",
+      "title": "getOrDefault and Updating Values",
+      "explanation": "`getOrDefault(key, defaultValue)` returns the value for key if present, otherwise returns defaultValue. This is cleaner than checking containsKey first. Common pattern for counting: `map.put(key, map.getOrDefault(key, 0) + 1)`. Also useful: `putIfAbsent(key, val)` only inserts if key is missing, `merge(key, val, remappingFn)` for combining values.",
+      "example": "import java.util.HashMap;\n\npublic class Main {\n    public static void main(String[] args) {\n        HashMap<String, Integer> scores = new HashMap<>();\n        scores.put(\"Alice\", 90);\n\n        System.out.println(scores.getOrDefault(\"Alice\", 0));  // 90\n        System.out.println(scores.getOrDefault(\"Bob\", 0));    // 0\n\n        // Increment pattern\n        scores.put(\"Alice\", scores.getOrDefault(\"Alice\", 0) + 10);\n        System.out.println(scores.get(\"Alice\"));               // 100\n    }\n}",
+      "exercise": {
+        "prompt": "Create a HashMap<String, Integer> to count word occurrences. For the words [\"apple\", \"banana\", \"apple\", \"cherry\", \"banana\", \"apple\"], count each using getOrDefault. Print the count for \"apple\", \"banana\", and \"cherry\".",
+        "starterCode": "import java.util.HashMap;\n\npublic class Main {\n    public static void main(String[] args) {\n        String[] words = {\"apple\", \"banana\", \"apple\", \"cherry\", \"banana\", \"apple\"};\n        HashMap<String, Integer> count = new HashMap<>();\n\n        // Count occurrences using getOrDefault\n\n        System.out.println(count.get(\"apple\"));\n        System.out.println(count.get(\"banana\"));\n        System.out.println(count.get(\"cherry\"));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "3\n2\n1", "message": "apple=3, banana=2, cherry=1."},
+          {"type": "contains", "patterns": ["getOrDefault"], "message": "Use getOrDefault to handle missing keys when counting."}
+        ],
+        "testCode": "",
+        "hint": "For each word: count.put(word, count.getOrDefault(word, 0) + 1)."
+      },
+      "order": 2
+    },
+    {
+      "id": "java-hm-iterate",
+      "title": "Iterating Over a HashMap",
+      "explanation": "Three ways to iterate: `map.keySet()` for keys only, `map.values()` for values only, `map.entrySet()` for key-value pairs. Use `Map.Entry<K,V>` with `entry.getKey()` and `entry.getValue()`. Import `java.util.Map`. EntrySet is the most efficient for accessing both key and value. Order is not guaranteed in HashMap; use LinkedHashMap for insertion order or TreeMap for sorted order.",
+      "example": "import java.util.HashMap;\nimport java.util.Map;\n\npublic class Main {\n    public static void main(String[] args) {\n        HashMap<String, Integer> map = new HashMap<>();\n        map.put(\"a\", 1);\n        map.put(\"b\", 2);\n        map.put(\"c\", 3);\n\n        for (Map.Entry<String, Integer> entry : map.entrySet()) {\n            System.out.println(entry.getKey() + \"=\" + entry.getValue());\n        }\n\n        int sum = 0;\n        for (int val : map.values()) {\n            sum += val;\n        }\n        System.out.println(\"Sum: \" + sum);  // Sum: 6\n    }\n}",
+      "exercise": {
+        "prompt": "Create a HashMap mapping \"math\"->95, \"science\"->87, \"english\"->92. Use a for loop over entrySet() to find and print the subject with the highest score. Then print the sum of all scores using values().",
+        "starterCode": "import java.util.HashMap;\nimport java.util.Map;\n\npublic class Main {\n    public static void main(String[] args) {\n        HashMap<String, Integer> grades = new HashMap<>();\n        grades.put(\"math\", 95);\n        grades.put(\"science\", 87);\n        grades.put(\"english\", 92);\n\n        // Find subject with highest score\n\n        // Print sum of all scores\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "math\n274", "message": "Highest is math (95). Sum is 95+87+92=274."},
+          {"type": "contains", "patterns": [".entrySet()", ".getKey()", ".getValue()", ".values()"], "message": "Use entrySet() with getKey()/getValue() and values() for iteration."}
+        ],
+        "testCode": "",
+        "hint": "Track bestSubject and bestScore. Compare entry.getValue() against bestScore in each iteration."
+      },
+      "order": 3
+    },
+    {
+      "id": "java-hm-frequency",
+      "title": "Frequency Counting Pattern",
+      "explanation": "The frequency map is one of the most common interview patterns. Build a character or element frequency map, then query it. Steps: (1) iterate input, (2) count with getOrDefault, (3) process the map. Used in anagram detection, top-K frequent elements, first unique character, and more. Time: O(n) to build, O(1) per lookup.",
+      "example": "import java.util.HashMap;\n\npublic class Main {\n    public static void main(String[] args) {\n        String s = \"abracadabra\";\n        HashMap<Character, Integer> freq = new HashMap<>();\n        for (char c : s.toCharArray()) {\n            freq.put(c, freq.getOrDefault(c, 0) + 1);\n        }\n\n        System.out.println(freq);  // {a=5, b=2, r=2, c=1, d=1}\n\n        // Find first char with frequency 1\n        for (char c : s.toCharArray()) {\n            if (freq.get(c) == 1) {\n                System.out.println(c);  // c\n                break;\n            }\n        }\n    }\n}",
+      "exercise": {
+        "prompt": "Given int[] nums = {1, 2, 3, 2, 1, 3, 3, 4}, build a frequency map. Print the frequency of 3. Then find and print the element that appears exactly once (the unique element).",
+        "starterCode": "import java.util.HashMap;\nimport java.util.Map;\n\npublic class Main {\n    public static void main(String[] args) {\n        int[] nums = {1, 2, 3, 2, 1, 3, 3, 4};\n        HashMap<Integer, Integer> freq = new HashMap<>();\n\n        // Build frequency map\n\n        // Print frequency of 3\n\n        // Find and print the unique element (appears once)\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "3\n4", "message": "3 appears 3 times. 4 is the only element appearing once."},
+          {"type": "contains", "patterns": ["getOrDefault", "freq.get("], "message": "Use getOrDefault to build the frequency map and get() to query it."}
+        ],
+        "testCode": "",
+        "hint": "Build freq with getOrDefault pattern. Then iterate entrySet to find the entry with value == 1."
+      },
+      "order": 4
+    },
+    {
+      "id": "java-hm-twosum",
+      "title": "HashMap for Two Sum Pattern",
+      "explanation": "The classic Two Sum: find two numbers that add to a target. Use a HashMap to store {value: index} as you iterate. For each element, check if `target - current` exists in the map. If yes, you found the pair. If no, add current to the map. This gives O(n) time instead of O(n^2) brute force. This pattern extends to many \"find complement\" problems.",
+      "example": "import java.util.HashMap;\n\npublic class Main {\n    static int[] twoSum(int[] nums, int target) {\n        HashMap<Integer, Integer> map = new HashMap<>();\n        for (int i = 0; i < nums.length; i++) {\n            int complement = target - nums[i];\n            if (map.containsKey(complement)) {\n                return new int[]{map.get(complement), i};\n            }\n            map.put(nums[i], i);\n        }\n        return new int[]{};\n    }\n\n    public static void main(String[] args) {\n        int[] result = twoSum(new int[]{2, 7, 11, 15}, 9);\n        System.out.println(result[0] + \",\" + result[1]);  // 0,1\n    }\n}",
+      "exercise": {
+        "prompt": "Implement a static method `twoSum(int[] nums, int target)` that returns the indices of two numbers adding to target. Use a HashMap for O(n) solution. Test with nums={3, 2, 4} target=6, print the two indices separated by a comma.",
+        "starterCode": "import java.util.HashMap;\n\npublic class Main {\n    static int[] twoSum(int[] nums, int target) {\n        HashMap<Integer, Integer> map = new HashMap<>();\n        // Implement two sum with HashMap\n\n        return new int[]{};\n    }\n\n    public static void main(String[] args) {\n        int[] result = twoSum(new int[]{3, 2, 4}, 6);\n        System.out.println(result[0] + \",\" + result[1]);\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "1,2", "message": "nums[1]=2 and nums[2]=4 sum to 6, so output is 1,2."},
+          {"type": "contains", "patterns": ["containsKey", "target - nums", "map.put"], "message": "Check for complement with containsKey, compute target - nums[i], and store in map."}
+        ],
+        "testCode": "",
+        "hint": "For each i: complement = target - nums[i]. If map.containsKey(complement), return {map.get(complement), i}. Else put(nums[i], i)."
+      },
+      "order": 5
+    }
+  ]
+}

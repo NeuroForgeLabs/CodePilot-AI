@@ -1,0 +1,37 @@
+{
+  "id": "middle-of-linked-list",
+  "title": "Middle of the Linked List",
+  "difficulty": "Easy",
+  "tags": ["linked-list", "two-pointers"],
+  "prompt": "Given the head of a singly linked list as an array, return the values from the middle node to the end of the list.\n\nIf there are two middle nodes (even-length list), return from the second middle node onward.\n\nThe input and output are arrays representing linked list values.",
+  "examples": [
+    {"input": "head = [1, 2, 3, 4, 5]", "output": "[3, 4, 5]\nExplanation: The middle node is 3 (index 2 of 5 nodes)."},
+    {"input": "head = [1, 2, 3, 4, 5, 6]", "output": "[4, 5, 6]\nExplanation: With 6 nodes there are two middles (3 and 4); we return from the second middle."}
+  ],
+  "constraints": [
+    "1 <= number of nodes <= 100",
+    "1 <= Node.val <= 100"
+  ],
+  "starterCode": {
+    "python": "def solve(head):\n    pass",
+    "javascript": "function solve(head) {\n  \n}",
+    "typescript": "export function solve(head: number[]): number[] {\n  \n}",
+    "java": "class Solution {\n    public int[] solve(int[] head) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int[] Solve(int[] head) {\n        \n    }\n}",
+    "go": "func solve(head []int) []int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([1, 2, 3, 4, 5]))"}, "expectedStdout": "[3, 4, 5]"},
+    {"stdin": {"python": "print(solve([1, 2, 3, 4, 5, 6]))"}, "expectedStdout": "[4, 5, 6]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([1]))"}, "expectedStdout": "[1]"},
+    {"stdin": {"python": "print(solve([1, 2]))"}, "expectedStdout": "[2]"},
+    {"stdin": {"python": "print(solve([10, 20, 30, 40, 50, 60, 70]))"}, "expectedStdout": "[40, 50, 60, 70]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use the slow/fast pointer technique. Move slow one step and fast two steps at a time. When fast reaches the end, slow is at the middle. With array input, this simplifies to returning head[len(head)//2:].",
+    "commonBugs": ["Returning the first middle instead of the second for even-length lists", "Off-by-one error in calculating the middle index", "Forgetting to handle single-element lists"],
+    "expectedComplexity": "O(n)"
+  }
+}

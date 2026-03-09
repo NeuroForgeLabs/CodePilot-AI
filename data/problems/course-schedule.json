@@ -1,0 +1,41 @@
+{
+  "id": "course-schedule",
+  "title": "Course Schedule",
+  "difficulty": "Medium",
+  "tags": ["graph", "bfs", "dynamic-programming"],
+  "prompt": "There are a total of `numCourses` courses you have to take, labeled from `0` to `numCourses - 1`. You are given an array `prerequisites` where `prerequisites[i] = [a, b]` indicates that you must take course `b` first if you want to take course `a`.\n\nFor example, the pair `[0, 1]` indicates that to take course 0 you have to first take course 1.\n\nReturn `True` if you can finish all courses. Otherwise, return `False`.\n\nThis is equivalent to detecting whether a cycle exists in a directed graph.",
+  "examples": [
+    {"input": "numCourses = 2, prerequisites = [[1, 0]]", "output": "True\nExplanation: There are 2 courses to take. To take course 1, you need course 0 first. This is possible."},
+    {"input": "numCourses = 2, prerequisites = [[1, 0], [0, 1]]", "output": "False\nExplanation: To take course 1, you need course 0; to take course 0, you need course 1. This is a cycle, so it is impossible."}
+  ],
+  "constraints": [
+    "1 <= numCourses <= 2000",
+    "0 <= prerequisites.length <= 5000",
+    "prerequisites[i].length == 2",
+    "0 <= a, b < numCourses",
+    "All pairs prerequisites[i] are unique."
+  ],
+  "starterCode": {
+    "python": "def solve(numCourses, prerequisites):\n    pass",
+    "javascript": "function solve(numCourses, prerequisites) {\n  \n}",
+    "typescript": "export function solve(numCourses: number, prerequisites: number[][]): boolean {\n  \n}",
+    "java": "class Solution {\n    public boolean solve(int numCourses, int[][] prerequisites) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public bool Solve(int numCourses, int[][] prerequisites) {\n        \n    }\n}",
+    "go": "func solve(numCourses int, prerequisites [][]int) bool {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve(2, [[1, 0]]))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve(2, [[1, 0], [0, 1]]))"}, "expectedStdout": "False"},
+    {"stdin": {"python": "print(solve(1, []))"}, "expectedStdout": "True"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve(4, [[1, 0], [2, 1], [3, 2]]))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve(3, [[0, 1], [1, 2], [2, 0]]))"}, "expectedStdout": "False"},
+    {"stdin": {"python": "print(solve(5, [[1, 0], [2, 0], [3, 1], [3, 2], [4, 3]]))"}, "expectedStdout": "True"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Topological sort via BFS (Kahn's algorithm): build adjacency list and in-degree count. Start with all nodes of in-degree 0 in a queue. Process each node, decrement in-degrees of neighbors, enqueue those reaching 0. If all nodes are processed, no cycle exists. Alternatively, use DFS with 3-color marking to detect back edges (cycles).",
+    "commonBugs": ["Building the graph with reversed edge direction (prerequisite [a, b] means b -> a)", "Not handling disconnected components (nodes with no prerequisites still need to be counted)", "DFS approach: confusing 'currently visiting' with 'fully visited' states, leading to false cycle detection"],
+    "expectedComplexity": "O(V + E) where V = numCourses, E = number of prerequisites"
+  }
+}

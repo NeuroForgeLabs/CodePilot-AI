@@ -21,13 +21,13 @@
     "go": "func solve(n int) int {\n    \n}"
   },
   "visibleTests": [
-    {"stdin": "print(solve(2))", "expectedStdout": "2"},
-    {"stdin": "print(solve(3))", "expectedStdout": "3"},
-    {"stdin": "print(solve(1))", "expectedStdout": "1"}
+    {"stdin": {"python": "print(solve(2))"}, "expectedStdout": "2"},
+    {"stdin": {"python": "print(solve(3))"}, "expectedStdout": "3"},
+    {"stdin": {"python": "print(solve(1))"}, "expectedStdout": "1"}
   ],
   "hiddenTests": [
-    {"stdin": "print(solve(5))", "expectedStdout": "8"},
-    {"stdin": "print(solve(10))", "expectedStdout": "89"}
+    {"stdin": {"python": "print(solve(5))"}, "expectedStdout": "8"},
+    {"stdin": {"python": "print(solve(10))"}, "expectedStdout": "89"}
   ],
   "notesForAI": {
     "coreIdea": "Fibonacci recurrence: ways(n) = ways(n-1) + ways(n-2). From step n, you either came from n-1 (1 step) or n-2 (2 steps). Use DP with O(1) space by keeping only last two values.",

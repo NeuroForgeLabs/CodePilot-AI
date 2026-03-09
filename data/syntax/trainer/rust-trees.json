@@ -1,0 +1,78 @@
+{
+  "id": "rust-trees",
+  "title": "Trees",
+  "description": "Binary trees are among the most tested interview topics. In Rust, TreeNode uses Option<Box<TreeNode>> for children. Master the node definition, DFS traversals (inorder/preorder/postorder), BFS with VecDeque, and recursive depth calculation.",
+  "language": "rust",
+  "category": "trees",
+  "order": 11,
+  "sections": [
+    {
+      "id": "tree-node",
+      "title": "TreeNode definition and construction",
+      "explanation": "In Rust interviews, define TreeNode as a struct with `val: i32`, `left: Option<Box<TreeNode>>`, and `right: Option<Box<TreeNode>>`. Use `Box` for heap allocation (since recursive types need indirection). Build trees by assigning `Some(Box::new(TreeNode { ... }))` to children.",
+      "example": "struct TreeNode {\n    val: i32,\n    left: Option<Box<TreeNode>>,\n    right: Option<Box<TreeNode>>,\n}\n\nimpl TreeNode {\n    fn new(val: i32) -> Self {\n        TreeNode { val, left: None, right: None }\n    }\n}\n\nfn main() {\n    let mut root = TreeNode::new(1);\n    root.left = Some(Box::new(TreeNode::new(2)));\n    root.right = Some(Box::new(TreeNode::new(3)));\n\n    println!(\"{}\", root.val);                        // 1\n    println!(\"{}\", root.left.as_ref().unwrap().val);  // 2\n    println!(\"{}\", root.right.as_ref().unwrap().val); // 3\n}",
+      "exercise": {
+        "prompt": "Define a TreeNode struct. Build a tree with root=10, left=5, right=15. Print all three values.",
+        "starterCode": "struct TreeNode {\n    val: i32,\n    left: Option<Box<TreeNode>>,\n    right: Option<Box<TreeNode>>,\n}\n\nimpl TreeNode {\n    fn new(val: i32) -> Self {\n        TreeNode { val, left: None, right: None }\n    }\n}\n\nfn main() {\n    let mut root = TreeNode::new(10);\n    root.left = Some(Box::new(TreeNode::new()));\n    root.right = Some(Box::new(TreeNode::new()));\n\n    println!(\"{}\", root.val);\n    println!(\"{}\", root.left.as_ref().unwrap().val);\n    println!(\"{}\", root.right.as_ref().unwrap().val);\n}",
+        "validation": [
+          {"type": "output", "expected": "10\n5\n15", "message": "Tree should have root=10, left=5, right=15"},
+          {"type": "contains", "patterns": ["TreeNode::new(5)", "TreeNode::new(15)", "Option<Box<TreeNode>>"], "message": "Pass 5 and 15 to TreeNode::new() and use Option<Box<TreeNode>> for children"}
+        ],
+        "testCode": "",
+        "hint": "Pass 5 and 15 as arguments to TreeNode::new() inside Box::new()."
+      },
+      "order": 1
+    },
+    {
+      "id": "dfs-traversals",
+      "title": "DFS traversals (inorder, preorder, postorder)",
+      "explanation": "**Inorder** (left, root, right) gives sorted output for BSTs. **Preorder** (root, left, right) is for serialization. **Postorder** (left, right, root) is for bottom-up computation. In Rust, pass `&Option<Box<TreeNode>>` and match on `Some(node)` / `None` as the base case.",
+      "example": "fn inorder(node: &Option<Box<TreeNode>>, result: &mut Vec<i32>) {\n    if let Some(n) = node {\n        inorder(&n.left, result);\n        result.push(n.val);\n        inorder(&n.right, result);\n    }\n}\n\nfn preorder(node: &Option<Box<TreeNode>>, result: &mut Vec<i32>) {\n    if let Some(n) = node {\n        result.push(n.val);\n        preorder(&n.left, result);\n        preorder(&n.right, result);\n    }\n}",
+      "exercise": {
+        "prompt": "Implement inorder DFS traversal. Build a BST: root=4, left=2, right=6. Run inorder and print the result space-separated (should be sorted: 2 4 6).",
+        "starterCode": "struct TreeNode {\n    val: i32,\n    left: Option<Box<TreeNode>>,\n    right: Option<Box<TreeNode>>,\n}\n\nimpl TreeNode {\n    fn new(val: i32) -> Self {\n        TreeNode { val, left: None, right: None }\n    }\n}\n\nfn inorder(node: &Option<Box<TreeNode>>, result: &mut Vec<i32>) {\n    if let Some(n) = node {\n        inorder(&n.left, result);\n        result.push(n.);\n        inorder(&n.right, result);\n    }\n}\n\nfn main() {\n    let mut root = TreeNode::new(4);\n    root.left = Some(Box::new(TreeNode::new(2)));\n    root.right = Some(Box::new(TreeNode::new(6)));\n\n    let root = Some(Box::new(root));\n    let mut result = Vec::new();\n    inorder(&root, &mut result);\n\n    for x in &result {\n        print!(\"{} \", x);\n    }\n    println!();\n}",
+        "validation": [
+          {"type": "output", "expected": "2 4 6", "message": "Inorder traversal of this BST produces sorted order: 2 4 6"},
+          {"type": "contains", "patterns": ["&n.left", "n.val", "&n.right"], "message": "Recurse on &n.left, push n.val, then recurse on &n.right for inorder"}
+        ],
+        "testCode": "",
+        "hint": "Push n.val between the left and right recursive calls for inorder traversal."
+      },
+      "order": 2
+    },
+    {
+      "id": "bfs-level-order",
+      "title": "BFS level-order traversal",
+      "explanation": "Level-order traversal uses a **VecDeque** to process nodes breadth-first. Since Rust's ownership makes tree BFS slightly tricky, we often work with references. Push the root, then loop: pop from front, process, push children. Use `.len()` per level for grouped output.",
+      "example": "fn main() {\n    // Build tree: 1 -> (2, 3), 2 -> (4, 5)\n    let mut root = TreeNode::new(1);\n    root.left = Some(Box::new(TreeNode::new(2)));\n    root.right = Some(Box::new(TreeNode::new(3)));\n    root.left.as_mut().unwrap().left = Some(Box::new(TreeNode::new(4)));\n    root.left.as_mut().unwrap().right = Some(Box::new(TreeNode::new(5)));\n\n    let mut queue: VecDeque<&TreeNode> = VecDeque::new();\n    queue.push_back(&root);\n    while !queue.is_empty() {\n        let sz = queue.len();\n        for _ in 0..sz {\n            let node = queue.pop_front().unwrap();\n            print!(\"{} \", node.val);\n            if let Some(ref left) = node.left {\n                queue.push_back(left);\n            }\n            if let Some(ref right) = node.right {\n                queue.push_back(right);\n            }\n        }\n        println!();\n    }\n}",
+      "exercise": {
+        "prompt": "Implement BFS level-order traversal. Build a tree: root=1, left=2 (children 4,5), right=3. Print each level on its own line.",
+        "starterCode": "struct TreeNode {\n    val: i32,\n    left: Option<Box<TreeNode>>,\n    right: Option<Box<TreeNode>>,\n}\n\nimpl TreeNode {\n    fn new(val: i32) -> Self {\n        TreeNode { val, left: None, right: None }\n    }\n}\n\nfn main() {\n    let mut root = TreeNode::new(1);\n    root.left = Some(Box::new(TreeNode::new(2)));\n    root.right = Some(Box::new(TreeNode::new(3)));\n    root.left.as_mut().unwrap().left = Some(Box::new(TreeNode::new(4)));\n    root.left.as_mut().unwrap().right = Some(Box::new(TreeNode::new(5)));\n\n    let mut queue: VecDeque<&TreeNode> = VecDeque::new();\n    queue.push_back(&root);\n    while !queue.is_empty() {\n        let sz = queue.len();\n        for _ in 0..sz {\n            let node = queue.pop_front().unwrap();\n            print!(\"{} \", node.val);\n            if let Some(ref left) = node.left {\n                queue.push_back(left);\n            }\n            if let Some(ref right) = node. {\n                queue.push_back(right);\n            }\n        }\n        println!();\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "1 \n2 3 \n4 5", "message": "Level 1: [1], Level 2: [2, 3], Level 3: [4, 5]"},
+          {"type": "contains", "patterns": ["queue.pop_front()", "queue.push_back(left)", "queue.push_back(right)"], "message": "Pop from front for FIFO, push left and right children for the next level"}
+        ],
+        "testCode": "",
+        "hint": "Access the right child with node.right and push it to the queue."
+      },
+      "order": 3
+    },
+    {
+      "id": "tree-depth",
+      "title": "Tree depth (recursive)",
+      "explanation": "Maximum depth is the number of nodes on the longest root-to-leaf path. The classic formula: `1 + max(depth(left), depth(right))` with base case 0 for None. In Rust, pattern match on `&Option<Box<TreeNode>>` — return 0 for None, recurse for Some.",
+      "example": "fn max_depth(node: &Option<Box<TreeNode>>) -> i32 {\n    match node {\n        None => 0,\n        Some(n) => 1 + std::cmp::max(max_depth(&n.left), max_depth(&n.right)),\n    }\n}\n\nfn main() {\n    let mut root = TreeNode::new(1);\n    root.left = Some(Box::new(TreeNode::new(2)));\n    root.left.as_mut().unwrap().left = Some(Box::new(TreeNode::new(4)));\n    root.right = Some(Box::new(TreeNode::new(3)));\n    let root = Some(Box::new(root));\n    println!(\"{}\", max_depth(&root));  // 3\n}",
+      "exercise": {
+        "prompt": "Implement a recursive max_depth function. Build a tree: root=1, left=2 (left child=4, which has left child=8), right=3. Print the max depth (should be 4).",
+        "starterCode": "struct TreeNode {\n    val: i32,\n    left: Option<Box<TreeNode>>,\n    right: Option<Box<TreeNode>>,\n}\n\nimpl TreeNode {\n    fn new(val: i32) -> Self {\n        TreeNode { val, left: None, right: None }\n    }\n}\n\nfn max_depth(node: &Option<Box<TreeNode>>) -> i32 {\n    match node {\n        None => 0,\n        Some(n) => 1 + std::cmp::max(max_depth(&n.left), max_depth(&n.)),\n    }\n}\n\nfn main() {\n    let mut root = TreeNode::new(1);\n    root.left = Some(Box::new(TreeNode::new(2)));\n    root.left.as_mut().unwrap().left = Some(Box::new(TreeNode::new(4)));\n    root.left.as_mut().unwrap().left.as_mut().unwrap().left = Some(Box::new(TreeNode::new(8)));\n    root.right = Some(Box::new(TreeNode::new(3)));\n\n    let root = Some(Box::new(root));\n    println!(\"{}\", max_depth(&root));\n}",
+        "validation": [
+          {"type": "output", "expected": "4", "message": "Longest path: 1->2->4->8, depth = 4"},
+          {"type": "contains", "patterns": ["None => 0", "max_depth(&n.left)", "max_depth(&n.right)"], "message": "Base case returns 0, recurse on both children and take the max + 1"}
+        ],
+        "testCode": "",
+        "hint": "Recurse on &n.right for the right subtree depth."
+      },
+      "order": 4
+    }
+  ]
+}

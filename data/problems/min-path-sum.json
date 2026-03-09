@@ -1,0 +1,39 @@
+{
+  "id": "min-path-sum",
+  "title": "Minimum Path Sum",
+  "difficulty": "Medium",
+  "tags": ["arrays", "matrix", "dynamic-programming"],
+  "prompt": "Given an m x n grid filled with non-negative numbers, find a path from top left to bottom right, which minimizes the sum of all numbers along its path.\n\nYou can only move either down or right at any step.\n\nFor example, given the grid:\n  [[1,3,1],\n   [1,5,1],\n   [4,2,1]]\nThe path 1 -> 3 -> 1 -> 1 -> 1 gives the minimum sum of 7.",
+  "examples": [
+    {"input": "grid = [[1,3,1],[1,5,1],[4,2,1]]", "output": "7"},
+    {"input": "grid = [[1,2,3],[4,5,6]]", "output": "12"}
+  ],
+  "constraints": [
+    "m == grid.length",
+    "n == grid[i].length",
+    "1 <= m, n <= 200",
+    "0 <= grid[i][j] <= 200"
+  ],
+  "starterCode": {
+    "python": "def solve(grid: list[list[int]]) -> int:\n    pass",
+    "javascript": "function solve(grid) {\n  \n}",
+    "typescript": "export function solve(grid: number[][]): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(int[][] grid) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(int[][] grid) {\n        \n    }\n}",
+    "go": "func solve(grid [][]int) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([[1,3,1],[1,5,1],[4,2,1]]))"}, "expectedStdout": "7"},
+    {"stdin": {"python": "print(solve([[1,2,3],[4,5,6]]))"}, "expectedStdout": "12"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([[5]]))"}, "expectedStdout": "5"},
+    {"stdin": {"python": "print(solve([[1,2],[1,1]]))"}, "expectedStdout": "3"},
+    {"stdin": {"python": "print(solve([[1,0,0],[0,0,0],[0,0,1]]))"}, "expectedStdout": "2"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Dynamic programming: dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1]). Initialize first row and first column as cumulative sums. Can be done in-place by modifying grid.",
+    "commonBugs": ["Not initializing the first row and first column as prefix sums", "Off-by-one index errors at boundaries", "Allowing diagonal movement (only right and down are valid)"],
+    "expectedComplexity": "O(m * n) time, O(1) extra space if in-place"
+  }
+}

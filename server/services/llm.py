@@ -9,8 +9,15 @@ from .prompts import (
     HINT_INTERVIEWER_TEMPLATE,
     HINT_LEARNING_TEMPLATE,
     HINT_SYSTEM_PROMPT,
+    PROBLEM_AI_ASK_TEMPLATE,
+    PROBLEM_AI_SYSTEM_PROMPT,
     REVIEW_SYSTEM_PROMPT,
     REVIEW_USER_TEMPLATE,
+    SYNTAX_ASK_TEMPLATE,
+    SYNTAX_EXERCISE_REVIEW_TEMPLATE,
+    SYNTAX_EXPLAIN_TEMPLATE,
+    SYNTAX_SYSTEM_PROMPT,
+    SYNTAX_TRANSLATE_TEMPLATE,
 )
 
 
@@ -113,3 +120,114 @@ async def generate_review(
             "edgeCases": [],
             "improvements": [],
         }
+
+
+async def generate_syntax_explanation(
+    action: str,
+    language: str,
+    snippet: str,
+    section_title: str,
+    section_explanation: str,
+    target_language: str | None = None,
+    question: str | None = None,
+    problem_title: str | None = None,
+    mode: str = "syntax",
+) -> str:
+    if mode == "problem" and question:
+        system_prompt = PROBLEM_AI_SYSTEM_PROMPT
+        user_prompt = PROBLEM_AI_ASK_TEMPLATE.format(
+            problem_title=problem_title or "a coding problem",
+            language=language,
+            question=question,
+        )
+        temperature = 0.4
+    elif action == "translate" and target_language:
+        system_prompt = SYNTAX_SYSTEM_PROMPT
+        user_prompt = SYNTAX_TRANSLATE_TEMPLATE.format(
+            language=language,
+            target_language=target_language,
+            snippet=snippet,
+            section_title=section_title,
+            section_explanation=section_explanation,
+        )
+        temperature = 0.2
+    elif action == "ask" and question:
+        system_prompt = SYNTAX_SYSTEM_PROMPT
+        problem_context = ""
+        if problem_title:
+            problem_context = f"The user is currently working on the \"{problem_title}\" problem."
+        user_prompt = SYNTAX_ASK_TEMPLATE.format(
+            language=language,
+            snippet=snippet,
+            section_title=section_title,
+            section_explanation=section_explanation,
+            problem_context=problem_context,
+            question=question,
+        )
+        temperature = 0.5
+    else:
+        system_prompt = SYNTAX_SYSTEM_PROMPT
+        problem_context = ""
+        if problem_title:
+            problem_context = f"The user is currently working on the \"{problem_title}\" problem."
+        user_prompt = SYNTAX_EXPLAIN_TEMPLATE.format(
+            language=language,
+            snippet=snippet,
+            section_title=section_title,
+            section_explanation=section_explanation,
+            problem_context=problem_context,
+        )
+        temperature = 0.3
+
+    client = _get_client()
+    resp = await client.chat.completions.create(
+        model=_get_model(),
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ],
+        temperature=temperature,
+        max_tokens=600,
+    )
+    return resp.choices[0].message.content or "No explanation available."
+
+
+async def generate_exercise_feedback(
+    language: str,
+    section_title: str,
+    exercise_prompt: str,
+    code: str,
+    passed: bool,
+    stdout: str,
+    stderr: str,
+    check_details: str,
+) -> str:
+    feedback_instruction = (
+        "The user passed! Give a short congratulation and one interview tip related to this syntax."
+        if passed else
+        "The user's code has issues. Identify the most likely mistake and suggest a fix. Don't give the full answer."
+    )
+
+    user_prompt = SYNTAX_EXERCISE_REVIEW_TEMPLATE.format(
+        language=language,
+        section_title=section_title,
+        exercise_prompt=exercise_prompt,
+        code=code,
+        passed=str(passed),
+        stdout=stdout or "(empty)",
+        stderr=stderr or "(none)",
+        check_details=check_details,
+        feedback_instruction=feedback_instruction,
+    )
+
+    client = _get_client()
+    resp = await client.chat.completions.create(
+        model=_get_model(),
+        messages=[
+            {"role": "system", "content": SYNTAX_SYSTEM_PROMPT},
+            {"role": "user", "content": user_prompt},
+        ],
+        temperature=0.3,
+        max_tokens=300,
+    )
+    return resp.choices[0].message.content or ""

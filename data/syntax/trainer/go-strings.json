@@ -1,0 +1,78 @@
+{
+  "id": "go-strings",
+  "title": "Strings",
+  "description": "Go strings are immutable byte slices. Master rune iteration, the strings package, efficient building with strings.Builder, and strconv for parsing — essential for every string interview problem.",
+  "language": "go",
+  "category": "strings",
+  "order": 3,
+  "sections": [
+    {
+      "id": "rune-iteration",
+      "title": "Rune iteration",
+      "explanation": "Go strings are UTF-8 byte slices. Indexing with `s[i]` gives a **byte**, not a character. Use **for _, ch := range s** to iterate over **runes** (Unicode code points). For ASCII interview problems, `s[i]` works fine, but knowing the distinction shows Go fluency.",
+      "example": "func main() {\n    s := \"hello\"\n\n    // Rune iteration (correct for Unicode)\n    for i, ch := range s {\n        fmt.Printf(\"%d: %c\\n\", i, ch)\n    }\n\n    // Byte access (fine for ASCII)\n    fmt.Println(s[0])        // 104 (byte value of 'h')\n    fmt.Println(string(s[0])) // h\n    fmt.Println(len(s))       // 5\n}",
+      "exercise": {
+        "prompt": "Given s := \"abcde\", iterate with range to print each character on its own line using fmt.Printf(\"%c\\n\", ch). Then print the length of the string.",
+        "starterCode": "func main() {\n    s := \"abcde\"\n\n    for _, ch := range  {\n        fmt.Printf(\"%c\\n\", )\n    }\n\n    fmt.Println(len())\n}",
+        "validation": [
+          {"type": "output", "expected": "a\nb\nc\nd\ne\n5", "message": "Each character on its own line, then the length"},
+          {"type": "contains", "patterns": ["range s", "%c", "len(s)"], "message": "Use range for rune iteration and len() for string length"}
+        ],
+        "testCode": "",
+        "hint": "for _, ch := range s iterates runes. fmt.Printf(\"%c\\n\", ch) prints the character. len(s) gives byte length."
+      },
+      "order": 1
+    },
+    {
+      "id": "split-join",
+      "title": "strings.Split and Join",
+      "explanation": "**strings.Split(s, sep)** breaks a string into a slice. **strings.Join(slice, sep)** concatenates with a separator. These are the Go equivalents of Python's split/join and appear in parsing, tokenizing, and output formatting problems.",
+      "example": "func main() {\n    s := \"one,two,three\"\n    parts := strings.Split(s, \",\")\n    fmt.Println(parts)               // [one two three]\n    fmt.Println(len(parts))          // 3\n\n    joined := strings.Join(parts, \" - \")\n    fmt.Println(joined)              // one - two - three\n}",
+      "exercise": {
+        "prompt": "Split the string \"apple banana cherry\" by spaces. Print the resulting slice and its length. Then join the parts with \", \" and print the result.",
+        "starterCode": "func main() {\n    s := \"apple banana cherry\"\n    parts := strings.(s, \" \")\n    fmt.Println(parts)\n    fmt.Println(len(parts))\n\n    joined := strings.(parts, \", \")\n    fmt.Println(joined)\n}",
+        "validation": [
+          {"type": "output", "expected": "[apple banana cherry]\n3\napple, banana, cherry", "message": "Split by space gives 3 parts, join with comma-space"},
+          {"type": "contains", "patterns": ["strings.Split", "strings.Join"], "message": "Use strings.Split and strings.Join"}
+        ],
+        "testCode": "",
+        "hint": "strings.Split(s, \" \") splits by space. strings.Join(parts, \", \") joins with comma-space."
+      },
+      "order": 2
+    },
+    {
+      "id": "string-builder",
+      "title": "Efficient string building",
+      "explanation": "String concatenation with `+` creates a new string each time — O(n^2) for building in a loop. Use **strings.Builder** for O(n) construction. Call `.WriteString()` or `.WriteByte()` to append, then `.String()` to get the result. Interviewers notice this optimization.",
+      "example": "func main() {\n    var sb strings.Builder\n    words := []string{\"hello\", \"world\", \"go\"}\n    for i, w := range words {\n        if i > 0 {\n            sb.WriteString(\" \")\n        }\n        sb.WriteString(w)\n    }\n    fmt.Println(sb.String())  // hello world go\n}",
+      "exercise": {
+        "prompt": "Build the string \"a-b-c-d-e\" using a strings.Builder and a loop over the slice []string{\"a\",\"b\",\"c\",\"d\",\"e\"}. Add \"-\" between elements (not before the first). Print the result.",
+        "starterCode": "func main() {\n    var sb strings.Builder\n    parts := []string{\"a\", \"b\", \"c\", \"d\", \"e\"}\n\n    for i, p := range parts {\n        if i > 0 {\n            sb.WriteString(\"\")\n        }\n        sb.WriteString(p)\n    }\n\n    fmt.Println(sb.String())\n}",
+        "validation": [
+          {"type": "output", "expected": "a-b-c-d-e", "message": "Build the hyphen-separated string using Builder"},
+          {"type": "contains", "patterns": ["strings.Builder", "WriteString"], "message": "Use strings.Builder with WriteString for efficient building"}
+        ],
+        "testCode": "",
+        "hint": "Write \"-\" as the separator: sb.WriteString(\"-\"). The if i > 0 check skips the separator before the first element."
+      },
+      "order": 3
+    },
+    {
+      "id": "strconv-parsing",
+      "title": "String/number conversion with strconv",
+      "explanation": "The **strconv** package handles all string-to-number and number-to-string conversions. **Atoi/Itoa** for ints, **ParseFloat/FormatFloat** for floats. Atoi returns `(int, error)` — always handle or ignore the error with `_`. These are critical for parsing input in interview problems.",
+      "example": "func main() {\n    n, _ := strconv.Atoi(\"42\")\n    fmt.Println(n + 8)               // 50\n\n    s := strconv.Itoa(100)\n    fmt.Println(s + \" points\")       // 100 points\n\n    f, _ := strconv.ParseFloat(\"3.14\", 64)\n    fmt.Println(f * 2)               // 6.28\n}",
+      "exercise": {
+        "prompt": "Parse \"123\" to an int, \"2.5\" to a float64, and convert the int 999 to a string. Print the int + 1, the float * 2, and the string concatenated with \" bottles\".",
+        "starterCode": "func main() {\n    n, _ := strconv.(\"123\")\n    f, _ := strconv.(\"2.5\", 64)\n    s := strconv.(999)\n\n    fmt.Println(n + 1)\n    fmt.Println(f * 2)\n    fmt.Println(s + \" bottles\")\n}",
+        "validation": [
+          {"type": "output", "expected": "124\n5\n999 bottles", "message": "Parse correctly: Atoi for int, ParseFloat for float64, Itoa for string"},
+          {"type": "contains", "patterns": ["strconv.Atoi", "strconv.ParseFloat", "strconv.Itoa"], "message": "Use the correct strconv functions for each conversion"}
+        ],
+        "testCode": "",
+        "hint": "strconv.Atoi(\"123\") -> 123. strconv.ParseFloat(\"2.5\", 64) -> 2.5. strconv.Itoa(999) -> \"999\"."
+      },
+      "order": 4
+    }
+  ]
+}

@@ -8,18 +8,25 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
+import re
+
 from models.schemas import (
+    CheckDetail,
     ExecuteRequest,
     ExecuteResponse,
     ExecuteSummary,
+    ExerciseCheckRequest,
+    ExerciseCheckResponse,
     HintRequest,
     HintResponse,
     ReviewRequest,
     ReviewResponse,
+    SyntaxExplainRequest,
+    SyntaxExplainResponse,
     TestResult,
 )
 from services.judge0 import LANGUAGE_IDS, Judge0RateLimitError, build_submission_source, submit_batch
-from services.llm import generate_hint, generate_review
+from services.llm import generate_exercise_feedback, generate_hint, generate_review, generate_syntax_explanation
 
 load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / ".env.local")
 load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / ".env")
@@ -100,7 +107,15 @@ async def execute_code(req: ExecuteRequest):
     if not all_tests:
         raise HTTPException(status_code=400, detail="No tests found for this problem")
 
-    test_inputs = [t["stdin"] for t in all_tests]
+    def _get_stdin(test: dict, lang: str) -> str:
+        stdin = test["stdin"]
+        if isinstance(stdin, dict):
+            if lang in stdin:
+                return stdin[lang]
+            return stdin.get("python", next(iter(stdin.values()), ""))
+        return stdin
+
+    test_inputs = [_get_stdin(t, req.language) for t in all_tests]
     expected_outputs = [t["expectedStdout"] for t in all_tests]
 
     try:
@@ -188,4 +203,99 @@ async def review_code(req: ReviewRequest):
         complexity=review.get("complexity", {"time": "Unknown", "space": "Unknown"}),
         edgeCases=review.get("edgeCases", []),
         improvements=review.get("improvements", []),
+    )
+
+
+@app.post("/syntax/explain", response_model=SyntaxExplainResponse)
+async def syntax_explain(req: SyntaxExplainRequest):
+    problem_title: str | None = None
+    if req.problemId:
+        try:
+            problem = _get_problem(req.problemId)
+            problem_title = problem.get("title")
+        except Exception:
+            pass
+
+    try:
+        explanation = await generate_syntax_explanation(
+            action=req.action,
+            language=req.language,
+            snippet=req.snippet,
+            section_title=req.sectionTitle,
+            section_explanation=req.sectionExplanation,
+            target_language=req.targetLanguage,
+            question=req.question,
+            problem_title=problem_title,
+            mode=req.mode,
+        )
+    except EnvironmentError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"AI error: {str(e)}")
+
+    return SyntaxExplainResponse(explanation=explanation)
+
+
+@app.post("/syntax/check", response_model=ExerciseCheckResponse)
+async def syntax_check(req: ExerciseCheckRequest):
+    checks: list[CheckDetail] = []
+    stdout = ""
+    stderr = ""
+    all_passed = True
+
+    if req.language not in LANGUAGE_IDS:
+        raise HTTPException(status_code=400, detail=f"Unsupported language: {req.language}")
+
+    source = build_submission_source(req.language, req.code)
+    try:
+        results = await submit_batch(req.language, source, [""], [req.expectedOutput or ""])
+        result = results[0] if results else {}
+        stdout = result.get("stdout", "").strip()
+        stderr = result.get("stderr", "").strip()
+    except EnvironmentError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except Judge0RateLimitError as e:
+        raise HTTPException(status_code=429, detail=str(e))
+    except Exception as e:
+        stderr = str(e)
+
+    if req.expectedOutput:
+        output_match = stdout == req.expectedOutput.strip()
+        checks.append(CheckDetail(label="Correct output", passed=output_match))
+        if not output_match:
+            all_passed = False
+
+    for pattern in req.requiredPatterns:
+        found = pattern in req.code
+        checks.append(CheckDetail(label=f"Uses `{pattern}`", passed=found))
+        if not found:
+            all_passed = False
+
+    if stderr and not stdout:
+        all_passed = False
+        checks.append(CheckDetail(label="No runtime errors", passed=False))
+
+    check_summary = ", ".join(f"{c.label}: {'pass' if c.passed else 'FAIL'}" for c in checks)
+
+    ai_feedback = ""
+    try:
+        ai_feedback = await generate_exercise_feedback(
+            language=req.language,
+            section_title=req.sectionTitle,
+            exercise_prompt=req.exercisePrompt,
+            code=req.code,
+            passed=all_passed,
+            stdout=stdout,
+            stderr=stderr,
+            check_details=check_summary,
+        )
+    except Exception:
+        ai_feedback = "Great effort!" if all_passed else "Check the output and try again."
+
+    return ExerciseCheckResponse(
+        passed=all_passed,
+        stdout=stdout,
+        stderr=stderr,
+        checks=checks,
+        aiFeedback=ai_feedback,
     )

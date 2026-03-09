@@ -1,0 +1,39 @@
+{
+  "id": "longest-increasing-subsequence",
+  "title": "Longest Increasing Subsequence",
+  "difficulty": "Medium",
+  "tags": ["arrays", "dynamic-programming", "binary-search"],
+  "prompt": "Given an integer array nums, return the length of the longest strictly increasing subsequence.\n\nA subsequence is a sequence that can be derived from an array by deleting some or no elements without changing the order of the remaining elements.\n\nExample: nums = [10,9,2,5,3,7,101,18] → 4 because the longest increasing subsequence is [2,3,7,101] (or [2,5,7,101], etc.).",
+  "examples": [
+    {"input": "nums = [10,9,2,5,3,7,101,18]", "output": "4"},
+    {"input": "nums = [0,1,0,3,2,3]", "output": "4"},
+    {"input": "nums = [7,7,7,7,7,7,7]", "output": "1"}
+  ],
+  "constraints": [
+    "1 <= nums.length <= 2500",
+    "-10^4 <= nums[i] <= 10^4"
+  ],
+  "starterCode": {
+    "python": "def solve(nums):\n    pass",
+    "javascript": "function solve(nums) {\n  \n}",
+    "typescript": "export function solve(nums: number[]): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(int[] nums) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(int[] nums) {\n        \n    }\n}",
+    "go": "func solve(nums []int) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([10,9,2,5,3,7,101,18]))"}, "expectedStdout": "4"},
+    {"stdin": {"python": "print(solve([0,1,0,3,2,3]))"}, "expectedStdout": "4"},
+    {"stdin": {"python": "print(solve([7,7,7,7,7,7,7]))"}, "expectedStdout": "1"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([1]))"}, "expectedStdout": "1"},
+    {"stdin": {"python": "print(solve([1,2,3,4,5]))"}, "expectedStdout": "5"},
+    {"stdin": {"python": "print(solve([5,4,3,2,1]))"}, "expectedStdout": "1"}
+  ],
+  "notesForAI": {
+    "coreIdea": "O(n^2) DP: dp[i] = length of LIS ending at index i. For each i, check all j < i where nums[j] < nums[i]. O(n log n) optimization: maintain a 'tails' array where tails[k] is the smallest tail element of all increasing subsequences of length k+1. Use binary search to update it.",
+    "commonBugs": ["Using non-strict inequality (>= instead of >) allowing equal elements in the subsequence", "In the O(n log n) approach, using upper_bound instead of lower_bound (or vice versa)", "Returning dp array length instead of max(dp)"],
+    "expectedComplexity": "O(n log n) with binary search optimization, O(n^2) with basic DP"
+  }
+}

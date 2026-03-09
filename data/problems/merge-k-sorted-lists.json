@@ -1,0 +1,42 @@
+{
+  "id": "merge-k-sorted-lists",
+  "title": "Merge K Sorted Lists",
+  "difficulty": "Hard",
+  "tags": ["linked-list", "heap", "sorting"],
+  "prompt": "You are given an array of `k` sorted arrays. Merge all the sorted arrays into one sorted array and return it.\n\nEach inner array is sorted in ascending order.",
+  "examples": [
+    {"input": "lists = [[1, 4, 5], [1, 3, 4], [2, 6]]", "output": "[1, 1, 2, 3, 4, 4, 5, 6]\nExplanation: Merging [1,4,5], [1,3,4], and [2,6] yields [1,1,2,3,4,4,5,6]."},
+    {"input": "lists = []", "output": "[]\nExplanation: No lists to merge."},
+    {"input": "lists = [[]]", "output": "[]\nExplanation: One empty list returns empty."}
+  ],
+  "constraints": [
+    "k == lists.length",
+    "0 <= k <= 10^4",
+    "0 <= lists[i].length <= 500",
+    "-10^4 <= lists[i][j] <= 10^4",
+    "lists[i] is sorted in ascending order.",
+    "The total number of elements across all lists does not exceed 10^4."
+  ],
+  "starterCode": {
+    "python": "def solve(lists):\n    pass",
+    "javascript": "function solve(lists) {\n  \n}",
+    "typescript": "export function solve(lists: number[][]): number[] {\n  \n}",
+    "java": "class Solution {\n    public int[] solve(int[][] lists) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int[] Solve(int[][] lists) {\n        \n    }\n}",
+    "go": "func solve(lists [][]int) []int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([[1, 4, 5], [1, 3, 4], [2, 6]]))"}, "expectedStdout": "[1, 1, 2, 3, 4, 4, 5, 6]"},
+    {"stdin": {"python": "print(solve([]))"}, "expectedStdout": "[]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([[]]))"}, "expectedStdout": "[]"},
+    {"stdin": {"python": "print(solve([[1], [0]]))"}, "expectedStdout": "[0, 1]"},
+    {"stdin": {"python": "print(solve([[-2, -1, 0], [-3, 5], [1, 2, 3]]))"}, "expectedStdout": "[-3, -2, -1, 0, 1, 2, 3, 5]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use a min-heap of size k. Push the first element of each list with its list index and element index. Pop the smallest, add to result, then push the next element from that list. Alternatively, use divide-and-conquer merging pairs of lists.",
+    "commonBugs": ["Not handling empty input lists or lists containing empty arrays", "Heap comparison issues when values are equal (need tiebreaker)", "Forgetting to advance the index pointer after popping from heap"],
+    "expectedComplexity": "O(N log k) where N is total elements and k is number of lists"
+  }
+}

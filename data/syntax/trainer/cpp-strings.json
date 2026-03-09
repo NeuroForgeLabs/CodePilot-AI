@@ -1,0 +1,78 @@
+{
+  "id": "cpp-strings",
+  "title": "Strings",
+  "description": "String manipulation is everywhere in interviews — master C++ string iteration, substr, find, and conversion functions so you can handle parsing and pattern problems with confidence.",
+  "language": "cpp",
+  "category": "strings",
+  "order": 3,
+  "sections": [
+    {
+      "id": "string-iteration",
+      "title": "String iteration and access",
+      "explanation": "C++ strings support index access with `s[i]` and range-based for loops. Use `.size()` or `.length()` for the length. Characters are `char` type — you can do arithmetic like `c - 'a'` to get alphabetic indices (0-25), which is critical for frequency-counting problems.",
+      "example": "string s = \"hello\";\ncout << s[0] << endl;      // h\ncout << s.size() << endl;  // 5\n\nfor (char c : s) {\n    cout << c << \" \";\n}\n// Output: h e l l o\n\n// Character arithmetic\nchar c = 'c';\ncout << c - 'a' << endl;  // 2",
+      "exercise": {
+        "prompt": "Given the string \"interview\", print its length, then print each character on the same line separated by spaces, then print the alphabetic index (0-based) of the first character 'i'.",
+        "starterCode": "int main() {\n    string s = \"interview\";\n    cout << s.() << endl;\n    for (char c : s) {\n        cout << c << \" \";\n    }\n    cout << endl;\n    cout << s[0] - '' << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "9\ni n t e r v i e w \n8", "message": "Length is 9, print chars space-separated, and 'i' - 'a' = 8"},
+          {"type": "contains", "patterns": [".size()", "- 'a'"], "message": "Use .size() for length and subtract 'a' for alphabetic index"}
+        ],
+        "testCode": "",
+        "hint": "s.size() gives 9. The character 'i' minus 'a' is 8 (since i is the 9th letter, 0-indexed = 8)."
+      },
+      "order": 1
+    },
+    {
+      "id": "substr-find",
+      "title": "substr and find",
+      "explanation": "**substr(pos, len)** extracts a substring starting at `pos` with length `len`. **find(target)** returns the index of the first occurrence, or `string::npos` if not found. These are essential for parsing and pattern-matching problems.",
+      "example": "string s = \"hello world\";\ncout << s.substr(0, 5) << endl;  // hello\ncout << s.substr(6) << endl;     // world\n\nsize_t pos = s.find(\"world\");\nif (pos != string::npos) {\n    cout << \"Found at \" << pos << endl;  // Found at 6\n}\n\nsize_t miss = s.find(\"xyz\");\ncout << (miss == string::npos) << endl;  // 1 (true)",
+      "exercise": {
+        "prompt": "Given the string \"coding-interview\", extract \"coding\" using substr(0, 6) and \"interview\" using substr(7). Then use find to locate the position of the hyphen '-'. Print all three results.",
+        "starterCode": "int main() {\n    string s = \"coding-interview\";\n    string first = s.substr(0, );\n    string second = s.substr();\n    size_t pos = s.(\"-\");\n\n    cout << first << endl;\n    cout << second << endl;\n    cout << pos << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "coding\ninterview\n6", "message": "Extract 'coding', 'interview', and find '-' at position 6"},
+          {"type": "contains", "patterns": ["substr(0, 6)", "substr(7)", "find(\"-\")"], "message": "Use substr with correct positions and find for the hyphen"}
+        ],
+        "testCode": "",
+        "hint": "substr(0, 6) gets the first 6 chars. substr(7) gets everything from index 7 onward. find(\"-\") returns 6."
+      },
+      "order": 2
+    },
+    {
+      "id": "to-string-stoi",
+      "title": "to_string and stoi",
+      "explanation": "**to_string(num)** converts a number to a string. **stoi(s)** parses a string to int, **stoll(s)** to long long, and **stod(s)** to double. These are your go-to conversion functions for building output strings or parsing input in interview problems.",
+      "example": "int num = 42;\nstring s = to_string(num);\ncout << s + \" is the answer\" << endl;  // 42 is the answer\n\nstring input = \"12345\";\nint parsed = stoi(input);\ncout << parsed + 1 << endl;  // 12346\n\nlong long big = stoll(\"9999999999\");\ncout << big << endl;  // 9999999999",
+      "exercise": {
+        "prompt": "Convert int 100 to a string, then concatenate it with \" bottles\". Parse the string \"256\" to an int and add 44 to it. Print both results.",
+        "starterCode": "int main() {\n    string s = (100);\n    cout << s + \" bottles\" << endl;\n\n    int num = (\"256\");\n    cout << num + 44 << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "100 bottles\n300", "message": "to_string(100) + \" bottles\" and stoi(\"256\") + 44 = 300"},
+          {"type": "contains", "patterns": ["to_string", "stoi"], "message": "Use to_string for number-to-string and stoi for string-to-number"}
+        ],
+        "testCode": "",
+        "hint": "s = to_string(100) and num = stoi(\"256\"). String concatenation uses the + operator."
+      },
+      "order": 3
+    },
+    {
+      "id": "string-concatenation",
+      "title": "String concatenation and building",
+      "explanation": "Use the **+** operator or **+=** for string concatenation. For building strings character by character (common in interview problems), use `string result = \"\"; result += c;`. For performance-critical cases, use `ostringstream` or pre-allocated strings, but in interviews the simple approach is fine.",
+      "example": "string result = \"\";\nvector<string> words = {\"hello\", \"world\", \"foo\"};\nfor (int i = 0; i < (int)words.size(); i++) {\n    if (i > 0) result += \" \";\n    result += words[i];\n}\ncout << result << endl;  // hello world foo\n\n// Building from characters\nstring reversed = \"\";\nstring s = \"abc\";\nfor (int i = s.size() - 1; i >= 0; i--) {\n    reversed += s[i];\n}\ncout << reversed << endl;  // cba",
+      "exercise": {
+        "prompt": "Given a vector of words {\"the\", \"quick\", \"fox\"}, join them into a single string separated by spaces. Then reverse the string \"abcde\" by iterating backwards and building a new string. Print both results.",
+        "starterCode": "int main() {\n    vector<string> words = {\"the\", \"quick\", \"fox\"};\n    string joined = \"\";\n    for (int i = 0; i < (int)words.size(); i++) {\n        if (i > 0) joined += \" \";\n        joined += words[];\n    }\n    cout << joined << endl;\n\n    string s = \"abcde\";\n    string reversed = \"\";\n    for (int i = s.size() - 1; i >= 0; i--) {\n        reversed += s[];\n    }\n    cout << reversed << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "the quick fox\nedcba", "message": "Join the words with spaces and reverse 'abcde' to 'edcba'"},
+          {"type": "contains", "patterns": ["words[i]", "s[i]", "+= \" \""], "message": "Access with [i] and use += for concatenation"}
+        ],
+        "testCode": "",
+        "hint": "Access words[i] and s[i] with the loop variable. Use += to append characters or strings."
+      },
+      "order": 4
+    }
+  ]
+}

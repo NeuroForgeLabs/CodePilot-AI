@@ -1,0 +1,78 @@
+{
+  "id": "typescript-functions",
+  "title": "Functions",
+  "description": "Functions are the building blocks of every interview solution. Master TypeScript's typed parameters, return types, arrow functions, and generics to write clear, type-safe code under pressure.",
+  "language": "typescript",
+  "category": "functions",
+  "order": 4,
+  "sections": [
+    {
+      "id": "typed-params-return",
+      "title": "Typed parameters and return types",
+      "explanation": "In TypeScript, annotate every parameter and the return type. This catches bugs before you run the code — passing the wrong type to a function is a common interview mistake. The syntax is `function name(param: Type): ReturnType`.",
+      "example": "function add(a: number, b: number): number {\n  return a + b;\n}\n\nfunction greet(name: string): string {\n  return `Hello, ${name}`;\n}\n\nconsole.log(add(3, 7));        // 10\nconsole.log(greet(\"Alice\"));   // Hello, Alice",
+      "exercise": {
+        "prompt": "Write a function `multiply` that takes two numbers and returns their product. Write a function `repeat` that takes a string and a count, returning the string repeated count times. Print multiply(6, 7) and repeat(\"ab\", 3).",
+        "starterCode": "function multiply(a: number, b: number): ___ {\n  return a * b\n}\n\nfunction repeat(s: string, count: number): ___ {\n  return s.repeat(count)\n}\n\nconsole.log(multiply(6, 7))\nconsole.log(repeat(\"ab\", 3))",
+        "validation": [
+          {"type": "output", "expected": "42\nababab", "message": "multiply(6,7)=42, repeat(\"ab\",3)=\"ababab\""},
+          {"type": "contains", "patterns": ["): number", "): string"], "message": "Annotate return types explicitly"}
+        ],
+        "testCode": "",
+        "hint": "multiply returns number, repeat returns string. Fill in the return type annotations after the closing parenthesis."
+      },
+      "order": 1
+    },
+    {
+      "id": "arrow-functions",
+      "title": "Arrow functions with types",
+      "explanation": "Arrow functions are concise and commonly used as callbacks. In TypeScript, the type annotation syntax is the same. For single-expression bodies, you can omit the braces and return keyword. Interviewers expect you to use arrows fluently in sort comparators, map callbacks, etc.",
+      "example": "const square = (n: number): number => n * n;\n\nconst isEven = (n: number): boolean => n % 2 === 0;\n\nconst sum = (nums: number[]): number => {\n  let total: number = 0;\n  for (const n of nums) total += n;\n  return total;\n};\n\nconsole.log(square(5));           // 25\nconsole.log(isEven(4));           // true\nconsole.log(sum([1, 2, 3, 4]));   // 10",
+      "exercise": {
+        "prompt": "Write an arrow function `double` that takes a number and returns it doubled. Write an arrow function `isPositive` that takes a number and returns a boolean. Print double(21) and isPositive(-5).",
+        "starterCode": "const double = (n: number): ___ => n * 2\n\nconst isPositive = (n: number): ___ => n > 0\n\nconsole.log(double(21))\nconsole.log(isPositive(-5))",
+        "validation": [
+          {"type": "output", "expected": "42\nfalse", "message": "double(21)=42, isPositive(-5)=false"},
+          {"type": "contains", "patterns": ["=> n * 2", "=> n > 0"], "message": "Use concise arrow function syntax"}
+        ],
+        "testCode": "",
+        "hint": "double returns number, isPositive returns boolean. Arrow functions with single expressions don't need braces."
+      },
+      "order": 2
+    },
+    {
+      "id": "optional-default-params",
+      "title": "Optional and default parameters",
+      "explanation": "Optional parameters use `?` and default parameters use `= value`. In interviews, these are useful for functions that take optional configuration like a starting index or initial value. Optional parameters must come after required ones.",
+      "example": "function search(arr: number[], target: number, start: number = 0): number {\n  for (let i = start; i < arr.length; i++) {\n    if (arr[i] === target) return i;\n  }\n  return -1;\n}\n\nfunction formatResult(val: number, label?: string): string {\n  return label ? `${label}: ${val}` : `${val}`;\n}\n\nconsole.log(search([5, 3, 8, 3], 3));      // 1\nconsole.log(search([5, 3, 8, 3], 3, 2));   // 3\nconsole.log(formatResult(42));              // 42\nconsole.log(formatResult(42, \"answer\"));    // answer: 42",
+      "exercise": {
+        "prompt": "Write a function `pad` that takes a string, a target length, and an optional fill character (default \" \"). Pad the string on the right to reach target length. Print pad(\"hi\", 5) and pad(\"hi\", 5, \".\").",
+        "starterCode": "function pad(s: string, len: number, fill: string = ___): string {\n  let result: string = s\n  while (result.length < len) {\n    result += fill\n  }\n  return result\n}\n\nconsole.log(`\"${pad(\"hi\", 5)}\"`)\nconsole.log(`\"${pad(\"hi\", 5, \".\")}\"`)",
+        "validation": [
+          {"type": "output", "expected": "\"hi   \"\n\"hi...\"", "message": "Default pads with spaces, override pads with dots"},
+          {"type": "contains", "patterns": ["= \" \"", "fill: string"], "message": "Use a default parameter for the fill character"}
+        ],
+        "testCode": "",
+        "hint": "Set the default fill to \" \" (space). The while loop appends fill until result.length reaches len."
+      },
+      "order": 3
+    },
+    {
+      "id": "generics-basics",
+      "title": "Generics basics",
+      "explanation": "Generics let you write functions that work with any type while preserving type safety. The syntax `<T>` introduces a type parameter. This is critical for writing reusable data structure helpers in interviews — a single `swap<T>` works for numbers, strings, or any type.",
+      "example": "function identity<T>(val: T): T {\n  return val;\n}\n\nfunction firstElement<T>(arr: T[]): T | undefined {\n  return arr[0];\n}\n\nconsole.log(identity<number>(42));       // 42\nconsole.log(identity<string>(\"hello\")); // hello\nconsole.log(firstElement([10, 20]));    // 10\nconsole.log(firstElement([\"a\", \"b\"])); // a",
+      "exercise": {
+        "prompt": "Write a generic function `lastElement<T>` that takes a `T[]` and returns the last element (or undefined if empty). Print the result for [1,2,3] and [\"x\",\"y\"].",
+        "starterCode": "function lastElement<T>(arr: T[]): T | undefined {\n  if (arr.length === 0) return undefined\n  return arr[arr.___ - 1]\n}\n\nconsole.log(lastElement([1, 2, 3]))\nconsole.log(lastElement([\"x\", \"y\"]))",
+        "validation": [
+          {"type": "output", "expected": "3\ny", "message": "Last elements are 3 and y"},
+          {"type": "contains", "patterns": ["<T>", "T[]", "T | undefined"], "message": "Use generic type parameter T"}
+        ],
+        "testCode": "",
+        "hint": "Access arr[arr.length - 1] to get the last element. The generic <T> makes this work for any element type."
+      },
+      "order": 4
+    }
+  ]
+}

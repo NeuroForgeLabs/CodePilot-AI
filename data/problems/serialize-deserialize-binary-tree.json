@@ -1,0 +1,38 @@
+{
+  "id": "serialize-deserialize-binary-tree",
+  "title": "Serialize and Deserialize Binary Tree",
+  "difficulty": "Hard",
+  "tags": ["tree", "strings", "bfs"],
+  "prompt": "Design an algorithm to serialize and deserialize a binary tree. The tree is represented as an array in level-order (BFS) format, where `null` represents a missing node.\n\nImplement a `solve` function that takes a level-order array representation of a binary tree, serializes it to a string, deserializes it back, and returns the level-order array representation of the reconstructed tree.\n\nThe input and output should be identical if the algorithm is correct. Trailing nulls should be removed from the output.",
+  "examples": [
+    {"input": "tree = [1, 2, 3, null, null, 4, 5]", "output": "[1, 2, 3, None, None, 4, 5]\nExplanation: The tree is serialized to a string and deserialized back to the same structure."},
+    {"input": "tree = []", "output": "[]\nExplanation: An empty tree serializes and deserializes to empty."}
+  ],
+  "constraints": [
+    "The number of nodes in the tree is in the range [0, 10^4].",
+    "-1000 <= Node.val <= 1000",
+    "The tree is given as a level-order array with null for missing nodes."
+  ],
+  "starterCode": {
+    "python": "def solve(tree):\n    pass",
+    "javascript": "function solve(tree) {\n  \n}",
+    "typescript": "export function solve(tree: (number | null)[]): (number | null)[] {\n  \n}",
+    "java": "class Solution {\n    public Integer[] solve(Integer[] tree) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int?[] Solve(int?[] tree) {\n        \n    }\n}",
+    "go": "func solve(tree []*int) []*int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([1, 2, 3, None, None, 4, 5]))"}, "expectedStdout": "[1, 2, 3, None, None, 4, 5]"},
+    {"stdin": {"python": "print(solve([]))"}, "expectedStdout": "[]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([1]))"}, "expectedStdout": "[1]"},
+    {"stdin": {"python": "print(solve([1, 2, None, 3]))"}, "expectedStdout": "[1, 2, None, 3]"},
+    {"stdin": {"python": "print(solve([5, 4, 7, 3, None, 2, None, -1, None, 9]))"}, "expectedStdout": "[5, 4, 7, 3, None, 2, None, -1, None, 9]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Serialize: BFS traversal, write each node's value or 'null' comma-separated. Deserialize: split string, use a queue—for each node, the next two tokens are its left and right children. Build tree from level-order array, serialize to string, deserialize back, convert back to level-order array.",
+    "commonBugs": ["Trailing nulls in the output array not being stripped", "Off-by-one when mapping parent indices to children in level-order", "Not handling the empty tree edge case", "Incorrect queue management during BFS deserialization"],
+    "expectedComplexity": "O(n) time and space for both serialize and deserialize"
+  }
+}

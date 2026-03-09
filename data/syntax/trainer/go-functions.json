@@ -1,0 +1,78 @@
+{
+  "id": "go-functions",
+  "title": "Functions",
+  "description": "Go functions are first-class citizens. Master declarations, multiple return values, closures, and defer — the patterns that make Go interview code clean and idiomatic.",
+  "language": "go",
+  "category": "functions",
+  "order": 4,
+  "sections": [
+    {
+      "id": "declaration",
+      "title": "Function declaration",
+      "explanation": "Functions are declared with **func name(params) returnType**. Parameters of the same type can be grouped: `func add(a, b int) int`. Go functions are defined at the package level (outside main) or as closures inside other functions. In interviews, define helper functions above main.",
+      "example": "func add(a, b int) int {\n    return a + b\n}\n\nfunc greet(name string) string {\n    return \"Hello, \" + name\n}\n\nfunc main() {\n    fmt.Println(add(3, 4))       // 7\n    fmt.Println(greet(\"Go\"))     // Hello, Go\n}",
+      "exercise": {
+        "prompt": "Write a function `multiply` that takes two ints and returns their product. Write a function `isEven` that takes an int and returns a bool. Call both from main and print the results for multiply(6, 7) and isEven(10).",
+        "starterCode": "func multiply(a, b int)  {\n    return\n}\n\nfunc isEven(n int)  {\n    return\n}\n\nfunc main() {\n    fmt.Println(multiply(6, 7))\n    fmt.Println(isEven(10))\n}",
+        "validation": [
+          {"type": "output", "expected": "42\ntrue", "message": "multiply(6,7) should be 42, isEven(10) should be true"},
+          {"type": "contains", "patterns": ["func multiply", "func isEven", "return a * b", "return n % 2 == 0"], "message": "Declare both functions with proper return types and logic"}
+        ],
+        "testCode": "",
+        "hint": "func multiply(a, b int) int { return a * b }. func isEven(n int) bool { return n % 2 == 0 }."
+      },
+      "order": 1
+    },
+    {
+      "id": "multiple-returns",
+      "title": "Multiple return values",
+      "explanation": "Go functions can return **multiple values** — the idiomatic pattern is `(result, error)`. This replaces exceptions. Use **named returns** for documentation. Assign multiple returns with `val, err := f()`. Ignore a return with `_`.",
+      "example": "func divide(a, b float64) (float64, error) {\n    if b == 0 {\n        return 0, fmt.Errorf(\"division by zero\")\n    }\n    return a / b, nil\n}\n\nfunc main() {\n    result, err := divide(10, 3)\n    if err != nil {\n        fmt.Println(err)\n    } else {\n        fmt.Printf(\"%.2f\\n\", result)  // 3.33\n    }\n\n    _, err2 := divide(5, 0)\n    fmt.Println(err2)  // division by zero\n}",
+      "exercise": {
+        "prompt": "Write a function `safeDivide` that returns (int, error). If b is 0, return 0 and an error. Otherwise return a/b and nil. Call it twice: with (10, 2) and (5, 0), printing the result or error.",
+        "starterCode": "func safeDivide(a, b int) (int, error) {\n    if b ==  {\n        return 0, fmt.Errorf(\"cannot divide by zero\")\n    }\n    return a / b, \n}\n\nfunc main() {\n    result, err := safeDivide(10, 2)\n    if err != nil {\n        fmt.Println(err)\n    } else {\n        fmt.Println(result)\n    }\n\n    result2, err2 := safeDivide(5, 0)\n    if err2 != nil {\n        fmt.Println(err2)\n    } else {\n        fmt.Println(result2)\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "5\ncannot divide by zero", "message": "First call returns 5, second returns an error"},
+          {"type": "contains", "patterns": ["(int, error)", "fmt.Errorf", "err != nil"], "message": "Use (int, error) return type and check err != nil"}
+        ],
+        "testCode": "",
+        "hint": "Check if b == 0. Return nil for no error. Use err != nil to check for errors."
+      },
+      "order": 2
+    },
+    {
+      "id": "closures",
+      "title": "Closures and anonymous functions",
+      "explanation": "Go supports **closures** — anonymous functions that capture variables from their enclosing scope. Use them for custom sort comparators, goroutine functions, and callback patterns. The captured variable is shared by reference, so mutations inside the closure are visible outside.",
+      "example": "func makeCounter() func() int {\n    count := 0\n    return func() int {\n        count++\n        return count\n    }\n}\n\nfunc main() {\n    counter := makeCounter()\n    fmt.Println(counter())  // 1\n    fmt.Println(counter())  // 2\n    fmt.Println(counter())  // 3\n}",
+      "exercise": {
+        "prompt": "Write a function `makeAdder` that takes an int `x` and returns a closure (func(int) int) that adds `x` to its argument. Create addFive := makeAdder(5) and print addFive(3) and addFive(10).",
+        "starterCode": "func makeAdder(x int) func(int) int {\n    return func(y int) int {\n        return\n    }\n}\n\nfunc main() {\n    addFive := makeAdder(5)\n    fmt.Println(addFive(3))\n    fmt.Println(addFive(10))\n}",
+        "validation": [
+          {"type": "output", "expected": "8\n15", "message": "addFive(3) should be 8, addFive(10) should be 15"},
+          {"type": "contains", "patterns": ["func(int) int", "return func", "x + y"], "message": "Return a closure that captures x and adds it to y"}
+        ],
+        "testCode": "",
+        "hint": "The closure captures x. return func(y int) int { return x + y }."
+      },
+      "order": 3
+    },
+    {
+      "id": "defer",
+      "title": "Defer",
+      "explanation": "**defer** schedules a function call to run when the enclosing function returns. Deferred calls execute in LIFO (stack) order. Use defer for cleanup: closing files, unlocking mutexes, or timing functions. In interviews, defer is useful for resource management and understanding execution order.",
+      "example": "func main() {\n    fmt.Println(\"start\")\n    defer fmt.Println(\"deferred 1\")\n    defer fmt.Println(\"deferred 2\")\n    fmt.Println(\"end\")\n    // Output: start, end, deferred 2, deferred 1\n}",
+      "exercise": {
+        "prompt": "Print \"opening\", defer a print of \"closing\", then print \"working\". The output should be: opening, working, closing (each on its own line).",
+        "starterCode": "func main() {\n    fmt.Println(\"opening\")\n     fmt.Println(\"closing\")\n    fmt.Println(\"working\")\n}",
+        "validation": [
+          {"type": "output", "expected": "opening\nworking\nclosing", "message": "Deferred call runs last — after working but before function exits"},
+          {"type": "contains", "patterns": ["defer fmt.Println"], "message": "Use defer to schedule the closing print"}
+        ],
+        "testCode": "",
+        "hint": "defer fmt.Println(\"closing\") schedules it to run when main returns. \"working\" prints before the deferred call."
+      },
+      "order": 4
+    }
+  ]
+}

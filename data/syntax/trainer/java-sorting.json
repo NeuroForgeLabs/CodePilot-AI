@@ -1,0 +1,78 @@
+{
+  "id": "java-sorting",
+  "title": "Sorting",
+  "description": "Master Java sorting with Arrays.sort, Collections.sort, Comparator.comparing, and lambda comparators for interview problems.",
+  "language": "java",
+  "category": "sorting",
+  "order": 7,
+  "sections": [
+    {
+      "id": "java-sort-arrays",
+      "title": "Arrays.sort for Primitives and Objects",
+      "explanation": "Arrays.sort(arr) sorts primitive arrays in ascending order using dual-pivot quicksort (O(n log n) average). For object arrays (String[], Integer[]), it uses TimSort (stable, O(n log n)). Sort a subrange with Arrays.sort(arr, fromIndex, toIndex). Import `java.util.Arrays`. For descending order on objects, use `Arrays.sort(arr, Collections.reverseOrder())`.",
+      "example": "import java.util.Arrays;\nimport java.util.Collections;\n\npublic class Main {\n    public static void main(String[] args) {\n        int[] nums = {5, 2, 8, 1, 9};\n        Arrays.sort(nums);\n        System.out.println(Arrays.toString(nums));  // [1, 2, 5, 8, 9]\n\n        String[] words = {\"banana\", \"apple\", \"cherry\"};\n        Arrays.sort(words);\n        System.out.println(Arrays.toString(words));  // [apple, banana, cherry]\n\n        Integer[] boxed = {5, 2, 8, 1, 9};\n        Arrays.sort(boxed, Collections.reverseOrder());\n        System.out.println(Arrays.toString(boxed));  // [9, 8, 5, 2, 1]\n    }\n}",
+      "exercise": {
+        "prompt": "Sort int[] arr = {40, 10, 50, 20, 30} in ascending order and print it. Then create an Integer[] version of {40, 10, 50, 20, 30}, sort it in descending order using Collections.reverseOrder(), and print it.",
+        "starterCode": "import java.util.Arrays;\nimport java.util.Collections;\n\npublic class Main {\n    public static void main(String[] args) {\n        int[] arr = {40, 10, 50, 20, 30};\n\n        // Sort ascending and print\n\n        Integer[] boxed = {40, 10, 50, 20, 30};\n\n        // Sort descending and print\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "[10, 20, 30, 40, 50]\n[50, 40, 30, 20, 10]", "message": "Ascending: [10,20,30,40,50]. Descending: [50,40,30,20,10]."},
+          {"type": "contains", "patterns": ["Arrays.sort(", "Collections.reverseOrder()"], "message": "Use Arrays.sort() for ascending and Collections.reverseOrder() for descending."}
+        ],
+        "testCode": "",
+        "hint": "Arrays.sort(arr) sorts primitives ascending. Arrays.sort(boxed, Collections.reverseOrder()) sorts objects descending."
+      },
+      "order": 1
+    },
+    {
+      "id": "java-sort-collections",
+      "title": "Collections.sort for Lists",
+      "explanation": "Collections.sort(list) sorts an ArrayList in-place. It uses TimSort (stable). For natural order, just pass the list. For custom order, pass a Comparator as the second argument. Alternatively, use `list.sort(comparator)`. Both modify the list in place and return void. Works with any List implementation.",
+      "example": "import java.util.ArrayList;\nimport java.util.Arrays;\nimport java.util.Collections;\n\npublic class Main {\n    public static void main(String[] args) {\n        ArrayList<Integer> nums = new ArrayList<>(Arrays.asList(5, 2, 8, 1, 9));\n        Collections.sort(nums);\n        System.out.println(nums);  // [1, 2, 5, 8, 9]\n\n        Collections.sort(nums, Collections.reverseOrder());\n        System.out.println(nums);  // [9, 8, 5, 2, 1]\n\n        ArrayList<String> names = new ArrayList<>(Arrays.asList(\"Charlie\", \"Alice\", \"Bob\"));\n        Collections.sort(names);\n        System.out.println(names);  // [Alice, Bob, Charlie]\n    }\n}",
+      "exercise": {
+        "prompt": "Create an ArrayList<String> with {\"delta\", \"alpha\", \"charlie\", \"bravo\"}. Sort alphabetically and print. Then sort by string length (shortest first) and print.",
+        "starterCode": "import java.util.ArrayList;\nimport java.util.Arrays;\nimport java.util.Collections;\n\npublic class Main {\n    public static void main(String[] args) {\n        ArrayList<String> words = new ArrayList<>(Arrays.asList(\"delta\", \"alpha\", \"charlie\", \"bravo\"));\n\n        // Sort alphabetically and print\n\n        // Sort by length and print\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "[alpha, bravo, charlie, delta]\n[alpha, bravo, delta, charlie]", "message": "Alphabetical: [alpha,bravo,charlie,delta]. By length: [alpha,bravo,delta,charlie]."},
+          {"type": "contains", "patterns": ["Collections.sort(", ".length()"], "message": "Use Collections.sort() for both, with a length-based comparator for the second sort."}
+        ],
+        "testCode": "",
+        "hint": "For length sort: Collections.sort(words, (a, b) -> a.length() - b.length()) or use Comparator.comparingInt(String::length)."
+      },
+      "order": 2
+    },
+    {
+      "id": "java-sort-comparator",
+      "title": "Comparator.comparing and Chaining",
+      "explanation": "Comparator.comparing(keyExtractor) creates a Comparator from a function. Chain with `.thenComparing()` for multi-key sorts. Use `.reversed()` for descending. `Comparator.comparingInt()` avoids boxing for int keys. These are cleaner than writing (a, b) -> ... lambdas for complex sorts. Import `java.util.Comparator`.",
+      "example": "import java.util.ArrayList;\nimport java.util.Arrays;\nimport java.util.Comparator;\n\npublic class Main {\n    public static void main(String[] args) {\n        ArrayList<String> words = new ArrayList<>(Arrays.asList(\"bb\", \"aaa\", \"c\", \"dd\", \"eee\"));\n\n        words.sort(Comparator.comparingInt(String::length));\n        System.out.println(words);  // [c, bb, dd, aaa, eee]\n\n        words.sort(Comparator.comparingInt(String::length).thenComparing(Comparator.naturalOrder()));\n        System.out.println(words);  // [c, bb, dd, aaa, eee]\n\n        words.sort(Comparator.comparingInt(String::length).reversed());\n        System.out.println(words);  // [aaa, eee, bb, dd, c]\n    }\n}",
+      "exercise": {
+        "prompt": "Create a list of strings: {\"pear\", \"fig\", \"apple\", \"kiwi\", \"banana\"}. Sort by length ascending, breaking ties alphabetically. Print the sorted list. Then sort by length descending and print.",
+        "starterCode": "import java.util.ArrayList;\nimport java.util.Arrays;\nimport java.util.Comparator;\n\npublic class Main {\n    public static void main(String[] args) {\n        ArrayList<String> fruits = new ArrayList<>(Arrays.asList(\"pear\", \"fig\", \"apple\", \"kiwi\", \"banana\"));\n\n        // Sort by length ascending, ties alphabetically\n\n        // Sort by length descending\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "[fig, kiwi, pear, apple, banana]\n[banana, apple, kiwi, pear, fig]", "message": "Length asc with alpha ties: [fig,kiwi,pear,apple,banana]. Length desc: [banana,apple,kiwi,pear,fig]."},
+          {"type": "contains", "patterns": ["Comparator.comparingInt", ".thenComparing(", ".reversed()"], "message": "Use Comparator.comparingInt with thenComparing and reversed()."}
+        ],
+        "testCode": "",
+        "hint": "Comparator.comparingInt(String::length).thenComparing(Comparator.naturalOrder()) for ascending with ties. Add .reversed() after the chain is incorrect—reverse the length part only or rebuild for descending."
+      },
+      "order": 3
+    },
+    {
+      "id": "java-sort-lambda",
+      "title": "Lambda Comparators for Custom Sorting",
+      "explanation": "For quick custom sorts, use lambda comparators: `(a, b) -> expression`. Return negative if a < b, zero if equal, positive if a > b. Common patterns: `(a, b) -> a - b` (ascending int), `(a, b) -> b - a` (descending int), `(a, b) -> a.length() - b.length()` (by string length). Warning: `a - b` can overflow for large ints; use `Integer.compare(a, b)` for safety.",
+      "example": "import java.util.Arrays;\n\npublic class Main {\n    public static void main(String[] args) {\n        int[][] intervals = {{3, 5}, {1, 3}, {2, 7}, {1, 2}};\n\n        Arrays.sort(intervals, (a, b) -> a[0] != b[0] ? a[0] - b[0] : a[1] - b[1]);\n\n        for (int[] iv : intervals) {\n            System.out.println(Arrays.toString(iv));\n        }\n    }\n}",
+      "exercise": {
+        "prompt": "Given a 2D array of [name_length, score] pairs represented as int[][] data = {{3,90},{5,85},{3,95},{5,80},{4,90}}, sort by first element ascending, then by second element descending for ties. Print each pair on its own line using Arrays.toString.",
+        "starterCode": "import java.util.Arrays;\n\npublic class Main {\n    public static void main(String[] args) {\n        int[][] data = {{3, 90}, {5, 85}, {3, 95}, {5, 80}, {4, 90}};\n\n        // Sort by first ascending, second descending for ties\n\n        for (int[] row : data) {\n            System.out.println(Arrays.toString(row));\n        }\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "[3, 95]\n[3, 90]\n[4, 90]\n[5, 85]\n[5, 80]", "message": "Sorted by col 0 ascending, col 1 descending for ties."},
+          {"type": "contains", "patterns": ["Arrays.sort(", "->"], "message": "Use Arrays.sort with a lambda comparator."}
+        ],
+        "testCode": "",
+        "hint": "Lambda: (a, b) -> a[0] != b[0] ? a[0] - b[0] : b[1] - a[1]. First element ascending, second descending."
+      },
+      "order": 4
+    }
+  ]
+}

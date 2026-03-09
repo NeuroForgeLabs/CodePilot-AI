@@ -1,0 +1,39 @@
+{
+  "id": "decode-ways",
+  "title": "Decode Ways",
+  "difficulty": "Medium",
+  "tags": ["strings", "dynamic-programming"],
+  "prompt": "A message containing letters from A-Z can be encoded into numbers using the mapping: 'A' -> \"1\", 'B' -> \"2\", ..., 'Z' -> \"26\".\n\nTo decode an encoded message, all the digits must be grouped then mapped back into letters using the reverse of the mapping above (there may be multiple ways). For example, \"11106\" can be mapped into: \"AAJF\" (1 1 10 6) or \"KJF\" (11 10 6). Note that the grouping (1 11 06) is invalid because \"06\" cannot be mapped into 'F' since \"6\" is different from \"06\".\n\nGiven a string `s` containing only digits, return the number of ways to decode it. The answer is guaranteed to fit in a 32-bit integer.",
+  "examples": [
+    {"input": "s = \"12\"", "output": "2\nExplanation: \"12\" could be decoded as \"AB\" (1 2) or \"L\" (12)."},
+    {"input": "s = \"226\"", "output": "3\nExplanation: \"226\" could be decoded as \"BZ\" (2 26), \"VF\" (22 6), or \"BBF\" (2 2 6)."},
+    {"input": "s = \"06\"", "output": "0\nExplanation: \"06\" cannot be mapped to 'F' because of the leading zero. There is no valid decoding."}
+  ],
+  "constraints": [
+    "1 <= s.length <= 100",
+    "s contains only digits and may contain leading zeros."
+  ],
+  "starterCode": {
+    "python": "def solve(s):\n    pass",
+    "javascript": "function solve(s) {\n  \n}",
+    "typescript": "export function solve(s: string): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(String s) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(string s) {\n        \n    }\n}",
+    "go": "func solve(s string) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve(\"12\"))"}, "expectedStdout": "2"},
+    {"stdin": {"python": "print(solve(\"226\"))"}, "expectedStdout": "3"},
+    {"stdin": {"python": "print(solve(\"06\"))"}, "expectedStdout": "0"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve(\"10\"))"}, "expectedStdout": "1"},
+    {"stdin": {"python": "print(solve(\"27\"))"}, "expectedStdout": "1"},
+    {"stdin": {"python": "print(solve(\"11106\"))"}, "expectedStdout": "2"}
+  ],
+  "notesForAI": {
+    "coreIdea": "DP where dp[i] = number of ways to decode s[0..i-1]. For each position, check if single digit (1-9) is valid -> dp[i] += dp[i-1], and if two digits (10-26) are valid -> dp[i] += dp[i-2]. Base case: dp[0] = 1 (empty string).",
+    "commonBugs": ["Not handling '0' correctly—'0' alone is invalid, only '10' and '20' work as two-digit codes", "Forgetting that two-digit codes must be in range 10-26 (not 01-09)", "Off-by-one errors in string indexing"],
+    "expectedComplexity": "O(n) time, O(1) space with two variables"
+  }
+}

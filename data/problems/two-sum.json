@@ -24,12 +24,12 @@
     "go": "func solve(nums []int, target int) []int {\n    \n}"
   },
   "visibleTests": [
-    {"stdin": "print(solve([2, 7, 11, 15], 9))", "expectedStdout": "[0, 1]"},
-    {"stdin": "print(solve([3, 2, 4], 6))", "expectedStdout": "[1, 2]"}
+    {"stdin": {"python": "print(solve([2, 7, 11, 15], 9))"}, "expectedStdout": "[0, 1]"},
+    {"stdin": {"python": "print(solve([3, 2, 4], 6))"}, "expectedStdout": "[1, 2]"}
   ],
   "hiddenTests": [
-    {"stdin": "print(solve([3, 3], 6))", "expectedStdout": "[0, 1]"},
-    {"stdin": "print(solve([1, 5, 3, 7], 8))", "expectedStdout": "[1, 2]"}
+    {"stdin": {"python": "print(solve([3, 3], 6))"}, "expectedStdout": "[0, 1]"},
+    {"stdin": {"python": "print(solve([1, 5, 3, 7], 8))"}, "expectedStdout": "[1, 2]"}
   ],
   "notesForAI": {
     "coreIdea": "Use a hash map to store seen values and their indices. For each element, check if (target - current) exists in the map. If so, return [map[target-current], current_index] sorted ascending.",

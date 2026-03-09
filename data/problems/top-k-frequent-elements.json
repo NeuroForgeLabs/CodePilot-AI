@@ -1,0 +1,41 @@
+{
+  "id": "top-k-frequent-elements",
+  "title": "Top K Frequent Elements",
+  "difficulty": "Medium",
+  "tags": ["arrays", "hash-table", "heap", "sorting"],
+  "prompt": "Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.\n\nIt is guaranteed that the answer is unique (no ties at the k-th position).\n\nFor example, given nums = [1,1,1,2,2,3] and k = 2, the two most frequent elements are 1 (appears 3 times) and 2 (appears 2 times), so return [1, 2].",
+  "examples": [
+    {"input": "nums = [1,1,1,2,2,3], k = 2", "output": "[1, 2]"},
+    {"input": "nums = [1], k = 1", "output": "[1]"},
+    {"input": "nums = [4,4,4,1,1,2,2,2,3], k = 2", "output": "[4, 2]"}
+  ],
+  "constraints": [
+    "1 <= nums.length <= 10^5",
+    "-10^4 <= nums[i] <= 10^4",
+    "k is in the range [1, number of unique elements]",
+    "The answer is guaranteed to be unique"
+  ],
+  "starterCode": {
+    "python": "def solve(nums: list[int], k: int) -> list[int]:\n    pass",
+    "javascript": "function solve(nums, k) {\n  \n}",
+    "typescript": "export function solve(nums: number[], k: number): number[] {\n  \n}",
+    "java": "class Solution {\n    public int[] solve(int[] nums, int k) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int[] Solve(int[] nums, int k) {\n        \n    }\n}",
+    "go": "func solve(nums []int, k int) []int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(sorted(solve([1,1,1,2,2,3], 2)))"}, "expectedStdout": "[1, 2]"},
+    {"stdin": {"python": "print(sorted(solve([1], 1)))"}, "expectedStdout": "[1]"},
+    {"stdin": {"python": "print(sorted(solve([4,4,4,1,1,2,2,2,3], 2)))"}, "expectedStdout": "[2, 4]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(sorted(solve([1,2], 2)))"}, "expectedStdout": "[1, 2]"},
+    {"stdin": {"python": "print(sorted(solve([3,3,3,1,1,1,2,2,2,4], 3)))"}, "expectedStdout": "[1, 2, 3]"},
+    {"stdin": {"python": "print(sorted(solve([-1,-1,2,2,2,3], 1)))"}, "expectedStdout": "[2]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Count frequencies with a hash map, then use a min-heap of size k or bucket sort to extract the k most frequent elements.",
+    "commonBugs": ["Not handling negative numbers", "Using a max-heap instead of min-heap (less efficient)", "Forgetting that output order doesn't matter"],
+    "expectedComplexity": "O(n log k) with heap, O(n) with bucket sort"
+  }
+}

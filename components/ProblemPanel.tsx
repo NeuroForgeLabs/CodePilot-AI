@@ -48,15 +48,25 @@ export default function ProblemPanel({ problem }: ProblemPanelProps) {
           {problem.examples.map((ex, i) => (
             <div
               key={i}
-              className="rounded-lg border border-gray-700 bg-gray-800/50 p-3 text-sm"
+              className="rounded-xl border border-gray-700 bg-[#0d0f15] overflow-hidden shadow-sm"
             >
-              <div className="mb-1">
-                <span className="font-medium text-gray-400">Input: </span>
-                <code className="text-gray-200">{ex.input}</code>
+              <div className="flex items-center gap-2 border-b border-gray-800 px-3.5 py-1.5">
+                <div className="flex gap-1.5">
+                  <div className="h-2 w-2 rounded-full bg-red-500/50" />
+                  <div className="h-2 w-2 rounded-full bg-amber-500/50" />
+                  <div className="h-2 w-2 rounded-full bg-emerald-500/50" />
+                </div>
+                <span className="text-[10px] text-gray-600">Example {i + 1}</span>
               </div>
-              <div>
-                <span className="font-medium text-gray-400">Output: </span>
-                <code className="text-emerald-400">{ex.output}</code>
+              <div className="px-4 py-3 text-sm font-mono space-y-1">
+                <div>
+                  <span className="text-gray-500">Input:  </span>
+                  <code className="text-gray-200">{ex.input}</code>
+                </div>
+                <div>
+                  <span className="text-gray-500">Output: </span>
+                  <code className="text-emerald-400">{ex.output}</code>
+                </div>
               </div>
             </div>
           ))}

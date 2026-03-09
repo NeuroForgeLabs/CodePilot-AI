@@ -1,64 +1,57 @@
 <p align="center">
-  <h1 align="center">🎯 InterviewCoach</h1>
+  <h1 align="center">AI Interview Coach</h1>
   <p align="center">
-    <strong>AI-powered coding interview practice with multi-language execution and staged hints.</strong>
+    <strong>Open-source, AI-powered coding interview preparation platform with algorithm practice, interactive syntax training, and guided coaching.</strong>
   </p>
   <p align="center">
-    <a href="#-features">Features</a> •
-    <a href="#-quick-start">Quick Start</a> •
-    <a href="#-architecture">Architecture</a> •
-    <a href="#-api-endpoints">API</a> •
-    <a href="#-tech-stack">Tech Stack</a>
+    <a href="#features">Features</a> •
+    <a href="#quick-start">Quick Start</a> •
+    <a href="#architecture">Architecture</a> •
+    <a href="#tech-stack">Tech Stack</a> •
+    <a href="#contributing">Contributing</a>
+  </p>
+  <p align="center">
+    Developed by <a href="https://www.linkedin.com/in/anvarbaltakhojayev/"><strong>Anvar Baltakhojayev</strong></a>
   </p>
 </p>
 
 ---
 
-## ✨ Features
+## Features
 
-🧩 **10 Curated Problems** — Hand-picked challenges from Easy to Medium, covering arrays, hashmaps, dynamic programming, sliding window, stacks, and more.
+**100 Curated Problems** — Challenges from Easy to Hard across 21 topic categories including arrays, trees, graphs, dynamic programming, backtracking, and more.
 
-🌐 **6 Programming Languages** — Write solutions in Python, JavaScript, TypeScript, Java, C#, or Go.
+**9 Programming Languages** — Write and execute code in Python, JavaScript, TypeScript, Java, C++, C, Go, Rust, and C#.
 
-📝 **Monaco Editor** — The same editor powering VS Code, with syntax highlighting, bracket colorization, and font ligatures.
+**Interactive Syntax Trainer** — 13 curriculum categories with ~500 hands-on exercises across all 9 languages. Learn data structure patterns and language syntax through guided practice with instant feedback.
 
-⚡ **Code Execution** — Run your code against visible and hidden test cases via Judge0, with real-time execution time and memory stats.
+**Monaco Editor** — The same editor powering VS Code, with syntax highlighting, bracket colorization, and font ligatures.
 
-💡 **AI-Guided Hints** — Three modes to match your practice style:
+**Code Execution** — Run your code against visible and hidden test cases via Judge0, with real-time execution time and memory stats.
+
+**AI-Guided Hints** — Three modes to match your practice style:
 
 | Mode | Style | Description |
 |------|-------|-------------|
-| 🔒 **Strict** | No hints | Pure interview simulation |
-| 🎓 **Interviewer** | Socratic | Guiding questions that nudge without revealing |
-| 📖 **Learning** | Direct | Pseudocode, partial snippets, and explanations |
+| **Strict** | No hints | Pure interview simulation |
+| **Interviewer** | Socratic | Guiding questions that nudge without revealing |
+| **Learning** | Direct | Pseudocode, partial snippets, and explanations |
 
 Each mode supports **5 progressive hint levels** — from a subtle nudge to a detailed walkthrough.
 
-🔍 **AI Code Review** — After running your code, get a senior-engineer-level debrief with:
-- Overall feedback
-- Time & space complexity analysis
-- Edge cases to consider
-- Actionable improvements
+**AI Code Review** — After running your code, get a senior-engineer-level debrief with overall feedback, time and space complexity analysis, edge cases to consider, and actionable improvements.
 
-💾 **Auto-Save** — Your code is automatically saved to browser localStorage. Pick up right where you left off.
+**AI Mentor Chat** — Context-aware AI assistant with two personalities: coaching mode for problems (no spoilers) and tutoring mode for syntax (teaches freely with code examples).
 
----
+**Auto-Save** — Your code is automatically saved to browser localStorage. Pick up right where you left off.
 
-## 📸 How It Works
-
-```
-1️⃣  Pick a problem from the dropdown
-2️⃣  Choose your language and write a solution
-3️⃣  Hit Run ▶️ to execute against test cases
-4️⃣  Stuck? Request a 💡 Hint at your comfort level
-5️⃣  Get an AI 🔍 Review with complexity analysis & improvements
-```
+**Modern Landing Page** — Interactive homepage with animated hero, live code demo, mouse-parallax effects, and scroll-reveal animations.
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
-### 1️⃣ Environment Setup
+### 1. Environment Setup
 
 ```bash
 cp .env.example .env.local
@@ -68,13 +61,13 @@ Edit `.env.local` and fill in your keys:
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `OPENAI_API_KEY` | ✅ | OpenAI or compatible provider API key |
-| `OPENAI_BASE_URL` | ❌ | Default: `https://api.openai.com/v1` |
-| `OPENAI_MODEL` | ❌ | Default: `gpt-4.1-mini` |
-| `JUDGE0_URL` | ✅ | Judge0 instance URL |
-| `JUDGE0_API_KEY` | ✅* | Required for RapidAPI-hosted Judge0 |
+| `OPENAI_API_KEY` | Yes | OpenAI or compatible provider API key |
+| `OPENAI_BASE_URL` | No | Default: `https://api.openai.com/v1` |
+| `OPENAI_MODEL` | No | Default: `gpt-4.1-mini` |
+| `JUDGE0_URL` | Yes | Judge0 instance URL |
+| `X_RAPIDAPI_KEY` | Yes* | Required for RapidAPI-hosted Judge0 |
 
-### 2️⃣ Start the Backend
+### 2. Start the Backend
 
 ```bash
 cd server
@@ -84,16 +77,16 @@ pip install -r requirements.txt
 uvicorn main:app --reload --port 8000
 ```
 
-### 3️⃣ Start the Frontend
+### 3. Start the Frontend
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open 👉 [http://localhost:3000](http://localhost:3000)
+Open [http://localhost:3000](http://localhost:3000)
 
-### 4️⃣ (Optional) Start Infrastructure
+### 4. (Optional) Start Infrastructure
 
 ```bash
 docker compose up -d
@@ -103,149 +96,143 @@ docker compose up -d
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                   Browser (localhost:3000)                    │
-│                                                               │
-│  ┌──────────────┐  ┌───────────────┐  ┌───────────────────┐ │
-│  │ 📋 Problem   │  │ 📝 Monaco     │  │ 📊 Results        │ │
-│  │    Panel     │  │    Editor     │  │ 💡 Hints          │ │
-│  │   (left)     │  │   (center)    │  │ 🔍 Review         │ │
-│  └──────────────┘  └───────────────┘  └───────────────────┘ │
-└──────────────────────────┬──────────────────────────────────┘
-                           │
-              POST /api/execute, /api/hint, /api/review
-              (Next.js API routes — server-side proxy)
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────────┐
-│                FastAPI Backend (localhost:8000)               │
-│                                                               │
-│  ⚡ /execute  ──► Judge0 (code execution)                    │
-│  💡 /hint     ──► OpenAI-compatible LLM                      │
-│  🔍 /review   ──► OpenAI-compatible LLM                      │
-└─────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                    Browser (localhost:3000)                        │
+│                                                                    │
+│  / ................ Landing page (overview, live demo, features)  │
+│  /practice ........ Problem solving + Syntax trainer workspace   │
+│  /contact ......... Contact page                                  │
+│                                                                    │
+│  ┌─ Practice: Problems View ──────────────────────────────────┐  │
+│  │ 100 problems | Difficulty & topic filters | Search          │  │
+│  └─────────────────────────────────────────────────────────────┘  │
+│  ┌─ Practice: Workspace ──────────────────────────────────────┐  │
+│  │ Problem Panel │ Monaco Editor │ Tests|Hint|Review|AI tabs   │  │
+│  └─────────────────────────────────────────────────────────────┘  │
+│  ┌─ Practice: Syntax Trainer ─────────────────────────────────┐  │
+│  │ Learn|Reference │ 9 Languages │ 13 categories │ AI Chat     │  │
+│  └─────────────────────────────────────────────────────────────┘  │
+│                                                                    │
+│  localStorage ◄── Auto-save code attempts (debounced 1s) ──►    │
+└────────────────────────────┬───────────────────────────────────────┘
+                             │
+          POST /api/execute, /api/hint, /api/review,
+          /api/syntax/explain, /api/syntax/check
+          (Next.js API routes → FastAPI)
+                             │
+                             ▼
+┌──────────────────────────────────────────────────────────────────┐
+│                  FastAPI Backend (localhost:8000)                  │
+│                                                                    │
+│  POST /execute       ──► Judge0 (code execution, 9 languages)    │
+│  POST /hint          ──► OpenAI-compatible LLM                    │
+│  POST /review        ──► OpenAI-compatible LLM                    │
+│  POST /syntax/explain ──► LLM (syntax explain / translate / ask) │
+│  POST /syntax/check   ──► Judge0 + pattern checks + LLM feedback │
+└──────────────────────────────────────────────────────────────────┘
 ```
 
-### 📁 Project Structure
+### Project Structure
 
 ```
 InterviewCoach/
-├── 🌐 app/                    Next.js App Router
-│   ├── layout.tsx             Root layout (dark theme, Inter font)
-│   ├── page.tsx               Main page & state orchestrator
-│   └── api/                   Proxy routes → FastAPI
+├── app/                          Next.js App Router
+│   ├── layout.tsx                Root layout (Inter font, dark theme)
+│   ├── page.tsx                  Landing / homepage
+│   ├── practice/page.tsx         Practice workspace (Problems + Syntax)
+│   ├── contact/page.tsx          Contact page
+│   ├── globals.css               Global styles + animations
+│   └── api/                      API proxy routes → FastAPI
 │       ├── execute/route.ts
 │       ├── hint/route.ts
-│       └── review/route.ts
-├── 🧱 components/             React UI components
-│   ├── CodeEditor.tsx         Monaco editor + language picker
-│   ├── ProblemPanel.tsx       Problem description & examples
-│   ├── ProblemSelector.tsx    Problem dropdown
-│   ├── RightPanel.tsx         Tabbed panel (Tests/Hint/Review)
-│   ├── TestResults.tsx        Execution results display
-│   ├── HintPanel.tsx          Hint controls & display
-│   └── ReviewPanel.tsx        AI review display
-├── 📚 data/problems/          10 problem JSON definitions
-├── 🔧 lib/                    Shared utilities
-│   ├── types.ts               TypeScript interfaces
-│   ├── problems.ts            Problem loader
-│   └── storage.ts             localStorage helpers
-├── 🐍 server/                 Python FastAPI backend
-│   ├── main.py                Endpoints & CORS
-│   ├── models/schemas.py      Pydantic models
+│       ├── review/route.ts
+│       └── syntax/
+│           ├── explain/route.ts
+│           └── check/route.ts
+├── components/                   React UI components
+│   ├── AIChatPanel.tsx           AI chat (dual mode: syntax/problem)
+│   ├── CodeEditor.tsx            Monaco editor + language picker
+│   ├── ProblemPanel.tsx          Problem description & examples
+│   ├── ProblemsView.tsx          Problem browser with filters
+│   ├── RightPanel.tsx            Tabbed panel (Tests/Hint/Review/AI)
+│   ├── TestResults.tsx           Execution results display
+│   ├── HintPanel.tsx             Hint controls & display
+│   ├── ReviewPanel.tsx           AI review display
+│   └── syntax/                   Syntax Trainer components
+│       ├── SyntaxPanel.tsx       Main panel (Learn/Reference, language)
+│       ├── LessonTrainer.tsx     Interactive trainer with progress
+│       ├── TrainerSection.tsx    Exercise: explain → example → try → check
+│       ├── ExerciseEditor.tsx    Monaco editor for exercises
+│       ├── FeedbackPanel.tsx     Exercise result + AI feedback
+│       ├── LessonView.tsx        Static reference lesson view
+│       ├── LessonList.tsx        Reference lesson grid
+│       └── SyntaxSnippet.tsx     Code snippet with copy button
+├── data/
+│   ├── problems/                 100 problem JSON definitions
+│   └── syntax/
+│       ├── lessons/              4 static reference lessons
+│       └── trainer/              117 interactive trainer lessons
+│           └── curriculum.json   13 category definitions
+├── lib/                          Shared frontend utilities
+│   ├── types.ts                  TypeScript type definitions
+│   ├── problems.ts               Problem loader (100 problems)
+│   ├── trainer.ts                Trainer lesson loader (117 lessons)
+│   ├── syntax.ts                 Reference lesson loader
+│   └── storage.ts                localStorage helpers
+├── server/                       Python FastAPI backend
+│   ├── main.py                   App entry point, 7 endpoints
+│   ├── requirements.txt
+│   ├── models/schemas.py         Pydantic request/response models
 │   └── services/
-│       ├── judge0.py          Judge0 integration
-│       ├── llm.py             LLM client
-│       └── prompts.py         Prompt templates
-└── 🐳 docker-compose.yml      Postgres + Redis (future)
+│       ├── judge0.py             Judge0 integration (9 languages)
+│       ├── llm.py                LLM client (hints, review, syntax)
+│       └── prompts.py            Prompt templates
+├── public/                       Static assets
+│   └── favicon.svg               App favicon
+└── docker-compose.yml            Postgres + Redis (scaffolded)
 ```
 
 ---
 
-## 🧩 Problems Included
+## Pages & Routes
 
-| # | Problem | Difficulty | Tags |
-|---|---------|------------|------|
-| 1 | Two Sum | 🟢 Easy | `arrays` `hashmap` |
-| 2 | Reverse String | 🟢 Easy | `strings` `two-pointers` |
-| 3 | Valid Parentheses | 🟢 Easy | `stack` `strings` |
-| 4 | Climbing Stairs | 🟢 Easy | `dynamic-programming` `recursion` |
-| 5 | Binary Search | 🟢 Easy | `arrays` `binary-search` |
-| 6 | Maximum Subarray | 🟡 Medium | `arrays` `dynamic-programming` |
-| 7 | Merge Intervals | 🟡 Medium | `arrays` `sorting` |
-| 8 | Longest Substring Without Repeating | 🟡 Medium | `strings` `sliding-window` `hashmap` |
-| 9 | Product Except Self | 🟡 Medium | `arrays` |
-| 10 | Linked List Cycle | 🟡 Medium | `linked-list` `two-pointers` |
+| Route | Page | Description |
+|-------|------|-------------|
+| `/` | Home | Landing page with hero, feature grid, live code demo, how it works, open source section |
+| `/practice` | Practice | Full workspace: Problems list, Syntax trainer, coding workspace with AI tools |
+| `/contact` | Contact | Contact cards for email, LinkedIn, and GitHub |
 
 ---
 
-## 📡 API Endpoints
+## API Endpoints
 
-### ⚡ `POST /execute`
-
-Run code against test cases.
-
-```json
-// Request
-{
-  "problemId": "two-sum",
-  "language": "python",
-  "code": "def solve(nums, target):\n    ..."
-}
-
-// Response
-{
-  "passed": false,
-  "summary": { "total": 4, "passed": 2, "failed": 2 },
-  "tests": [{ "name": "visible-1", "passed": true, "..." }],
-  "hiddenTests": [{ "name": "hidden-1", "passed": false, "..." }]
-}
-```
-
-### 💡 `POST /hint`
-
-Get an AI-guided hint.
-
-```json
-{
-  "problemId": "two-sum",
-  "language": "python",
-  "code": "...",
-  "hintLevel": 3,
-  "mode": "interviewer",
-  "history": []
-}
-```
-
-### 🔍 `POST /review`
-
-Get an AI code review.
-
-```json
-{
-  "problemId": "two-sum",
-  "language": "python",
-  "code": "...",
-  "results": { "summary": { "total": 4, "passed": 4, "failed": 0 } }
-}
-```
+| Method | Path | Description |
+|--------|------|-------------|
+| `POST` | `/execute` | Run code against test cases via Judge0 |
+| `POST` | `/hint` | Generate AI hint (5 levels, 3 modes) |
+| `POST` | `/review` | Generate AI code review (structured JSON) |
+| `POST` | `/syntax/explain` | AI syntax explanation with dual mode |
+| `POST` | `/syntax/check` | Exercise validation: Judge0 + pattern checks + AI feedback |
+| `GET` | `/health` | Health check |
+| `GET` | `/problems` | List all 100 problems |
+| `GET` | `/problems/{id}` | Single problem details |
 
 ---
 
-## 🔄 Using with Claude (or other providers)
+## Using with Claude or Other Providers
 
-The backend works with **any OpenAI-compatible API**. Just update your `.env.local`:
+The backend works with **any OpenAI-compatible API**. Update your `.env.local`:
 
 ```env
-# 🤖 Anthropic Claude
+# Anthropic Claude
 OPENAI_BASE_URL=https://api.anthropic.com/v1
 OPENAI_API_KEY=sk-ant-...
 OPENAI_MODEL=claude-sonnet-4-20250514
 
-# 🏠 Local model (Ollama, LM Studio, vLLM)
+# Local model (Ollama, LM Studio, vLLM)
 OPENAI_BASE_URL=http://localhost:11434/v1
 OPENAI_API_KEY=not-needed
 OPENAI_MODEL=llama3
@@ -253,25 +240,31 @@ OPENAI_MODEL=llama3
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |-------|------------|
-| 🌐 Frontend | Next.js 14, React 18, TypeScript, Tailwind CSS, Monaco Editor |
-| 🐍 Backend | Python FastAPI, Pydantic, Uvicorn |
-| ⚡ Execution | Judge0 CE |
-| 🤖 AI | OpenAI-compatible chat API (GPT, Claude, Llama, etc.) |
-| 💾 Storage | Browser localStorage |
-| 🐳 Infra | Docker Compose (Postgres + Redis scaffolded) |
+| Frontend | Next.js 14, React 18, TypeScript, Tailwind CSS, Monaco Editor |
+| Backend | Python FastAPI, Pydantic, Uvicorn |
+| Execution | Judge0 CE (9 languages) |
+| AI | OpenAI-compatible chat API (GPT, Claude, Llama, etc.) |
+| Storage | Browser localStorage |
+| Infra | Docker Compose (Postgres + Redis scaffolded) |
 
 ---
 
-## 📄 License
+## Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+---
+
+## License
 
 MIT
 
 ---
 
 <p align="center">
-  Built with ☕ and 🤖 — happy interviewing!
+  Built by <a href="https://www.linkedin.com/in/anvarbaltakhojayev/">Anvar Baltakhojayev</a> — Full Stack AI Engineer
 </p>

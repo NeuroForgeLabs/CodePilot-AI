@@ -1,0 +1,78 @@
+{
+  "id": "python-heaps",
+  "title": "Heaps / Priority Queues",
+  "description": "Master Python's heapq module for priority queue patterns — a must-know for top-K, merge-K-sorted, and scheduling problems in coding interviews.",
+  "language": "python",
+  "category": "heaps",
+  "order": 9,
+  "sections": [
+    {
+      "id": "min-heap",
+      "title": "Min-heap basics",
+      "explanation": "Python's `heapq` module provides a min-heap where the smallest element is always at index 0. Use `heappush` to insert in O(log n), `heappop` to extract the minimum in O(log n), and `heapify` to convert an existing list into a heap in O(n). Interviewers expect you to know that Python only has a min-heap natively — there is no built-in max-heap.",
+      "example": "import heapq\n\nh = []\nheapq.heappush(h, 5)\nheapq.heappush(h, 2)\nheapq.heappush(h, 8)\nheapq.heappush(h, 1)\n\nprint(heapq.heappop(h))  # 1 (smallest)\nprint(h[0])              # 2 (new smallest)\n\nnums = [7, 3, 9, 1]\nheapq.heapify(nums)\nprint(nums[0])           # 1",
+      "exercise": {
+        "prompt": "Push the values 10, 4, 15, and 1 onto a min-heap. Pop the smallest element and print it. Then print the new smallest element (peek with index 0).",
+        "starterCode": "import heapq\n\nh = []\nheapq.heappush(h, 10)\nheapq.heappush(h, )\nheapq.heappush(h, )\nheapq.heappush(h, )\n\nsmallest = heapq.heappop(h)\nprint(smallest)\nprint(h[0])",
+        "validation": [
+          {"type": "output", "expected": "1\n4", "message": "The smallest value is 1, and after popping it the new smallest is 4"},
+          {"type": "contains", "patterns": ["heappush", "heappop"], "message": "Use heapq.heappush to add values and heapq.heappop to extract the minimum"}
+        ],
+        "testCode": "",
+        "hint": "Push 4, 15, and 1 into the blanks. heappop returns 1 (the smallest), leaving 4 as the new top."
+      },
+      "order": 1
+    },
+    {
+      "id": "max-heap",
+      "title": "Max-heap trick",
+      "explanation": "Since Python only provides a min-heap, the standard interview trick for a max-heap is to negate values before pushing and negate again after popping. This flips the ordering so the largest original value sits at the top. You'll see this pattern in problems like \"find the K-th largest element\" and median-of-stream.",
+      "example": "import heapq\n\nmax_h = []\nfor val in [3, 7, 2, 5]:\n    heapq.heappush(max_h, -val)\n\n# Pop returns most-negative => originally largest\nlargest = -heapq.heappop(max_h)\nprint(largest)   # 7\nprint(-max_h[0]) # 5 (next largest)",
+      "exercise": {
+        "prompt": "Given `nums = [12, 45, 7, 23, 56]`, build a max-heap by negating values. Pop the largest element, negate it back, and print it. Then print the next largest by peeking at index 0 (negated back).",
+        "starterCode": "import heapq\n\nnums = [12, 45, 7, 23, 56]\nmax_h = []\nfor val in nums:\n    heapq.heappush(max_h, )\n\nlargest = -heapq.heappop(max_h)\nprint(largest)\nprint(-max_h[0])",
+        "validation": [
+          {"type": "output", "expected": "56\n45", "message": "The largest value is 56, and the next largest is 45"},
+          {"type": "contains", "patterns": ["-val", "heappush", "heappop"], "message": "Negate values with -val before pushing to simulate a max-heap"}
+        ],
+        "testCode": "",
+        "hint": "Push -val to negate each value. The most-negative becomes the heap top, so popping and negating gives the original largest."
+      },
+      "order": 2
+    },
+    {
+      "id": "top-k",
+      "title": "Top-K pattern",
+      "explanation": "The `heapq.nlargest(k, iterable)` and `heapq.nsmallest(k, iterable)` functions solve top-K problems in O(n log k) — far better than sorting for large datasets with small k. Interviewers love these for \"find the K most frequent\", \"K closest points\", and ranking problems. For custom ordering, pass a `key` function just like `sorted()`.",
+      "example": "import heapq\n\nscores = [88, 92, 76, 95, 61, 85, 99]\n\ntop3 = heapq.nlargest(3, scores)\nprint(top3)    # [99, 95, 92]\n\nbottom2 = heapq.nsmallest(2, scores)\nprint(bottom2) # [61, 76]",
+      "exercise": {
+        "prompt": "Given `scores = [72, 98, 85, 61, 90, 77, 95]`, use `heapq.nlargest` to find the top 3 scores and print them. Then use `heapq.nsmallest` to find the lowest 2 scores and print them.",
+        "starterCode": "import heapq\n\nscores = [72, 98, 85, 61, 90, 77, 95]\n\ntop3 = heapq.nlargest(, scores)\nprint(top3)\n\nbottom2 = heapq.nsmallest(, scores)\nprint(bottom2)",
+        "validation": [
+          {"type": "output", "expected": "[98, 95, 90]\n[61, 72]", "message": "Top 3 should be [98, 95, 90] and bottom 2 should be [61, 72]"},
+          {"type": "contains", "patterns": ["nlargest", "nsmallest"], "message": "Use heapq.nlargest and heapq.nsmallest for the top-K pattern"}
+        ],
+        "testCode": "",
+        "hint": "Pass 3 as the first argument to nlargest and 2 to nsmallest. Both return sorted results."
+      },
+      "order": 3
+    },
+    {
+      "id": "heap-sort",
+      "title": "Heap-based merge pattern",
+      "explanation": "Merging K sorted lists is a classic heap interview problem. Push the first element of each list (along with its list index and element index) onto a min-heap, then repeatedly pop the smallest and push the next element from that same list. `heapq.merge(*iterables)` does this in one line for iterables, but interviewers often want the manual approach to test your understanding.",
+      "example": "import heapq\n\na = [1, 4, 7]\nb = [2, 5, 8]\nc = [3, 6, 9]\n\n# Built-in merge for sorted iterables\nmerged = list(heapq.merge(a, b, c))\nprint(merged)  # [1, 2, 3, 4, 5, 6, 7, 8, 9]",
+      "exercise": {
+        "prompt": "Merge two sorted lists `a = [1, 3, 5, 7]` and `b = [2, 4, 6, 8]` into a single sorted list using `heapq.merge`. Print the merged result as a list.",
+        "starterCode": "import heapq\n\na = [1, 3, 5, 7]\nb = [2, 4, 6, 8]\n\nmerged = list(heapq.merge(, ))\nprint(merged)",
+        "validation": [
+          {"type": "output", "expected": "[1, 2, 3, 4, 5, 6, 7, 8]", "message": "The merged sorted list should be [1, 2, 3, 4, 5, 6, 7, 8]"},
+          {"type": "contains", "patterns": ["heapq.merge", "a", "b"], "message": "Use heapq.merge to combine the two sorted lists"}
+        ],
+        "testCode": "",
+        "hint": "Pass both lists as arguments: heapq.merge(a, b). Wrap in list() since merge returns an iterator."
+      },
+      "order": 4
+    }
+  ]
+}

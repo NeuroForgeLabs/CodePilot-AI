@@ -78,16 +78,16 @@ export default function ReviewPanel({
                 <Clock className="h-4 w-4 text-brand-400" />
                 Complexity
               </div>
-              <div className="grid grid-cols-2 gap-2">
-                <div className="rounded-md border border-gray-700 bg-gray-800/50 p-3 text-center">
-                  <div className="text-xs text-gray-400 mb-1">Time</div>
-                  <div className="text-sm font-mono font-semibold text-brand-400">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="rounded-xl border border-brand-500/20 bg-brand-500/5 p-3.5 text-center">
+                  <div className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Time</div>
+                  <div className="text-sm font-mono font-bold text-brand-400">
                     {review.complexity.time}
                   </div>
                 </div>
-                <div className="rounded-md border border-gray-700 bg-gray-800/50 p-3 text-center">
-                  <div className="text-xs text-gray-400 mb-1">Space</div>
-                  <div className="text-sm font-mono font-semibold text-brand-400">
+                <div className="rounded-xl border border-brand-500/20 bg-brand-500/5 p-3.5 text-center">
+                  <div className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Space</div>
+                  <div className="text-sm font-mono font-bold text-brand-400">
                     {review.complexity.space}
                   </div>
                 </div>

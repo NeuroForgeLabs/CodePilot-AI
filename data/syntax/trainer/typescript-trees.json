@@ -1,0 +1,95 @@
+{
+  "id": "typescript-trees",
+  "title": "Trees",
+  "description": "Binary trees are among the most tested data structures in interviews. Master the TreeNode interface, DFS traversals, BFS level-order, and depth calculations with proper TypeScript types.",
+  "language": "typescript",
+  "category": "trees",
+  "order": 11,
+  "sections": [
+    {
+      "id": "tree-node-interface",
+      "title": "TreeNode class and interface",
+      "explanation": "Most interview problems use a `TreeNode` class with `val`, `left`, and `right`. In TypeScript, define it with typed fields — `left` and `right` are `TreeNode | null` since children may not exist. You can also define a separate interface and implement it. Interviewers expect you to write this from memory.",
+      "example": "class TreeNode {\n  val: number;\n  left: TreeNode | null;\n  right: TreeNode | null;\n  constructor(val: number = 0, left: TreeNode | null = null, right: TreeNode | null = null) {\n    this.val = val;\n    this.left = left;\n    this.right = right;\n  }\n}\n\nconst root = new TreeNode(1, new TreeNode(2), new TreeNode(3));\nconsole.log(root.val);        // 1\nconsole.log(root.left!.val);  // 2\nconsole.log(root.right!.val); // 3",
+      "exercise": {
+        "prompt": "Define a TreeNode class with val, left, and right. Create a tree with root=10, left=5, right=15. Print the root value, left child value, and right child value.",
+        "starterCode": "class TreeNode {\n  val: number\n  left: TreeNode | null\n  right: TreeNode | null\n  constructor(val: number = 0, left: TreeNode | null = null, right: TreeNode | null = null) {\n    this.val = val\n    this.left = left\n    this.right = right\n  }\n}\n\nconst root = new TreeNode(___, new TreeNode(___), new TreeNode(___))\n\nconsole.log(root.val)\nconsole.log(root.left!.val)\nconsole.log(root.right!.val)",
+        "validation": [
+          {"type": "output", "expected": "10\n5\n15", "message": "Tree should have root=10, left=5, right=15"},
+          {"type": "contains", "patterns": ["class TreeNode", "TreeNode | null", "root.left!"], "message": "Use typed TreeNode class with nullable children"}
+        ],
+        "testCode": "",
+        "hint": "Pass 10, 5, 15 to the TreeNode constructors. Use ! after left/right to assert they're not null."
+      },
+      "order": 1
+    },
+    {
+      "id": "dfs-traversals",
+      "title": "DFS traversals (inorder, preorder, postorder)",
+      "explanation": "Depth-first traversals visit every node using recursion. Inorder (left, root, right) yields sorted order for BSTs. Preorder (root, left, right) is used for tree serialization. Postorder (left, right, root) computes bottom-up results. TypeScript's `TreeNode | null` parameter type naturally handles the base case — check for null.",
+      "example": "class TreeNode {\n  val: number;\n  left: TreeNode | null;\n  right: TreeNode | null;\n  constructor(val: number = 0, left: TreeNode | null = null, right: TreeNode | null = null) {\n    this.val = val; this.left = left; this.right = right;\n  }\n}\n\nfunction inorder(node: TreeNode | null, result: number[]): void {\n  if (node === null) return;\n  inorder(node.left, result);\n  result.push(node.val);\n  inorder(node.right, result);\n}\n\nconst root = new TreeNode(4, new TreeNode(2, new TreeNode(1), new TreeNode(3)), new TreeNode(6, new TreeNode(5), new TreeNode(7)));\nconst res: number[] = [];\ninorder(root, res);\nconsole.log(res.join(\",\"));  // 1,2,3,4,5,6,7",
+      "exercise": {
+        "prompt": "Implement preorder (root, left, right) and postorder (left, right, root) traversals. Build a tree with root=1, left=2, right=3. Print preorder result then postorder result, each joined by comma.",
+        "starterCode": "class TreeNode {\n  val: number\n  left: TreeNode | null\n  right: TreeNode | null\n  constructor(val: number = 0, left: TreeNode | null = null, right: TreeNode | null = null) {\n    this.val = val; this.left = left; this.right = right\n  }\n}\n\nfunction preorder(node: TreeNode | null, result: number[]): void {\n  if (node === null) return\n  result.push(node.val)\n  preorder(node.___, result)\n  preorder(node.___, result)\n}\n\nfunction postorder(node: TreeNode | null, result: number[]): void {\n  if (node === null) return\n  postorder(node.___, result)\n  postorder(node.___, result)\n  result.push(node.val)\n}\n\nconst root = new TreeNode(1, new TreeNode(2), new TreeNode(3))\n\nconst pre: number[] = []\npreorder(root, pre)\nconsole.log(pre.join(\",\"))\n\nconst post: number[] = []\npostorder(root, post)\nconsole.log(post.join(\",\"))",
+        "validation": [
+          {"type": "output", "expected": "1,2,3\n2,3,1", "message": "Preorder: 1,2,3. Postorder: 2,3,1"},
+          {"type": "contains", "patterns": ["node.left", "node.right", "TreeNode | null"], "message": "Recurse on left and right children with null checks"}
+        ],
+        "testCode": "",
+        "hint": "Preorder: push val first, then recurse left, then right. Postorder: recurse left, then right, then push val."
+      },
+      "order": 2
+    },
+    {
+      "id": "bfs-level-order",
+      "title": "BFS level-order traversal",
+      "explanation": "Level-order traversal processes nodes breadth-first using a queue. Dequeue a node, record its value, and enqueue its children. Group nodes by level by iterating over the current queue length each round. This pattern appears in \"right side view\", \"zigzag\", and \"minimum depth\" problems.",
+      "example": "class TreeNode {\n  val: number;\n  left: TreeNode | null;\n  right: TreeNode | null;\n  constructor(val: number = 0, left: TreeNode | null = null, right: TreeNode | null = null) {\n    this.val = val; this.left = left; this.right = right;\n  }\n}\n\nfunction levelOrder(root: TreeNode | null): number[][] {\n  if (root === null) return [];\n  const result: number[][] = [];\n  const queue: TreeNode[] = [root];\n  while (queue.length > 0) {\n    const level: number[] = [];\n    const size = queue.length;\n    for (let i = 0; i < size; i++) {\n      const node = queue.shift()!;\n      level.push(node.val);\n      if (node.left) queue.push(node.left);\n      if (node.right) queue.push(node.right);\n    }\n    result.push(level);\n  }\n  return result;\n}\n\nconst root = new TreeNode(1, new TreeNode(2), new TreeNode(3));\nconsole.log(levelOrder(root));  // [[1], [2, 3]]",
+      "exercise": {
+        "prompt": "Implement BFS level-order traversal. Build a tree with root=1, left=2 (children 4,5), right=3 (children 6,7). Print each level as comma-separated values, one level per line.",
+        "starterCode": "class TreeNode {\n  val: number\n  left: TreeNode | null\n  right: TreeNode | null\n  constructor(val: number = 0, left: TreeNode | null = null, right: TreeNode | null = null) {\n    this.val = val; this.left = left; this.right = right\n  }\n}\n\nfunction levelOrder(root: TreeNode | null): number[][] {\n  if (root === null) return []\n  const result: number[][] = []\n  const queue: TreeNode[] = [root]\n  while (queue.length > 0) {\n    const level: number[] = []\n    const size = queue.length\n    for (let i = 0; i < size; i++) {\n      const node = queue.___()!\n      level.push(node.val)\n      if (node.left) queue.___(node.left)\n      if (node.right) queue.___(node.right)\n    }\n    result.push(level)\n  }\n  return result\n}\n\nconst root = new TreeNode(1,\n  new TreeNode(2, new TreeNode(4), new TreeNode(5)),\n  new TreeNode(3, new TreeNode(6), new TreeNode(7))\n)\n\nfor (const level of levelOrder(root)) {\n  console.log(level.join(\",\"))\n}",
+        "validation": [
+          {"type": "output", "expected": "1\n2,3\n4,5,6,7", "message": "Level 0: [1], Level 1: [2,3], Level 2: [4,5,6,7]"},
+          {"type": "contains", "patterns": ["queue.shift()", "queue.push(", "TreeNode[]"], "message": "Use typed queue with shift and push for BFS"}
+        ],
+        "testCode": "",
+        "hint": "shift() dequeues from the front. push() adds children to the back. Process queue.length nodes per level."
+      },
+      "order": 3
+    },
+    {
+      "id": "tree-depth",
+      "title": "Tree depth and height",
+      "explanation": "Maximum depth (height) of a binary tree is the number of nodes along the longest root-to-leaf path. The recursive approach: depth of a null node is 0; otherwise it's 1 + max(depth(left), depth(right)). This runs in O(n) and is one of the most common interview warm-ups.",
+      "example": "class TreeNode {\n  val: number;\n  left: TreeNode | null;\n  right: TreeNode | null;\n  constructor(val: number = 0, left: TreeNode | null = null, right: TreeNode | null = null) {\n    this.val = val; this.left = left; this.right = right;\n  }\n}\n\nfunction maxDepth(node: TreeNode | null): number {\n  if (node === null) return 0;\n  return 1 + Math.max(maxDepth(node.left), maxDepth(node.right));\n}\n\nconst root = new TreeNode(1, new TreeNode(2, new TreeNode(4), null), new TreeNode(3));\nconsole.log(maxDepth(root));  // 3",
+      "exercise": {
+        "prompt": "Implement maxDepth and minDepth (shortest root-to-leaf path). Build a tree: root=1, left=2 (left child 4), right=3. Print the max depth and min depth.",
+        "starterCode": "class TreeNode {\n  val: number\n  left: TreeNode | null\n  right: TreeNode | null\n  constructor(val: number = 0, left: TreeNode | null = null, right: TreeNode | null = null) {\n    this.val = val; this.left = left; this.right = right\n  }\n}\n\nfunction maxDepth(node: TreeNode | null): number {\n  if (node === null) return 0\n  return 1 + Math.___(maxDepth(node.left), maxDepth(node.right))\n}\n\nfunction minDepth(node: TreeNode | null): number {\n  if (node === null) return 0\n  if (node.left === null) return 1 + minDepth(node.right)\n  if (node.right === null) return 1 + minDepth(node.left)\n  return 1 + Math.___(minDepth(node.left), minDepth(node.right))\n}\n\nconst root = new TreeNode(1, new TreeNode(2, new TreeNode(4), null), new TreeNode(3))\n\nconsole.log(maxDepth(root))\nconsole.log(minDepth(root))",
+        "validation": [
+          {"type": "output", "expected": "3\n2", "message": "Max depth is 3 (1->2->4), min depth is 2 (1->3)"},
+          {"type": "contains", "patterns": ["Math.max", "Math.min", "TreeNode | null"], "message": "Use Math.max for maxDepth and Math.min for minDepth"}
+        ],
+        "testCode": "",
+        "hint": "maxDepth uses Math.max of children. minDepth uses Math.min but must handle one-child nodes specially — a null child doesn't count as a leaf."
+      },
+      "order": 4
+    },
+    {
+      "id": "path-sum",
+      "title": "Path sum and collection",
+      "explanation": "Path problems ask whether a root-to-leaf path with a target sum exists, or to collect all such paths. Subtract the current node's value from the target as you recurse. At a leaf, check if the remaining target equals the node's value. For collecting paths, pass a path array and push a copy when found.",
+      "example": "class TreeNode {\n  val: number;\n  left: TreeNode | null;\n  right: TreeNode | null;\n  constructor(val: number = 0, left: TreeNode | null = null, right: TreeNode | null = null) {\n    this.val = val; this.left = left; this.right = right;\n  }\n}\n\nfunction hasPathSum(node: TreeNode | null, target: number): boolean {\n  if (node === null) return false;\n  if (node.left === null && node.right === null) return node.val === target;\n  return hasPathSum(node.left, target - node.val) || hasPathSum(node.right, target - node.val);\n}\n\nconst root = new TreeNode(5, new TreeNode(4, new TreeNode(2), null), new TreeNode(8, new TreeNode(3), null));\nconsole.log(hasPathSum(root, 11));  // true (5->4->2)\nconsole.log(hasPathSum(root, 20));  // false",
+      "exercise": {
+        "prompt": "Implement hasPathSum that returns true if any root-to-leaf path sums to the target. Build a tree: root=1, left=2 (children 4,5), right=3. Check path sums 7 (1+2+4) and 10. Print each result.",
+        "starterCode": "class TreeNode {\n  val: number\n  left: TreeNode | null\n  right: TreeNode | null\n  constructor(val: number = 0, left: TreeNode | null = null, right: TreeNode | null = null) {\n    this.val = val; this.left = left; this.right = right\n  }\n}\n\nfunction hasPathSum(node: TreeNode | null, target: number): boolean {\n  if (node === null) return false\n  if (node.left === null && node.right === null) return node.val === ___\n  return hasPathSum(node.left, target - node.___) || hasPathSum(node.right, target - node.___)\n}\n\nconst root = new TreeNode(1, new TreeNode(2, new TreeNode(4), new TreeNode(5)), new TreeNode(3))\n\nconsole.log(hasPathSum(root, 7))\nconsole.log(hasPathSum(root, 10))",
+        "validation": [
+          {"type": "output", "expected": "true\nfalse", "message": "Path 1->2->4=7 exists, no path sums to 10"},
+          {"type": "contains", "patterns": ["hasPathSum(node.left", "target - node.val", "TreeNode | null"], "message": "Subtract current val and recurse on both children"}
+        ],
+        "testCode": "",
+        "hint": "At a leaf, check if node.val === target (remaining sum). Otherwise recurse with target - node.val on both children."
+      },
+      "order": 5
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "id": "cpp-variables-types",
+  "title": "Variables & Types",
+  "description": "Master C++ fundamental types and casting — knowing when to use int vs long long, how to cast safely, and how nullptr works prevents subtle bugs during interviews.",
+  "language": "cpp",
+  "category": "variables-types",
+  "order": 1,
+  "sections": [
+    {
+      "id": "declaring",
+      "title": "Declaring variables",
+      "explanation": "C++ is statically typed — every variable needs a type at declaration. The five types you'll use constantly: **int**, **long long**, **double**, **string**, and **bool**. Use `auto` when the type is obvious from the right-hand side.",
+      "example": "int count = 0;\nlong long big = 1e18;\ndouble ratio = 0.5;\nstring name = \"target\";\nbool found = false;\n\ncout << count << endl;  // 0\ncout << big << endl;    // 1000000000000000000",
+      "exercise": {
+        "prompt": "Declare five variables: `count` (int 42), `big` (long long 1000000000000), `ratio` (double 3.14), `name` (string \"alice\"), and `found` (bool true). Print each variable on its own line using cout.",
+        "starterCode": "int main() {\n    int count = ;\n    long long big = ;\n    double ratio = ;\n    string name = ;\n    bool found = ;\n\n    cout << count << endl;\n    cout << big << endl;\n    cout << ratio << endl;\n    cout << name << endl;\n    cout << boolalpha << found << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "42\n1000000000000\n3.14\nalice\ntrue", "message": "Each variable should print its value on a separate line"},
+          {"type": "contains", "patterns": ["int count", "long long big", "double ratio", "string name", "bool found"], "message": "Declare each variable with its correct type"}
+        ],
+        "testCode": "",
+        "hint": "Assign the literals directly: count = 42, big = 1000000000000LL, ratio = 3.14, name = \"alice\", found = true."
+      },
+      "order": 1
+    },
+    {
+      "id": "static-cast",
+      "title": "Type conversion with static_cast",
+      "explanation": "In interviews, you often need to convert between types — integer division to floating-point, char to int for indexing, etc. Use **static_cast<T>(expr)** for safe, explicit conversions. Also know **stoi()** / **stoll()** for string-to-number and **to_string()** for number-to-string.",
+      "example": "int a = 7, b = 2;\ndouble result = static_cast<double>(a) / b;\ncout << result << endl;  // 3.5\n\nstring s = \"42\";\nint num = stoi(s);\ncout << num + 1 << endl;  // 43\n\nstring text = to_string(256);\ncout << text << endl;  // 256",
+      "exercise": {
+        "prompt": "Divide int `a = 7` by int `b = 2` using static_cast to get a double result. Then convert the string \"99\" to an int with stoi, and convert int 256 to a string with to_string. Print all three results.",
+        "starterCode": "int main() {\n    int a = 7, b = 2;\n    double result = static_cast<double>(a) / b;\n    cout << result << endl;\n\n    string s = \"99\";\n    int num = (s);\n    cout << num << endl;\n\n    string text = (256);\n    cout << text << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "3.5\n99\n256", "message": "Check your casts — the division should produce 3.5, stoi gives 99, to_string gives \"256\""},
+          {"type": "contains", "patterns": ["static_cast", "stoi", "to_string"], "message": "Use static_cast for the division, stoi for string-to-int, and to_string for int-to-string"}
+        ],
+        "testCode": "",
+        "hint": "Use static_cast<double>(a) / b for the division. num = stoi(s) and text = to_string(256)."
+      },
+      "order": 2
+    },
+    {
+      "id": "nullptr-checks",
+      "title": "nullptr and null checks",
+      "explanation": "In C++ interviews, **nullptr** represents a null pointer — you'll use it constantly with tree nodes and linked lists. Always check `if (ptr == nullptr)` or simply `if (!ptr)` before dereferencing. Never use the old C macro `NULL`; interviewers expect modern C++ style with `nullptr`.",
+      "example": "struct ListNode {\n    int val;\n    ListNode* next;\n    ListNode(int x) : val(x), next(nullptr) {}\n};\n\nListNode* head = new ListNode(1);\nhead->next = new ListNode(2);\n\nListNode* curr = head;\nwhile (curr != nullptr) {\n    cout << curr->val << \" \";\n    curr = curr->next;\n}\n// Output: 1 2",
+      "exercise": {
+        "prompt": "Create a simple linked list with values 10 -> 20 -> 30. Traverse it with a while loop, printing each value separated by spaces. Use nullptr to check the end of the list.",
+        "starterCode": "struct ListNode {\n    int val;\n    ListNode* next;\n    ListNode(int x) : val(x), next(nullptr) {}\n};\n\nint main() {\n    ListNode* head = new ListNode(10);\n    head->next = new ListNode(20);\n    head->next->next = new ListNode(30);\n\n    ListNode* curr = head;\n    while (curr != ) {\n        cout << curr->val << \" \";\n        curr = curr->;\n    }\n    cout << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "10 20 30", "message": "Traverse the linked list printing each value followed by a space"},
+          {"type": "contains", "patterns": ["nullptr", "curr->next"], "message": "Use nullptr for the null check and curr->next to advance"}
+        ],
+        "testCode": "",
+        "hint": "Check while (curr != nullptr), then advance with curr = curr->next."
+      },
+      "order": 3
+    },
+    {
+      "id": "const-constexpr",
+      "title": "const and common constants",
+      "explanation": "Use **const** for values that should never change. In interviews, you'll define constants for MOD arithmetic, infinity, and direction arrays. `INT_MAX` and `INT_MIN` from `<climits>` are available with bits/stdc++.h. For larger ranges, use `LLONG_MAX`.",
+      "example": "const int MOD = 1e9 + 7;\nconst int INF = INT_MAX;\nconst vector<pair<int,int>> DIRS = {{0,1},{0,-1},{1,0},{-1,0}};\n\nlong long result = 123456789LL;\nresult = result % MOD;\ncout << result << endl;  // 123456789\ncout << (99 < INF) << endl;  // 1",
+      "exercise": {
+        "prompt": "Define three constants: `MOD` as 1e9 + 7 (int), `INF` as INT_MAX, and `MAX_SIZE` as 1000. Print each constant, then print 123456789 % MOD and whether 99 < INF (as boolalpha).",
+        "starterCode": "int main() {\n    const int MOD = ;\n    const int INF = ;\n    const int MAX_SIZE = ;\n\n    cout << MOD << endl;\n    cout << INF << endl;\n    cout << MAX_SIZE << endl;\n    cout << 123456789 % MOD << endl;\n    cout << boolalpha << (99 < INF) << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "1000000007\n2147483647\n1000\n123456789\ntrue", "message": "Check your constant values — MOD is 1e9+7, INF is INT_MAX (2147483647)"},
+          {"type": "contains", "patterns": ["const int MOD", "INT_MAX", "const int MAX_SIZE"], "message": "Use const for all three declarations and INT_MAX for infinity"}
+        ],
+        "testCode": "",
+        "hint": "MOD = 1e9 + 7, INF = INT_MAX, MAX_SIZE = 1000. 123456789 % MOD equals itself since it's smaller than MOD."
+      },
+      "order": 4
+    }
+  ]
+}

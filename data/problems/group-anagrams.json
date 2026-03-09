@@ -1,0 +1,39 @@
+{
+  "id": "group-anagrams",
+  "title": "Group Anagrams",
+  "difficulty": "Medium",
+  "tags": ["strings", "hash-table", "sorting"],
+  "prompt": "Given an array of strings `strs`, group the anagrams together. You can return the answer in any order.\n\nAn anagram is a word or phrase formed by rearranging the letters of a different word or phrase, using all the original letters exactly once.\n\nReturn the groups sorted: each group sorted alphabetically, and the list of groups sorted by their first element.",
+  "examples": [
+    {"input": "strs = [\"eat\", \"tea\", \"tan\", \"ate\", \"nat\", \"bat\"]", "output": "[[\"ate\", \"eat\", \"tea\"], [\"bat\"], [\"nat\", \"tan\"]]\nExplanation: 'eat', 'tea', and 'ate' are anagrams. 'tan' and 'nat' are anagrams. 'bat' has no anagram partner."},
+    {"input": "strs = [\"\"]", "output": "[[\"\"]]\nExplanation: A single empty string forms one group."},
+    {"input": "strs = [\"a\"]", "output": "[[\"a\"]]"}
+  ],
+  "constraints": [
+    "1 <= strs.length <= 10^4",
+    "0 <= strs[i].length <= 100",
+    "strs[i] consists of lowercase English letters."
+  ],
+  "starterCode": {
+    "python": "def solve(strs: list[str]) -> list[list[str]]:\n    pass",
+    "javascript": "function solve(strs) {\n  \n}",
+    "typescript": "export function solve(strs: string[]): string[][] {\n  \n}",
+    "java": "class Solution {\n    public List<List<String>> solve(String[] strs) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public IList<IList<string>> Solve(string[] strs) {\n        \n    }\n}",
+    "go": "func solve(strs []string) [][]string {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "result = solve([\"eat\", \"tea\", \"tan\", \"ate\", \"nat\", \"bat\"])\nresult = [sorted(g) for g in result]\nresult.sort()\nprint(result)"}, "expectedStdout": "[['ate', 'eat', 'tea'], ['bat'], ['nat', 'tan']]"},
+    {"stdin": {"python": "result = solve([''])\nresult = [sorted(g) for g in result]\nresult.sort()\nprint(result)"}, "expectedStdout": "[['']]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "result = solve(['a'])\nresult = [sorted(g) for g in result]\nresult.sort()\nprint(result)"}, "expectedStdout": "[['a']]"},
+    {"stdin": {"python": "result = solve(['abc', 'bca', 'cab', 'xyz', 'zyx'])\nresult = [sorted(g) for g in result]\nresult.sort()\nprint(result)"}, "expectedStdout": "[['abc', 'bca', 'cab'], ['xyz', 'zyx']]"},
+    {"stdin": {"python": "result = solve(['ab', 'ba', 'abc', 'cba', 'a'])\nresult = [sorted(g) for g in result]\nresult.sort()\nprint(result)"}, "expectedStdout": "[['a'], ['ab', 'ba'], ['abc', 'cba']]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use a hash map where the key is the sorted version of each string. All anagrams will map to the same sorted key. Group strings by this key.",
+    "commonBugs": ["Not handling empty strings", "Using character frequency counts incorrectly for non-lowercase input", "Forgetting to sort the output groups for deterministic results"],
+    "expectedComplexity": "O(n * k log k) where k is the max string length"
+  }
+}

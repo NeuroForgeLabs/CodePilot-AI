@@ -4,7 +4,7 @@ export interface ProblemExample {
 }
 
 export interface TestCase {
-  stdin: string;
+  stdin: string | Record<string, string>;
   expectedStdout: string;
 }
 
@@ -94,4 +94,122 @@ export interface Attempt {
   language: Language;
   code: string;
   timestamp: number;
+}
+
+// --- Syntax Tab ---
+
+export type SyntaxLanguage =
+  | "python" | "javascript" | "typescript" | "java"
+  | "csharp" | "go" | "c" | "cpp" | "rust";
+
+export const SYNTAX_LANGUAGES: { value: SyntaxLanguage; label: string }[] = [
+  { value: "python", label: "Python" },
+  { value: "javascript", label: "JavaScript" },
+  { value: "typescript", label: "TypeScript" },
+  { value: "java", label: "Java" },
+  { value: "cpp", label: "C++" },
+  { value: "c", label: "C" },
+  { value: "csharp", label: "C#" },
+  { value: "go", label: "Go" },
+  { value: "rust", label: "Rust" },
+];
+
+export const EDITOR_TO_SYNTAX_LANGUAGE: Record<Language, SyntaxLanguage> = {
+  python: "python",
+  javascript: "javascript",
+  typescript: "typescript",
+  java: "java",
+  csharp: "csharp",
+  go: "go",
+};
+
+export type SyntaxSnippets = Partial<Record<SyntaxLanguage, string>>;
+
+export interface LessonSection {
+  id: string;
+  title: string;
+  type: "concept" | "snippet" | "pattern" | "gotcha";
+  explanation: string;
+  snippets: SyntaxSnippets;
+}
+
+export interface Lesson {
+  id: string;
+  title: string;
+  description: string;
+  order: number;
+  sections: LessonSection[];
+}
+
+export interface LessonListItem {
+  id: string;
+  title: string;
+  order: number;
+}
+
+export interface SyntaxExplainResponse {
+  explanation: string;
+  error?: string;
+}
+
+// --- Curriculum ---
+
+export interface CurriculumCategory {
+  id: string;
+  title: string;
+  order: number;
+}
+
+// --- Interactive Syntax Trainer ---
+
+export interface ExerciseValidation {
+  type: "output" | "contains" | "regex";
+  expected?: string;
+  patterns?: string[];
+  message?: string;
+}
+
+export interface Exercise {
+  prompt: string;
+  starterCode: string;
+  validation: ExerciseValidation[];
+  testCode: string;
+  hint?: string;
+}
+
+export interface TrainerSection {
+  id: string;
+  title: string;
+  explanation: string;
+  example: string;
+  exercise: Exercise;
+  order: number;
+}
+
+export interface TrainerLesson {
+  id: string;
+  title: string;
+  description: string;
+  language: string;
+  category: string;
+  order: number;
+  sections: TrainerSection[];
+}
+
+export interface TrainerLessonListItem {
+  id: string;
+  title: string;
+  category: string;
+  language: string;
+  sectionCount: number;
+  order: number;
+}
+
+export interface ExerciseCheckResult {
+  passed: boolean;
+  stdout: string;
+  stderr: string;
+  checks: { label: string; passed: boolean }[];
+  aiFeedback?: string;
+  error?: string;
 }

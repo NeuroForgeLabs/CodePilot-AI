@@ -1,6 +1,6 @@
 # InterviewCoach — Complete Project Documentation
 
-AI-powered coding interview practice platform with multi-language code execution, progressive AI-guided hints, and intelligent code review.
+AI-powered coding interview practice platform with 100 algorithm problems, multi-language code execution, progressive AI-guided hints, intelligent code review, and an interactive 9-language syntax trainer.
 
 ---
 
@@ -13,7 +13,9 @@ AI-powered coding interview practice platform with multi-language code execution
 5. [Environment Variables](#environment-variables)
 6. [Frontend (Next.js)](#frontend-nextjs)
    - [Pages and Layout](#pages-and-layout)
+   - [Top-Level Navigation](#top-level-navigation)
    - [Components](#components)
+   - [Syntax Trainer Components](#syntax-trainer-components)
    - [API Proxy Routes](#api-proxy-routes)
    - [Shared Libraries](#shared-libraries)
    - [Styling](#styling)
@@ -24,46 +26,55 @@ AI-powered coding interview practice platform with multi-language code execution
    - [Judge0 Code Execution Service](#judge0-code-execution-service)
    - [LLM Service](#llm-service)
    - [Prompt Templates](#prompt-templates)
-   - [Chunking Utility](#chunking-utility)
 8. [Problem Data Format](#problem-data-format)
-9. [User Flow](#user-flow)
-10. [How Code Execution Works](#how-code-execution-works)
-11. [How the Hint System Works](#how-the-hint-system-works)
-12. [How AI Review Works](#how-ai-review-works)
-13. [Local Storage and Persistence](#local-storage-and-persistence)
-14. [Infrastructure (Docker Compose)](#infrastructure-docker-compose)
-15. [Setup and Running](#setup-and-running)
-16. [Using Alternative LLM Providers](#using-alternative-llm-providers)
+9. [Syntax Trainer System](#syntax-trainer-system)
+   - [Curriculum](#curriculum)
+   - [Trainer Lesson Format](#trainer-lesson-format)
+   - [Reference Lessons](#reference-lessons)
+   - [Exercise Validation](#exercise-validation)
+10. [User Flows](#user-flows)
+11. [How Code Execution Works](#how-code-execution-works)
+12. [How the Hint System Works](#how-the-hint-system-works)
+13. [How AI Review Works](#how-ai-review-works)
+14. [AI Behavior Modes](#ai-behavior-modes)
+15. [Local Storage and Persistence](#local-storage-and-persistence)
+16. [Infrastructure (Docker Compose)](#infrastructure-docker-compose)
+17. [Setup and Running](#setup-and-running)
+18. [Using Alternative LLM Providers](#using-alternative-llm-providers)
 
 ---
 
 ## Overview
 
-InterviewCoach is a full-stack web application designed to help users practice coding interviews. It provides:
+InterviewCoach is a full-stack web application for coding interview preparation. It provides:
 
-- **10 curated coding problems** ranging from Easy to Medium difficulty (Two Sum, Reverse String, Valid Parentheses, Climbing Stairs, Binary Search, Maximum Subarray, Merge Intervals, Longest Substring Without Repeating, Product Except Self, Linked List Cycle).
-- **6 supported programming languages**: Python, JavaScript, TypeScript, Java, C#, Go.
-- **A Monaco Editor** (the same editor powering VS Code) for writing solutions with syntax highlighting, bracket colorization, and language-aware editing.
-- **Code execution** via Judge0 against both visible and hidden test cases.
-- **AI-guided hints** with three modes: Strict (no hints), Interviewer (Socratic, no code), and Learning (more direct, pseudocode allowed). Hints are progressive across 5 levels from subtle to detailed.
-- **AI code review** after running tests, providing feedback, time/space complexity analysis, edge case identification, and actionable improvements.
-- **Auto-save** of user code attempts to browser localStorage.
+- **100 coding problems** (35 Easy, 45 Medium, 20 Hard) across 21 topic categories, with LeetCode-style topic filtering (Array, String, Hash Table, Dynamic Programming, Tree, Graph, etc.)
+- **Interactive Syntax Trainer** with 13 curriculum categories across 9 programming languages (Python, JavaScript, TypeScript, Java, C++, C, C#, Go, Rust) — 117 lesson files with ~500 interactive exercises
+- **Static Syntax Reference** with 4 reference lessons (Hashmaps, Arrays & Loops, Stacks & Queues, Sorting) in Python, JavaScript, and Java
+- **6 editor languages** for solving problems: Python, JavaScript, TypeScript, Java, C#, Go
+- **9 syntax trainer languages**: Python, JavaScript, TypeScript, Java, C++, C, C#, Go, Rust
+- **Monaco Editor** (VS Code editor) with syntax highlighting, bracket colorization, and language-aware editing
+- **Code execution** via Judge0 against visible + hidden test cases, with per-language test support
+- **AI-guided hints** with 3 modes (Strict, Interviewer, Learning) and 5 progressive hint levels
+- **AI code review** with complexity analysis, edge cases, and improvement suggestions
+- **AI Assistant** with dual-mode behavior: coaching mode for problems (no spoilers) and tutoring mode for syntax (teaches freely)
+- **Auto-save** of code attempts to browser localStorage
 
 ---
 
 ## Tech Stack
 
-| Layer       | Technology                                                             |
-|-------------|------------------------------------------------------------------------|
-| Frontend    | Next.js 14 (App Router), React 18, TypeScript, Tailwind CSS 3, Monaco Editor |
-| Backend     | Python 3, FastAPI 0.115, Uvicorn 0.34, Pydantic 2.10                  |
-| Code Execution | Judge0 CE (cloud-hosted via RapidAPI or self-hosted)                |
-| AI/LLM      | OpenAI SDK 1.58 (compatible with any OpenAI-compatible API)           |
-| HTTP Client  | httpx 0.28 (async, used for Judge0 API calls)                        |
-| Markdown     | react-markdown 9.0 (rendering hint text)                             |
-| Icons        | Lucide React 0.460                                                   |
-| Storage      | Browser localStorage (client-side persistence)                       |
-| Infra        | Docker Compose (Postgres 16 + Redis 7, scaffolded for future use)    |
+| Layer          | Technology                                                              |
+|----------------|-------------------------------------------------------------------------|
+| Frontend       | Next.js 14 (App Router), React 18, TypeScript, Tailwind CSS 3, Monaco Editor |
+| Backend        | Python 3, FastAPI 0.115, Uvicorn 0.34, Pydantic 2.10                   |
+| Code Execution | Judge0 CE (9 languages: Python, JS, TS, Java, C#, Go, C, C++, Rust)    |
+| AI/LLM         | OpenAI SDK 1.58 (compatible with any OpenAI-compatible API)            |
+| HTTP Client    | httpx 0.28 (async, used for Judge0 API calls)                          |
+| Markdown       | react-markdown 9.0 (rendering hints, AI responses)                    |
+| Icons          | Lucide React 0.460                                                     |
+| Storage        | Browser localStorage (client-side persistence)                         |
+| Infra          | Docker Compose (Postgres 16 + Redis 7, scaffolded for future use)      |
 
 ### Frontend Dependencies (package.json)
 
@@ -92,34 +103,44 @@ InterviewCoach is a full-stack web application designed to help users practice c
 ┌──────────────────────────────────────────────────────────────────────────┐
 │                         Browser (localhost:3000)                         │
 │                                                                          │
-│  ┌──────────────┐  ┌──────────────────────┐  ┌────────────────────────┐ │
-│  │ ProblemPanel │  │     CodeEditor        │  │      RightPanel        │ │
-│  │   (left)     │  │ (center, Monaco)      │  │  Tests | Hint | Review │ │
-│  └──────────────┘  └──────────────────────┘  └────────────────────────┘ │
+│  Top Nav: [Problems] [Syntax]                                           │
 │                                                                          │
-│  localStorage ◄──── Auto-save attempts (debounced 1s) ────► localStorage│
+│  ┌─ Problems View ───────────────────────────────────────────────────┐  │
+│  │ Difficulty filters | Topic filter tabs | Search                    │  │
+│  │ 100 problems listed with tags and difficulty badges                │  │
+│  └────────────────────────────────────────────────────────────────────┘  │
+│                                                                          │
+│  ┌─ Workspace (on problem select) ───────────────────────────────────┐  │
+│  │ Problem Panel │ Monaco Editor │ Tests|Hint|Review|AI tabs          │  │
+│  └────────────────────────────────────────────────────────────────────┘  │
+│                                                                          │
+│  ┌─ Syntax View ─────────────────────────────────────────────────────┐  │
+│  │ [Learn|Reference] [Language▼] │ AI Chat Panel                     │  │
+│  │ 13 curriculum categories      │                                    │  │
+│  │ Interactive exercises          │                                    │  │
+│  └────────────────────────────────────────────────────────────────────┘  │
+│                                                                          │
+│  localStorage ◄──── Auto-save attempts (debounced 1s) ────►             │
 └──────────────────────────────────┬───────────────────────────────────────┘
                                    │
-                    POST /api/execute, /api/hint, /api/review
-                    (Next.js API routes — server-side proxy)
+          POST /api/execute, /api/hint, /api/review,
+          /api/syntax/explain, /api/syntax/check
+          (Next.js API routes — server-side proxy)
                                    │
                                    ▼
 ┌──────────────────────────────────────────────────────────────────────────┐
 │                     FastAPI Backend (localhost:8000)                      │
 │                                                                          │
-│  POST /execute ──► Judge0 (code execution, batch submit + poll)          │
-│  POST /hint    ──► OpenAI-compatible LLM (hint generation)               │
-│  POST /review  ──► OpenAI-compatible LLM (code review, JSON response)    │
-│  GET  /health  ──► { "status": "ok" }                                    │
-│  GET  /problems ─► List all problems (id, title, difficulty, tags)        │
-│  GET  /problems/{id} ► Single problem (sans hiddenTests, notesForAI)     │
+│  POST /execute       ──► Judge0 (code execution, 9 languages)           │
+│  POST /hint          ──► OpenAI-compatible LLM (hint generation)        │
+│  POST /review        ──► OpenAI-compatible LLM (code review)            │
+│  POST /syntax/explain ──► LLM (syntax explain / translate / ask)        │
+│  POST /syntax/check   ──► Judge0 + pattern checks + LLM feedback        │
+│  GET  /health         ──► { "status": "ok" }                            │
+│  GET  /problems       ──► List all 100 problems                         │
+│  GET  /problems/{id}  ──► Single problem (sans hiddenTests, notesForAI) │
 └──────────────────────────────────────────────────────────────────────────┘
 ```
-
-**Data flow summary:**
-1. Problems are loaded at build time from JSON files in `data/problems/` on both the frontend (via static imports in `lib/problems.ts`) and the backend (via filesystem reads in `main.py`).
-2. The frontend calls Next.js API routes (`/api/execute`, `/api/hint`, `/api/review`), which act as server-side proxies, forwarding requests to the FastAPI backend.
-3. The backend handles execution by calling Judge0, and hint/review generation by calling an OpenAI-compatible LLM API.
 
 ---
 
@@ -127,94 +148,113 @@ InterviewCoach is a full-stack web application designed to help users practice c
 
 ```
 InterviewCoach/
-├── .env.example                    # Environment variable template
-├── .env.local                      # Local environment (not committed)
-├── docker-compose.yml              # Postgres + Redis (scaffolded)
-├── package.json                    # Frontend dependencies and scripts
-├── package-lock.json               # npm lockfile
-├── tsconfig.json                   # TypeScript configuration
-├── next.config.mjs                 # Next.js configuration
-├── next-env.d.ts                   # Next.js type references (auto-generated)
-├── tailwind.config.ts              # Tailwind CSS configuration
-├── postcss.config.mjs              # PostCSS configuration
-├── README.md                       # Project README
+├── .env.example                        # Environment variable template
+├── .env.local                          # Local environment (not committed)
+├── .gitignore
+├── docker-compose.yml                  # Postgres + Redis (scaffolded)
+├── package.json                        # Frontend dependencies and scripts
+├── tsconfig.json                       # TypeScript configuration
+├── next.config.mjs                     # Next.js configuration
+├── tailwind.config.ts                  # Tailwind CSS configuration
+├── postcss.config.mjs                  # PostCSS configuration
+├── README.md
+├── DOCUMENTATION.md                    # This file
 │
-├── app/                            # Next.js App Router
-│   ├── layout.tsx                  # Root layout (Inter font, dark theme, metadata)
-│   ├── page.tsx                    # Main page (state management, 3-panel UI)
-│   ├── globals.css                 # Global styles (Tailwind, scrollbars, prose)
-│   └── api/                        # API proxy routes (server-side)
-│       ├── execute/
-│       │   └── route.ts            # POST /api/execute → FastAPI /execute
-│       ├── hint/
-│       │   └── route.ts            # POST /api/hint → FastAPI /hint
-│       └── review/
-│           └── route.ts            # POST /api/review → FastAPI /review
+├── app/                                # Next.js App Router
+│   ├── layout.tsx                      # Root layout (Inter font, dark theme)
+│   ├── page.tsx                        # Main page (top-level nav, 3 views)
+│   ├── globals.css                     # Global styles
+│   └── api/                            # API proxy routes
+│       ├── execute/route.ts            # POST → FastAPI /execute
+│       ├── hint/route.ts              # POST → FastAPI /hint
+│       ├── review/route.ts            # POST → FastAPI /review
+│       └── syntax/
+│           ├── explain/route.ts        # POST → FastAPI /syntax/explain
+│           └── check/route.ts          # POST → FastAPI /syntax/check
 │
-├── components/                     # React UI components
-│   ├── CodeEditor.tsx              # Monaco Editor with language selector
-│   ├── ProblemPanel.tsx            # Problem description, examples, constraints
-│   ├── ProblemSelector.tsx         # Problem dropdown picker
-│   ├── RightPanel.tsx              # Tab container (Tests / Hint / Review)
-│   ├── TestResults.tsx             # Test execution results display
-│   ├── HintPanel.tsx               # Hint mode/level controls + hint display
-│   └── ReviewPanel.tsx             # AI review display (feedback, complexity, etc.)
+├── components/                         # React UI components
+│   ├── AIChatPanel.tsx                 # AI chat with dual mode (syntax/problem)
+│   ├── CodeEditor.tsx                  # Monaco Editor with language selector
+│   ├── HintPanel.tsx                   # Hint mode/level controls + display
+│   ├── ProblemPanel.tsx                # Problem description, examples, constraints
+│   ├── ProblemSelector.tsx             # Problem dropdown picker (legacy)
+│   ├── ProblemsView.tsx                # Problem browser with topic + difficulty filters
+│   ├── ReviewPanel.tsx                 # AI review display
+│   ├── RightPanel.tsx                  # Tabbed panel (Tests|Hint|Review|AI)
+│   ├── TestResults.tsx                 # Test execution results display
+│   └── syntax/                         # Syntax Trainer components
+│       ├── ExerciseEditor.tsx          # Monaco editor for exercises
+│       ├── FeedbackPanel.tsx           # Exercise result + AI feedback
+│       ├── LessonList.tsx              # Reference lesson grid
+│       ├── LessonTrainer.tsx           # Interactive trainer with progress
+│       ├── LessonView.tsx              # Static reference lesson view
+│       ├── SyntaxPanel.tsx             # Main: Learn/Reference tabs, curriculum list
+│       ├── SyntaxSnippet.tsx           # Code snippet with copy button
+│       └── TrainerSection.tsx          # Single exercise: explain → example → try → check
 │
-├── lib/                            # Shared frontend utilities
-│   ├── types.ts                    # TypeScript interfaces and type definitions
-│   ├── problems.ts                 # Problem loader (static JSON imports)
-│   └── storage.ts                  # localStorage helpers for attempts
+├── lib/                                # Shared frontend utilities
+│   ├── types.ts                        # All TypeScript type definitions
+│   ├── problems.ts                     # Problem loader (100 problem imports)
+│   ├── syntax.ts                       # Reference lesson loader
+│   ├── trainer.ts                      # Trainer lesson loader (117 imports)
+│   └── storage.ts                      # localStorage helpers
 │
 ├── data/
-│   └── problems/                   # Problem definitions (10 JSON files)
-│       ├── two-sum.json
-│       ├── reverse-string.json
-│       ├── valid-parentheses.json
-│       ├── climbing-stairs.json
-│       ├── binary-search.json
-│       ├── maximum-subarray.json
-│       ├── merge-intervals.json
-│       ├── longest-substring-without-repeating.json
-│       ├── product-except-self.json
-│       └── linked-list-cycle.json
+│   ├── problems/                       # 100 problem JSON files
+│   │   ├── two-sum.json
+│   │   ├── reverse-string.json
+│   │   ├── ... (100 files total)
+│   │   └── find-median-from-data-stream.json
+│   └── syntax/
+│       ├── lessons/                    # 4 static reference lessons + index
+│       │   ├── index.json
+│       │   ├── arrays-loops.json
+│       │   ├── hashmaps.json
+│       │   ├── sorting.json
+│       │   └── stacks-queues.json
+│       ├── tag-lesson-map.json         # Problem tag → reference lesson mapping
+│       └── trainer/                    # 117 interactive trainer lessons + curriculum
+│           ├── curriculum.json         # 13 category definitions
+│           ├── python-variables-types.json
+│           ├── python-arrays-loops.json
+│           ├── ... (13 files per language × 9 languages = 117 files)
+│           └── rust-interview-templates.json
 │
-├── server/                         # Python FastAPI backend
-│   ├── main.py                     # App entry point, endpoints, CORS
-│   ├── requirements.txt            # Python dependencies
+├── server/                             # Python FastAPI backend
+│   ├── main.py                         # App entry point, 7 endpoints
+│   ├── requirements.txt
 │   ├── models/
-│   │   ├── __init__.py
-│   │   └── schemas.py              # Pydantic request/response models
+│   │   └── schemas.py                  # Pydantic request/response models
 │   ├── services/
-│   │   ├── __init__.py
-│   │   ├── judge0.py               # Judge0 API integration
-│   │   ├── llm.py                  # OpenAI-compatible LLM calls
-│   │   └── prompts.py              # System prompts and templates
+│   │   ├── judge0.py                   # Judge0 integration (9 languages)
+│   │   ├── llm.py                      # LLM calls (hints, review, syntax, exercises)
+│   │   └── prompts.py                  # System prompts and templates
 │   └── utils/
-│       ├── __init__.py
-│       └── chunking.py             # Text chunking utility (future use)
+│       └── chunking.py                 # Text chunking utility (future use)
 │
-└── public/                         # Static assets (currently empty)
+├── docs/
+│   └── SYNTAX_TAB_DESIGN.md           # Syntax tab design document
+│
+└── public/                             # Static assets (empty)
 ```
 
 ---
 
 ## Environment Variables
 
-Defined in `.env.example`, intended to be copied to `.env.local`:
-
-| Variable                 | Required | Default                              | Description                                                    |
-|--------------------------|----------|--------------------------------------|----------------------------------------------------------------|
-| `NEXT_PUBLIC_APP_NAME`   | No       | `InterviewCoach`                     | App display name                                               |
-| `FASTAPI_BASE_URL`       | No       | `http://localhost:8000`              | FastAPI backend URL (used by Next.js API proxy routes)         |
-| `OPENAI_API_KEY`         | Yes      | —                                    | API key for OpenAI or compatible provider                      |
-| `OPENAI_BASE_URL`        | No       | `https://api.openai.com/v1`         | Base URL for the LLM API (change for Claude, local models, etc.) |
-| `OPENAI_MODEL`           | No       | `gpt-4.1-mini`                      | Model name to use for hints and reviews                        |
-| `JUDGE0_URL`             | Yes      | —                                    | Judge0 instance URL (e.g. `https://judge0-ce.p.rapidapi.com`) |
-| `JUDGE0_API_KEY`         | Yes*     | —                                    | RapidAPI key (required if using RapidAPI-hosted Judge0)        |
-| `POSTGRES_USER`          | No       | `interviewcoach`                     | Postgres user (scaffolded, not used yet)                       |
-| `POSTGRES_PASSWORD`      | No       | `changeme`                           | Postgres password (scaffolded, not used yet)                   |
-| `POSTGRES_DB`            | No       | `interviewcoach`                     | Postgres database name (scaffolded, not used yet)              |
-| `REDIS_URL`              | No       | `redis://localhost:6379`             | Redis URL (scaffolded, not used yet)                           |
+| Variable               | Required | Default                          | Description                                                |
+|------------------------|----------|----------------------------------|------------------------------------------------------------|
+| `NEXT_PUBLIC_APP_NAME` | No       | `InterviewCoach`                 | App display name                                           |
+| `FASTAPI_BASE_URL`     | No       | `http://localhost:8000`          | FastAPI backend URL (used by Next.js API proxy)            |
+| `OPENAI_API_KEY`       | Yes      | —                                | API key for OpenAI or compatible provider                  |
+| `OPENAI_BASE_URL`      | No       | `https://api.openai.com/v1`     | LLM API base URL                                           |
+| `OPENAI_MODEL`         | No       | `gpt-4.1-mini`                  | Model name for hints, reviews, syntax                      |
+| `JUDGE0_URL`           | Yes      | —                                | Judge0 instance URL                                        |
+| `X_RAPIDAPI_KEY`       | Yes*     | —                                | RapidAPI key (required for RapidAPI-hosted Judge0)         |
+| `POSTGRES_USER`        | No       | `interviewcoach`                 | Postgres user (scaffolded)                                 |
+| `POSTGRES_PASSWORD`    | No       | `changeme`                       | Postgres password (scaffolded)                             |
+| `POSTGRES_DB`          | No       | `interviewcoach`                 | Postgres database (scaffolded)                             |
+| `REDIS_URL`            | No       | `redis://localhost:6379`         | Redis URL (scaffolded)                                     |
 
 ---
 
@@ -222,155 +262,107 @@ Defined in `.env.example`, intended to be copied to `.env.local`:
 
 ### Pages and Layout
 
-#### `app/layout.tsx`
-The root layout wraps all pages. It:
-- Loads the **Inter** font from Google Fonts.
-- Sets the HTML class to `dark` for dark theme.
-- Applies the `antialiased` class for smooth font rendering.
-- Sets page metadata (title: "InterviewCoach — AI Coding Interview Practice").
+**`app/layout.tsx`** — Root layout with Inter font, `dark` theme class, and SEO metadata.
 
-#### `app/page.tsx`
-The main (and only) page. This is a client component (`"use client"`) that acts as the application shell and state orchestrator. It manages:
+**`app/page.tsx`** — The main application shell. A client component managing three top-level views via `TopView` state:
 
-**State:**
-- `selectedProblemId` — which problem is currently selected
-- `language` — selected programming language (default: `python`)
-- `code` — current editor contents
-- `activeTab` — which right-panel tab is active (`tests`, `hint`, or `review`)
-- Execute state: `executeResults`, `executeLoading`, `executeError`
-- Hint state: `hintMode`, `hintLevel`, `hints[]`, `hintLoading`, `hintError`
-- Review state: `review`, `reviewLoading`, `reviewError`
+### Top-Level Navigation
 
-**Effects:**
-- When `selectedProblemId` or `language` changes: loads saved attempt from localStorage (or falls back to starter code), resets all results/hints/reviews.
-- On code change (debounced 1 second): auto-saves to localStorage via `saveAttempt()`.
+The header bar contains two navigation buttons: **Problems** and **Syntax**.
 
-**Action Handlers:**
-- `handleExecute()` — POSTs to `/api/execute` with `{problemId, language, code}`, stores result.
-- `handleHint()` — POSTs to `/api/hint` with `{problemId, language, code, hintLevel, mode, history}`. Builds conversation history from previous hints. Disabled in Strict mode.
-- `handleReview()` — POSTs to `/api/review` with `{problemId, language, code, results}`. Requires execute results first.
-- `handleReset()` — Resets code to starter template and clears all results.
-
-**Layout:** A 3-panel layout inside a full-height flexbox:
-1. **Left (340px)** — `ProblemPanel` showing the problem description.
-2. **Center (flex-1)** — `CodeEditor` with the Monaco editor.
-3. **Right (380px)** — `RightPanel` with tabs for Tests, Hint, and Review.
-
-A **top header bar** contains the app logo, `ProblemSelector` dropdown, and action buttons (Reset, Hint, Review, Run).
+| View | Description |
+|------|-------------|
+| `problems` | Full-page problem browser with difficulty filters, topic filter tabs, and search. Click a problem to enter the workspace. |
+| `syntax` | Full-page syntax trainer (Learn mode) and reference (Reference mode) with language selector and AI chat panel on the right. |
+| `workspace` | 3-panel coding layout: Problem Panel (left, 340px) + Monaco Editor (center, flex) + Right Panel with Tests/Hint/Review/AI tabs (right, 380px). Shows when a problem is selected. |
 
 ### Components
 
-#### `components/ProblemSelector.tsx`
-A custom dropdown component for picking a problem. Shows the current problem's difficulty (color-coded: green for Easy, amber for Medium, red for Hard) and title. When open, lists all problems with difficulty, title, and up to 2 tags. Closes on outside click via a `mousedown` event listener.
+**`ProblemsView.tsx`** — Problem browser with:
+- Difficulty filter buttons: All (100), Easy (35), Medium (45), Hard (20)
+- Topic filter tabs (horizontal scroll): All Topics, Array, String, Hash Table, DP, Sorting, Tree, Graph, Binary Search, Two Pointers, Sliding Window, Stack, Heap, Linked List, Backtracking, Matrix, Greedy, Math, Bit Manipulation, Recursion, BFS — each showing count
+- Search input filtering by title or tags
+- Problem list with numbered order, difficulty badges, and topic tags
 
-#### `components/ProblemPanel.tsx`
-Left panel displaying the selected problem's details:
-- Title with a color-coded difficulty badge.
-- Tags as small pills.
-- Problem prompt (whitespace-preserved).
-- Examples (input/output pairs in styled cards).
-- Constraints (bulleted list with code formatting).
+**`ProblemPanel.tsx`** — Left panel: title, difficulty badge, tags, prompt, examples, constraints.
 
-#### `components/CodeEditor.tsx`
-Wraps the `@monaco-editor/react` Monaco Editor:
-- A top bar shows "Solution" label and a language `<select>` dropdown.
-- The editor uses the `vs-dark` theme.
-- Configuration: 14px font, JetBrains Mono / Fira Code / Cascadia Code font stack, ligatures enabled, minimap disabled, bracket pair colorization, word wrap, tab size 4, smooth scrolling.
-- Language switching re-maps via `MONACO_LANGUAGE_MAP`.
+**`CodeEditor.tsx`** — Monaco Editor with language selector (Python, JS, TS, Java, C#, Go), vs-dark theme, JetBrains Mono font.
 
-#### `components/RightPanel.tsx`
-A tabbed container for the right panel. Three tabs:
-- **Tests** (`FlaskConical` icon) — renders `TestResults`
-- **Hint** (`Lightbulb` icon) — renders `HintPanel`
-- **Review** (`MessageSquare` icon) — renders `ReviewPanel`
+**`RightPanel.tsx`** — Tabbed container with 4 tabs:
+- **Tests** — Execution results with pass/fail, stdout/stderr, timing
+- **Hint** — Mode selector (Interviewer/Learning/Strict), hint level slider (1-5), progressive hints
+- **Review** — AI code review with feedback, complexity, edge cases, improvements
+- **AI** — AI Assistant chat panel in `problem` mode (coaches without spoilers)
 
-The active tab is highlighted with a bottom border in the brand color.
+**`AIChatPanel.tsx`** — Chat-style AI panel with:
+- Dual mode: `mode="syntax"` (teaches freely) or `mode="problem"` (coaches without giving solutions)
+- Context-aware: shows current section or problem title
+- Quick action buttons: "Explain simpler", translate to other languages
+- Chat message history with markdown rendering
+- Clear button and auto-scroll
 
-#### `components/TestResults.tsx`
-Displays code execution results:
-- **Loading state**: spinner with "Running tests..." message.
-- **Error state**: red error card.
-- **Empty state**: prompt to click Run.
-- **Results**: Summary bar (green if all passed, red if any failed, showing X/Y passed). Visible tests shown as expandable cards with pass/fail icon, test name, execution time, memory usage. Failed tests show expected vs actual stdout, and stderr if present. Hidden tests shown as a row of colored dots (green=pass, red=fail) with a pass count.
+### Syntax Trainer Components
 
-#### `components/HintPanel.tsx`
-The hint interface:
-- **Mode selector**: 3-button grid (Interviewer / Learning / Strict). A warning banner appears in Strict mode.
-- **Hint level slider**: Range input 1–5, labeled "Subtle" to "Direct".
-- **"Get Hint" button**: Triggers hint request. Disabled when loading or in Strict mode.
-- **Hints display**: Scrollable list of received hints. Each hint is numbered and rendered as Markdown via `react-markdown` with `prose-invert` styling.
+**`SyntaxPanel.tsx`** — Main panel with:
+- Learn / Reference toggle
+- Language selector (9 languages)
+- Curriculum category list (13 categories) with exercise counts and "Coming soon" for languages without content
 
-#### `components/ReviewPanel.tsx`
-The AI review interface:
-- **"Get AI Review" button**: Disabled until code has been run.
-- **Review display** (when available):
-  - **Feedback** section with a general assessment.
-  - **Complexity** section showing time and space complexity in a 2-column grid with monospace font.
-  - **Edge Cases** as a bulleted list with amber dots.
-  - **Improvements** as a bulleted list with green dots.
+**`LessonTrainer.tsx`** — Interactive lesson: progress bar, collapsible sections, completion tracking, "lesson complete" trophy.
+
+**`TrainerSection.tsx`** — Single exercise section: explanation, example code, editable exercise area, Check/Reset/Hint/Ask AI buttons, feedback display.
+
+**`ExerciseEditor.tsx`** — Monaco editor configured for exercise code editing.
+
+**`FeedbackPanel.tsx`** — Displays pass/fail status, per-check results, stdout/stderr, AI feedback.
+
+**`LessonView.tsx`** — Static reference lesson with typed sections (concept, snippet, pattern, gotcha).
+
+**`LessonList.tsx`** — Reference lesson grid with recommended lessons based on current problem tags.
+
+**`SyntaxSnippet.tsx`** — Code block with language label and copy button.
 
 ### API Proxy Routes
 
-All three API routes follow the same pattern — they act as server-side proxies from the Next.js frontend to the FastAPI backend, avoiding CORS issues and keeping the backend URL private.
+All routes proxy from Next.js to FastAPI, structured identically:
 
-#### `app/api/execute/route.ts`
-- **Method**: POST
-- **Flow**: Reads request body → forwards to `${FASTAPI_BASE_URL}/execute` → returns response or error.
-- **Error handling**: Returns structured `{error}` JSON with the backend's error detail, or a 502 if the backend is unreachable.
-
-#### `app/api/hint/route.ts`
-- Same pattern, proxies to `/hint`.
-
-#### `app/api/review/route.ts`
-- Same pattern, proxies to `/review`.
+| Route | Proxies To | Purpose |
+|-------|-----------|---------|
+| `POST /api/execute` | `/execute` | Run code against test cases |
+| `POST /api/hint` | `/hint` | Get AI hint |
+| `POST /api/review` | `/review` | Get AI code review |
+| `POST /api/syntax/explain` | `/syntax/explain` | AI syntax explain / translate / ask |
+| `POST /api/syntax/check` | `/syntax/check` | Exercise validation + AI feedback |
 
 ### Shared Libraries
 
-#### `lib/types.ts`
-All TypeScript type definitions:
+**`lib/types.ts`** — All TypeScript interfaces:
+- Problem types: `Problem`, `ProblemListItem`, `TestCase` (supports per-language stdin), `StarterCode`, `ProblemExample`
+- Editor types: `Language`, `LANGUAGES`, `MONACO_LANGUAGE_MAP`, `HintMode`
+- Response types: `ExecuteResponse`, `HintResponse`, `ReviewResponse`, `TestResult`
+- Syntax types: `SyntaxLanguage` (9 languages), `SYNTAX_LANGUAGES`, `LessonSection`, `Lesson`, `SyntaxSnippets`
+- Curriculum types: `CurriculumCategory`
+- Trainer types: `TrainerLesson`, `TrainerSection`, `Exercise`, `ExerciseValidation`, `ExerciseCheckResult`
+- Persistence: `Attempt`
 
-- `ProblemExample` — `{input, output}` for example display.
-- `TestCase` — `{stdin, expectedStdout}` for test execution.
-- `StarterCode` — An object with keys for each language (`python`, `javascript`, `typescript`, `java`, `csharp`, `go`).
-- `Problem` — Full problem definition (id, title, difficulty, tags, prompt, examples, constraints, starterCode, visibleTests).
-- `ProblemListItem` — Subset for the dropdown (id, title, difficulty, tags).
-- `Language` — Union type derived from `keyof StarterCode`.
-- `LANGUAGES` — Array of `{value, label}` pairs for the language dropdown.
-- `MONACO_LANGUAGE_MAP` — Maps `Language` to Monaco editor language identifiers.
-- `HintMode` — `"strict" | "interviewer" | "learning"`.
-- `TestResult` — Individual test result (name, passed, stdout, stderr, expectedStdout, time, memory).
-- `ExecuteResponse` — `{passed, summary, tests[], hiddenTests[]}`.
-- `HintResponse` — `{hint}`.
-- `ReviewResponse` — `{feedback, complexity, edgeCases[], improvements[]}`.
-- `Attempt` — `{problemId, language, code, timestamp}` for localStorage persistence.
+**`lib/problems.ts`** — Statically imports all 100 problem JSON files. Exposes `getProblems()` and `getProblem(id)`.
 
-#### `lib/problems.ts`
-Statically imports all 10 problem JSON files and exposes:
-- `getProblems()` — Returns an array of `ProblemListItem` (id, title, difficulty, tags only).
-- `getProblem(id)` — Returns the full `Problem` object by ID, or `undefined`.
+**`lib/trainer.ts`** — Imports all 117 trainer lesson files and curriculum.json. Exposes:
+- `getCurriculum()` — 13 ordered categories
+- `getTrainerLessons(language)` — lessons for a language sorted by curriculum order
+- `getTrainerLesson(id)` — specific lesson by ID
+- `hasTrainerLesson(language, category)` — check if lesson exists
+- `getTrainerLessonByCategory(language, category)` — find by language + category
 
-#### `lib/storage.ts`
-Browser localStorage persistence under the key `interviewcoach_attempts`:
-- `saveAttempt(problemId, language, code)` — Upserts an attempt (keyed by `problemId:language`), stores with a timestamp.
-- `getAttempts()` — Returns all saved attempts.
-- `getAttempt(problemId, language)` — Returns a specific attempt or `null`.
-- All functions guard against SSR with `typeof window === "undefined"` checks.
+**`lib/syntax.ts`** — Imports 4 reference lesson files. Exposes `getLessons()`, `getLesson(id)`, `getRecommendedLessonIds(tags)`.
+
+**`lib/storage.ts`** — localStorage persistence under key `interviewcoach_attempts`: `saveAttempt()`, `getAttempts()`, `getAttempt()`.
 
 ### Styling
 
-#### `app/globals.css`
-- Imports Tailwind's base, components, and utilities.
-- CSS custom properties: `--background: #0f1117`, `--surface: #161821` for the dark theme.
-- Custom scrollbar styling (6px width, dark track, gray thumb).
-- `.prose` overrides for rendered markdown: lighter text, slightly smaller paragraphs, pre-block dark background.
-- Range input (`input[type=range]`) styling for the hint level slider.
-
-#### `tailwind.config.ts`
-- Content paths: `./app/**` and `./components/**`.
-- Extended theme with a `brand` color palette (50–950 shades in the blue range) used for active tabs, buttons, and accents.
-
-#### `postcss.config.mjs`
-- Plugins: `tailwindcss` and `autoprefixer`.
+- **Dark theme**: `--background: #0f1117`, `--surface: #161821`
+- **Tailwind** with `brand` color palette (blue range, 50-950)
+- Custom scrollbar, prose overrides, range input styling
 
 ---
 
@@ -378,88 +370,41 @@ Browser localStorage persistence under the key `interviewcoach_attempts`:
 
 ### Server Entry Point
 
-#### `server/main.py`
-
-**Configuration:**
-- Loads environment from `.env.local` and `.env` in the project root (parent of `/server`).
-- Creates a FastAPI app with title "InterviewCoach API", version "0.1.0".
-- CORS middleware: allows all origins, methods, and headers.
-
-**Problem loading:**
-- Reads all `*.json` files from `data/problems/` into an in-memory cache (`_problems_cache` dict keyed by problem ID).
-- `_get_problem(id)` raises HTTP 404 if a problem ID is not found.
+**`server/main.py`** — FastAPI app with CORS (allow all), 7 endpoints. Loads `.env.local` and `.env` from project root. Caches all problem JSON files in memory.
 
 ### API Endpoints
 
-#### `GET /health`
-Returns `{"status": "ok"}`. Used for health checks.
-
-#### `GET /problems`
-Returns a list of all problems with only safe fields: `id`, `title`, `difficulty`, `tags`.
-
-#### `GET /problems/{problem_id}`
-Returns a single problem, filtering out `hiddenTests` and `notesForAI` to prevent cheating. Returns all other fields (prompt, examples, constraints, starterCode, visibleTests).
-
-#### `POST /execute`
-Runs user code against all test cases (visible + hidden).
-
-**Flow:**
-1. Validates the language is supported.
-2. Wraps user code with a driver template via `build_submission_source()`.
-3. Collects all test stdin/expected-stdout values.
-4. Submits to Judge0 via `submit_batch()`.
-5. Compares each test's actual stdout (trimmed) to expected stdout (trimmed).
-6. Builds `TestResult` objects, categorized as visible or hidden.
-7. Returns `ExecuteResponse` with pass/fail status, summary counts, and test details.
-
-**Error responses:**
-- 400: Unsupported language or no tests found.
-- 503: Judge0 not configured (missing `JUDGE0_URL`).
-- 500: General execution error.
-
-#### `POST /hint`
-Generates an AI hint.
-
-**Flow:**
-1. Looks up the problem (including `notesForAI`).
-2. Calls `generate_hint()` from the LLM service with problem context, user code, hint level, mode, and conversation history.
-3. Returns `HintResponse` with the hint text.
-
-**Error responses:**
-- 503: OpenAI API key not configured.
-- 500: LLM error.
-
-#### `POST /review`
-Generates an AI code review.
-
-**Flow:**
-1. Looks up the problem.
-2. Calls `generate_review()` from the LLM service with problem context, user code, and execution results.
-3. Extracts structured fields (feedback, complexity, edgeCases, improvements) with fallback defaults.
-4. Returns `ReviewResponse`.
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/health` | Returns `{"status": "ok"}` |
+| `GET` | `/problems` | List all 100 problems (id, title, difficulty, tags) |
+| `GET` | `/problems/{id}` | Single problem (excludes hiddenTests, notesForAI) |
+| `POST` | `/execute` | Run code via Judge0, per-language stdin support |
+| `POST` | `/hint` | Generate AI hint (5 levels, 3 modes) |
+| `POST` | `/review` | Generate AI code review (JSON response) |
+| `POST` | `/syntax/explain` | AI syntax explanation with dual mode (syntax/problem) |
+| `POST` | `/syntax/check` | Exercise validation: Judge0 execution + pattern checks + AI feedback |
 
 ### Pydantic Schemas
 
-#### `server/models/schemas.py`
-
 **Request models:**
-- `ExecuteRequest` — `{problemId: str, language: str, code: str}`
-- `HintRequest` — `{problemId: str, language: str, code: str, hintLevel: int (1–5), mode: "strict"|"interviewer"|"learning", history: list[dict]}`
-- `ReviewRequest` — `{problemId: str, language: str, code: str, results: dict}`
+- `ExecuteRequest` — `{problemId, language, code}`
+- `HintRequest` — `{problemId, language, code, hintLevel (1-5), mode, history}`
+- `ReviewRequest` — `{problemId, language, code, results}`
+- `SyntaxExplainRequest` — `{lessonId, sectionId, language, snippet, action (explain|translate|ask), mode (syntax|problem), ...}`
+- `ExerciseCheckRequest` — `{lessonId, sectionId, language, code, expectedOutput, requiredPatterns, ...}`
 
 **Response models:**
-- `TestResult` — `{name, passed, stdout, stderr, expectedStdout, time?, memory?}`
-- `ExecuteSummary` — `{total, passed, failed}`
-- `ExecuteResponse` — `{passed, summary: ExecuteSummary, tests: list[TestResult], hiddenTests: list[TestResult]}`
-- `HintResponse` — `{hint: str}`
-- `ComplexityInfo` — `{time: str, space: str}`
-- `ReviewResponse` — `{feedback: str, complexity: ComplexityInfo, edgeCases: list[str], improvements: list[str]}`
+- `ExecuteResponse` — `{passed, summary, tests[], hiddenTests[]}`
+- `HintResponse` — `{hint}`
+- `ReviewResponse` — `{feedback, complexity, edgeCases[], improvements[]}`
+- `SyntaxExplainResponse` — `{explanation}`
+- `ExerciseCheckResponse` — `{passed, stdout, stderr, checks[], aiFeedback}`
 
 ### Judge0 Code Execution Service
 
-#### `server/services/judge0.py`
+**9 supported languages:**
 
-**Language IDs:**
 | Language   | Judge0 ID |
 |------------|-----------|
 | Python     | 71        |
@@ -468,300 +413,252 @@ Generates an AI code review.
 | Java       | 62        |
 | C#         | 51        |
 | Go         | 60        |
+| C          | 50        |
+| C++        | 54        |
+| Rust       | 73        |
 
-**Driver templates (`DRIVER_TEMPLATES`):**
-Each language has a template that prepends the user's code and appends a driver that reads stdin and executes it. The test cases' `stdin` field contains a driver script (e.g., `print(solve([2, 7, 11, 15], 9))` for Python) that calls the user's function and prints the result.
-
-- **Python**: Appends the user code, then `exec(_raw)` where `_raw` is stdin.
-- **JavaScript/TypeScript**: Appends user code, then reads stdin lines and `eval()`s them.
-- **Java**: Appends user code as a Solution class alongside a Main class.
-- **C#**: Appends user code directly.
-- **Go**: Appends user code with a `main()` function that reads stdin.
-
-**`build_submission_source(language, user_code)`**: Injects user code into the appropriate driver template.
-
-**`submit_batch(language, source_code, test_inputs, expected_outputs)`**:
-1. Base64-encodes the source code and each test's stdin.
-2. Constructs submission payloads with `cpu_time_limit: 5s` and `memory_limit: 128MB`.
-3. Tries batch submission (`POST /submissions/batch`). On failure, falls back to sequential individual submissions.
-4. Polls for results via `_poll_results()`.
-
-**`_poll_results(client, url, headers, tokens, max_attempts=30)`**:
-1. Polls every 1 second (up to 30 attempts).
-2. Tries batch status check (`GET /submissions/batch?tokens=...`). Falls back to individual polling.
-3. Status IDs 1 (In Queue) and 2 (Processing) are treated as "not done yet".
-4. When all submissions are done, parses and returns results.
-
-**`_parse_result(sub)`**: Extracts stdout, stderr (+ compile output), time, memory, and status from a Judge0 submission response. Decodes base64-encoded fields.
+Each language has a `DRIVER_TEMPLATE` that wraps user code with stdin reading/execution logic. Features retry with exponential backoff for 429 rate limits, batch submission with sequential fallback, and proper error propagation.
 
 ### LLM Service
 
-#### `server/services/llm.py`
-
-**Client setup:**
-- `_get_client()` — Creates an `AsyncOpenAI` client using `OPENAI_API_KEY` and `OPENAI_BASE_URL`. Raises `EnvironmentError` if key is missing.
-- `_get_model()` — Returns the `OPENAI_MODEL` env var (default `gpt-4.1-mini`).
-
-**`generate_hint(problem, language, code, hint_level, mode, history)`**:
-1. If mode is `"strict"`, returns a fixed message immediately.
-2. Extracts `notesForAI` from the problem (coreIdea, commonBugs, expectedComplexity).
-3. Selects the appropriate template (`HINT_INTERVIEWER_TEMPLATE` or `HINT_LEARNING_TEMPLATE`).
-4. Formats the template with problem details, user code, and hint level.
-5. Builds a message array: system prompt + last 10 conversation history messages + the new user prompt.
-6. Calls the LLM with temperature 0.7, max tokens 800.
-7. Returns the assistant's response text.
-
-**`generate_review(problem, language, code, results)`**:
-1. Extracts `notesForAI` and execution summary from results.
-2. Formats `REVIEW_USER_TEMPLATE` with problem details, user code, and test results.
-3. Calls the LLM with temperature 0.4, max tokens 1000.
-4. Strips markdown code fences from the response if present.
-5. Attempts to parse the response as JSON.
-6. Falls back to a default structure if JSON parsing fails (puts raw text in `feedback`).
+**`server/services/llm.py`** — 4 LLM functions:
+- `generate_hint()` — Problem hints with mode/level selection
+- `generate_review()` — Code review returning structured JSON
+- `generate_syntax_explanation()` — Dual-mode syntax AI (syntax tutor vs problem coach)
+- `generate_exercise_feedback()` — Exercise review based on check results
 
 ### Prompt Templates
 
-#### `server/services/prompts.py`
-
-**`HINT_SYSTEM_PROMPT`**: Establishes the AI as "InterviewCoach, an expert coding interview coach." Rules: base guidance on the problem, never invent facts, encourage the user to explain their approach, use structured output, stay concise. Anti-cheat: never produce a complete working solution.
-
-**`HINT_INTERVIEWER_TEMPLATE`** (Socratic mode):
-- Template variables: `{title}`, `{difficulty}`, `{core_idea}`, `{common_bugs}`, `{expected_complexity}`, `{language}`, `{code}`, `{hint_level}`
-- Hint levels 1–5:
-  1. Ask a clarifying question about their approach.
-  2. Point toward the right data structure/pattern without naming it.
-  3. Name the pattern and ask how they'd apply it.
-  4. Provide pseudocode outline (no real code).
-  5. Walk through the algorithm step-by-step in words (still no complete code).
-
-**`HINT_LEARNING_TEMPLATE`** (Learning mode):
-- Same template variables.
-- Hint levels 1–5:
-  1. Ask what approach they're considering, suggest thinking about edge cases.
-  2. Name the optimal pattern and explain why it fits.
-  3. Provide pseudocode.
-  4. Provide a partial code snippet (key logic only).
-  5. Detailed walkthrough with partial code. Full solution only if explicitly requested in history.
-
-**`REVIEW_SYSTEM_PROMPT`**: The AI acts as a senior engineer conducting an interview debrief. Must provide: (1) feedback (2-3 sentences), (2) time/space complexity, (3) 2-4 edge cases, (4) 2-4 improvements. Response must be valid JSON matching the schema `{feedback, complexity: {time, space}, edgeCases[], improvements[]}`.
-
-**`REVIEW_USER_TEMPLATE`**: Template variables: `{title}`, `{difficulty}`, `{expected_complexity}`, `{language}`, `{code}`, `{total_tests}`, `{passed_tests}`, `{failed_tests}`.
-
-### Chunking Utility
-
-#### `server/utils/chunking.py`
-
-`chunk_text(text, max_chars=4000, overlap=200)` — Splits text into overlapping chunks for LLM context window management. Currently unused but scaffolded for future features like processing long conversation histories.
+**`server/services/prompts.py`** — 9 prompt templates:
+- `HINT_SYSTEM_PROMPT` + `HINT_INTERVIEWER_TEMPLATE` + `HINT_LEARNING_TEMPLATE` — Hint generation
+- `REVIEW_SYSTEM_PROMPT` + `REVIEW_USER_TEMPLATE` — Code review
+- `SYNTAX_SYSTEM_PROMPT` + `SYNTAX_EXPLAIN_TEMPLATE` + `SYNTAX_TRANSLATE_TEMPLATE` + `SYNTAX_ASK_TEMPLATE` — Syntax tutoring
+- `PROBLEM_AI_SYSTEM_PROMPT` + `PROBLEM_AI_ASK_TEMPLATE` — Problem coaching (no spoilers)
+- `SYNTAX_EXERCISE_REVIEW_TEMPLATE` — Exercise feedback
 
 ---
 
 ## Problem Data Format
 
-Each problem is a JSON file in `data/problems/`. Example structure (from `two-sum.json`):
+100 problems in `data/problems/`, distributed as 35 Easy, 45 Medium, 20 Hard across 21 topic categories.
 
+**Schema:**
 ```json
 {
   "id": "two-sum",
   "title": "Two Sum",
   "difficulty": "Easy",
   "tags": ["arrays", "hashmap"],
-  "prompt": "Given an array of integers `nums` and an integer `target`...",
-  "examples": [
-    {
-      "input": "nums = [2, 7, 11, 15], target = 9",
-      "output": "[0, 1]\nExplanation: Because nums[0] + nums[1] == 9, we return [0, 1]."
-    }
-  ],
-  "constraints": [
-    "2 <= nums.length <= 10^4",
-    "-10^9 <= nums[i] <= 10^9"
-  ],
+  "prompt": "Problem description...",
+  "examples": [{"input": "...", "output": "..."}],
+  "constraints": ["2 <= nums.length <= 10^4"],
   "starterCode": {
     "python": "def solve(nums, target):\n    pass",
     "javascript": "function solve(nums, target) {\n  \n}",
-    "typescript": "export function solve(nums: number[], target: number): number[] {\n  \n}",
-    "java": "class Solution {\n    public int[] solve(int[] nums, int target) {\n        \n    }\n}",
-    "csharp": "public class Solution {\n    public int[] Solve(int[] nums, int target) {\n        \n    }\n}",
-    "go": "func solve(nums []int, target int) []int {\n    \n}"
+    "typescript": "export function solve(...): ... {\n  \n}",
+    "java": "class Solution { ... }",
+    "csharp": "public class Solution { ... }",
+    "go": "func solve(...) ... {\n    \n}"
   },
   "visibleTests": [
-    {
-      "stdin": "print(solve([2, 7, 11, 15], 9))",
-      "expectedStdout": "[0, 1]"
-    }
+    {"stdin": {"python": "print(solve([2,7,11,15], 9))"}, "expectedStdout": "[0, 1]"}
   ],
   "hiddenTests": [
-    {
-      "stdin": "print(solve([3, 3], 6))",
-      "expectedStdout": "[0, 1]"
-    }
+    {"stdin": {"python": "print(solve([3,3], 6))"}, "expectedStdout": "[0, 1]"}
   ],
   "notesForAI": {
-    "coreIdea": "Use a hash map to store seen values and their indices...",
-    "commonBugs": [
-      "Forgetting to sort the result before returning",
-      "Using the same element twice when duplicate values exist"
-    ],
+    "coreIdea": "Use a hash map...",
+    "commonBugs": ["Forgetting to sort", "Using same element twice"],
     "expectedComplexity": "O(n)"
   }
 }
 ```
 
-**Field descriptions:**
-- `id` — Unique slug identifier.
-- `title` — Display name.
-- `difficulty` — `"Easy"`, `"Medium"`, or `"Hard"`.
-- `tags` — Category tags (e.g., `["arrays", "hashmap"]`).
-- `prompt` — The problem description (supports markdown-like backtick formatting).
-- `examples` — Input/output examples shown to the user.
-- `constraints` — Problem constraints shown to the user.
-- `starterCode` — Boilerplate code per language, pre-loaded in the editor.
-- `visibleTests` — Tests whose results (expected vs actual) are shown to the user.
-- `hiddenTests` — Tests whose individual results are hidden; only pass/fail dots are shown.
-- `notesForAI` — Metadata provided to the LLM for better hints and reviews (never sent to the frontend):
-  - `coreIdea` — The key insight for solving the problem.
-  - `commonBugs` — Typical mistakes users make.
-  - `expectedComplexity` — Target time/space complexity.
+**Per-language test support:** `stdin` can be a string (backward-compatible) or `Record<string, string>` keyed by language. The backend reads `stdin[language]` with fallback to Python.
 
-### Available Problems
-
-| Problem                              | Difficulty | Tags                              |
-|--------------------------------------|------------|-----------------------------------|
-| Two Sum                              | Easy       | arrays, hashmap                   |
-| Reverse String                       | Easy       | strings, two-pointers             |
-| Valid Parentheses                     | Easy       | stack, strings                    |
-| Climbing Stairs                      | Easy       | dynamic-programming, recursion    |
-| Binary Search                        | Easy       | arrays, binary-search             |
-| Maximum Subarray                     | Medium     | arrays, dynamic-programming       |
-| Merge Intervals                      | Medium     | arrays, sorting                   |
-| Longest Substring Without Repeating  | Medium     | strings, sliding-window, hashmap  |
-| Product Except Self                  | Medium     | arrays                            |
-| Linked List Cycle                    | Medium     | linked-list, two-pointers         |
+**Topic tags used:** arrays, strings, hash-table, dynamic-programming, sorting, tree, graph, binary-search, two-pointers, sliding-window, stack, heap, linked-list, backtracking, matrix, greedy, math, bit-manipulation, recursion, bfs, hashmap.
 
 ---
 
-## User Flow
+## Syntax Trainer System
 
-1. **Select a problem** from the dropdown in the header.
-2. **Choose a language** from the dropdown above the editor.
-3. **Write your solution** in the Monaco editor. Code is auto-saved to localStorage after 1 second of inactivity.
-4. **Click "Run"** to execute code against all test cases (visible + hidden) via Judge0. Results appear in the Tests tab on the right.
-5. **Click "Hint"** to get an AI-guided hint at the current hint level and mode. The hint appears in the Hint tab. Each subsequent hint click adds a new hint to the conversation, building progressive guidance.
-6. **Click "Review"** (after running code) to get an AI code review. The review appears in the Review tab with feedback, complexity analysis, edge cases, and suggested improvements.
-7. **Click "Reset"** to clear your code and revert to the starter template.
+### Curriculum
+
+13 ordered categories defined in `data/syntax/trainer/curriculum.json`:
+
+| Order | Category | Sections per lesson |
+|-------|----------|-------------------|
+| 1 | Variables & Types | 3-5 |
+| 2 | Arrays & Loops | 3-5 |
+| 3 | Strings | 4-5 |
+| 4 | Functions | 3-5 |
+| 5 | Hashmaps / Dictionaries | 4-5 |
+| 6 | Sets | 3-4 |
+| 7 | Sorting | 3-4 |
+| 8 | Stacks & Queues | 4-5 |
+| 9 | Heaps / Priority Queues | 3-4 |
+| 10 | Recursion | 3-5 |
+| 11 | Trees | 3-5 |
+| 12 | Graphs | 3-5 |
+| 13 | Interview Templates | 4-5 |
+
+**9 supported languages:** Python, JavaScript, TypeScript, Java, C++, C, C#, Go, Rust — 13 lessons each = 117 lesson files.
+
+### Trainer Lesson Format
+
+File naming: `{language}-{category}.json` in `data/syntax/trainer/`.
+
+```json
+{
+  "id": "python-hashmaps",
+  "title": "Hashmaps / Dictionaries",
+  "description": "Master Python dictionaries...",
+  "language": "python",
+  "category": "hashmaps",
+  "order": 5,
+  "sections": [
+    {
+      "id": "creating",
+      "title": "Creating dictionaries",
+      "explanation": "Interview-focused explanation...",
+      "example": "# Code example\nseen = {}\n...",
+      "exercise": {
+        "prompt": "Task description...",
+        "starterCode": "# Code with blanks to fill\n...",
+        "validation": [
+          {"type": "output", "expected": "exact stdout", "message": "..."},
+          {"type": "contains", "patterns": ["required_syntax"], "message": "..."}
+        ],
+        "testCode": "",
+        "hint": "Short hint..."
+      },
+      "order": 1
+    }
+  ]
+}
+```
+
+### Reference Lessons
+
+4 static reference lessons in `data/syntax/lessons/` with per-language code snippets (Python, JavaScript, Java). Sections are typed as `concept`, `snippet`, `pattern`, or `gotcha`. These appear under the "Reference" tab in the Syntax view.
+
+### Exercise Validation
+
+The `/syntax/check` endpoint performs 3-layer validation:
+
+1. **Output check** — Execute code via Judge0, compare stdout to expected output
+2. **Pattern check** — Verify required syntax patterns exist in the user's code
+3. **AI feedback** — Generate encouraging feedback based on check results
+
+---
+
+## User Flows
+
+### Problem Solving Flow
+1. Click **Problems** tab in the top nav
+2. Filter by difficulty (Easy/Medium/Hard) and/or topic (Array, DP, Tree, etc.)
+3. Click a problem to enter the coding workspace
+4. Choose a language from the editor dropdown
+5. Write solution in Monaco Editor (auto-saved to localStorage)
+6. Click **Run** to execute against test cases
+7. Click **Hint** for AI-guided hints at chosen mode and level
+8. Click **Review** (after running) for AI code review
+9. Click **AI** tab for free-form syntax questions (coaching mode, no spoilers)
+10. Click **Back** to return to problem list
+
+### Syntax Training Flow
+1. Click **Syntax** tab in the top nav
+2. Choose a language from the dropdown (9 options)
+3. Select **Learn** or **Reference** mode
+4. In Learn mode: click a curriculum category to start the interactive trainer
+5. Read the explanation, study the example code
+6. Fill in the exercise starter code
+7. Click **Check** to validate (Judge0 execution + pattern checks + AI feedback)
+8. Use **Hint** for a quick nudge, **Ask AI** for deeper help
+9. Progress through sections; completion tracked with progress bar
+10. Trophy celebration on lesson completion
 
 ---
 
 ## How Code Execution Works
 
-1. User clicks **Run** → frontend POSTs `{problemId, language, code}` to `/api/execute`.
-2. Next.js API route proxies the request to FastAPI `POST /execute`.
-3. FastAPI loads the problem's visible and hidden tests, builds a submission source by injecting the user's code into a language-specific driver template.
-4. The driver template prepends the user's code and sets up stdin reading. Each test's `stdin` field contains a driver call (e.g., `print(solve([2,7,11,15], 9))` for Python) that invokes the user's function and prints the result.
-5. Submissions are sent to Judge0 in batch (or sequentially as fallback). Each submission is base64-encoded with a 5-second CPU time limit and 128MB memory limit.
-6. The backend polls Judge0 every second (up to 30 times) until all submissions complete.
-7. Results are compared: actual stdout (trimmed) vs expected stdout (trimmed). Test results include execution time and memory usage.
-8. The response separates visible tests (full details shown) from hidden tests (only pass/fail shown as dots).
+1. Frontend POSTs `{problemId, language, code}` to `/api/execute`
+2. Next.js proxies to FastAPI `/execute`
+3. Backend wraps user code in a language-specific driver template via `build_submission_source()`
+4. Reads per-language test stdin: `test["stdin"][language]` (fallback to Python or string format)
+5. Submits to Judge0 in batch with 5s CPU limit, 128MB memory limit
+6. Polls every 1-1.5s (up to 30 times) until completion
+7. Compares actual stdout (trimmed) to expected stdout
+8. Returns visible tests (full details) and hidden tests (pass/fail only)
 
 ---
 
 ## How the Hint System Works
 
-1. User selects a **mode** (Interviewer, Learning, or Strict) and a **hint level** (1–5).
-2. User clicks **"Get Hint"** (or the "Hint" button in the header).
-3. Frontend POSTs `{problemId, language, code, hintLevel, mode, history}` to `/api/hint`.
-4. The backend loads the problem's `notesForAI` (coreIdea, commonBugs, expectedComplexity).
-5. If mode is `"strict"`, a fixed message is returned immediately.
-6. Otherwise, the appropriate prompt template is filled with problem context and the user's current code.
-7. The LLM is called with the system prompt, up to 10 previous conversation messages, and the new hint request. Temperature is 0.7 for creative but focused responses.
-8. The hint text is returned and displayed as markdown in the Hint panel.
-9. Subsequent hint requests include previous hints as conversation history, enabling progressive guidance.
+3 modes with 5 progressive levels:
 
-**Hint levels (Interviewer mode):**
-1. Clarifying question about approach.
-2. Point toward the right data structure/pattern without naming it.
-3. Name the pattern and ask how to apply it.
-4. Pseudocode outline.
-5. Step-by-step algorithm walkthrough in words.
+**Interviewer mode** (Socratic): Clarifying question → Point to pattern → Name the pattern → Pseudocode → Step-by-step walkthrough
 
-**Hint levels (Learning mode):**
-1. Ask about approach, suggest edge cases.
-2. Name the optimal pattern and explain why.
-3. Provide pseudocode.
-4. Partial code snippet with key logic.
-5. Detailed walkthrough with partial code.
+**Learning mode** (Direct): Suggest edge cases → Name optimal approach → Pseudocode → Partial code → Detailed walkthrough
+
+**Strict mode**: Returns fixed "no hints" message.
+
+Conversation history (last 10 messages) is sent for progressive guidance.
 
 ---
 
 ## How AI Review Works
 
-1. User must first **run their code** (Review is disabled until execute results exist).
-2. User clicks **"Get AI Review"** (or the "Review" button in the header).
-3. Frontend POSTs `{problemId, language, code, results}` to `/api/review`.
-4. The backend loads the problem and formats the review prompt with the user's code and test result summary.
-5. The LLM is called with the review system prompt and user prompt. Temperature is 0.4 for more deterministic, analytical responses.
-6. The response is expected to be JSON with fields: `feedback`, `complexity`, `edgeCases`, `improvements`.
-7. If the LLM returns markdown-fenced JSON, the fences are stripped before parsing.
-8. If JSON parsing fails, the raw text is used as feedback with default values for other fields.
+Requires running code first. Generates structured JSON response:
+- **Feedback**: 2-3 sentence assessment
+- **Complexity**: Time and space Big-O
+- **Edge Cases**: 2-4 cases to consider
+- **Improvements**: 2-4 actionable suggestions
+
+Temperature: 0.4 for deterministic analysis. Falls back gracefully if JSON parsing fails.
+
+---
+
+## AI Behavior Modes
+
+The AI Assistant has two distinct personalities:
+
+| Mode | Used in | Behavior |
+|------|---------|----------|
+| `syntax` | Syntax tab AI panel | Teaches syntax freely with code examples. Explains, translates between languages, answers questions. |
+| `problem` | Problems workspace AI tab | Coaches without spoilers. Never gives complete solutions. Teaches syntax patterns with generic 2-4 line examples. Points at approach without writing the answer. |
 
 ---
 
 ## Local Storage and Persistence
 
-User code attempts are persisted in browser localStorage under the key `interviewcoach_attempts`. The data structure is an array of `Attempt` objects:
-
-```json
-[
-  {
-    "problemId": "two-sum",
-    "language": "python",
-    "code": "def solve(nums, target):\n    seen = {}\n    ...",
-    "timestamp": 1709913600000
-  }
-]
-```
-
-- **Save**: Debounced 1 second after the last code change. Upserts by `problemId + language` combination.
-- **Load**: When switching problems or languages, checks for a saved attempt. If found, restores the code; otherwise loads starter code.
-- **No server-side persistence**: All data stays in the browser. Clearing browser data loses all saved attempts.
+Key: `interviewcoach_attempts`. Array of `{problemId, language, code, timestamp}` objects. Auto-saved 1 second after last keystroke. Restored when switching problems or languages.
 
 ---
 
 ## Infrastructure (Docker Compose)
 
-`docker-compose.yml` provisions two services (scaffolded for future use, not required for the current MVP):
-
-- **Postgres 16** (Alpine): Default credentials `interviewcoach/changeme`, database `interviewcoach`, port 5432. Data persisted in a named volume `pgdata`.
-- **Redis 7** (Alpine): Port 6379, data persisted in `redisdata` volume.
-
-Both services restart `unless-stopped`.
+Scaffolded for future use (not required):
+- **Postgres 16** (Alpine): port 5432, `interviewcoach` database
+- **Redis 7** (Alpine): port 6379
 
 ---
 
 ## Setup and Running
 
 ### Prerequisites
-
 - Node.js 18+ and npm
 - Python 3.10+
-- A Judge0 instance (cloud via RapidAPI or self-hosted)
+- A Judge0 instance (RapidAPI or self-hosted)
 - An OpenAI API key (or compatible provider)
 
 ### 1. Environment Setup
-
 ```bash
 cp .env.example .env.local
+# Edit .env.local: set JUDGE0_URL, X_RAPIDAPI_KEY, OPENAI_API_KEY
 ```
 
-Edit `.env.local` and fill in:
-- `JUDGE0_URL` — Your Judge0 instance URL
-- `JUDGE0_API_KEY` — Your Judge0 API key
-- `OPENAI_API_KEY` — Your LLM API key
-- `OPENAI_BASE_URL` — (Optional) Change if using a non-OpenAI provider
-- `OPENAI_MODEL` — (Optional) Change the model name
-
 ### 2. Start the Backend
-
 ```bash
 cd server
 python3 -m venv .venv
@@ -770,44 +667,28 @@ pip install -r requirements.txt
 uvicorn main:app --reload --port 8000
 ```
 
-The backend runs at `http://localhost:8000`. Verify with `curl http://localhost:8000/health`.
-
 ### 3. Start the Frontend
-
 ```bash
-# From project root
 npm install
 npm run dev
 ```
 
-The frontend runs at `http://localhost:3000`.
-
-### 4. (Optional) Start Infrastructure
-
-```bash
-docker compose up -d
-```
-
-Starts Postgres and Redis containers. Not required for the current feature set.
+Open http://localhost:3000.
 
 ---
 
 ## Using Alternative LLM Providers
 
-The backend uses the OpenAI SDK's `AsyncOpenAI` client, which is compatible with any API that implements the OpenAI chat completions interface. To use a different provider, update your `.env.local`:
+Any OpenAI-compatible API works:
 
-**Claude (Anthropic via OpenAI-compatible endpoint):**
 ```env
+# Claude
 OPENAI_BASE_URL=https://api.anthropic.com/v1
 OPENAI_API_KEY=sk-ant-...
 OPENAI_MODEL=claude-sonnet-4-20250514
-```
 
-**Local model (e.g., via Ollama, LM Studio, vLLM):**
-```env
+# Local model (Ollama, LM Studio, vLLM)
 OPENAI_BASE_URL=http://localhost:11434/v1
 OPENAI_API_KEY=not-needed
 OPENAI_MODEL=llama3
 ```
-
-Any provider that supports the `POST /chat/completions` endpoint with the OpenAI message format will work.

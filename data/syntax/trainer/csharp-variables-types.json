@@ -1,0 +1,95 @@
+{
+  "id": "csharp-variables-types",
+  "title": "Variables & Types",
+  "description": "Master C# value types, reference types, casting, nullable types, and const/readonly for interview coding.",
+  "language": "csharp",
+  "category": "variables-types",
+  "order": 1,
+  "sections": [
+    {
+      "id": "csharp-vt-primitives",
+      "title": "Primitive Types: int, long, double, string, bool",
+      "explanation": "C# has built-in value types: `int` (32-bit), `long` (64-bit, suffix L), `double` (64-bit float), `bool` (true/false), and the reference type `string`. Declare with the type keyword or `var` for implicit typing. Value types live on the stack and have default values (0, 0.0, false). `string` defaults to null. In interviews, stick to explicit types for clarity.",
+      "example": "class Program\n{\n    static void Main()\n    {\n        int count = 42;\n        long big = 2_000_000_000L;\n        double pi = 3.14159;\n        bool found = true;\n        string name = \"Alice\";\n        Console.WriteLine(count);   // 42\n        Console.WriteLine(big);     // 2000000000\n        Console.WriteLine(pi);      // 3.14159\n        Console.WriteLine(found);   // True\n        Console.WriteLine(name);    // Alice\n    }\n}",
+      "exercise": {
+        "prompt": "Declare an int named `age` set to 25, a long named `population` set to 8000000000L, a double named `rate` set to 0.075, a bool named `valid` set to false, and a string named `label` set to \"test\". Print each on its own line.",
+        "starterCode": "class Program\n{\n    static void Main()\n    {\n        // Declare age, population, rate, valid, label here\n\n        Console.WriteLine(age);\n        Console.WriteLine(population);\n        Console.WriteLine(rate);\n        Console.WriteLine(valid);\n        Console.WriteLine(label);\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "25\n8000000000\n0.075\nFalse\ntest", "message": "Print each variable on its own line with the exact values specified."},
+          {"type": "contains", "patterns": ["int age", "long population", "double rate", "bool valid", "string label"], "message": "Use the correct type for each variable: int, long, double, bool, string."}
+        ],
+        "testCode": "",
+        "hint": "Declare each variable with its type keyword. Remember the L suffix on long literals. C# prints bool as True/False."
+      },
+      "order": 1
+    },
+    {
+      "id": "csharp-vt-casting",
+      "title": "Type Casting",
+      "explanation": "C# does implicit widening (int → long → double) automatically. Narrowing (double → int) requires an explicit cast with `(type)`. Integer division truncates: `7 / 2` gives `3`. To get a double result, cast at least one operand: `(double)7 / 2` gives `3.5`. Use `Convert.ToInt32()` for rounding or `int.Parse()` / `int.TryParse()` for string-to-int conversion.",
+      "example": "class Program\n{\n    static void Main()\n    {\n        int a = 7, b = 2;\n        Console.WriteLine(a / b);            // 3 (integer division)\n        Console.WriteLine((double)a / b);    // 3.5\n\n        double x = 9.99;\n        int truncated = (int)x;\n        Console.WriteLine(truncated);        // 9\n\n        string s = \"123\";\n        int parsed = int.Parse(s);\n        Console.WriteLine(parsed + 1);       // 124\n    }\n}",
+      "exercise": {
+        "prompt": "Given int variables `num = 10` and `den = 3`, print the integer division result, then the double division result (cast num to double). Then parse the string \"42\" to an int and print it plus 8.",
+        "starterCode": "class Program\n{\n    static void Main()\n    {\n        int num = 10;\n        int den = 3;\n\n        // Print integer division of num / den\n\n        // Print double division by casting num\n\n        // Parse \"42\" to int and print it + 8\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "3\n3.33333333333333\n50", "message": "First line: integer division (3). Second line: double division. Third line: 42 + 8 = 50."},
+          {"type": "contains", "patterns": ["(double)", "int.Parse"], "message": "Use explicit cast (double) for widening and int.Parse() for string conversion."}
+        ],
+        "testCode": "",
+        "hint": "Use (double)num / den for floating division. Use int.Parse(\"42\") for string-to-int."
+      },
+      "order": 2
+    },
+    {
+      "id": "csharp-vt-null",
+      "title": "Null and Nullable Types",
+      "explanation": "Value types (int, bool, etc.) cannot be null by default. Add `?` to make them nullable: `int? x = null`. Use `.HasValue` and `.Value` to check and extract. The null-coalescing operator `??` provides a default: `x ?? 0`. For reference types like string, null is the default. In interviews, always null-check before accessing members to avoid `NullReferenceException`.",
+      "example": "class Program\n{\n    static void Main()\n    {\n        int? maybeNum = null;\n        Console.WriteLine(maybeNum.HasValue);  // False\n\n        maybeNum = 42;\n        Console.WriteLine(maybeNum.Value);     // 42\n\n        int? empty = null;\n        int safe = empty ?? -1;\n        Console.WriteLine(safe);               // -1\n\n        string name = null;\n        Console.WriteLine(name?.Length ?? 0);  // 0\n    }\n}",
+      "exercise": {
+        "prompt": "Create a nullable int `score` set to null. Print whether it has a value. Then set it to 95 and print the value. Create another nullable int `bonus` left as null and use ?? to default it to 0, printing the result.",
+        "starterCode": "class Program\n{\n    static void Main()\n    {\n        // Create nullable int score = null\n\n        // Print score.HasValue\n\n        // Set score to 95 and print score.Value\n\n        // Create nullable int bonus = null, print bonus ?? 0\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "False\n95\n0", "message": "First: False (no value). Second: 95. Third: 0 (null-coalesced)."},
+          {"type": "contains", "patterns": ["int?", ".HasValue", ".Value", "??"], "message": "Use int? for nullable, .HasValue, .Value, and ?? operator."}
+        ],
+        "testCode": "",
+        "hint": "int? score = null; then score.HasValue is False. Assign score = 95; then score.Value is 95. int? bonus = null; bonus ?? 0 gives 0."
+      },
+      "order": 3
+    },
+    {
+      "id": "csharp-vt-const-readonly",
+      "title": "Const and Readonly",
+      "explanation": "`const` declares compile-time constants—must be assigned at declaration, implicitly static, and only for primitive types and strings. `readonly` declares runtime constants—can be assigned in the constructor, work with any type. Use `const` for true constants (Math values, config limits). Use `readonly` when the value is determined at runtime. In interviews, prefer `const` for simple literals.",
+      "example": "class Program\n{\n    const int MaxRetries = 3;\n    const string Prefix = \"ID-\";\n    static readonly DateTime StartTime = DateTime.Now;\n\n    static void Main()\n    {\n        Console.WriteLine(MaxRetries);          // 3\n        Console.WriteLine(Prefix + \"001\");      // ID-001\n        Console.WriteLine(StartTime.Year);      // current year\n\n        // MaxRetries = 5; // ERROR: cannot assign to const\n    }\n}",
+      "exercise": {
+        "prompt": "Declare a const int `MaxSize` set to 100 and a const double `Pi` set to 3.14159. Declare a static readonly string `AppName` set to \"InterviewCoach\". In Main, print all three on separate lines.",
+        "starterCode": "class Program\n{\n    // Declare const and readonly fields here\n\n    static void Main()\n    {\n        Console.WriteLine(MaxSize);\n        Console.WriteLine(Pi);\n        Console.WriteLine(AppName);\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "100\n3.14159\nInterviewCoach", "message": "Print MaxSize (100), Pi (3.14159), and AppName on separate lines."},
+          {"type": "contains", "patterns": ["const int MaxSize", "const double Pi", "static readonly string AppName"], "message": "Use const for compile-time constants and static readonly for the runtime constant."}
+        ],
+        "testCode": "",
+        "hint": "const int MaxSize = 100; const double Pi = 3.14159; static readonly string AppName = \"InterviewCoach\";"
+      },
+      "order": 4
+    },
+    {
+      "id": "csharp-vt-var-typeof",
+      "title": "Type Inference and Checking",
+      "explanation": "Use `var` for implicit typing when the type is obvious from the right side. Use `is` for type checking and `GetType()` to inspect types at runtime. Pattern matching with `is` can declare a variable inline: `if (obj is string s)`. In interviews, explicit types are often clearer, but `var` is fine for long generic types like `Dictionary<string, List<int>>`.",
+      "example": "class Program\n{\n    static void Main()\n    {\n        var count = 42;           // int\n        var name = \"Alice\";       // string\n        var prices = new List<double>();  // List<double>\n\n        object obj = \"hello\";\n        Console.WriteLine(obj is string);      // True\n        Console.WriteLine(obj.GetType().Name); // String\n\n        if (obj is string text)\n        {\n            Console.WriteLine(text.ToUpper());  // HELLO\n        }\n    }\n}",
+      "exercise": {
+        "prompt": "Use `var` to declare an int set to 10, a string set to \"hello\", and a List<int>. Print the type name of each using .GetType().Name. Then create an object holding the integer 99 and use pattern matching (`is int n`) to extract and print it.",
+        "starterCode": "class Program\n{\n    static void Main()\n    {\n        // Use var for three declarations\n\n        // Print GetType().Name for each\n\n        // Pattern matching with is\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "Int32\nString\nList`1\n99", "message": "Type names: Int32, String, List`1. Then the extracted value 99."},
+          {"type": "contains", "patterns": ["var ", "GetType().Name", "is int"], "message": "Use var for declarations, GetType().Name for type inspection, and is for pattern matching."}
+        ],
+        "testCode": "",
+        "hint": "var x = 10; Console.WriteLine(x.GetType().Name); prints Int32. object obj = 99; if (obj is int n) prints n."
+      },
+      "order": 5
+    }
+  ]
+}

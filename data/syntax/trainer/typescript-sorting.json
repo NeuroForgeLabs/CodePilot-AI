@@ -1,0 +1,78 @@
+{
+  "id": "typescript-sorting",
+  "title": "Sorting",
+  "description": "Sorting is fundamental to interview algorithms — from binary search prerequisites to greedy approaches. Master TypeScript's typed comparators to sort numbers, strings, and objects correctly.",
+  "language": "typescript",
+  "category": "sorting",
+  "order": 7,
+  "sections": [
+    {
+      "id": "numeric-sort",
+      "title": "Numeric sort with typed comparator",
+      "explanation": "JavaScript's default `.sort()` converts elements to strings, so `[10, 2, 1].sort()` gives `[1, 10, 2]`. In interviews, always pass a numeric comparator: `(a, b) => a - b` for ascending, `(a, b) => b - a` for descending. TypeScript infers the comparator types from the array.",
+      "example": "const nums: number[] = [10, 2, 8, 1, 5];\n\nnums.sort((a: number, b: number) => a - b);\nconsole.log(nums);  // [1, 2, 5, 8, 10]\n\nnums.sort((a, b) => b - a);\nconsole.log(nums);  // [10, 8, 5, 2, 1]",
+      "exercise": {
+        "prompt": "Sort the array [30, 5, 20, 1, 15] in ascending order and print it joined by comma. Then sort [30, 5, 20, 1, 15] in descending order and print it joined by comma.",
+        "starterCode": "const asc: number[] = [30, 5, 20, 1, 15]\nasc.sort((a, b) => a ___ b)\nconsole.log(asc.join(\",\"))\n\nconst desc: number[] = [30, 5, 20, 1, 15]\ndesc.sort((a, b) => b ___ a)\nconsole.log(desc.join(\",\"))",
+        "validation": [
+          {"type": "output", "expected": "1,5,15,20,30\n30,20,15,5,1", "message": "Ascending: 1,5,15,20,30. Descending: 30,20,15,5,1"},
+          {"type": "contains", "patterns": ["a - b", "b - a"], "message": "Use a - b for ascending and b - a for descending"}
+        ],
+        "testCode": "",
+        "hint": "The comparator a - b sorts ascending (negative means a comes first). b - a reverses the order."
+      },
+      "order": 1
+    },
+    {
+      "id": "sort-by-property",
+      "title": "Sort by object property",
+      "explanation": "Interviews often require sorting objects by a specific field — like sorting intervals by start time or events by priority. Define an interface for the object type, then use a comparator accessing the property.",
+      "example": "interface Interval {\n  start: number;\n  end: number;\n}\n\nconst intervals: Interval[] = [\n  { start: 3, end: 7 },\n  { start: 1, end: 5 },\n  { start: 2, end: 4 },\n];\n\nintervals.sort((a, b) => a.start - b.start);\nfor (const iv of intervals) {\n  console.log(`[${iv.start}, ${iv.end}]`);\n}\n// [1, 5] [2, 4] [3, 7]",
+      "exercise": {
+        "prompt": "Define an interface `Student` with `name: string` and `grade: number`. Sort an array of students by grade descending. Print each student as \"name: grade\".",
+        "starterCode": "interface Student {\n  name: string;\n  grade: number;\n}\n\nconst students: Student[] = [\n  { name: \"Alice\", grade: 88 },\n  { name: \"Bob\", grade: 95 },\n  { name: \"Carol\", grade: 72 }\n]\n\nstudents.sort((a, b) => ___.grade - ___.grade)\n\nfor (const s of students) {\n  console.log(`${s.name}: ${s.grade}`)\n}",
+        "validation": [
+          {"type": "output", "expected": "Bob: 95\nAlice: 88\nCarol: 72", "message": "Students sorted by grade descending"},
+          {"type": "contains", "patterns": ["interface Student", "b.grade - a.grade"], "message": "Define Student interface and sort by grade descending"}
+        ],
+        "testCode": "",
+        "hint": "For descending order by grade, use b.grade - a.grade in the comparator."
+      },
+      "order": 2
+    },
+    {
+      "id": "multi-key-sort",
+      "title": "Multi-key sort",
+      "explanation": "Sometimes you need to sort by a primary key, breaking ties with a secondary key. The comparator checks the primary key first — if equal (returns 0), it falls through to the secondary key. This pattern appears in scheduling, ranking, and ordering problems.",
+      "example": "interface Task {\n  priority: number;\n  name: string;\n}\n\nconst tasks: Task[] = [\n  { priority: 2, name: \"B\" },\n  { priority: 1, name: \"C\" },\n  { priority: 1, name: \"A\" },\n];\n\ntasks.sort((a, b) => {\n  if (a.priority !== b.priority) return a.priority - b.priority;\n  return a.name.localeCompare(b.name);\n});\n\nfor (const t of tasks) console.log(`${t.priority}-${t.name}`);\n// 1-A, 1-C, 2-B",
+      "exercise": {
+        "prompt": "Sort an array of [score, name] pairs: first by score descending, then by name ascending for ties. Print each as \"name: score\".",
+        "starterCode": "const entries: [number, string][] = [[90, \"Carol\"], [85, \"Alice\"], [90, \"Bob\"], [85, \"Dave\"]]\n\nentries.sort((a, b) => {\n  if (a[0] !== b[0]) return ___[0] - ___[0]\n  return a[1].localeCompare(b[1])\n})\n\nfor (const [score, name] of entries) {\n  console.log(`${name}: ${score}`)\n}",
+        "validation": [
+          {"type": "output", "expected": "Bob: 90\nCarol: 90\nAlice: 85\nDave: 85", "message": "90s first (alpha order), then 85s (alpha order)"},
+          {"type": "contains", "patterns": ["b[0] - a[0]", "localeCompare"], "message": "Use b-a for descending score and localeCompare for name"}
+        ],
+        "testCode": "",
+        "hint": "For descending score: b[0] - a[0]. For ascending name on ties: a[1].localeCompare(b[1])."
+      },
+      "order": 3
+    },
+    {
+      "id": "sort-stability",
+      "title": "Custom sort for interview patterns",
+      "explanation": "Several interview patterns rely on sorting as a preprocessing step: sorting intervals by start, sorting characters by frequency, or sorting to enable two-pointer approaches. Creating a sorted copy with `[...arr].sort()` preserves the original — important when you need the original indices.",
+      "example": "function topKFrequent(nums: number[], k: number): number[] {\n  const freq: Map<number, number> = new Map();\n  for (const n of nums) {\n    freq.set(n, (freq.get(n) ?? 0) + 1);\n  }\n  const entries = [...freq.entries()];\n  entries.sort((a, b) => b[1] - a[1]);\n  return entries.slice(0, k).map(([val]) => val);\n}\n\nconsole.log(topKFrequent([1,1,1,2,2,3], 2)); // [1, 2]",
+      "exercise": {
+        "prompt": "Write a function that takes a string and returns its characters sorted by frequency (most frequent first). For ties, use alphabetical order. Print the result for \"tree\".",
+        "starterCode": "function sortByFreq(s: string): string {\n  const freq: Map<string, number> = new Map()\n  for (const ch of s) {\n    freq.set(ch, (freq.get(ch) ?? 0) + 1)\n  }\n  const entries = [...freq.entries()]\n  entries.sort((a, b) => {\n    if (a[1] !== b[1]) return ___[1] - ___[1]\n    return a[0].localeCompare(b[0])\n  })\n  let result: string = \"\"\n  for (const [ch, count] of entries) {\n    result += ch.repeat(count)\n  }\n  return result\n}\n\nconsole.log(sortByFreq(\"tree\"))",
+        "validation": [
+          {"type": "output", "expected": "eert", "message": "e appears twice (first), then r and t once each (alphabetical)"},
+          {"type": "contains", "patterns": ["Map<string, number>", "b[1] - a[1]", ".repeat("], "message": "Count frequencies and sort descending by count"}
+        ],
+        "testCode": "",
+        "hint": "Sort by frequency descending: b[1] - a[1]. For ties, alphabetical: a[0].localeCompare(b[0]). Repeat each char by its count."
+      },
+      "order": 4
+    }
+  ]
+}

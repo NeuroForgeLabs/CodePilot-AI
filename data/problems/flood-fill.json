@@ -1,0 +1,40 @@
+{
+  "id": "flood-fill",
+  "title": "Flood Fill",
+  "difficulty": "Easy",
+  "tags": ["matrix", "bfs", "graph"],
+  "prompt": "You are given a 2D grid of integers representing pixel colors, a starting row `sr`, a starting column `sc`, and a new color `color`.\n\nPerform a flood fill starting from pixel `(sr, sc)`. Replace the color of the starting pixel and all adjacent (up, down, left, right) pixels that share the same original color with the new color.\n\nReturn the modified grid.",
+  "examples": [
+    {"input": "image = [[1,1,1],[1,1,0],[1,0,1]], sr = 1, sc = 1, color = 2", "output": "[[2, 2, 2], [2, 2, 0], [2, 0, 1]]\nExplanation: Starting from pixel (1,1) with color 1, all connected pixels with color 1 are changed to 2."},
+    {"input": "image = [[0,0,0],[0,0,0]], sr = 0, sc = 0, color = 0", "output": "[[0, 0, 0], [0, 0, 0]]\nExplanation: The new color is the same as the original, so the image is unchanged."}
+  ],
+  "constraints": [
+    "1 <= image.length <= 50",
+    "1 <= image[0].length <= 50",
+    "0 <= image[i][j], color <= 65535",
+    "0 <= sr < image.length",
+    "0 <= sc < image[0].length"
+  ],
+  "starterCode": {
+    "python": "def solve(image, sr, sc, color):\n    pass",
+    "javascript": "function solve(image, sr, sc, color) {\n  \n}",
+    "typescript": "export function solve(image: number[][], sr: number, sc: number, color: number): number[][] {\n  \n}",
+    "java": "class Solution {\n    public int[][] solve(int[][] image, int sr, int sc, int color) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int[][] Solve(int[][] image, int sr, int sc, int color) {\n        \n    }\n}",
+    "go": "func solve(image [][]int, sr int, sc int, color int) [][]int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([[1,1,1],[1,1,0],[1,0,1]], 1, 1, 2))"}, "expectedStdout": "[[2, 2, 2], [2, 2, 0], [2, 0, 1]]"},
+    {"stdin": {"python": "print(solve([[0,0,0],[0,0,0]], 0, 0, 0))"}, "expectedStdout": "[[0, 0, 0], [0, 0, 0]]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([[0,0,0],[0,1,1]], 1, 1, 1))"}, "expectedStdout": "[[0, 0, 0], [0, 1, 1]]"},
+    {"stdin": {"python": "print(solve([[1,2,3],[4,5,6],[7,8,9]], 0, 0, 0))"}, "expectedStdout": "[[0, 2, 3], [4, 5, 6], [7, 8, 9]]"},
+    {"stdin": {"python": "print(solve([[2,2],[2,2]], 0, 0, 3))"}, "expectedStdout": "[[3, 3], [3, 3]]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "BFS or DFS from (sr, sc). Record the original color. If new color equals original color, return immediately to avoid infinite loops. Visit all 4-directionally adjacent cells with the original color, changing them to the new color.",
+    "commonBugs": ["Infinite recursion/loop when new color equals original color (must check and return early)", "Forgetting to check grid boundaries before accessing neighbors", "Not using a visited set or relying on color change as the visited marker"],
+    "expectedComplexity": "O(m * n) where m and n are grid dimensions"
+  }
+}

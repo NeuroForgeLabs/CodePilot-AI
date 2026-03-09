@@ -1,0 +1,95 @@
+{
+  "id": "csharp-interview-templates",
+  "title": "Interview Templates",
+  "description": "Master the five most common interview algorithm templates in C#: sliding window, binary search, two-pointer, prefix sum, and backtracking.",
+  "language": "csharp",
+  "category": "interview-templates",
+  "order": 13,
+  "sections": [
+    {
+      "id": "csharp-tmpl-sliding",
+      "title": "Sliding Window",
+      "explanation": "Sliding window maintains a window [left, right] that expands and contracts over an array/string. Two variants: (1) Fixed-size: advance both pointers together. (2) Variable-size: expand right, shrink left when condition is violated. Used for max/min subarray, longest substring without repeats, minimum window substring. Time: O(n) since each element enters and leaves the window once.",
+      "example": "class Program\n{\n    static int MaxSumSubarray(int[] nums, int k)\n    {\n        int windowSum = 0;\n        for (int i = 0; i < k; i++) windowSum += nums[i];\n        int maxSum = windowSum;\n        for (int i = k; i < nums.Length; i++)\n        {\n            windowSum += nums[i] - nums[i - k];\n            maxSum = Math.Max(maxSum, windowSum);\n        }\n        return maxSum;\n    }\n\n    static int LongestUniqueSubstring(string s)\n    {\n        var set = new HashSet<char>();\n        int left = 0, maxLen = 0;\n        for (int right = 0; right < s.Length; right++)\n        {\n            while (set.Contains(s[right]))\n            {\n                set.Remove(s[left]);\n                left++;\n            }\n            set.Add(s[right]);\n            maxLen = Math.Max(maxLen, right - left + 1);\n        }\n        return maxLen;\n    }\n\n    static void Main()\n    {\n        Console.WriteLine(MaxSumSubarray(new int[] { 2, 1, 5, 1, 3, 2 }, 3));  // 9\n        Console.WriteLine(LongestUniqueSubstring(\"abcabcbb\"));                   // 3\n    }\n}",
+      "exercise": {
+        "prompt": "Implement a fixed-size sliding window: given int[] nums = {1, 3, 2, 6, -1, 4, 1, 8, 2} and k=5, find the maximum average of any subarray of size k. Print the maximum average as a double.",
+        "starterCode": "class Program\n{\n    static double MaxAverage(int[] nums, int k)\n    {\n        // Sliding window for max average of size k\n\n        return 0.0;\n    }\n\n    static void Main()\n    {\n        int[] nums = { 1, 3, 2, 6, -1, 4, 1, 8, 2 };\n        Console.WriteLine(MaxAverage(nums, 5));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "3.6", "message": "Max average subarray of size 5: {6,-1,4,1,8}=18/5=3.6."},
+          {"type": "contains", "patterns": ["nums[i] - nums[i - k]", "Math.Max"], "message": "Use the sliding window add-right-remove-left pattern with Math.Max."}
+        ],
+        "testCode": "",
+        "hint": "Compute initial window sum for first k elements. Slide: add nums[i], subtract nums[i-k]. Track max sum, return maxSum / k."
+      },
+      "order": 1
+    },
+    {
+      "id": "csharp-tmpl-binsearch",
+      "title": "Binary Search",
+      "explanation": "Binary search finds a target in O(log n) on sorted data. Template: left=0, right=length-1. While left <= right: mid = left + (right-left)/2 (avoids overflow). If found, return mid. If target > nums[mid], left = mid+1. Else right = mid-1. Variants: find leftmost/rightmost occurrence, search for insertion point, search on answer space.",
+      "example": "class Program\n{\n    static int BinarySearch(int[] nums, int target)\n    {\n        int left = 0, right = nums.Length - 1;\n        while (left <= right)\n        {\n            int mid = left + (right - left) / 2;\n            if (nums[mid] == target) return mid;\n            else if (nums[mid] < target) left = mid + 1;\n            else right = mid - 1;\n        }\n        return -1;\n    }\n\n    static int LeftmostInsert(int[] nums, int target)\n    {\n        int left = 0, right = nums.Length;\n        while (left < right)\n        {\n            int mid = left + (right - left) / 2;\n            if (nums[mid] < target) left = mid + 1;\n            else right = mid;\n        }\n        return left;\n    }\n\n    static void Main()\n    {\n        int[] nums = { 1, 3, 5, 7, 9, 11 };\n        Console.WriteLine(BinarySearch(nums, 7));      // 3\n        Console.WriteLine(BinarySearch(nums, 6));      // -1\n        Console.WriteLine(LeftmostInsert(nums, 5));    // 2\n        Console.WriteLine(LeftmostInsert(nums, 6));    // 3\n    }\n}",
+      "exercise": {
+        "prompt": "Implement binary search to find the first position where nums[i] >= target (lower bound). Given sorted array {1, 2, 4, 4, 4, 7, 9}, find the first index where value >= 4, then where value >= 5. Print both indices.",
+        "starterCode": "class Program\n{\n    static int LowerBound(int[] nums, int target)\n    {\n        int left = 0, right = nums.Length;\n        // Find first index where nums[i] >= target\n\n        return left;\n    }\n\n    static void Main()\n    {\n        int[] nums = { 1, 2, 4, 4, 4, 7, 9 };\n        Console.WriteLine(LowerBound(nums, 4));\n        Console.WriteLine(LowerBound(nums, 5));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "2\n5", "message": "First index >= 4 is index 2. First index >= 5 is index 5 (value 7)."},
+          {"type": "contains", "patterns": ["left + (right - left) / 2", "while (left < right)"], "message": "Use the standard binary search template with overflow-safe mid calculation."}
+        ],
+        "testCode": "",
+        "hint": "while (left < right): mid = left + (right-left)/2. If nums[mid] < target: left = mid+1. Else: right = mid."
+      },
+      "order": 2
+    },
+    {
+      "id": "csharp-tmpl-twopointer",
+      "title": "Two Pointers",
+      "explanation": "Two pointers use two indices moving toward each other or in the same direction. (1) Opposite ends: start at left=0, right=n-1, move inward (palindrome check, two-sum on sorted array, container with most water). (2) Same direction: slow/fast pointers (remove duplicates, linked list cycle). Typically O(n) time, O(1) space.",
+      "example": "class Program\n{\n    static bool IsPalindrome(string s)\n    {\n        int left = 0, right = s.Length - 1;\n        while (left < right)\n        {\n            if (s[left] != s[right]) return false;\n            left++;\n            right--;\n        }\n        return true;\n    }\n\n    static int[] TwoSumSorted(int[] nums, int target)\n    {\n        int left = 0, right = nums.Length - 1;\n        while (left < right)\n        {\n            int sum = nums[left] + nums[right];\n            if (sum == target) return new int[] { left, right };\n            else if (sum < target) left++;\n            else right--;\n        }\n        return new int[] {};\n    }\n\n    static void Main()\n    {\n        Console.WriteLine(IsPalindrome(\"racecar\"));   // True\n        Console.WriteLine(IsPalindrome(\"hello\"));     // False\n\n        int[] result = TwoSumSorted(new int[] { 1, 3, 5, 7, 9 }, 8);\n        Console.WriteLine($\"{result[0]},{result[1]}\");  // 0,3\n    }\n}",
+      "exercise": {
+        "prompt": "Use two pointers to remove duplicates from sorted array in-place. Given int[] nums = {1, 1, 2, 2, 3, 4, 4, 5}, return the new length of unique elements. Print the new length and the unique elements as an array.",
+        "starterCode": "class Program\n{\n    static int RemoveDuplicates(int[] nums)\n    {\n        if (nums.Length == 0) return 0;\n        int slow = 0;\n        // Use fast pointer to scan, slow pointer for unique position\n\n        return slow + 1;\n    }\n\n    static void Main()\n    {\n        int[] nums = { 1, 1, 2, 2, 3, 4, 4, 5 };\n        int len = RemoveDuplicates(nums);\n        Console.WriteLine(len);\n        Console.WriteLine(String.Join(\", \", nums.Take(len)));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "5\n1, 2, 3, 4, 5", "message": "5 unique elements: 1, 2, 3, 4, 5."},
+          {"type": "contains", "patterns": ["slow", "fast", "nums[slow] != nums[fast]"], "message": "Use slow and fast pointers, advancing slow only when a new unique value is found."}
+        ],
+        "testCode": "",
+        "hint": "For fast from 1 to end: if nums[fast] != nums[slow], increment slow and copy nums[fast] to nums[slow]."
+      },
+      "order": 3
+    },
+    {
+      "id": "csharp-tmpl-prefix",
+      "title": "Prefix Sum",
+      "explanation": "Prefix sum array stores cumulative sums: prefix[i] = sum of nums[0..i-1]. This lets you compute any subarray sum in O(1): sum(i..j) = prefix[j+1] - prefix[i]. Build prefix array in O(n), then answer range-sum queries instantly. Used in subarray sum equals K (with Dictionary), range queries, and 2D matrix sums.",
+      "example": "class Program\n{\n    static int SubarraySum(int[] nums, int k)\n    {\n        var prefixCount = new Dictionary<int, int>();\n        prefixCount[0] = 1;\n        int sum = 0, count = 0;\n        foreach (int n in nums)\n        {\n            sum += n;\n            if (prefixCount.ContainsKey(sum - k))\n                count += prefixCount[sum - k];\n            prefixCount[sum] = prefixCount.GetValueOrDefault(sum) + 1;\n        }\n        return count;\n    }\n\n    static void Main()\n    {\n        int[] nums = { 2, 4, 1, 3, 5 };\n        int[] prefix = new int[nums.Length + 1];\n        for (int i = 0; i < nums.Length; i++)\n            prefix[i + 1] = prefix[i] + nums[i];\n\n        Console.WriteLine(prefix[4] - prefix[1]);  // sum(1..3) = 4+1+3 = 8\n        Console.WriteLine(SubarraySum(new int[] { 1, 1, 1 }, 2));  // 2\n    }\n}",
+      "exercise": {
+        "prompt": "Build a prefix sum array for nums = {3, 1, 4, 1, 5, 9, 2, 6}. Use it to compute and print: sum of elements from index 2 to 5 (inclusive), and sum of elements from index 0 to 3 (inclusive).",
+        "starterCode": "class Program\n{\n    static void Main()\n    {\n        int[] nums = { 3, 1, 4, 1, 5, 9, 2, 6 };\n        int[] prefix = new int[nums.Length + 1];\n\n        // Build prefix sum array\n\n        // Print sum from index 2 to 5\n\n        // Print sum from index 0 to 3\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "19\n9", "message": "Sum(2..5) = 4+1+5+9 = 19. Sum(0..3) = 3+1+4+1 = 9."},
+          {"type": "contains", "patterns": ["prefix[i + 1] = prefix[i] + nums[i]", "prefix["], "message": "Build prefix array with prefix[i+1] = prefix[i] + nums[i] and query with subtraction."}
+        ],
+        "testCode": "",
+        "hint": "prefix[0]=0. For i in 0..n-1: prefix[i+1]=prefix[i]+nums[i]. Sum(i..j) = prefix[j+1] - prefix[i]."
+      },
+      "order": 4
+    },
+    {
+      "id": "csharp-tmpl-backtrack",
+      "title": "Backtracking Template",
+      "explanation": "Backtracking systematically explores all candidates, pruning invalid paths early. Template: (1) if solution is complete, add to results. (2) for each candidate: check if valid, add to current path, recurse, remove from path (backtrack). Key optimization: prune early with validity checks before recursing. Used for combinations, permutations, subsets, Sudoku, word search.",
+      "example": "class Program\n{\n    static void Combine(int n, int k, int start, List<int> current, List<List<int>> result)\n    {\n        if (current.Count == k)\n        {\n            result.Add(new List<int>(current));\n            return;\n        }\n        for (int i = start; i <= n; i++)\n        {\n            current.Add(i);\n            Combine(n, k, i + 1, current, result);\n            current.RemoveAt(current.Count - 1);\n        }\n    }\n\n    static void Main()\n    {\n        var result = new List<List<int>>();\n        Combine(4, 2, 1, new List<int>(), result);\n        foreach (var combo in result)\n            Console.WriteLine(String.Join(\", \", combo));\n    }\n}",
+      "exercise": {
+        "prompt": "Use backtracking to generate all subsets of {1, 2, 3}. Each subset is a list. Print all subsets, one per line, using \"[items]\" format. There should be 8 subsets total (including the empty set). Print the total count at the end.",
+        "starterCode": "class Program\n{\n    static void Subsets(int[] nums, int start, List<int> current, List<List<int>> result)\n    {\n        // Implement backtracking for all subsets\n\n    }\n\n    static void Main()\n    {\n        var result = new List<List<int>>();\n        Subsets(new int[] { 1, 2, 3 }, 0, new List<int>(), result);\n        foreach (var s in result)\n            Console.WriteLine(\"[\" + String.Join(\", \", s) + \"]\");\n        Console.WriteLine(result.Count);\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "[]\n[1]\n[1, 2]\n[1, 2, 3]\n[1, 3]\n[2]\n[2, 3]\n[3]\n8", "message": "All 8 subsets of {1,2,3} followed by the count 8."},
+          {"type": "contains", "patterns": ["new List<int>(current)", "current.Add(", "current.RemoveAt(current.Count - 1)"], "message": "Add a copy of current to result, then for each candidate: add, recurse, remove (backtrack)."}
+        ],
+        "testCode": "",
+        "hint": "Add current (copy!) to result at every call. Loop i from start to end: add nums[i], recurse with i+1, remove last."
+      },
+      "order": 5
+    }
+  ]
+}

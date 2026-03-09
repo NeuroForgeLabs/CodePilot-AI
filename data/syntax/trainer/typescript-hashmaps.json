@@ -1,0 +1,78 @@
+{
+  "id": "typescript-hashmaps",
+  "title": "Hashmaps",
+  "description": "Hash maps provide O(1) lookups — the most frequently tested data structure in interviews. Master TypeScript's Map<K,V>, Record types, and object types to solve frequency counting, two-sum, and grouping problems.",
+  "language": "typescript",
+  "category": "hashmaps",
+  "order": 5,
+  "sections": [
+    {
+      "id": "map-basics",
+      "title": "Map<K,V> basics",
+      "explanation": "TypeScript's `Map<K,V>` is the go-to hash map for interviews. It supports any key type (not just strings), preserves insertion order, and has clean methods: `set`, `get`, `has`, `delete`, `size`. Always prefer Map over plain objects when keys can be numbers or complex types.",
+      "example": "const freq: Map<string, number> = new Map();\n\nfreq.set(\"a\", 3);\nfreq.set(\"b\", 1);\n\nconsole.log(freq.get(\"a\"));   // 3\nconsole.log(freq.has(\"c\"));   // false\nconsole.log(freq.size);       // 2\n\nfreq.delete(\"b\");\nconsole.log(freq.size);       // 1",
+      "exercise": {
+        "prompt": "Create a `Map<string, number>` called `scores`. Set \"alice\" to 95, \"bob\" to 87, \"charlie\" to 92. Print alice's score, whether \"dave\" exists, and the map size.",
+        "starterCode": "const scores: Map<string, number> = new Map()\n\nscores.set(\"alice\", ___)\nscores.set(\"bob\", ___)\nscores.set(\"charlie\", ___)\n\nconsole.log(scores.get(\"alice\"))\nconsole.log(scores.has(\"dave\"))\nconsole.log(scores.size)",
+        "validation": [
+          {"type": "output", "expected": "95\nfalse\n3", "message": "alice=95, dave doesn't exist, size=3"},
+          {"type": "contains", "patterns": ["Map<string, number>", ".set(", ".get(", ".has("], "message": "Use Map methods: set, get, has"}
+        ],
+        "testCode": "",
+        "hint": "Set the scores as numbers: 95, 87, 92. Map.has returns false for missing keys."
+      },
+      "order": 1
+    },
+    {
+      "id": "frequency-counting",
+      "title": "Frequency counting pattern",
+      "explanation": "The most common Map pattern in interviews: count occurrences. For each element, get its current count (default 0) and increment. This solves anagram checks, most-frequent-element, and character-frequency problems.",
+      "example": "function charFreq(s: string): Map<string, number> {\n  const freq: Map<string, number> = new Map();\n  for (const ch of s) {\n    freq.set(ch, (freq.get(ch) ?? 0) + 1);\n  }\n  return freq;\n}\n\nconst counts = charFreq(\"abracadabra\");\nconsole.log(counts.get(\"a\"));  // 5\nconsole.log(counts.get(\"b\"));  // 2",
+      "exercise": {
+        "prompt": "Write a function `wordCount` that takes a string array and returns a Map<string, number> counting occurrences. Test with [\"go\", \"stop\", \"go\", \"go\", \"stop\"]. Print the count for \"go\" and \"stop\".",
+        "starterCode": "function wordCount(words: string[]): Map<string, number> {\n  const freq: Map<string, number> = new Map()\n  for (const w of words) {\n    freq.set(w, (freq.get(w) ?? ___) + 1)\n  }\n  return freq\n}\n\nconst counts = wordCount([\"go\", \"stop\", \"go\", \"go\", \"stop\"])\nconsole.log(counts.get(\"go\"))\nconsole.log(counts.get(\"stop\"))",
+        "validation": [
+          {"type": "output", "expected": "3\n2", "message": "go appears 3 times, stop appears 2 times"},
+          {"type": "contains", "patterns": ["Map<string, number>", "?? 0", ".set("], "message": "Use the nullish coalescing pattern for frequency counting"}
+        ],
+        "testCode": "",
+        "hint": "Default to 0 when the key doesn't exist using the ?? (nullish coalescing) operator, then add 1."
+      },
+      "order": 2
+    },
+    {
+      "id": "record-type",
+      "title": "Record<K,V> and object types",
+      "explanation": "For string-keyed maps, TypeScript offers `Record<string, number>` as a typed object literal. This is lighter than Map and works well when you know all keys are strings. Access with bracket or dot notation. Use `Object.keys()`, `Object.values()`, and `Object.entries()` to iterate.",
+      "example": "const scores: Record<string, number> = {\n  alice: 95,\n  bob: 87,\n};\n\nscores[\"charlie\"] = 92;\n\nfor (const [name, score] of Object.entries(scores)) {\n  console.log(`${name}: ${score}`);\n}\n// alice: 95, bob: 87, charlie: 92",
+      "exercise": {
+        "prompt": "Create a `Record<string, number>` called `prices` with apple: 1.5, banana: 0.75, cherry: 2.0. Add \"date\" with price 3.5. Print all keys (joined by comma) and all values (joined by comma).",
+        "starterCode": "const prices: Record<string, number> = {\n  apple: 1.5,\n  banana: 0.75,\n  cherry: 2.0\n}\n\nprices[\"date\"] = ___\n\nconsole.log(Object.keys(prices).join(\",\"))\nconsole.log(Object.values(prices).join(\",\"))",
+        "validation": [
+          {"type": "output", "expected": "apple,banana,cherry,date\n1.5,0.75,2,3.5", "message": "Keys and values printed as comma-separated lists"},
+          {"type": "contains", "patterns": ["Record<string, number>", "Object.keys(", "Object.values("], "message": "Use Record type and Object utility methods"}
+        ],
+        "testCode": "",
+        "hint": "Add date with price 3.5. Object.keys returns an array of keys, Object.values returns values."
+      },
+      "order": 3
+    },
+    {
+      "id": "map-iteration",
+      "title": "Iterating maps",
+      "explanation": "Map provides `forEach`, `keys()`, `values()`, and `entries()` for iteration. In interviews, you often iterate to find max/min frequency, collect results, or build output. Destructuring in for-of loops keeps the code clean.",
+      "example": "const map: Map<string, number> = new Map([\n  [\"x\", 10], [\"y\", 20], [\"z\", 5]\n]);\n\nlet maxKey: string = \"\";\nlet maxVal: number = -Infinity;\n\nfor (const [key, val] of map) {\n  if (val > maxVal) {\n    maxKey = key;\n    maxVal = val;\n  }\n}\nconsole.log(`${maxKey}: ${maxVal}`);  // y: 20",
+      "exercise": {
+        "prompt": "Given a Map with entries [\"a\",3], [\"b\",7], [\"c\",1], [\"d\",7], find all keys with the maximum value. Collect them in an array and print the sorted result joined by comma.",
+        "starterCode": "const map: Map<string, number> = new Map([[\"a\", 3], [\"b\", 7], [\"c\", 1], [\"d\", 7]])\n\nlet maxVal: number = -Infinity\nfor (const [, val] of map) {\n  if (val > maxVal) maxVal = val\n}\n\nconst maxKeys: string[] = []\nfor (const [key, val] of map) {\n  if (val === ___) maxKeys.push(key)\n}\n\nconsole.log(maxKeys.sort().join(\",\"))",
+        "validation": [
+          {"type": "output", "expected": "b,d", "message": "Both b and d have the max value of 7"},
+          {"type": "contains", "patterns": ["Map<string, number>", "for (const [key, val] of"], "message": "Use destructuring iteration over the Map"}
+        ],
+        "testCode": "",
+        "hint": "First pass finds maxVal (7). Second pass collects all keys where val === maxVal."
+      },
+      "order": 4
+    }
+  ]
+}

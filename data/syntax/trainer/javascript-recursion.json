@@ -1,0 +1,78 @@
+{
+  "id": "javascript-recursion",
+  "title": "Recursion",
+  "description": "Recursion appears in tree traversals, backtracking, divide-and-conquer, and dynamic programming. Master the base case pattern, memoization with Map, and converting between recursive and iterative approaches.",
+  "language": "javascript",
+  "category": "recursion",
+  "order": 10,
+  "sections": [
+    {
+      "id": "base-case",
+      "title": "Base case pattern",
+      "explanation": "Every recursive function needs a base case to stop recursion and a recursive case that reduces the problem. Forgetting the base case causes infinite recursion and a stack overflow. In interviews, always define the base case first — it clarifies your thinking and prevents bugs.",
+      "example": "function factorial(n) {\n  if (n <= 1) return 1;        // base case\n  return n * factorial(n - 1); // recursive case\n}\n\nconsole.log(factorial(5)); // 120",
+      "exercise": {
+        "prompt": "Write a recursive function `sumTo(n)` that returns the sum from 1 to n. Base case: n <= 0 returns 0. Print sumTo(5) and sumTo(10).",
+        "starterCode": "function sumTo(n) {\n  if (n <= 0) return _____;\n  return n + sumTo(n _____ 1);\n}\n\nconsole.log(sumTo(5));\nconsole.log(sumTo(10));",
+        "validation": [
+          {"type": "output", "expected": "15\n55", "message": "sumTo(5) = 1+2+3+4+5 = 15, sumTo(10) = 55"},
+          {"type": "contains", "patterns": ["return", "sumTo("], "message": "Use a recursive call to sumTo with a decreasing argument"}
+        ],
+        "testCode": "",
+        "hint": "Base case returns 0. Recursive case: n + sumTo(n - 1)."
+      },
+      "order": 1
+    },
+    {
+      "id": "memoization",
+      "title": "Memoization with Map",
+      "explanation": "Memoization caches results of expensive recursive calls to avoid redundant computation. Use a Map to store computed results keyed by the input. This turns exponential-time problems (like naive Fibonacci) into O(n) time. In interviews, memoization is the bridge from brute-force recursion to dynamic programming.",
+      "example": "function fib(n, memo = new Map()) {\n  if (n <= 1) return n;\n  if (memo.has(n)) return memo.get(n);\n  const result = fib(n - 1, memo) + fib(n - 2, memo);\n  memo.set(n, result);\n  return result;\n}",
+      "exercise": {
+        "prompt": "Implement memoized Fibonacci. Use a Map for the cache. Print fib(10) and fib(20).",
+        "starterCode": "function fib(n, memo = new Map()) {\n  if (n <= 1) return n;\n  if (memo._____(n)) return memo.get(n);\n  const result = fib(n - 1, memo) + fib(n - 2, memo);\n  memo._____(n, result);\n  return result;\n}\n\nconsole.log(fib(10));\nconsole.log(fib(20));",
+        "validation": [
+          {"type": "output", "expected": "55\n6765", "message": "fib(10) = 55, fib(20) = 6765"},
+          {"type": "contains", "patterns": ["new Map()", "has(", "set("], "message": "Use Map's has() to check cache and set() to store results"}
+        ],
+        "testCode": "",
+        "hint": "Use memo.has(n) to check cache, memo.set(n, result) to store."
+      },
+      "order": 2
+    },
+    {
+      "id": "backtracking",
+      "title": "Backtracking pattern",
+      "explanation": "Backtracking builds solutions incrementally, abandoning a path when it can't lead to a valid solution. The pattern is: choose, explore (recurse), unchoose (backtrack). This applies to permutations, combinations, N-Queens, and Sudoku. In JavaScript, push/pop on an array is the idiomatic choose/unchoose.",
+      "example": "function subsets(nums) {\n  const result = [];\n  function backtrack(start, current) {\n    result.push([...current]);\n    for (let i = start; i < nums.length; i++) {\n      current.push(nums[i]);      // choose\n      backtrack(i + 1, current);   // explore\n      current.pop();               // unchoose\n    }\n  }\n  backtrack(0, []);\n  return result;\n}",
+      "exercise": {
+        "prompt": "Generate all subsets of [1, 2, 3] using backtracking. Print each subset as a comma-joined string (empty string for empty set), one per line, sorted by length then values.",
+        "starterCode": "function subsets(nums) {\n  const result = [];\n  function backtrack(start, current) {\n    result.push([...current]);\n    for (let i = start; i < nums.length; i++) {\n      current.push(nums[i]);\n      backtrack(i + 1, current);\n      current._____();\n    }\n  }\n  backtrack(_____, []);\n  return result;\n}\n\nconst sets = subsets([1, 2, 3]);\nsets.sort((a, b) => a.length - b.length || a.toString().localeCompare(b.toString()));\nfor (const s of sets) {\n  console.log(s.join(\",\"));\n}",
+        "validation": [
+          {"type": "output", "expected": "\n1\n2\n3\n1,2\n1,3\n2,3\n1,2,3", "message": "All 8 subsets of [1,2,3] sorted by size then lexicographic"},
+          {"type": "contains", "patterns": ["pop()", "backtrack("], "message": "Use pop() to backtrack and recursive calls to explore"}
+        ],
+        "testCode": "",
+        "hint": "pop() undoes the choice. Start backtrack at index 0."
+      },
+      "order": 3
+    },
+    {
+      "id": "iterative-conversion",
+      "title": "Converting recursion to iteration",
+      "explanation": "Some interviewers ask you to convert recursive solutions to iterative ones. Use an explicit stack to simulate the call stack. Push parameters onto the stack instead of making recursive calls. This avoids stack overflow for deep recursion and demonstrates strong algorithm understanding.",
+      "example": "// Recursive sum\nfunction sumRec(n) {\n  if (n <= 0) return 0;\n  return n + sumRec(n - 1);\n}\n\n// Iterative equivalent\nfunction sumIter(n) {\n  let total = 0;\n  for (let i = 1; i <= n; i++) {\n    total += i;\n  }\n  return total;\n}",
+      "exercise": {
+        "prompt": "Convert recursive factorial to iterative using a loop. Print the iterative factorial of 5 and 7.",
+        "starterCode": "function factorialIterative(n) {\n  let result = 1;\n  for (let i = _____; i <= n; i++) {\n    result _____ i;\n  }\n  return result;\n}\n\nconsole.log(factorialIterative(5));\nconsole.log(factorialIterative(7));",
+        "validation": [
+          {"type": "output", "expected": "120\n5040", "message": "5! = 120, 7! = 5040"},
+          {"type": "contains", "patterns": ["for", "result"], "message": "Use a for loop to iteratively compute the factorial"}
+        ],
+        "testCode": "",
+        "hint": "Start i at 2 (or 1) and multiply: result *= i."
+      },
+      "order": 4
+    }
+  ]
+}

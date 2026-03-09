@@ -1,0 +1,78 @@
+{
+  "id": "typescript-stacks-queues",
+  "title": "Stacks & Queues",
+  "description": "Stacks and queues are essential for parentheses validation, BFS, and monotonic patterns. Master TypeScript's typed array-based implementations to handle these interview staples.",
+  "language": "typescript",
+  "category": "stacks-queues",
+  "order": 8,
+  "sections": [
+    {
+      "id": "typed-stack",
+      "title": "Typed stack with array",
+      "explanation": "TypeScript has no built-in Stack class, but `number[]` with `push` and `pop` is the standard interview approach. The type annotation ensures only the correct element type is pushed. `pop()` returns `T | undefined`, so handle the empty case.",
+      "example": "const stack: number[] = [];\n\nstack.push(1);\nstack.push(2);\nstack.push(3);\n\nconsole.log(stack[stack.length - 1]); // 3 (peek)\nconsole.log(stack.pop());  // 3\nconsole.log(stack.pop());  // 2\nconsole.log(stack.length); // 1",
+      "exercise": {
+        "prompt": "Create a `string[]` stack. Push \"a\", \"b\", \"c\" onto it. Print the top element (peek without removing), then pop twice and print each popped value. Finally print the remaining stack length.",
+        "starterCode": "const stack: string[] = []\n\nstack.push(\"a\")\nstack.push(\"b\")\nstack.push(\"c\")\n\nconsole.log(stack[stack.length - ___])\nconsole.log(stack.pop())\nconsole.log(stack.pop())\nconsole.log(stack.length)",
+        "validation": [
+          {"type": "output", "expected": "c\nc\nb\n1", "message": "Peek=c, pop=c, pop=b, remaining length=1"},
+          {"type": "contains", "patterns": ["string[]", ".push(", ".pop()"], "message": "Use typed array with push and pop for stack operations"}
+        ],
+        "testCode": "",
+        "hint": "Peek at the top with stack[stack.length - 1]. pop() removes and returns the top element."
+      },
+      "order": 1
+    },
+    {
+      "id": "valid-parentheses",
+      "title": "Valid parentheses",
+      "explanation": "The classic stack problem: for each opening bracket push it; for each closing bracket, pop and check if it matches. If the stack is empty at the end and all matches were valid, the string is valid. This uses a Map for bracket pairing.",
+      "example": "function isValid(s: string): boolean {\n  const stack: string[] = [];\n  const pairs: Map<string, string> = new Map([\n    [\")\", \"(\"], [\"]\", \"[\"], [\"}\", \"{\"]\n  ]);\n  for (const ch of s) {\n    if (pairs.has(ch)) {\n      if (stack.pop() !== pairs.get(ch)) return false;\n    } else {\n      stack.push(ch);\n    }\n  }\n  return stack.length === 0;\n}\n\nconsole.log(isValid(\"()[]{}\")); // true\nconsole.log(isValid(\"(])\"));    // false",
+      "exercise": {
+        "prompt": "Complete the valid parentheses function. Test with \"({[]})\", \"([)]\", and \"\". Print true/false for each.",
+        "starterCode": "function isValid(s: string): boolean {\n  const stack: string[] = []\n  const pairs: Map<string, string> = new Map([\n    [\")\", \"(\"], [\"]\", \"[\"], [\"}\", \"{\"]\n  ])\n  for (const ch of s) {\n    if (pairs.has(ch)) {\n      if (stack.___() !== pairs.get(ch)) return false\n    } else {\n      stack.___(ch)\n    }\n  }\n  return stack.length === 0\n}\n\nconsole.log(isValid(\"({[]})\"))\nconsole.log(isValid(\"([)]\"))\nconsole.log(isValid(\"\"))",
+        "validation": [
+          {"type": "output", "expected": "true\nfalse\ntrue", "message": "({[]}) is valid, ([)] is not, empty string is valid"},
+          {"type": "contains", "patterns": [".pop()", ".push(", "Map<string, string>"], "message": "Use stack pop/push with a bracket pair Map"}
+        ],
+        "testCode": "",
+        "hint": "pop() the stack when you see a closing bracket and compare to the expected opener from the pairs Map. push() opening brackets."
+      },
+      "order": 2
+    },
+    {
+      "id": "typed-queue",
+      "title": "Typed queue",
+      "explanation": "A queue is FIFO — push to the back, shift from the front. In TypeScript, use a typed array with `push` and `shift`. Note that `shift()` is O(n) — for interview purposes this is fine, but mention the tradeoff if asked about optimization.",
+      "example": "const queue: number[] = [];\n\nqueue.push(1);\nqueue.push(2);\nqueue.push(3);\n\nconsole.log(queue[0]);      // 1 (peek front)\nconsole.log(queue.shift()); // 1 (dequeue)\nconsole.log(queue.shift()); // 2\nconsole.log(queue.length);  // 1",
+      "exercise": {
+        "prompt": "Simulate a task queue: push tasks \"email\", \"log\", \"notify\" onto a `string[]` queue. Process (shift) each task and print \"Processing: {task}\" for each until the queue is empty.",
+        "starterCode": "const queue: string[] = []\n\nqueue.push(\"email\")\nqueue.push(\"log\")\nqueue.push(\"notify\")\n\nwhile (queue.length > ___) {\n  const task: string | undefined = queue.___()\n  console.log(`Processing: ${task}`)\n}",
+        "validation": [
+          {"type": "output", "expected": "Processing: email\nProcessing: log\nProcessing: notify", "message": "Process tasks in FIFO order"},
+          {"type": "contains", "patterns": [".shift()", "queue.length", "string[]"], "message": "Use shift() to dequeue from the front"}
+        ],
+        "testCode": "",
+        "hint": "Loop while queue.length > 0. shift() removes and returns the first element (FIFO order)."
+      },
+      "order": 3
+    },
+    {
+      "id": "bfs-with-types",
+      "title": "BFS with typed queue",
+      "explanation": "BFS uses a queue to explore nodes level by level. In TypeScript, define the element type clearly — for grid BFS it's `[number, number]` (row, col tuple), for tree BFS it's `TreeNode | null`. The typed queue prevents pushing wrong types.",
+      "example": "function bfsGrid(grid: number[][], sr: number, sc: number): number {\n  const rows: number = grid.length;\n  const cols: number = grid[0].length;\n  const visited: Set<string> = new Set();\n  const queue: [number, number][] = [[sr, sc]];\n  visited.add(`${sr},${sc}`);\n  let count: number = 0;\n\n  while (queue.length > 0) {\n    const [r, c] = queue.shift()!;\n    count++;\n    for (const [dr, dc] of [[0,1],[0,-1],[1,0],[-1,0]]) {\n      const nr = r + dr, nc = c + dc;\n      const key = `${nr},${nc}`;\n      if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && !visited.has(key)) {\n        visited.add(key);\n        queue.push([nr, nc]);\n      }\n    }\n  }\n  return count;\n}",
+      "exercise": {
+        "prompt": "Implement BFS to count all reachable 1-cells from position (0,0) in a grid. Print the count for the given grid.",
+        "starterCode": "const grid: number[][] = [\n  [1, 1, 0],\n  [1, 0, 0],\n  [1, 1, 1]\n]\n\nfunction bfsCount(grid: number[][], sr: number, sc: number): number {\n  const rows = grid.length\n  const cols = grid[0].length\n  if (grid[sr][sc] === 0) return 0\n  const visited: Set<string> = new Set()\n  const queue: [number, number][] = [[sr, sc]]\n  visited.add(`${sr},${sc}`)\n  let count = 0\n  while (queue.length > 0) {\n    const [r, c] = queue.___()!\n    count++\n    for (const [dr, dc] of [[0,1],[0,-1],[1,0],[-1,0]]) {\n      const nr = r + dr\n      const nc = c + dc\n      const key = `${nr},${nc}`\n      if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] === 1 && !visited.has(key)) {\n        visited.add(key)\n        queue.push([nr, nc])\n      }\n    }\n  }\n  return count\n}\n\nconsole.log(bfsCount(grid, 0, 0))",
+        "validation": [
+          {"type": "output", "expected": "5", "message": "5 cells with value 1 are reachable from (0,0)"},
+          {"type": "contains", "patterns": ["[number, number][]", "queue.shift()", "Set<string>"], "message": "Use typed tuple queue and Set for visited tracking"}
+        ],
+        "testCode": "",
+        "hint": "Use shift() to dequeue. BFS from (0,0) reaches five 1-cells: (0,0), (0,1), (1,0), (2,0), (2,1), (2,2) — but (2,1) and (2,2) connect through (2,0)."
+      },
+      "order": 4
+    }
+  ]
+}

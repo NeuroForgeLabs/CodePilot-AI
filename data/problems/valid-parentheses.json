@@ -23,14 +23,14 @@
     "go": "func solve(s string) bool {\n    \n}"
   },
   "visibleTests": [
-    {"stdin": "print(solve(\"()\"))", "expectedStdout": "True"},
-    {"stdin": "print(solve(\"()[]{}\"))", "expectedStdout": "True"},
-    {"stdin": "print(solve(\"(]\"))", "expectedStdout": "False"}
+    {"stdin": {"python": "print(solve(\"()\"))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve(\"()[]{}\"))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve(\"(]\"))"}, "expectedStdout": "False"}
   ],
   "hiddenTests": [
-    {"stdin": "print(solve(\"([)]\"))", "expectedStdout": "False"},
-    {"stdin": "print(solve(\"{[]}\"))", "expectedStdout": "True"},
-    {"stdin": "print(solve(\"\"))", "expectedStdout": "True"}
+    {"stdin": {"python": "print(solve(\"([)]\"))"}, "expectedStdout": "False"},
+    {"stdin": {"python": "print(solve(\"{[]}\"))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve(\"\"))"}, "expectedStdout": "True"}
   ],
   "notesForAI": {
     "coreIdea": "Use a stack. For each character: if it's an opening bracket, push it. If it's a closing bracket, check that the top of the stack matches. Empty string is valid.",

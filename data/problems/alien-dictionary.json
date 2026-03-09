@@ -1,0 +1,39 @@
+{
+  "id": "alien-dictionary",
+  "title": "Alien Dictionary",
+  "difficulty": "Hard",
+  "tags": ["strings", "graph", "sorting"],
+  "prompt": "There is an alien language that uses the English lowercase letters, but the order among the letters is unknown to you.\n\nYou are given a list of strings `words` from the alien language's dictionary, where the strings are sorted lexicographically by the rules of this new language.\n\nDerive the order of letters in this language. If the order is invalid (i.e., there is a cycle), return an empty string. If there are multiple valid orderings, return any of them.\n\nReturn a string of the unique letters in the input sorted in the alien language's order.",
+  "examples": [
+    {"input": "words = [\"wrt\",\"wrf\",\"er\",\"ett\",\"rftt\"]", "output": "\"wertf\"\nExplanation: From wrt vs wrf we get t<f. From wrt vs er we get w<e. From er vs ett we get r<t. From ett vs rftt we get e<r. So order is w-e-r-t-f."},
+    {"input": "words = [\"z\",\"x\"]", "output": "\"zx\"\nExplanation: From z vs x we get z<x."},
+    {"input": "words = [\"z\",\"x\",\"z\"]", "output": "\"\"\nExplanation: z<x and x<z creates a cycle, so the order is invalid."}
+  ],
+  "constraints": [
+    "1 <= words.length <= 100",
+    "1 <= words[i].length <= 100",
+    "words[i] consists of only lowercase English letters."
+  ],
+  "starterCode": {
+    "python": "def solve(words: list[str]) -> str:\n    pass",
+    "javascript": "function solve(words) {\n  \n}",
+    "typescript": "export function solve(words: string[]): string {\n  \n}",
+    "java": "class Solution {\n    public String solve(String[] words) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public string Solve(string[] words) {\n        \n    }\n}",
+    "go": "func solve(words []string) string {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([\"wrt\",\"wrf\",\"er\",\"ett\",\"rftt\"]))"}, "expectedStdout": "wertf"},
+    {"stdin": {"python": "print(solve([\"z\",\"x\"]))"}, "expectedStdout": "zx"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([\"z\",\"x\",\"z\"]))"}, "expectedStdout": ""},
+    {"stdin": {"python": "print(solve([\"abc\",\"ab\"]))"}, "expectedStdout": ""},
+    {"stdin": {"python": "print(solve([\"z\"]))"}, "expectedStdout": "z"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Build a directed graph from adjacent word comparisons (compare character-by-character to find the first difference). Then perform topological sort (BFS with in-degree tracking or DFS). If cycle detected (not all nodes visited), return empty string. Edge case: if a longer word appears before its prefix (e.g. 'abc' before 'ab'), the ordering is invalid.",
+    "commonBugs": ["Forgetting that if word A is a prefix of word B but A comes after B, the input is invalid", "Not including characters that appear in words but have no ordering constraints", "Missing cycle detection in the topological sort"],
+    "expectedComplexity": "O(C) where C is total length of all words"
+  }
+}

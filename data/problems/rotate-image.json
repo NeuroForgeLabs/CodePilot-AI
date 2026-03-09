@@ -1,0 +1,38 @@
+{
+  "id": "rotate-image",
+  "title": "Rotate Image",
+  "difficulty": "Medium",
+  "tags": ["arrays", "matrix", "math"],
+  "prompt": "You are given an `n x n` 2D `matrix` representing an image. Rotate the image by 90 degrees clockwise.\n\nYou may perform the operation in-place, modifying the input 2D matrix directly.\n\nReturn the rotated matrix.",
+  "examples": [
+    {"input": "matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]", "output": "[[7, 4, 1], [8, 5, 2], [9, 6, 3]]"},
+    {"input": "matrix = [[5, 1, 9, 11], [2, 4, 8, 10], [13, 3, 6, 7], [15, 14, 12, 16]]", "output": "[[15, 13, 2, 5], [14, 3, 4, 1], [12, 6, 8, 9], [16, 7, 10, 11]]"}
+  ],
+  "constraints": [
+    "n == matrix.length == matrix[i].length",
+    "1 <= n <= 20",
+    "-1000 <= matrix[i][j] <= 1000"
+  ],
+  "starterCode": {
+    "python": "def solve(matrix: list[list[int]]) -> list[list[int]]:\n    pass",
+    "javascript": "function solve(matrix) {\n  \n}",
+    "typescript": "export function solve(matrix: number[][]): number[][] {\n  \n}",
+    "java": "class Solution {\n    public int[][] solve(int[][] matrix) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int[][] Solve(int[][] matrix) {\n        \n    }\n}",
+    "go": "func solve(matrix [][]int) [][]int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([[1, 2, 3], [4, 5, 6], [7, 8, 9]]))"}, "expectedStdout": "[[7, 4, 1], [8, 5, 2], [9, 6, 3]]"},
+    {"stdin": {"python": "print(solve([[5, 1, 9, 11], [2, 4, 8, 10], [13, 3, 6, 7], [15, 14, 12, 16]]))"}, "expectedStdout": "[[15, 13, 2, 5], [14, 3, 4, 1], [12, 6, 8, 9], [16, 7, 10, 11]]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([[1]]))"}, "expectedStdout": "[[1]]"},
+    {"stdin": {"python": "print(solve([[1, 2], [3, 4]]))"}, "expectedStdout": "[[3, 1], [4, 2]]"},
+    {"stdin": {"python": "print(solve([[1, 2, 3, 4, 5], [6, 7, 8, 9, 10], [11, 12, 13, 14, 15], [16, 17, 18, 19, 20], [21, 22, 23, 24, 25]]))"}, "expectedStdout": "[[21, 16, 11, 6, 1], [22, 17, 12, 7, 2], [23, 18, 13, 8, 3], [24, 19, 14, 9, 4], [25, 20, 15, 10, 5]]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Transpose the matrix (swap matrix[i][j] with matrix[j][i]), then reverse each row. Alternatively, rotate four cells at a time layer by layer from outside in.",
+    "commonBugs": ["Transposing the full matrix instead of only the upper triangle (double-swapping)", "Reversing columns instead of rows after transpose (gives counter-clockwise rotation)", "Off-by-one errors in the layer-by-layer approach"],
+    "expectedComplexity": "O(n^2)"
+  }
+}

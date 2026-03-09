@@ -17,15 +17,22 @@ export default function CodeEditor({
   onCodeChange,
 }: CodeEditorProps) {
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex items-center justify-between border-b border-gray-700 bg-gray-800/50 px-4 py-2">
-        <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">
-          Solution
-        </span>
+    <div className="flex h-full flex-col bg-[#0d0f15]">
+      <div className="flex items-center justify-between border-b border-gray-800 bg-[#161821] px-4 py-2.5">
+        <div className="flex items-center gap-2.5">
+          <div className="flex gap-1.5">
+            <div className="h-2.5 w-2.5 rounded-full bg-red-500/60" />
+            <div className="h-2.5 w-2.5 rounded-full bg-amber-500/60" />
+            <div className="h-2.5 w-2.5 rounded-full bg-emerald-500/60" />
+          </div>
+          <span className="text-[10px] font-medium text-gray-500 uppercase tracking-wider">
+            Solution
+          </span>
+        </div>
         <select
           value={language}
           onChange={(e) => onLanguageChange(e.target.value as Language)}
-          className="rounded-md border border-gray-600 bg-gray-700 px-3 py-1.5 text-xs text-gray-200 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+          className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-xs text-gray-200 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 transition-colors"
         >
           {LANGUAGES.map((lang) => (
             <option key={lang.value} value={lang.value}>
@@ -43,10 +50,10 @@ export default function CodeEditor({
           theme="vs-dark"
           options={{
             fontSize: 14,
-            lineHeight: 21,
+            lineHeight: 22,
             minimap: { enabled: false },
             scrollBeyondLastLine: false,
-            padding: { top: 12 },
+            padding: { top: 12, bottom: 12 },
             smoothScrolling: true,
             cursorSmoothCaretAnimation: "on",
             fontFamily: "'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace",

@@ -1,0 +1,40 @@
+{
+  "id": "task-scheduler",
+  "title": "Task Scheduler",
+  "difficulty": "Medium",
+  "tags": ["arrays", "hash-table", "greedy", "heap"],
+  "prompt": "You are given an array of CPU tasks, each represented by a single uppercase letter, and a non-negative integer n representing the cooldown interval between two same tasks. Each task takes one unit of time to execute. During the cooldown interval, the CPU can execute different tasks or remain idle.\n\nReturn the minimum number of intervals the CPU will take to finish all the given tasks.\n\nFor example, given tasks = ['A','A','A','B','B','B'] and n = 2:\nOne optimal schedule is: A B idle A B idle A B, which takes 8 intervals.\nThe most frequent task 'A' forces 2 idle gaps of size n=2 between each occurrence, and 'B' fills one slot in each gap.",
+  "examples": [
+    {"input": "tasks = ['A','A','A','B','B','B'], n = 2", "output": "8"},
+    {"input": "tasks = ['A','C','A','B','D','B'], n = 1", "output": "6"},
+    {"input": "tasks = ['A','A','A','B','B','B'], n = 0", "output": "6"}
+  ],
+  "constraints": [
+    "1 <= tasks.length <= 10^4",
+    "tasks[i] is an uppercase English letter",
+    "0 <= n <= 100"
+  ],
+  "starterCode": {
+    "python": "def solve(tasks: list[str], n: int) -> int:\n    pass",
+    "javascript": "function solve(tasks, n) {\n  \n}",
+    "typescript": "export function solve(tasks: string[], n: number): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(char[] tasks, int n) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(char[] tasks, int n) {\n        \n    }\n}",
+    "go": "func solve(tasks []byte, n int) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve(['A','A','A','B','B','B'], 2))"}, "expectedStdout": "8"},
+    {"stdin": {"python": "print(solve(['A','C','A','B','D','B'], 1))"}, "expectedStdout": "6"},
+    {"stdin": {"python": "print(solve(['A','A','A','B','B','B'], 0))"}, "expectedStdout": "6"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve(['A'], 2))"}, "expectedStdout": "1"},
+    {"stdin": {"python": "print(solve(['A','A','A','A','A','A','B','C','D','E','F','G'], 2))"}, "expectedStdout": "16"},
+    {"stdin": {"python": "print(solve(['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'], 2))"}, "expectedStdout": "26"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Formula: result = max(len(tasks), (max_freq - 1) * (n + 1) + count_of_tasks_with_max_freq). The most frequent task creates (max_freq-1) frames of size (n+1), plus a final partial frame.",
+    "commonBugs": ["Forgetting to take max with len(tasks) when there are enough distinct tasks to fill all idle slots", "Off-by-one on the frame calculation", "Not counting how many tasks share the maximum frequency"],
+    "expectedComplexity": "O(n) where n is the number of tasks"
+  }
+}

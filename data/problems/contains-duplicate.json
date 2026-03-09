@@ -1,0 +1,38 @@
+{
+  "id": "contains-duplicate",
+  "title": "Contains Duplicate",
+  "difficulty": "Easy",
+  "tags": ["arrays", "hash-table", "sorting"],
+  "prompt": "Given an integer array `nums`, return `True` if any value appears at least twice in the array, and return `False` if every element is distinct.",
+  "examples": [
+    {"input": "nums = [1, 2, 3, 1]", "output": "True\nExplanation: The element 1 appears twice."},
+    {"input": "nums = [1, 2, 3, 4]", "output": "False\nExplanation: All elements are distinct."},
+    {"input": "nums = [1, 1, 1, 3, 3, 4, 3, 2, 4, 2]", "output": "True"}
+  ],
+  "constraints": [
+    "1 <= nums.length <= 10^5",
+    "-10^9 <= nums[i] <= 10^9"
+  ],
+  "starterCode": {
+    "python": "def solve(nums):\n    pass",
+    "javascript": "function solve(nums) {\n  \n}",
+    "typescript": "export function solve(nums: number[]): boolean {\n  \n}",
+    "java": "class Solution {\n    public boolean solve(int[] nums) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public bool Solve(int[] nums) {\n        \n    }\n}",
+    "go": "func solve(nums []int) bool {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([1, 2, 3, 1]))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve([1, 2, 3, 4]))"}, "expectedStdout": "False"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([1, 1, 1, 3, 3, 4, 3, 2, 4, 2]))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve([0]))"}, "expectedStdout": "False"},
+    {"stdin": {"python": "print(solve([-1, -1]))"}, "expectedStdout": "True"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use a hash set to track seen elements. If an element is already in the set, return True. If the loop completes, return False.",
+    "commonBugs": ["Using nested loops O(n^2) instead of a set", "Forgetting that set length comparison (len(set(nums)) < len(nums)) also works but builds the entire set first"],
+    "expectedComplexity": "O(n)"
+  }
+}

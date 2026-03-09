@@ -1,0 +1,17 @@
+{
+  "arrays": ["arrays-loops", "sorting"],
+  "hashmap": ["hashmaps"],
+  "strings": ["arrays-loops"],
+  "stack": ["stacks-queues"],
+  "dynamic-programming": ["arrays-loops"],
+  "binary-search": ["arrays-loops", "sorting"],
+  "sliding-window": ["arrays-loops", "hashmaps"],
+  "two-pointers": ["arrays-loops"],
+  "linked-list": ["stacks-queues"],
+  "sorting": ["sorting"],
+  "recursion": ["stacks-queues"],
+  "tree": ["stacks-queues"],
+  "graph": ["stacks-queues"],
+  "heap": ["sorting"],
+  "matrix": ["arrays-loops"]
+}

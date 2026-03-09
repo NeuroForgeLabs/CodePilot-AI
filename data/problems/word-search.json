@@ -1,0 +1,42 @@
+{
+  "id": "word-search",
+  "title": "Word Search",
+  "difficulty": "Medium",
+  "tags": ["matrix", "backtracking"],
+  "prompt": "Given an `m x n` grid of characters `board` and a string `word`, return `True` if `word` exists in the grid.\n\nThe word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.\n\nThe board is given as a 2D list of characters.",
+  "examples": [
+    {"input": "board = [[\"A\",\"B\",\"C\",\"E\"],[\"S\",\"F\",\"C\",\"S\"],[\"A\",\"D\",\"E\",\"E\"]], word = \"ABCCED\"", "output": "True\nExplanation: The word ABCCED can be traced starting from (0,0) -> (0,1) -> (0,2) -> (1,2) -> (2,2) -> (2,1)."},
+    {"input": "board = [[\"A\",\"B\",\"C\",\"E\"],[\"S\",\"F\",\"C\",\"S\"],[\"A\",\"D\",\"E\",\"E\"]], word = \"SEE\"", "output": "True"},
+    {"input": "board = [[\"A\",\"B\",\"C\",\"E\"],[\"S\",\"F\",\"C\",\"S\"],[\"A\",\"D\",\"E\",\"E\"]], word = \"ABCB\"", "output": "False\nExplanation: The letter B at (0,1) cannot be reused."}
+  ],
+  "constraints": [
+    "m == board.length",
+    "n == board[i].length",
+    "1 <= m, n <= 6",
+    "1 <= word.length <= 15",
+    "board and word consist of only lowercase and uppercase English letters."
+  ],
+  "starterCode": {
+    "python": "def solve(board, word):\n    pass",
+    "javascript": "function solve(board, word) {\n  \n}",
+    "typescript": "export function solve(board: string[][], word: string): boolean {\n  \n}",
+    "java": "class Solution {\n    public boolean solve(char[][] board, String word) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public bool Solve(char[][] board, string word) {\n        \n    }\n}",
+    "go": "func solve(board [][]byte, word string) bool {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([[\"A\",\"B\",\"C\",\"E\"],[\"S\",\"F\",\"C\",\"S\"],[\"A\",\"D\",\"E\",\"E\"]], \"ABCCED\"))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve([[\"A\",\"B\",\"C\",\"E\"],[\"S\",\"F\",\"C\",\"S\"],[\"A\",\"D\",\"E\",\"E\"]], \"SEE\"))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve([[\"A\",\"B\",\"C\",\"E\"],[\"S\",\"F\",\"C\",\"S\"],[\"A\",\"D\",\"E\",\"E\"]], \"ABCB\"))"}, "expectedStdout": "False"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([[\"A\"]], \"A\"))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve([[\"A\",\"B\"],[\"C\",\"D\"]], \"ABDC\"))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve([[\"A\",\"A\"]], \"AAA\"))"}, "expectedStdout": "False"}
+  ],
+  "notesForAI": {
+    "coreIdea": "For each cell matching the first letter, run DFS/backtracking. Mark cells as visited (e.g., replace with '#'), explore 4 directions, restore on backtrack. Return True if entire word is matched.",
+    "commonBugs": ["Forgetting to restore visited cells during backtracking", "Not checking all four starting positions (every cell could be a start)", "Off-by-one: comparing word index beyond word length"],
+    "expectedComplexity": "O(m * n * 4^L) where L is word length, with pruning"
+  }
+}

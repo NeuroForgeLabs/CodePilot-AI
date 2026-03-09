@@ -1,0 +1,78 @@
+{
+  "id": "cpp-sets",
+  "title": "Sets",
+  "description": "Sets are essential for O(1) membership tests, deduplication, and intersection operations — drill these operations so set-based interview solutions come naturally.",
+  "language": "cpp",
+  "category": "sets",
+  "order": 6,
+  "sections": [
+    {
+      "id": "unordered-set-basics",
+      "title": "unordered_set basics",
+      "explanation": "**unordered_set<T>** stores unique elements with O(1) average insert, lookup, and delete. Use `.insert(val)`, `.count(val)` (returns 0 or 1), and `.erase(val)`. It's your go-to for checking membership in interviews — much faster than searching a vector.",
+      "example": "unordered_set<int> seen;\nseen.insert(1);\nseen.insert(2);\nseen.insert(3);\nseen.insert(2);  // duplicate ignored\n\ncout << seen.size() << endl;   // 3\ncout << seen.count(2) << endl; // 1\ncout << seen.count(5) << endl; // 0",
+      "exercise": {
+        "prompt": "Create an unordered_set with values 10, 20, 30. Try inserting 20 again (it should be ignored). Print the size, whether 20 exists, and whether 40 exists.",
+        "starterCode": "int main() {\n    unordered_set<int> s;\n    s.insert(10);\n    s.insert(20);\n    s.insert(30);\n    s.insert(20);\n\n    cout << s.() << endl;\n    cout << s.(20) << endl;\n    cout << s.(40) << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "3\n1\n0", "message": "Size is 3 (no duplicates), 20 exists (1), 40 doesn't (0)"},
+          {"type": "contains", "patterns": ["unordered_set<int>", ".size()", ".count("], "message": "Use unordered_set with size() and count() methods"}
+        ],
+        "testCode": "",
+        "hint": "s.size() returns 3 since duplicates are ignored. s.count(20) returns 1, s.count(40) returns 0."
+      },
+      "order": 1
+    },
+    {
+      "id": "insert-erase",
+      "title": "Insert, count, and erase",
+      "explanation": "**insert()** returns a pair<iterator, bool> — the bool tells you if insertion succeeded (false means element already existed). **erase(val)** removes an element and returns the number removed (0 or 1). These are useful for tracking seen elements during traversals.",
+      "example": "unordered_set<string> words;\nauto [it, inserted] = words.insert(\"hello\");\ncout << inserted << endl;  // 1 (true)\n\nauto [it2, inserted2] = words.insert(\"hello\");\ncout << inserted2 << endl;  // 0 (false, already exists)\n\nwords.insert(\"world\");\nwords.erase(\"hello\");\ncout << words.size() << endl;  // 1\ncout << words.count(\"world\") << endl;  // 1",
+      "exercise": {
+        "prompt": "Create a set, insert \"cat\", \"dog\", \"bird\". Erase \"dog\" from the set. Print the size, then check and print whether \"dog\" still exists (0 or 1) and whether \"cat\" exists.",
+        "starterCode": "int main() {\n    unordered_set<string> animals;\n    animals.insert(\"cat\");\n    animals.insert(\"dog\");\n    animals.insert(\"bird\");\n\n    animals.(\"dog\");\n\n    cout << animals.size() << endl;\n    cout << animals.count(\"dog\") << endl;\n    cout << animals.count(\"cat\") << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "2\n0\n1", "message": "After erasing dog: size=2, dog count=0, cat count=1"},
+          {"type": "contains", "patterns": [".erase(\"dog\")", ".count("], "message": "Use .erase() to remove and .count() to check membership"}
+        ],
+        "testCode": "",
+        "hint": "animals.erase(\"dog\") removes it. Size becomes 2. count(\"dog\") = 0, count(\"cat\") = 1."
+      },
+      "order": 2
+    },
+    {
+      "id": "set-intersection",
+      "title": "Set intersection with sorted sets",
+      "explanation": "To find common elements between two collections, use **set<T>** (sorted) with **set_intersection** from `<algorithm>`. Both inputs must be sorted — set<T> handles that automatically. This is cleaner than nested loops and runs in O(n+m) time.",
+      "example": "set<int> a = {1, 2, 3, 4, 5};\nset<int> b = {3, 4, 5, 6, 7};\nvector<int> result;\nset_intersection(a.begin(), a.end(), b.begin(), b.end(),\n                 back_inserter(result));\nfor (int x : result) cout << x << \" \";\n// Output: 3 4 5",
+      "exercise": {
+        "prompt": "Find the intersection of set {1, 3, 5, 7, 9} and set {2, 3, 5, 8, 9}. Print the common elements space-separated.",
+        "starterCode": "int main() {\n    set<int> a = {1, 3, 5, 7, 9};\n    set<int> b = {2, 3, 5, 8, 9};\n    vector<int> result;\n    set_intersection(a.begin(), a.end(), b.begin(), b.end(),\n                     (result));\n    for (int x : result) {\n        cout << x << \" \";\n    }\n    cout << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "3 5 9", "message": "Common elements of the two sets are 3, 5, and 9"},
+          {"type": "contains", "patterns": ["set_intersection", "back_inserter"], "message": "Use set_intersection with back_inserter to collect results"}
+        ],
+        "testCode": "",
+        "hint": "Use back_inserter(result) as the output iterator for set_intersection."
+      },
+      "order": 3
+    },
+    {
+      "id": "dedup",
+      "title": "Deduplication with sets",
+      "explanation": "A common interview task: remove duplicates from a vector while preserving order. Insert each element into an unordered_set — if it wasn't already there, keep it. Alternatively, sort + unique removes duplicates but loses original order.",
+      "example": "vector<int> nums = {4, 2, 7, 2, 4, 1, 7};\nunordered_set<int> seen;\nvector<int> unique_nums;\nfor (int x : nums) {\n    if (seen.count(x) == 0) {\n        seen.insert(x);\n        unique_nums.push_back(x);\n    }\n}\nfor (int x : unique_nums) cout << x << \" \";\n// Output: 4 2 7 1  (original order preserved)",
+      "exercise": {
+        "prompt": "Given the vector {5, 3, 5, 1, 3, 2, 1}, remove duplicates while preserving the original order. Print the deduplicated elements space-separated.",
+        "starterCode": "int main() {\n    vector<int> nums = {5, 3, 5, 1, 3, 2, 1};\n    unordered_set<int> seen;\n    vector<int> result;\n    for (int x : nums) {\n        if (seen.(x) == 0) {\n            seen.(x);\n            result.push_back(x);\n        }\n    }\n    for (int x : result) {\n        cout << x << \" \";\n    }\n    cout << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "5 3 1 2", "message": "Deduplicated in original order: 5 3 1 2"},
+          {"type": "contains", "patterns": ["seen.count(x)", "seen.insert(x)", "push_back"], "message": "Use count to check, insert to track, and push_back to collect unique elements"}
+        ],
+        "testCode": "",
+        "hint": "seen.count(x) == 0 means x hasn't been seen yet. Insert it into seen and push_back to result."
+      },
+      "order": 4
+    }
+  ]
+}

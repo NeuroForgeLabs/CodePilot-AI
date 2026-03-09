@@ -1,0 +1,37 @@
+{
+  "id": "partition-equal-subset-sum",
+  "title": "Partition Equal Subset Sum",
+  "difficulty": "Medium",
+  "tags": ["arrays", "dynamic-programming"],
+  "prompt": "Given an integer array nums, return True if you can partition the array into two subsets such that the sum of the elements in both subsets is equal, or False otherwise.\n\nExample: nums = [1,5,11,5] → True because the array can be partitioned as [1,5,5] and [11] (both sum to 11).",
+  "examples": [
+    {"input": "nums = [1,5,11,5]", "output": "True"},
+    {"input": "nums = [1,2,3,5]", "output": "False"}
+  ],
+  "constraints": [
+    "1 <= nums.length <= 200",
+    "1 <= nums[i] <= 100"
+  ],
+  "starterCode": {
+    "python": "def solve(nums):\n    pass",
+    "javascript": "function solve(nums) {\n  \n}",
+    "typescript": "export function solve(nums: number[]): boolean {\n  \n}",
+    "java": "class Solution {\n    public boolean solve(int[] nums) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public bool Solve(int[] nums) {\n        \n    }\n}",
+    "go": "func solve(nums []int) bool {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([1,5,11,5]))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve([1,2,3,5]))"}, "expectedStdout": "False"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([1,1]))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve([1,2,5]))"}, "expectedStdout": "False"},
+    {"stdin": {"python": "print(solve([3,3,3,4,5]))"}, "expectedStdout": "True"}
+  ],
+  "notesForAI": {
+    "coreIdea": "If total sum is odd, return False immediately. Otherwise, this reduces to a 0/1 knapsack problem: can we find a subset that sums to total/2? Use a boolean DP set/array: dp[j] = True if sum j is achievable. Iterate through nums, updating dp from right to left.",
+    "commonBugs": ["Forgetting to check if total sum is odd (impossible to partition)", "Iterating dp left-to-right instead of right-to-left (causes same element to be used multiple times — this is 0/1 knapsack, not unbounded)", "Using a 2D DP table when 1D suffices (memory issues for large inputs)"],
+    "expectedComplexity": "O(n * sum/2) time and O(sum/2) space"
+  }
+}

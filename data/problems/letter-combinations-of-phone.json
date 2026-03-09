@@ -1,0 +1,39 @@
+{
+  "id": "letter-combinations-of-phone",
+  "title": "Letter Combinations of a Phone Number",
+  "difficulty": "Medium",
+  "tags": ["strings", "backtracking"],
+  "prompt": "Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent on a phone keypad. Return the answer in any order, but sorted lexicographically.\n\nThe mapping of digit to letters (same as on telephone buttons) is:\n2 → abc, 3 → def, 4 → ghi, 5 → jkl, 6 → mno, 7 → pqrs, 8 → tuv, 9 → wxyz\n\nNote that 1 does not map to any letters. If the input is an empty string, return an empty list.\n\nExample: digits = \"23\" → [\"ad\",\"ae\",\"af\",\"bd\",\"be\",\"bf\",\"cd\",\"ce\",\"cf\"].",
+  "examples": [
+    {"input": "digits = \"23\"", "output": "[\"ad\",\"ae\",\"af\",\"bd\",\"be\",\"bf\",\"cd\",\"ce\",\"cf\"]"},
+    {"input": "digits = \"\"", "output": "[]"},
+    {"input": "digits = \"2\"", "output": "[\"a\",\"b\",\"c\"]"}
+  ],
+  "constraints": [
+    "0 <= digits.length <= 4",
+    "digits[i] is a digit in the range ['2', '9']"
+  ],
+  "starterCode": {
+    "python": "def solve(digits):\n    pass",
+    "javascript": "function solve(digits) {\n  \n}",
+    "typescript": "export function solve(digits: string): string[] {\n  \n}",
+    "java": "class Solution {\n    public List<String> solve(String digits) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public IList<string> Solve(string digits) {\n        \n    }\n}",
+    "go": "func solve(digits string) []string {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(sorted(solve('23')))"}, "expectedStdout": "['ad', 'ae', 'af', 'bd', 'be', 'bf', 'cd', 'ce', 'cf']"},
+    {"stdin": {"python": "print(sorted(solve('')))"}, "expectedStdout": "[]"},
+    {"stdin": {"python": "print(sorted(solve('2')))"}, "expectedStdout": "['a', 'b', 'c']"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(sorted(solve('79')))"}, "expectedStdout": "['pw', 'px', 'py', 'pz', 'qw', 'qx', 'qy', 'qz', 'rw', 'rx', 'ry', 'rz', 'sw', 'sx', 'sy', 'sz']"},
+    {"stdin": {"python": "print(len(sorted(solve('234'))))"}, "expectedStdout": "27"},
+    {"stdin": {"python": "print(sorted(solve('9')))"}, "expectedStdout": "['w', 'x', 'y', 'z']"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use a mapping from digit to letters. Backtrack: for each digit, try each mapped letter, append to current combination, recurse on remaining digits. Base case: when all digits are processed, add combination to results.",
+    "commonBugs": ["Returning [''] instead of [] for empty input", "Incorrect digit-to-letter mapping (7 has pqrs, 9 has wxyz — 4 letters each)", "Not handling the empty string edge case"],
+    "expectedComplexity": "O(4^n * n) where n is the number of digits"
+  }
+}

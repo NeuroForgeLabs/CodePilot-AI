@@ -1,0 +1,78 @@
+{
+  "id": "javascript-sets",
+  "title": "Sets",
+  "description": "Sets provide O(1) membership testing — critical for duplicate detection, intersection problems, and converting brute-force O(n) lookups into O(1) checks.",
+  "language": "javascript",
+  "category": "sets",
+  "order": 6,
+  "sections": [
+    {
+      "id": "create-set",
+      "title": "Creating a Set",
+      "explanation": "Create sets with `new Set()` or `new Set(iterable)`. Sets automatically deduplicate — passing an array with duplicates gives a set of unique values. The `.size` property gives the count. This is the fastest way to get unique elements in JavaScript.",
+      "example": "const s = new Set([1, 2, 3, 2, 1]);\nconsole.log(s.size); // 3\nconsole.log(s);      // Set(3) {1, 2, 3}\n\nconst empty = new Set();\nempty.add(10);\nconsole.log(empty.size); // 1",
+      "exercise": {
+        "prompt": "Create a Set from the array [5, 3, 5, 1, 3, 1]. Print the size, then print whether the set has 3, and whether it has 9.",
+        "starterCode": "const s = new Set([5, 3, 5, 1, 3, 1]);\n\nconsole.log(s._____);\nconsole.log(s._____(3));\nconsole.log(s.has(_____));",
+        "validation": [
+          {"type": "output", "expected": "3\ntrue\nfalse", "message": "3 unique values, has(3) is true, has(9) is false"},
+          {"type": "contains", "patterns": ["new Set(", "size", "has("], "message": "Use Set constructor, .size, and .has() for membership testing"}
+        ],
+        "testCode": "",
+        "hint": "The set deduplicates to {5, 3, 1} — size is 3. Use .has() to check membership."
+      },
+      "order": 1
+    },
+    {
+      "id": "add-has-delete",
+      "title": "add, has, and delete",
+      "explanation": "add() inserts a value (ignored if already present), has() checks membership in O(1), delete() removes a value. These three operations cover most interview scenarios: tracking visited nodes, checking for duplicates, and maintaining a working set during BFS/DFS.",
+      "example": "const visited = new Set();\nvisited.add(1);\nvisited.add(2);\nvisited.add(1);        // duplicate — ignored\nconsole.log(visited.has(1)); // true\nvisited.delete(1);\nconsole.log(visited.has(1)); // false",
+      "exercise": {
+        "prompt": "Create an empty Set. Add values 10, 20, 30. Print has(20). Delete 20, then print has(20) and the final size.",
+        "starterCode": "const s = new Set();\ns.add(10);\ns.add(_____);\ns.add(_____);\n\nconsole.log(s.has(20));\ns.delete(_____);\nconsole.log(s.has(20));\nconsole.log(s.size);",
+        "validation": [
+          {"type": "output", "expected": "true\nfalse\n2", "message": "has(20) is true before delete, false after, size is 2"},
+          {"type": "contains", "patterns": ["add(", "delete(", "has("], "message": "Use add, has, and delete for set operations"}
+        ],
+        "testCode": "",
+        "hint": "Add 20 and 30, then delete 20. Final set is {10, 30} with size 2."
+      },
+      "order": 2
+    },
+    {
+      "id": "intersection",
+      "title": "Set intersection",
+      "explanation": "To find common elements between two collections, put one in a Set and filter the other by membership. This is O(n+m) vs O(n*m) brute force. This pattern appears in problems like finding common characters, array intersection, and validating against allowed sets.",
+      "example": "const a = new Set([1, 2, 3, 4]);\nconst b = new Set([3, 4, 5, 6]);\n\nconst intersection = [...a].filter(x => b.has(x));\nconsole.log(intersection); // [3, 4]",
+      "exercise": {
+        "prompt": "Find the intersection of arrays [1, 2, 3, 4, 5] and [3, 5, 7, 9]. Convert the first to a Set, filter the second, sort the result, and print joined by commas.",
+        "starterCode": "const setA = new Set([1, 2, 3, 4, 5]);\nconst arrB = [3, 5, 7, 9];\n\nconst common = arrB.filter(x => setA._____(x));\nconsole.log(common.sort((a, b) => a - b).join(\",\"));",
+        "validation": [
+          {"type": "output", "expected": "3,5", "message": "Common elements are 3 and 5"},
+          {"type": "contains", "patterns": ["new Set(", "filter(", "has("], "message": "Use Set.has inside filter for O(n) intersection"}
+        ],
+        "testCode": "",
+        "hint": "Filter arrB by checking if setA.has(x) for each element."
+      },
+      "order": 3
+    },
+    {
+      "id": "dedup",
+      "title": "Array deduplication with Set",
+      "explanation": "The most concise dedup pattern: `[...new Set(arr)]`. This preserves first-occurrence order and runs in O(n). In interviews, you might need to deduplicate while maintaining order, or count unique elements — Set handles both cases elegantly.",
+      "example": "const arr = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3];\nconst unique = [...new Set(arr)];\nconsole.log(unique); // [3, 1, 4, 5, 9, 2, 6]\nconsole.log(new Set(arr).size); // 7 unique elements",
+      "exercise": {
+        "prompt": "Given `arr = [4, 2, 7, 2, 4, 9, 7, 1]`, deduplicate using a Set spread, print the unique count, then print the deduped array sorted ascending and joined by commas.",
+        "starterCode": "const arr = [4, 2, 7, 2, 4, 9, 7, 1];\n\nconst unique = [_____new Set(arr)];\nconsole.log(unique.length);\nconsole.log(unique.sort((a, b) => a _____ b).join(\",\"));",
+        "validation": [
+          {"type": "output", "expected": "5\n1,2,4,7,9", "message": "5 unique elements, sorted ascending: 1,2,4,7,9"},
+          {"type": "contains", "patterns": ["new Set(", "..."], "message": "Use spread with Set for deduplication"}
+        ],
+        "testCode": "",
+        "hint": "Use [...new Set(arr)] to deduplicate. Sort numerically with (a, b) => a - b."
+      },
+      "order": 4
+    }
+  ]
+}

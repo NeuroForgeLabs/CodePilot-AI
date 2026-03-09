@@ -1,0 +1,39 @@
+{
+  "id": "gas-station",
+  "title": "Gas Station",
+  "difficulty": "Medium",
+  "tags": ["arrays", "greedy"],
+  "prompt": "There are n gas stations along a circular route, where the amount of gas at the ith station is gas[i].\n\nYou have a car with an unlimited gas tank and it costs cost[i] of gas to travel from the ith station to the next (i + 1)th station. You begin the journey with an empty tank at one of the gas stations.\n\nGiven two integer arrays gas and cost, return the starting gas station's index if you can travel around the circuit once in the clockwise direction, otherwise return -1.\n\nIf there exists a solution, it is guaranteed to be unique.\n\nFor example, with gas = [1,2,3,4,5] and cost = [3,4,5,1,2], starting at station 3 (0-indexed): you gain 4 gas, spend 1 to reach station 4, gain 5, spend 2 to reach station 0, and so on, completing the circuit.",
+  "examples": [
+    {"input": "gas = [1,2,3,4,5], cost = [3,4,5,1,2]", "output": "3"},
+    {"input": "gas = [2,3,4], cost = [3,4,3]", "output": "-1"},
+    {"input": "gas = [5,1,2,3,4], cost = [4,4,1,5,1]", "output": "4"}
+  ],
+  "constraints": [
+    "1 <= n <= 10^5",
+    "0 <= gas[i], cost[i] <= 10^4",
+    "n == gas.length == cost.length"
+  ],
+  "starterCode": {
+    "python": "def solve(gas: list[int], cost: list[int]) -> int:\n    pass",
+    "javascript": "function solve(gas, cost) {\n  \n}",
+    "typescript": "export function solve(gas: number[], cost: number[]): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(int[] gas, int[] cost) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(int[] gas, int[] cost) {\n        \n    }\n}",
+    "go": "func solve(gas []int, cost []int) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([1,2,3,4,5], [3,4,5,1,2]))"}, "expectedStdout": "3"},
+    {"stdin": {"python": "print(solve([2,3,4], [3,4,3]))"}, "expectedStdout": "-1"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([5,1,2,3,4], [4,4,1,5,1]))"}, "expectedStdout": "4"},
+    {"stdin": {"python": "print(solve([3], [3]))"}, "expectedStdout": "0"},
+    {"stdin": {"python": "print(solve([1,2,3,4,5], [1,2,3,4,5]))"}, "expectedStdout": "0"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Single pass greedy: if total gas >= total cost, a solution exists. Track current tank; when it goes negative, the start must be after the current station. Reset tank and update candidate start.",
+    "commonBugs": ["Forgetting to check if total gas >= total cost (no solution exists otherwise)", "Off-by-one when resetting the candidate start index", "Trying to simulate from each station (O(n^2) instead of O(n))"],
+    "expectedComplexity": "O(n)"
+  }
+}

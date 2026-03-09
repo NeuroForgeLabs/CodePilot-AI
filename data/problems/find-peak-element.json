@@ -1,0 +1,40 @@
+{
+  "id": "find-peak-element",
+  "title": "Find Peak Element",
+  "difficulty": "Medium",
+  "tags": ["arrays", "binary-search"],
+  "prompt": "A peak element is an element that is strictly greater than its neighbors.\n\nGiven a 0-indexed integer array nums, find a peak element, and return its index. If the array contains multiple peaks, return the index to any of the peaks.\n\nYou may imagine that nums[-1] = nums[n] = -infinity. In other words, an element is always considered to be strictly greater than a neighbor that is outside the array.\n\nYou must write an algorithm that runs in O(log n) time.\n\nFor example, in nums = [1,2,3,1], index 2 is a peak because nums[2] = 3 is greater than both nums[1] = 2 and nums[3] = 1.",
+  "examples": [
+    {"input": "nums = [1,2,3,1]", "output": "2"},
+    {"input": "nums = [1,2,1,3,5,6,4]", "output": "5"},
+    {"input": "nums = [1]", "output": "0"}
+  ],
+  "constraints": [
+    "1 <= nums.length <= 1000",
+    "-2^31 <= nums[i] <= 2^31 - 1",
+    "nums[i] != nums[i + 1] for all valid i"
+  ],
+  "starterCode": {
+    "python": "def solve(nums: list[int]) -> int:\n    pass",
+    "javascript": "function solve(nums) {\n  \n}",
+    "typescript": "export function solve(nums: number[]): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(int[] nums) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(int[] nums) {\n        \n    }\n}",
+    "go": "func solve(nums []int) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([1,2,3,1]))"}, "expectedStdout": "2"},
+    {"stdin": {"python": "print(solve([1]))"}, "expectedStdout": "0"},
+    {"stdin": {"python": "r = solve([1,2,1,3,5,6,4]); print(r in [1, 5])"}, "expectedStdout": "True"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([2,1]))"}, "expectedStdout": "0"},
+    {"stdin": {"python": "print(solve([1,2]))"}, "expectedStdout": "1"},
+    {"stdin": {"python": "r = solve([1,3,2,4,1]); print(r in [1, 3])"}, "expectedStdout": "True"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Binary search: compare mid with mid+1. If nums[mid] < nums[mid+1], a peak exists on the right half; otherwise on the left half (including mid). The ascending side always leads to a peak.",
+    "commonBugs": ["Off-by-one errors in binary search bounds", "Linear scan instead of binary search (doesn't meet O(log n) requirement)", "Not handling single-element arrays"],
+    "expectedComplexity": "O(log n)"
+  }
+}

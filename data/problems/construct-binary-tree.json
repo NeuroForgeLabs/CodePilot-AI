@@ -1,0 +1,42 @@
+{
+  "id": "construct-binary-tree",
+  "title": "Construct Binary Tree from Preorder and Inorder Traversal",
+  "difficulty": "Medium",
+  "tags": ["tree", "recursion", "hash-table"],
+  "prompt": "Given two integer arrays `preorder` and `inorder` where `preorder` is the preorder traversal of a binary tree and `inorder` is the inorder traversal of the same tree, construct and return the binary tree as an array (level-order representation).\n\nThe returned array should use `None` for absent nodes. Trailing `None` values should be omitted.\n\nYou may assume that each value in the tree is unique.",
+  "examples": [
+    {"input": "preorder = [3, 9, 20, 15, 7], inorder = [9, 3, 15, 20, 7]", "output": "[3, 9, 20, None, None, 15, 7]\nExplanation: Root is 3 (first in preorder). In inorder, 9 is left of 3 (left subtree), and [15, 20, 7] is right of 3 (right subtree)."},
+    {"input": "preorder = [-1], inorder = [-1]", "output": "[-1]"}
+  ],
+  "constraints": [
+    "1 <= preorder.length <= 3000",
+    "-3000 <= preorder[i] <= 3000",
+    "inorder.length == preorder.length",
+    "preorder and inorder consist of unique values.",
+    "Each value of inorder also appears in preorder.",
+    "preorder is guaranteed to be the preorder traversal of the tree.",
+    "inorder is guaranteed to be the inorder traversal of the tree."
+  ],
+  "starterCode": {
+    "python": "def solve(preorder, inorder):\n    pass",
+    "javascript": "function solve(preorder, inorder) {\n  \n}",
+    "typescript": "export function solve(preorder: number[], inorder: number[]): (number | null)[] {\n  \n}",
+    "java": "class Solution {\n    public Integer[] solve(int[] preorder, int[] inorder) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int?[] Solve(int[] preorder, int[] inorder) {\n        \n    }\n}",
+    "go": "func solve(preorder []int, inorder []int) []*int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([3, 9, 20, 15, 7], [9, 3, 15, 20, 7]))"}, "expectedStdout": "[3, 9, 20, None, None, 15, 7]"},
+    {"stdin": {"python": "print(solve([-1], [-1]))"}, "expectedStdout": "[-1]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([1, 2], [2, 1]))"}, "expectedStdout": "[1, 2]"},
+    {"stdin": {"python": "print(solve([1, 2], [1, 2]))"}, "expectedStdout": "[1, None, 2]"},
+    {"stdin": {"python": "print(solve([1, 2, 4, 5, 3, 6, 7], [4, 2, 5, 1, 6, 3, 7]))"}, "expectedStdout": "[1, 2, 3, 4, 5, 6, 7]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "The first element of preorder is the root. Find that element in inorder to split into left and right subtrees. Use a hash map for O(1) inorder index lookup. Recursively build left subtree (elements left of root in inorder) and right subtree. Convert the resulting tree to level-order array.",
+    "commonBugs": ["Incorrect slicing of preorder array for left/right subtrees (left subtree size = root's index in inorder minus inorder start)", "Not using a hash map for inorder lookup, causing O(n^2) complexity", "Incorrect level-order serialization—forgetting to include None for absent children of non-leaf nodes"],
+    "expectedComplexity": "O(n) with hash map"
+  }
+}

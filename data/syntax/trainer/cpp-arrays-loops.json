@@ -1,0 +1,78 @@
+{
+  "id": "cpp-arrays-loops",
+  "title": "Arrays & Loops",
+  "description": "Vectors are C++'s workhorse container for interviews — master declaration, access, push_back, and both classic and range-based for loops to handle any array problem.",
+  "language": "cpp",
+  "category": "arrays-loops",
+  "order": 2,
+  "sections": [
+    {
+      "id": "vector-basics",
+      "title": "Vector declaration and access",
+      "explanation": "Use **vector<int>** instead of raw arrays — interviewers expect it. Declare with a size, with initial values, or empty and grow with push_back. Access elements with `[]` (no bounds checking) or `.at()` (throws on out-of-bounds). Use `.size()` to get the length.",
+      "example": "vector<int> nums = {10, 20, 30, 40, 50};\ncout << nums[0] << endl;      // 10\ncout << nums.size() << endl;  // 5\ncout << nums.back() << endl;  // 50\n\nvector<int> zeros(5, 0);  // [0, 0, 0, 0, 0]\ncout << zeros.size() << endl; // 5",
+      "exercise": {
+        "prompt": "Create a vector<int> with values {5, 10, 15, 20}. Print the first element, the last element (using .back()), and the size.",
+        "starterCode": "int main() {\n    vector<int> nums = {5, 10, 15, 20};\n    cout << nums[] << endl;\n    cout << nums.() << endl;\n    cout << nums.() << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "5\n20\n4", "message": "Print the first element (index 0), last element (.back()), and size"},
+          {"type": "contains", "patterns": ["nums[0]", ".back()", ".size()"], "message": "Use [0] for first, .back() for last, .size() for length"}
+        ],
+        "testCode": "",
+        "hint": "nums[0] gives the first element, nums.back() gives the last, nums.size() gives the count."
+      },
+      "order": 1
+    },
+    {
+      "id": "push-back-iteration",
+      "title": "push_back and classic for loop",
+      "explanation": "Build vectors dynamically with **push_back()**. The classic for loop `for (int i = 0; i < n; i++)` gives you index access, which you need for problems involving adjacent elements, two pointers, or index-based logic.",
+      "example": "vector<int> nums;\nfor (int i = 1; i <= 5; i++) {\n    nums.push_back(i * 10);\n}\n// nums = {10, 20, 30, 40, 50}\n\nfor (int i = 0; i < (int)nums.size(); i++) {\n    cout << nums[i] << \" \";\n}\n// Output: 10 20 30 40 50",
+      "exercise": {
+        "prompt": "Create an empty vector and use push_back to add the squares of 1 through 5 (1, 4, 9, 16, 25). Then print each element separated by spaces using a classic for loop.",
+        "starterCode": "int main() {\n    vector<int> squares;\n    for (int i = 1; i <= 5; i++) {\n        squares.(i * i);\n    }\n    for (int i = 0; i < (int)squares.size(); i++) {\n        cout << squares[i] << \" \";\n    }\n    cout << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "1 4 9 16 25", "message": "Push squares of 1-5 and print them space-separated"},
+          {"type": "contains", "patterns": ["push_back", "squares[i]"], "message": "Use push_back to build the vector and index access to print"}
+        ],
+        "testCode": "",
+        "hint": "squares.push_back(i * i) inside the first loop. Access with squares[i] in the second loop."
+      },
+      "order": 2
+    },
+    {
+      "id": "range-for",
+      "title": "Range-based for loop",
+      "explanation": "When you don't need the index, use a **range-based for loop**: `for (int x : nums)`. Use `for (int& x : nums)` if you need to modify elements in place. This is cleaner and less error-prone, which interviewers appreciate.",
+      "example": "vector<int> nums = {3, 1, 4, 1, 5};\n\n// Read-only iteration\nfor (int x : nums) {\n    cout << x << \" \";\n}\n// Output: 3 1 4 1 5\n\n// Modify in place\nfor (int& x : nums) {\n    x *= 2;\n}\n// nums is now {6, 2, 8, 2, 10}",
+      "exercise": {
+        "prompt": "Given a vector {1, 2, 3, 4, 5}, use a range-based for loop with a reference to double each element in place. Then use another range-based for loop to print the results space-separated.",
+        "starterCode": "int main() {\n    vector<int> nums = {1, 2, 3, 4, 5};\n    for (int& x : nums) {\n        x  2;\n    }\n    for (int x : nums) {\n        cout << x << \" \";\n    }\n    cout << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "2 4 6 8 10", "message": "Each element should be doubled: 2 4 6 8 10"},
+          {"type": "contains", "patterns": ["int& x", "for (int x : nums)"], "message": "Use int& for modification and int (by value) for reading"}
+        ],
+        "testCode": "",
+        "hint": "Use x *= 2 to double each element. The reference int& x allows modifying the original vector."
+      },
+      "order": 3
+    },
+    {
+      "id": "2d-vector",
+      "title": "2D vectors (grids)",
+      "explanation": "Many interview problems involve grids or matrices. Declare a 2D vector with `vector<vector<int>>`. Initialize with a size using `vector<vector<int>>(rows, vector<int>(cols, val))`. Access with `grid[row][col]`.",
+      "example": "int rows = 3, cols = 4;\nvector<vector<int>> grid(rows, vector<int>(cols, 0));\n\ngrid[0][0] = 1;\ngrid[1][2] = 5;\n\nfor (int r = 0; r < rows; r++) {\n    for (int c = 0; c < cols; c++) {\n        cout << grid[r][c] << \" \";\n    }\n    cout << endl;\n}",
+      "exercise": {
+        "prompt": "Create a 3x3 identity matrix using a 2D vector (1s on the diagonal, 0s elsewhere). Print it row by row with spaces between elements.",
+        "starterCode": "int main() {\n    int n = 3;\n    vector<vector<int>> grid(n, vector<int>(n, 0));\n    for (int i = 0; i < n; i++) {\n        grid[i][] = 1;\n    }\n    for (int r = 0; r < n; r++) {\n        for (int c = 0; c < n; c++) {\n            cout << grid[r][c] << \" \";\n        }\n        cout << endl;\n    }\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "1 0 0 \n0 1 0 \n0 0 1", "message": "The identity matrix has 1s on the diagonal and 0s elsewhere"},
+          {"type": "contains", "patterns": ["vector<vector<int>>", "grid[i][i]"], "message": "Use vector<vector<int>> for the 2D grid and grid[i][i] for the diagonal"}
+        ],
+        "testCode": "",
+        "hint": "Set grid[i][i] = 1 for each row i. The diagonal of a matrix is where row index equals column index."
+      },
+      "order": 4
+    }
+  ]
+}

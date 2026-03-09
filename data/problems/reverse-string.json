@@ -21,11 +21,11 @@
     "go": "func solve(s []byte) {\n    \n}"
   },
   "visibleTests": [
-    {"stdin": "print(solve([\"h\",\"e\",\"l\",\"l\",\"o\"]))", "expectedStdout": "['o', 'l', 'l', 'e', 'h']"}
+    {"stdin": {"python": "print(solve([\"h\",\"e\",\"l\",\"l\",\"o\"]))"}, "expectedStdout": "['o', 'l', 'l', 'e', 'h']"}
   ],
   "hiddenTests": [
-    {"stdin": "print(solve([\"H\",\"a\",\"n\",\"n\",\"a\",\"h\"]))", "expectedStdout": "['h', 'a', 'n', 'n', 'a', 'H']"},
-    {"stdin": "print(solve([\"\"]))", "expectedStdout": "['']"}
+    {"stdin": {"python": "print(solve([\"H\",\"a\",\"n\",\"n\",\"a\",\"h\"]))"}, "expectedStdout": "['h', 'a', 'n', 'n', 'a', 'H']"},
+    {"stdin": {"python": "print(solve([\"\"]))"}, "expectedStdout": "['']"}
   ],
   "notesForAI": {
     "coreIdea": "Use two pointers (left and right). Swap elements at left and right, then move left forward and right backward until they meet.",

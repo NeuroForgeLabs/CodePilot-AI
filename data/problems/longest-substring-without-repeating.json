@@ -23,14 +23,14 @@
     "go": "func solve(s string) int {\n    \n}"
   },
   "visibleTests": [
-    {"stdin": "print(solve(\"abcabcbb\"))", "expectedStdout": "3"},
-    {"stdin": "print(solve(\"bbbbb\"))", "expectedStdout": "1"},
-    {"stdin": "print(solve(\"pwwkew\"))", "expectedStdout": "3"}
+    {"stdin": {"python": "print(solve(\"abcabcbb\"))"}, "expectedStdout": "3"},
+    {"stdin": {"python": "print(solve(\"bbbbb\"))"}, "expectedStdout": "1"},
+    {"stdin": {"python": "print(solve(\"pwwkew\"))"}, "expectedStdout": "3"}
   ],
   "hiddenTests": [
-    {"stdin": "print(solve(\"\"))", "expectedStdout": "0"},
-    {"stdin": "print(solve(\"au\"))", "expectedStdout": "2"},
-    {"stdin": "print(solve(\"dvdf\"))", "expectedStdout": "3"}
+    {"stdin": {"python": "print(solve(\"\"))"}, "expectedStdout": "0"},
+    {"stdin": {"python": "print(solve(\"au\"))"}, "expectedStdout": "2"},
+    {"stdin": {"python": "print(solve(\"dvdf\"))"}, "expectedStdout": "3"}
   ],
   "notesForAI": {
     "coreIdea": "Sliding window with a hash set to track characters in current window. Expand right pointer, shrink left when duplicate found.",

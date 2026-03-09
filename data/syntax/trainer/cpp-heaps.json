@@ -1,0 +1,78 @@
+{
+  "id": "cpp-heaps",
+  "title": "Heaps / Priority Queues",
+  "description": "Priority queues power top-K problems, merge-K-sorted, and Dijkstra's algorithm. Master C++'s priority_queue with max-heap default, min-heap via greater<>, and the top-K pattern.",
+  "language": "cpp",
+  "category": "heaps",
+  "order": 9,
+  "sections": [
+    {
+      "id": "max-heap",
+      "title": "Max-heap with priority_queue",
+      "explanation": "**priority_queue<int>** is a max-heap by default — `.top()` gives the largest element. Use `.push()` to insert and `.pop()` to remove the top (returns void, like stack). Always check `.empty()` before accessing top. The underlying container is a vector, giving O(log n) push/pop and O(1) top.",
+      "example": "priority_queue<int> pq;\npq.push(3);\npq.push(7);\npq.push(1);\npq.push(5);\n\ncout << pq.top() << endl;  // 7 (max)\npq.pop();\ncout << pq.top() << endl;  // 5\ncout << pq.size() << endl; // 3",
+      "exercise": {
+        "prompt": "Push values 10, 40, 20, 30 into a max-heap. Print the top element, pop it, then print the new top and the remaining size.",
+        "starterCode": "int main() {\n    priority_queue<int> pq;\n    pq.push(10);\n    pq.push(40);\n    pq.push(20);\n    pq.push(30);\n\n    cout << pq.() << endl;\n    pq.();\n    cout << pq.() << endl;\n    cout << pq.() << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "40\n30\n3", "message": "Max-heap top is 40, after pop the next top is 30, size is 3"},
+          {"type": "contains", "patterns": ["pq.top()", "pq.pop()", "pq.size()"], "message": "Use .top() to read max, .pop() to remove it, .size() for count"}
+        ],
+        "testCode": "",
+        "hint": "pq.top() gives 40 (the largest). After pq.pop(), the new top is 30. pq.size() returns 3."
+      },
+      "order": 1
+    },
+    {
+      "id": "min-heap",
+      "title": "Min-heap with greater<>",
+      "explanation": "For a min-heap, declare **priority_queue<int, vector<int>, greater<int>>**. Now `.top()` gives the smallest element. The three template params are: value type, underlying container, and comparator. This is essential for problems like merge-K-sorted-lists and Dijkstra.",
+      "example": "priority_queue<int, vector<int>, greater<int>> minPQ;\nminPQ.push(5);\nminPQ.push(1);\nminPQ.push(8);\nminPQ.push(3);\n\ncout << minPQ.top() << endl;  // 1 (min)\nminPQ.pop();\ncout << minPQ.top() << endl;  // 3",
+      "exercise": {
+        "prompt": "Create a min-heap. Push values 15, 5, 25, 10. Print the top (smallest), pop it, print the new top, and the size.",
+        "starterCode": "int main() {\n    priority_queue<int, vector<int>, <int>> minPQ;\n    minPQ.push(15);\n    minPQ.push(5);\n    minPQ.push(25);\n    minPQ.push(10);\n\n    cout << minPQ.top() << endl;\n    minPQ.pop();\n    cout << minPQ.top() << endl;\n    cout << minPQ.size() << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "5\n10\n3", "message": "Min-heap top is 5, after pop next is 10, size is 3"},
+          {"type": "contains", "patterns": ["greater<int>", "minPQ.top()"], "message": "Use greater<int> as the comparator to create a min-heap"}
+        ],
+        "testCode": "",
+        "hint": "Use greater<int> as the third template argument. top() gives 5 (the smallest), then 10 after popping."
+      },
+      "order": 2
+    },
+    {
+      "id": "heap-pairs",
+      "title": "Heap with pairs",
+      "explanation": "**priority_queue** works with **pair<int,T>** — it compares by `.first`, then `.second`. For a min-heap of pairs, use `priority_queue<pair<int,string>, vector<pair<int,string>>, greater<>>`. This pattern is used in Dijkstra (distance, node) and scheduling problems.",
+      "example": "// Min-heap of (distance, node) pairs\npriority_queue<pair<int,string>, vector<pair<int,string>>, greater<>> pq;\npq.push({3, \"C\"});\npq.push({1, \"A\"});\npq.push({2, \"B\"});\n\nwhile (!pq.empty()) {\n    auto [dist, node] = pq.top();\n    pq.pop();\n    cout << node << \":\" << dist << \" \";\n}\n// Output: A:1 B:2 C:3",
+      "exercise": {
+        "prompt": "Create a min-heap of (priority, task) pairs. Push (3, \"low\"), (1, \"high\"), (2, \"medium\"). Pop all elements and print them in priority order as \"task:priority\".",
+        "starterCode": "int main() {\n    priority_queue<pair<int,string>, vector<pair<int,string>>, greater<>> pq;\n    pq.push({3, \"low\"});\n    pq.push({1, \"high\"});\n    pq.push({2, \"medium\"});\n\n    while (!pq.()) {\n        auto [pri, task] = pq.();\n        pq.();\n        cout << task << \":\" << pri << \" \";\n    }\n    cout << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "high:1 medium:2 low:3", "message": "Min-heap pops in ascending priority: high(1), medium(2), low(3)"},
+          {"type": "contains", "patterns": ["greater<>", "pq.top()", "pq.pop()"], "message": "Use greater<> for min-heap, top() to read, pop() to remove"}
+        ],
+        "testCode": "",
+        "hint": "pq.empty() checks the loop. pq.top() reads the smallest pair. pq.pop() removes it."
+      },
+      "order": 3
+    },
+    {
+      "id": "top-k",
+      "title": "Top-K pattern",
+      "explanation": "To find the K largest elements, use a **min-heap of size K**: push each element, and if the heap exceeds size K, pop the smallest. The heap retains the K largest values. This runs in O(n log K), which is better than O(n log n) full sort when K is small. For K smallest, use a max-heap of size K instead.",
+      "example": "vector<int> topK(const vector<int>& nums, int k) {\n    priority_queue<int, vector<int>, greater<int>> minPQ;\n    for (int x : nums) {\n        minPQ.push(x);\n        if ((int)minPQ.size() > k) {\n            minPQ.pop();\n        }\n    }\n    vector<int> result;\n    while (!minPQ.empty()) {\n        result.push_back(minPQ.top());\n        minPQ.pop();\n    }\n    return result;\n}\n// topK({3,1,5,12,2,11}, 3) -> {5, 11, 12}",
+      "exercise": {
+        "prompt": "Find the 3 largest elements from {7, 2, 9, 1, 5, 8, 3} using a min-heap of size K. Print them space-separated (ascending order is fine).",
+        "starterCode": "int main() {\n    vector<int> nums = {7, 2, 9, 1, 5, 8, 3};\n    int k = 3;\n    priority_queue<int, vector<int>, greater<int>> minPQ;\n\n    for (int x : nums) {\n        minPQ.(x);\n        if ((int)minPQ.size() > ) {\n            minPQ.();\n        }\n    }\n\n    while (!minPQ.empty()) {\n        cout << minPQ.top() << \" \";\n        minPQ.pop();\n    }\n    cout << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "7 8 9", "message": "The 3 largest are 7, 8, 9 (printed in ascending order from the min-heap)"},
+          {"type": "contains", "patterns": ["greater<int>", "minPQ.push(", "minPQ.pop()"], "message": "Use a min-heap, push elements, and pop when size exceeds K"}
+        ],
+        "testCode": "",
+        "hint": "Push each element with minPQ.push(x). When size > k, pop the smallest. The remaining K elements are the largest."
+      },
+      "order": 4
+    }
+  ]
+}

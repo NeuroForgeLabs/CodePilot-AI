@@ -1,0 +1,78 @@
+{
+  "id": "rust-variables-types",
+  "title": "Variables & Types",
+  "description": "Master Rust's type system and variable bindings — knowing when to use let vs let mut, choosing between i32/i64/f64, and handling Option<T> prevents ownership headaches during interviews.",
+  "language": "rust",
+  "category": "variables-types",
+  "order": 1,
+  "sections": [
+    {
+      "id": "let-bindings",
+      "title": "let and let mut bindings",
+      "explanation": "Rust variables are **immutable by default**. Use `let` for immutable bindings and `let mut` when you need to reassign. In interviews, most counters and accumulators need `mut`. The five types you'll use constantly: **i32**, **i64**, **f64**, **String**/**&str**, and **bool**.",
+      "example": "fn main() {\n    let count: i32 = 0;\n    let mut total: i64 = 1_000_000_000_000;\n    let ratio: f64 = 0.5;\n    let name: &str = \"target\";\n    let found: bool = false;\n\n    total += 1;\n    println!(\"{}\", count);  // 0\n    println!(\"{}\", total);  // 1000000000001\n    println!(\"{}\", ratio);  // 0.5\n    println!(\"{}\", name);   // target\n    println!(\"{}\", found);  // false\n}",
+      "exercise": {
+        "prompt": "Declare five variables: `count` (i32, value 42), `big` (i64, value 1000000000000), `ratio` (f64, value 3.14), `name` (&str, value \"alice\"), and `found` (bool, value true). Print each on its own line.",
+        "starterCode": "fn main() {\n    let count: i32 = ;\n    let big: i64 = ;\n    let ratio: f64 = ;\n    let name: &str = ;\n    let found: bool = ;\n\n    println!(\"{}\", count);\n    println!(\"{}\", big);\n    println!(\"{}\", ratio);\n    println!(\"{}\", name);\n    println!(\"{}\", found);\n}",
+        "validation": [
+          {"type": "output", "expected": "42\n1000000000000\n3.14\nalice\ntrue", "message": "Each variable should print its value on a separate line"},
+          {"type": "contains", "patterns": ["let count", "let big", "let ratio", "let name", "let found"], "message": "Declare each variable with let and its correct type"}
+        ],
+        "testCode": "",
+        "hint": "Assign the literals directly: count = 42, big = 1_000_000_000_000, ratio = 3.14, name = \"alice\", found = true."
+      },
+      "order": 1
+    },
+    {
+      "id": "type-casting",
+      "title": "Type casting with as",
+      "explanation": "In interviews, you often need to convert between types — integer division to floating-point, usize to i32 for indexing, etc. Use the **as** keyword for numeric casts. For string conversions, use **.parse::<T>()** and **.to_string()**. Remember that `as` truncates silently, so be mindful of overflow.",
+      "example": "fn main() {\n    let a: i32 = 7;\n    let b: i32 = 2;\n    let result = a as f64 / b as f64;\n    println!(\"{}\", result);  // 3.5\n\n    let s = \"99\";\n    let num: i32 = s.parse().unwrap();\n    println!(\"{}\", num + 1);  // 100\n\n    let text = 256.to_string();\n    println!(\"{}\", text);  // 256\n}",
+      "exercise": {
+        "prompt": "Divide i32 `a = 7` by i32 `b = 2` using `as f64` to get a float result. Then parse the string \"99\" into an i32, and convert 256 to a String with to_string(). Print all three results.",
+        "starterCode": "fn main() {\n    let a: i32 = 7;\n    let b: i32 = 2;\n    let result = a as f64 / b as f64;\n    println!(\"{}\", result);\n\n    let s = \"99\";\n    let num: i32 = s.parse().();\n    println!(\"{}\", num);\n\n    let text = 256.to_string();\n    println!(\"{}\", );\n}",
+        "validation": [
+          {"type": "output", "expected": "3.5\n99\n256", "message": "Check your casts — the division should produce 3.5, parse gives 99, to_string gives \"256\""},
+          {"type": "contains", "patterns": ["as f64", "parse()", "to_string()"], "message": "Use as f64 for the division, parse() for string-to-int, and to_string() for int-to-string"}
+        ],
+        "testCode": "",
+        "hint": "Use .parse().unwrap() to convert a string to a number. Print the text variable for the last line."
+      },
+      "order": 2
+    },
+    {
+      "id": "option-type",
+      "title": "Option<T> and handling None",
+      "explanation": "Rust has no null — instead it uses **Option<T>**, which is either `Some(value)` or `None`. You'll encounter this constantly with HashMap lookups, vector indexing, and tree nodes. Use `match`, `if let`, or `.unwrap_or()` to safely extract values. Never use `.unwrap()` in production, but it's acceptable in interview code for brevity.",
+      "example": "fn main() {\n    let val: Option<i32> = Some(42);\n    let empty: Option<i32> = None;\n\n    println!(\"{}\", val.unwrap_or(0));    // 42\n    println!(\"{}\", empty.unwrap_or(0));  // 0\n\n    if let Some(x) = val {\n        println!(\"Got: {}\", x);  // Got: 42\n    }\n\n    match empty {\n        Some(x) => println!(\"Value: {}\", x),\n        None => println!(\"Nothing here\"),  // Nothing here\n    }\n}",
+      "exercise": {
+        "prompt": "Create two Option<i32> values: `val` as Some(10) and `empty` as None. Print each using unwrap_or(0). Then use `if let` on val to print \"Found: 10\" and a `match` on empty to print \"No value\".",
+        "starterCode": "fn main() {\n    let val: Option<i32> = Some(10);\n    let empty: Option<i32> = None;\n\n    println!(\"{}\", val.unwrap_or());\n    println!(\"{}\", empty.unwrap_or());\n\n    if let Some(x) = val {\n        println!(\"Found: {}\", x);\n    }\n\n    match empty {\n        Some(x) => println!(\"Value: {}\", x),\n        None => println!(\"\"),\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "10\n0\nFound: 10\nNo value", "message": "unwrap_or(0) gives 10 for Some(10) and 0 for None"},
+          {"type": "contains", "patterns": ["unwrap_or(0)", "if let Some", "None =>"], "message": "Use unwrap_or(0) for defaults, if let for Some extraction, and match arms for exhaustive handling"}
+        ],
+        "testCode": "",
+        "hint": "Pass 0 to unwrap_or() for both. Print \"No value\" in the None arm of the match."
+      },
+      "order": 3
+    },
+    {
+      "id": "shadowing-constants",
+      "title": "Shadowing and constants",
+      "explanation": "Rust lets you **shadow** a variable by redeclaring it with `let`. This is useful for type conversions without needing `mut`. Use `const` for compile-time constants — these must have explicit types. In interviews, define `const MOD: i64 = 1_000_000_007` for modular arithmetic and `i32::MAX` / `i32::MIN` for sentinels.",
+      "example": "fn main() {\n    let x = 5;\n    let x = x + 1;       // shadowed, now 6\n    let x = x as f64;    // shadowed, now 6.0\n    println!(\"{}\", x);   // 6\n\n    const MOD: i64 = 1_000_000_007;\n    println!(\"{}\", MOD);  // 1000000007\n    println!(\"{}\", i32::MAX);  // 2147483647\n}",
+      "exercise": {
+        "prompt": "Declare `x` as 5, shadow it to x + 1, then shadow it again to its f64 cast. Define a constant MOD as 1_000_000_007 (i64). Print x, MOD, and i32::MAX.",
+        "starterCode": "fn main() {\n    let x = 5;\n    let x = x + 1;\n    let x = x as ;\n\n    const MOD: i64 = ;\n\n    println!(\"{}\", x);\n    println!(\"{}\", MOD);\n    println!(\"{}\", i32::MAX);\n}",
+        "validation": [
+          {"type": "output", "expected": "6\n1000000007\n2147483647", "message": "x should be 6.0 (prints as 6), MOD is 1000000007, i32::MAX is 2147483647"},
+          {"type": "contains", "patterns": ["let x = x", "as f64", "const MOD"], "message": "Shadow x with let, cast with as f64, define MOD with const"}
+        ],
+        "testCode": "",
+        "hint": "Cast x as f64. Set MOD = 1_000_000_007. i32::MAX is already defined in std."
+      },
+      "order": 4
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "id": "kth-smallest-in-bst",
+  "title": "Kth Smallest Element in a BST",
+  "difficulty": "Medium",
+  "tags": ["tree", "binary-search"],
+  "prompt": "Given the root of a binary search tree represented as an array (level-order), and an integer `k`, return the `k`th smallest value (1-indexed) of all the values of the nodes in the tree.\n\nThe tree is represented as an array where index 0 is the root, and for a node at index `i`, its left child is at `2*i + 1` and right child at `2*i + 2`. `None` values represent absent nodes.",
+  "examples": [
+    {"input": "tree = [3, 1, 4, None, 2], k = 1", "output": "1\nExplanation: The inorder traversal is [1, 2, 3, 4]. The 1st smallest is 1."},
+    {"input": "tree = [5, 3, 6, 2, 4, None, None, 1], k = 3", "output": "3\nExplanation: The inorder traversal is [1, 2, 3, 4, 5, 6]. The 3rd smallest is 3."}
+  ],
+  "constraints": [
+    "1 <= k <= number of nodes <= 10^4",
+    "0 <= Node.val <= 10^4",
+    "The tree is a valid BST.",
+    "The tree is given as an array in level-order with None for missing nodes."
+  ],
+  "starterCode": {
+    "python": "def solve(tree, k):\n    pass",
+    "javascript": "function solve(tree, k) {\n  \n}",
+    "typescript": "export function solve(tree: (number | null)[], k: number): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(Integer[] tree, int k) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(int?[] tree, int k) {\n        \n    }\n}",
+    "go": "func solve(tree []*int, k int) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([3, 1, 4, None, 2], 1))"}, "expectedStdout": "1"},
+    {"stdin": {"python": "print(solve([5, 3, 6, 2, 4, None, None, 1], 3))"}, "expectedStdout": "3"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([1], 1))"}, "expectedStdout": "1"},
+    {"stdin": {"python": "print(solve([3, 1, 4, None, 2], 4))"}, "expectedStdout": "4"},
+    {"stdin": {"python": "print(solve([2, 1, 3], 2))"}, "expectedStdout": "2"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Inorder traversal of a BST yields sorted order. Perform inorder traversal (left, root, right) and return the k-th element visited. Can stop early once k elements have been found. Convert array representation to tree first or traverse directly using index arithmetic.",
+    "commonBugs": ["Off-by-one with 1-indexed k vs 0-indexed arrays", "Not correctly handling None nodes in the array representation during traversal", "Traversing the entire tree instead of stopping early after finding k-th element"],
+    "expectedComplexity": "O(H + k) where H is tree height, O(n) worst case"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "id": "java-stacks-queues",
+  "title": "Stacks & Queues",
+  "description": "Use Deque as a stack and LinkedList as a queue for interview problems including valid parentheses and BFS.",
+  "language": "java",
+  "category": "stacks-queues",
+  "order": 8,
+  "sections": [
+    {
+      "id": "java-sq-stack",
+      "title": "Deque as Stack",
+      "explanation": "Java recommends `Deque<T>` (ArrayDeque or LinkedList) over the legacy `Stack` class. Stack operations: `push(val)` adds to top, `pop()` removes and returns top, `peek()` views top without removing, `isEmpty()` checks if empty. Import `java.util.ArrayDeque` and `java.util.Deque`. LIFO order: last in, first out.",
+      "example": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\npublic class Main {\n    public static void main(String[] args) {\n        Deque<Integer> stack = new ArrayDeque<>();\n        stack.push(10);\n        stack.push(20);\n        stack.push(30);\n\n        System.out.println(stack.peek());   // 30\n        System.out.println(stack.pop());    // 30\n        System.out.println(stack.pop());    // 20\n        System.out.println(stack.isEmpty()); // false\n        System.out.println(stack.size());   // 1\n    }\n}",
+      "exercise": {
+        "prompt": "Create a Deque<String> stack. Push \"first\", \"second\", \"third\". Print the top element (peek). Pop twice and print each popped value. Print the remaining size.",
+        "starterCode": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\npublic class Main {\n    public static void main(String[] args) {\n        Deque<String> stack = new ArrayDeque<>();\n\n        // Push, peek, pop, print size\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "third\nthird\nsecond\n1", "message": "Peek=third, pop=third, pop=second, remaining size=1."},
+          {"type": "contains", "patterns": [".push(", ".peek()", ".pop()"], "message": "Use push(), peek(), and pop() for stack operations."}
+        ],
+        "testCode": "",
+        "hint": "push adds to top. peek sees the top. pop removes the top. After 2 pops from 3 items, size is 1."
+      },
+      "order": 1
+    },
+    {
+      "id": "java-sq-queue",
+      "title": "LinkedList as Queue",
+      "explanation": "Queue interface with LinkedList: `offer(val)` or `add(val)` enqueues at the back, `poll()` dequeues from front (returns null if empty), `peek()` views front. Import `java.util.LinkedList` and `java.util.Queue`. FIFO order: first in, first out. Use `offer/poll` over `add/remove` since they return null instead of throwing exceptions on empty queue.",
+      "example": "import java.util.LinkedList;\nimport java.util.Queue;\n\npublic class Main {\n    public static void main(String[] args) {\n        Queue<Integer> queue = new LinkedList<>();\n        queue.offer(10);\n        queue.offer(20);\n        queue.offer(30);\n\n        System.out.println(queue.peek());    // 10\n        System.out.println(queue.poll());    // 10\n        System.out.println(queue.poll());    // 20\n        System.out.println(queue.size());    // 1\n    }\n}",
+      "exercise": {
+        "prompt": "Create a Queue<String> using LinkedList. Add \"task1\", \"task2\", \"task3\" using offer(). Print the front element (peek). Process (poll) two tasks, printing each. Print whether the queue is empty.",
+        "starterCode": "import java.util.LinkedList;\nimport java.util.Queue;\n\npublic class Main {\n    public static void main(String[] args) {\n        Queue<String> queue = new LinkedList<>();\n\n        // Add tasks, peek, poll, check empty\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "task1\ntask1\ntask2\nfalse", "message": "Peek=task1, poll=task1, poll=task2, isEmpty=false (task3 remains)."},
+          {"type": "contains", "patterns": [".offer(", ".peek()", ".poll()"], "message": "Use offer(), peek(), and poll() for queue operations."}
+        ],
+        "testCode": "",
+        "hint": "offer adds to back. peek sees the front. poll removes from front. After 2 polls from 3 items, queue is not empty."
+      },
+      "order": 2
+    },
+    {
+      "id": "java-sq-parens",
+      "title": "Valid Parentheses with Stack",
+      "explanation": "Classic interview problem: check if brackets are valid. For each opening bracket, push it. For each closing bracket, check if the stack's top has the matching opener. If not, invalid. At the end, the stack must be empty. Handles (), [], {}. Use a HashMap to map closers to openers for clean code.",
+      "example": "import java.util.ArrayDeque;\nimport java.util.Deque;\nimport java.util.HashMap;\n\npublic class Main {\n    static boolean isValid(String s) {\n        Deque<Character> stack = new ArrayDeque<>();\n        HashMap<Character, Character> map = new HashMap<>();\n        map.put(')', '(');\n        map.put(']', '[');\n        map.put('}', '{');\n\n        for (char c : s.toCharArray()) {\n            if (map.containsKey(c)) {\n                if (stack.isEmpty() || stack.pop() != map.get(c)) return false;\n            } else {\n                stack.push(c);\n            }\n        }\n        return stack.isEmpty();\n    }\n\n    public static void main(String[] args) {\n        System.out.println(isValid(\"()[]{}\"));  // true\n        System.out.println(isValid(\"(]\"));      // false\n        System.out.println(isValid(\"{[]}\"));    // true\n    }\n}",
+      "exercise": {
+        "prompt": "Implement `isValid(String s)` that checks for valid parentheses (only '(' and ')'). Use a Deque as a stack. Push on '(', pop on ')' (return false if stack is empty when popping). Return stack.isEmpty() at the end. Test with \"(())\", \"(()\", \")(\", and \"()()\".",
+        "starterCode": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\npublic class Main {\n    static boolean isValid(String s) {\n        Deque<Character> stack = new ArrayDeque<>();\n        // Implement valid parentheses check\n\n        return stack.isEmpty();\n    }\n\n    public static void main(String[] args) {\n        System.out.println(isValid(\"(())\"));\n        System.out.println(isValid(\"(()\"));\n        System.out.println(isValid(\")(\"));\n        System.out.println(isValid(\"()()\"));\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "true\nfalse\nfalse\ntrue", "message": "(()) valid, (() unmatched, )( wrong order, ()() valid."},
+          {"type": "contains", "patterns": ["stack.push(", "stack.pop(", "stack.isEmpty()"], "message": "Use push, pop, and isEmpty for the stack-based solution."}
+        ],
+        "testCode": "",
+        "hint": "For '(' push. For ')' check if stack is empty (return false) then pop. Finally return stack.isEmpty()."
+      },
+      "order": 3
+    },
+    {
+      "id": "java-sq-bfs",
+      "title": "BFS with Queue",
+      "explanation": "Breadth-First Search uses a queue to explore level by level. Pattern: (1) add start to queue, (2) while queue not empty: poll front, process it, add its neighbors/children. For level-order processing, capture `queue.size()` at the start of each level and process exactly that many nodes. BFS finds shortest path in unweighted graphs.",
+      "example": "import java.util.LinkedList;\nimport java.util.Queue;\n\npublic class Main {\n    public static void main(String[] args) {\n        int[][] grid = {\n            {1, 1, 0},\n            {1, 1, 0},\n            {0, 0, 1}\n        };\n\n        Queue<int[]> queue = new LinkedList<>();\n        boolean[][] visited = new boolean[3][3];\n\n        queue.offer(new int[]{0, 0});\n        visited[0][0] = true;\n        int count = 0;\n\n        int[][] dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};\n        while (!queue.isEmpty()) {\n            int[] cell = queue.poll();\n            count++;\n            for (int[] d : dirs) {\n                int nr = cell[0] + d[0], nc = cell[1] + d[1];\n                if (nr >= 0 && nr < 3 && nc >= 0 && nc < 3 && !visited[nr][nc] && grid[nr][nc] == 1) {\n                    visited[nr][nc] = true;\n                    queue.offer(new int[]{nr, nc});\n                }\n            }\n        }\n        System.out.println(\"Connected cells: \" + count);  // Connected cells: 4\n    }\n}",
+      "exercise": {
+        "prompt": "Implement a level-order number printer. Start with 1 in a queue. For each number polled, if it's <= 7, print it and offer (num*2) and (num*2+1). This simulates BFS over a complete binary tree. The output should print numbers 1 through 7.",
+        "starterCode": "import java.util.LinkedList;\nimport java.util.Queue;\n\npublic class Main {\n    public static void main(String[] args) {\n        Queue<Integer> queue = new LinkedList<>();\n        queue.offer(1);\n\n        // BFS: poll, print if <= 7, offer children\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "1\n2\n3\n4\n5\n6\n7", "message": "BFS level order: 1, 2, 3, 4, 5, 6, 7."},
+          {"type": "contains", "patterns": ["queue.offer(", "queue.poll()"], "message": "Use offer() and poll() for BFS queue operations."}
+        ],
+        "testCode": "",
+        "hint": "While queue not empty: poll num. If num <= 7, print it and offer num*2 and num*2+1."
+      },
+      "order": 4
+    }
+  ]
+}

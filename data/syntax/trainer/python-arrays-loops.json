@@ -1,0 +1,78 @@
+{
+  "id": "python-arrays-loops",
+  "title": "Arrays & Loops",
+  "description": "Master Python lists and loop patterns — the foundation of every interview solution.",
+  "language": "python",
+  "category": "arrays-loops",
+  "order": 1,
+  "sections": [
+    {
+      "id": "declaring",
+      "title": "Declaring arrays",
+      "explanation": "In Python, arrays are called **lists**. You'll create them in almost every interview problem — empty lists for building results, fixed-size lists for DP tables, and 2D grids for matrix problems.",
+      "example": "# Empty list\nnums = []\n\n# With values\nnums = [1, 2, 3, 4, 5]\n\n# Fixed size filled with zeros (used in DP)\ndp = [0] * 10\n\n# 2D grid (3 rows x 4 cols)\ngrid = [[0] * 4 for _ in range(3)]",
+      "exercise": {
+        "prompt": "Create a list called `result` with values [10, 20, 30], then create a list called `zeros` with 5 zeros using the `*` operator. Print both.",
+        "starterCode": "# Create a list called result with values 10, 20, 30\nresult = \n\n# Create a list called zeros with 5 zeros\nzeros = \n\nprint(result)\nprint(zeros)",
+        "validation": [
+          {"type": "output", "expected": "[10, 20, 30]\n[0, 0, 0, 0, 0]", "message": "Output should print both lists correctly"},
+          {"type": "contains", "patterns": ["[10, 20, 30]", "[0] * 5"], "message": "Use list literal and * operator"}
+        ],
+        "testCode": "print(result)\nprint(zeros)",
+        "hint": "Use square brackets for the literal: [10, 20, 30]. Use [0] * 5 for the zeros list."
+      },
+      "order": 1
+    },
+    {
+      "id": "access-modify",
+      "title": "Accessing and modifying",
+      "explanation": "Know how to get the first element, last element, length, and how to append/pop. In interviews, **negative indexing** (`nums[-1]` for last element) is a Python superpower.",
+      "example": "nums = [10, 20, 30, 40, 50]\n\nfirst = nums[0]       # 10\nlast = nums[-1]       # 50 (negative indexing!)\nlength = len(nums)    # 5\n\nnums.append(60)       # [10, 20, 30, 40, 50, 60]\nremoved = nums.pop()  # removes and returns 60\nnums.pop(0)           # removes first element (O(n))",
+      "exercise": {
+        "prompt": "Given `nums = [5, 10, 15, 20, 25]`, print the first element, the last element (using negative indexing), and the length. Then append 30 and print the updated list.",
+        "starterCode": "nums = [5, 10, 15, 20, 25]\n\n# Print first element\nprint()\n\n# Print last element using negative indexing\nprint()\n\n# Print length\nprint()\n\n# Append 30 and print the list\n\nprint(nums)",
+        "validation": [
+          {"type": "output", "expected": "5\n25\n5\n[5, 10, 15, 20, 25, 30]", "message": "Check your indexing and append"},
+          {"type": "contains", "patterns": ["nums[-1]", "len(nums)", "nums.append(30)"], "message": "Use negative indexing, len(), and .append()"}
+        ],
+        "testCode": "print(nums[0])\nprint(nums[-1])\nprint(len(nums))",
+        "hint": "nums[0] for first, nums[-1] for last, len(nums) for length, nums.append(30) to add."
+      },
+      "order": 2
+    },
+    {
+      "id": "slicing",
+      "title": "Slicing and copying",
+      "explanation": "Slicing extracts a sub-list with `nums[start:end]` (end is exclusive). Critical for sliding window, subarray, and string problems. **Always remember**: assigning a list to a new variable does NOT copy it — use `[:]` or `.copy()`.",
+      "example": "nums = [10, 20, 30, 40, 50]\n\nsub = nums[1:4]    # [20, 30, 40] (index 1,2,3)\nfirst3 = nums[:3]  # [10, 20, 30]\nlast2 = nums[-2:]  # [40, 50]\nrev = nums[::-1]   # [50, 40, 30, 20, 10]\n\n# Shallow copy (avoids mutation bugs)\ncopy = nums[:]     # or nums.copy()",
+      "exercise": {
+        "prompt": "Given `nums = [1, 2, 3, 4, 5, 6]`, use slicing to:\n1. Get elements at index 2, 3, 4 (print it)\n2. Get the last 3 elements (print it)\n3. Reverse the list using slicing (print it)",
+        "starterCode": "nums = [1, 2, 3, 4, 5, 6]\n\n# Elements at index 2, 3, 4\nmiddle = \nprint(middle)\n\n# Last 3 elements\nlast3 = \nprint(last3)\n\n# Reverse using slicing\nreversed_nums = \nprint(reversed_nums)",
+        "validation": [
+          {"type": "output", "expected": "[3, 4, 5]\n[4, 5, 6]\n[6, 5, 4, 3, 2, 1]", "message": "Check your slice indices"},
+          {"type": "contains", "patterns": ["nums[2:5]", "nums[-3:]", "nums[::-1]"], "message": "Use proper slice syntax"}
+        ],
+        "testCode": "",
+        "hint": "nums[2:5] for middle, nums[-3:] for last 3, nums[::-1] for reverse."
+      },
+      "order": 3
+    },
+    {
+      "id": "for-loops",
+      "title": "Loop patterns",
+      "explanation": "Four loop patterns you need for interviews:\n1. **`for x in list`** — iterate values\n2. **`for i in range(n)`** — iterate indices\n3. **`for i, x in enumerate(list)`** — both index and value (most useful!)\n4. **`while` loop** — manual control for two-pointer patterns",
+      "example": "nums = [10, 20, 30]\n\n# Value only\nfor num in nums:\n    print(num)\n\n# Index only\nfor i in range(len(nums)):\n    print(i, nums[i])\n\n# Index + value (interview favorite)\nfor i, num in enumerate(nums):\n    print(f\"index {i}: {num}\")\n\n# While loop (two-pointer style)\nleft, right = 0, len(nums) - 1\nwhile left < right:\n    left += 1\n    right -= 1",
+      "exercise": {
+        "prompt": "Given `nums = [100, 200, 300, 400]`, use `enumerate` to print each element with its index in the format `i: value` (e.g., `0: 100`). Then print the sum of all elements using a for loop.",
+        "starterCode": "nums = [100, 200, 300, 400]\n\n# Print each element with index using enumerate\nfor i, num in enumerate(nums):\n    print()\n\n# Calculate and print the sum\ntotal = 0\n\nprint(total)",
+        "validation": [
+          {"type": "output", "expected": "0: 100\n1: 200\n2: 300\n3: 400\n1000", "message": "Check your print format and sum logic"},
+          {"type": "contains", "patterns": ["enumerate"], "message": "Use enumerate() for index+value iteration"}
+        ],
+        "testCode": "",
+        "hint": "print(f\"{i}: {num}\") inside the enumerate loop. For the sum, loop with `for num in nums: total += num`."
+      },
+      "order": 4
+    }
+  ]
+}

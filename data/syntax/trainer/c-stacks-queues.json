@@ -1,0 +1,78 @@
+{
+  "id": "c-stacks-queues",
+  "title": "Stacks & Queues",
+  "description": "Implement stacks and queues with arrays in C — the fundamental data structures for DFS, BFS, and bracket-matching interview problems.",
+  "language": "c",
+  "category": "stacks-queues",
+  "order": 8,
+  "sections": [
+    {
+      "id": "array-stack",
+      "title": "Array-based stack",
+      "explanation": "A stack is LIFO (Last In, First Out). In C, implement with an array and a `top` index initialized to -1. **Push**: `arr[++top] = val`. **Pop**: `return arr[top--]`. **Peek**: `arr[top]`. **Empty**: `top == -1`. This is the standard C interview stack.",
+      "example": "int stack[100];\nint top = -1;\n\nstack[++top] = 10;  // push 10\nstack[++top] = 20;  // push 20\nstack[++top] = 30;  // push 30\n\nprintf(\"%d\\n\", stack[top]);     // peek: 30\nprintf(\"%d\\n\", stack[top--]);   // pop: 30\nprintf(\"%d\\n\", stack[top]);     // peek: 20",
+      "exercise": {
+        "prompt": "Implement a stack using an array. Push values 5, 10, 15. Pop once and print the popped value. Then print the current top of stack.",
+        "starterCode": "int main() {\n    int stack[100];\n    int top = -1;\n\n    stack[++top] = 5;\n    stack[++top] = 10;\n    stack[++top] = 15;\n\n    int popped = stack[top--];\n    printf(\"%d\\n\", popped);\n    printf(\"%d\\n\", stack[top]);\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "15\n10", "message": "Pop returns 15 (last pushed), top is now 10"},
+          {"type": "contains", "patterns": ["stack[++top]", "stack[top--]", "top = -1"], "message": "Use ++top for push and top-- for pop with initial top = -1"}
+        ],
+        "testCode": "",
+        "hint": "Push with stack[++top] = val. Pop with stack[top--]. After popping 15, top points to 10."
+      },
+      "order": 1
+    },
+    {
+      "id": "array-queue",
+      "title": "Array-based queue",
+      "explanation": "A queue is FIFO (First In, First Out). Implement with an array and two indices: `front` and `back`. **Enqueue**: `arr[back++] = val`. **Dequeue**: `return arr[front++]`. **Empty**: `front == back`. For interview purposes, a simple linear queue with enough space works fine.",
+      "example": "int queue[100];\nint front = 0, back = 0;\n\nqueue[back++] = 10;  // enqueue 10\nqueue[back++] = 20;  // enqueue 20\nqueue[back++] = 30;  // enqueue 30\n\nprintf(\"%d\\n\", queue[front++]);  // dequeue: 10\nprintf(\"%d\\n\", queue[front]);    // peek: 20",
+      "exercise": {
+        "prompt": "Implement a queue using an array. Enqueue 100, 200, 300. Dequeue twice, printing each dequeued value. Then print the remaining front element.",
+        "starterCode": "int main() {\n    int queue[100];\n    int front = 0, back = 0;\n\n    queue[back++] = 100;\n    queue[back++] = 200;\n    queue[back++] = 300;\n\n    printf(\"%d\\n\", queue[front++]);\n    printf(\"%d\\n\", queue[front++]);\n    printf(\"%d\\n\", queue[front]);\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "100\n200\n300", "message": "Dequeue gives 100, then 200, then front is 300"},
+          {"type": "contains", "patterns": ["queue[back++]", "queue[front++]", "front = 0, back = 0"], "message": "Use back++ for enqueue and front++ for dequeue"}
+        ],
+        "testCode": "",
+        "hint": "Enqueue with queue[back++]. Dequeue with queue[front++]. FIFO: first in, first out."
+      },
+      "order": 2
+    },
+    {
+      "id": "valid-parens",
+      "title": "Valid parentheses with stack",
+      "explanation": "Classic interview problem: check if a string of brackets is valid using a stack. Push opening brackets, pop on closing brackets and check for match. If the stack is empty at the end and all matches were correct, the string is valid.",
+      "example": "int isValid(char *s) {\n    char stack[1000];\n    int top = -1;\n    for (int i = 0; s[i]; i++) {\n        if (s[i] == '(' || s[i] == '[' || s[i] == '{')\n            stack[++top] = s[i];\n        else {\n            if (top == -1) return 0;\n            char c = stack[top--];\n            if (s[i] == ')' && c != '(') return 0;\n            if (s[i] == ']' && c != '[') return 0;\n            if (s[i] == '}' && c != '{') return 0;\n        }\n    }\n    return top == -1;\n}",
+      "exercise": {
+        "prompt": "Implement the valid parentheses checker. Test it with \"({[]})\" (valid) and \"([)]\" (invalid). Print \"valid\" or \"invalid\" for each.",
+        "starterCode": "int isValid(char *s) {\n    char stack[1000];\n    int top = -1;\n    for (int i = 0; s[i]; i++) {\n        if (s[i] == '(' || s[i] == '[' || s[i] == '{')\n            stack[++top] = s[i];\n        else {\n            if (top == -1) return 0;\n            char c = stack[top--];\n            if (s[i] == ')' && c != '(') return 0;\n            if (s[i] == ']' && c != '[') return 0;\n            if (s[i] == '}' && c != '{') return 0;\n        }\n    }\n    return top == -1;\n}\n\nint main() {\n    printf(\"%s\\n\", isValid(\"({[]})\") ? \"valid\" : \"invalid\");\n    printf(\"%s\\n\", isValid(\"([)]\") ? \"valid\" : \"invalid\");\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "valid\ninvalid", "message": "({[]}) is valid, ([)] is invalid"},
+          {"type": "contains", "patterns": ["stack[++top]", "stack[top--]", "top == -1"], "message": "Use a char stack to match opening and closing brackets"}
+        ],
+        "testCode": "",
+        "hint": "Push opening brackets. On closing, pop and verify the match. Return top == -1 at the end."
+      },
+      "order": 3
+    },
+    {
+      "id": "stack-reverse",
+      "title": "Reversing with a stack",
+      "explanation": "Stacks naturally reverse order — push all elements, then pop them all. This pattern is useful for reversing arrays, strings, or processing elements in reverse order without an extra reverse step.",
+      "example": "int arr[] = {1, 2, 3, 4, 5};\nint n = 5;\nint stack[100], top = -1;\n\nfor (int i = 0; i < n; i++)\n    stack[++top] = arr[i];\n\nwhile (top >= 0)\n    printf(\"%d \", stack[top--]);\n// 5 4 3 2 1",
+      "exercise": {
+        "prompt": "Use a stack to print the array {10, 20, 30, 40, 50} in reverse order, space-separated.",
+        "starterCode": "int main() {\n    int arr[] = {10, 20, 30, 40, 50};\n    int n = 5;\n    int stack[100], top = -1;\n\n    for (int i = 0; i < n; i++)\n        stack[++top] = arr[i];\n\n    while (top >= 0)\n        printf(\"%d \", stack[top--]);\n    printf(\"\\n\");\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "50 40 30 20 10", "message": "Stack reversal should output 50 40 30 20 10"},
+          {"type": "contains", "patterns": ["stack[++top]", "stack[top--]", "top >= 0"], "message": "Push all elements then pop all to reverse"}
+        ],
+        "testCode": "",
+        "hint": "Push all elements onto the stack, then pop them one by one to get reverse order."
+      },
+      "order": 4
+    }
+  ]
+}

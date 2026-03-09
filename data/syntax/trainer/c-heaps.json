@@ -1,0 +1,61 @@
+{
+  "id": "c-heaps",
+  "title": "Heaps",
+  "description": "Array-based min-heap implementation in C — sift up, sift down, insert, and extract-min for priority queue interview problems.",
+  "language": "c",
+  "category": "heaps",
+  "order": 9,
+  "sections": [
+    {
+      "id": "heap-structure",
+      "title": "Array-based heap structure",
+      "explanation": "A binary heap is stored as an array where for index `i`: parent is `(i-1)/2`, left child is `2*i+1`, right child is `2*i+2`. A **min-heap** ensures every parent <= its children. The minimum is always at index 0. This is the foundation of priority queues.",
+      "example": "int heap[100];\nint heap_size = 0;\n\n// Parent/child index helpers\nint parent(int i) { return (i - 1) / 2; }\nint left(int i)   { return 2 * i + 1; }\nint right(int i)  { return 2 * i + 2; }\n\n// For a valid min-heap [1, 3, 2, 7, 5]:\n// Index 0: value 1 (root/min)\n// Index 1: value 3, parent is 1\n// Index 2: value 2, parent is 1\n// Index 3: value 7, parent is 3\n// Index 4: value 5, parent is 3",
+      "exercise": {
+        "prompt": "Given a min-heap array {1, 3, 2, 7, 5}, print the minimum element, then print the parent value of the element at index 3 (value 7) and index 4 (value 5).",
+        "starterCode": "int main() {\n    int heap[] = {1, 3, 2, 7, 5};\n    printf(\"%d\\n\", heap[0]);\n    printf(\"%d\\n\", heap[(3 - 1) / 2]);\n    printf(\"%d\\n\", heap[(4 - 1) / 2]);\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "1\n3\n3", "message": "Min is 1, parent of index 3 is index 1 (value 3), parent of index 4 is index 1 (value 3)"},
+          {"type": "contains", "patterns": ["heap[0]", "(3 - 1) / 2", "(4 - 1) / 2"], "message": "Use index 0 for min, (i-1)/2 for parent index"}
+        ],
+        "testCode": "",
+        "hint": "Min is at index 0. Parent of index i is (i-1)/2. Parent of 3 is 1, parent of 4 is 1."
+      },
+      "order": 1
+    },
+    {
+      "id": "sift-up",
+      "title": "Sift up (insert)",
+      "explanation": "To **insert** into a min-heap: place the new element at the end, then **sift up** — repeatedly swap with parent while the element is smaller than its parent. This restores the heap property in O(log n) time.",
+      "example": "void sift_up(int *heap, int i) {\n    while (i > 0 && heap[i] < heap[(i-1)/2]) {\n        int parent = (i - 1) / 2;\n        int temp = heap[i];\n        heap[i] = heap[parent];\n        heap[parent] = temp;\n        i = parent;\n    }\n}\n\nvoid insert(int *heap, int *size, int val) {\n    heap[*size] = val;\n    sift_up(heap, *size);\n    (*size)++;\n}",
+      "exercise": {
+        "prompt": "Implement insert with sift_up. Insert values 5, 3, 8, 1, 4 into an empty min-heap. After all inserts, print the minimum (heap[0]) and the heap size.",
+        "starterCode": "void sift_up(int *heap, int i) {\n    while (i > 0 && heap[i] < heap[(i-1)/2]) {\n        int p = (i - 1) / 2;\n        int temp = heap[i];\n        heap[i] = heap[p];\n        heap[p] = temp;\n        i = p;\n    }\n}\n\nvoid insert(int *heap, int *size, int val) {\n    heap[*size] = val;\n    sift_up(heap, *size);\n    (*size)++;\n}\n\nint main() {\n    int heap[100];\n    int size = 0;\n    insert(heap, &size, 5);\n    insert(heap, &size, 3);\n    insert(heap, &size, 8);\n    insert(heap, &size, 1);\n    insert(heap, &size, 4);\n    printf(\"%d\\n\", heap[0]);\n    printf(\"%d\\n\", size);\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "1\n5", "message": "Minimum should be 1, heap has 5 elements"},
+          {"type": "contains", "patterns": ["sift_up(", "heap[(i-1)/2]", "(*size)++"], "message": "Implement sift_up comparing with parent and swap upward"}
+        ],
+        "testCode": "",
+        "hint": "Insert at end, sift_up by comparing with parent at (i-1)/2. After inserting 5,3,8,1,4: min is 1."
+      },
+      "order": 2
+    },
+    {
+      "id": "sift-down",
+      "title": "Sift down (extract min)",
+      "explanation": "To **extract the minimum**: save heap[0], move the last element to index 0, decrease size, then **sift down** — repeatedly swap with the smaller child while larger than a child. This is O(log n).",
+      "example": "void sift_down(int *heap, int size, int i) {\n    while (2*i+1 < size) {\n        int smallest = i;\n        int l = 2*i+1, r = 2*i+2;\n        if (l < size && heap[l] < heap[smallest]) smallest = l;\n        if (r < size && heap[r] < heap[smallest]) smallest = r;\n        if (smallest == i) break;\n        int temp = heap[i];\n        heap[i] = heap[smallest];\n        heap[smallest] = temp;\n        i = smallest;\n    }\n}\n\nint extract_min(int *heap, int *size) {\n    int min_val = heap[0];\n    heap[0] = heap[--(*size)];\n    sift_down(heap, *size, 0);\n    return min_val;\n}",
+      "exercise": {
+        "prompt": "Build a min-heap with {3, 1, 4, 1, 5}. Extract the minimum three times, printing each extracted value.",
+        "starterCode": "void sift_up(int *heap, int i) {\n    while (i > 0 && heap[i] < heap[(i-1)/2]) {\n        int p = (i - 1) / 2;\n        int t = heap[i]; heap[i] = heap[p]; heap[p] = t;\n        i = p;\n    }\n}\n\nvoid sift_down(int *heap, int size, int i) {\n    while (2*i+1 < size) {\n        int sm = i, l = 2*i+1, r = 2*i+2;\n        if (l < size && heap[l] < heap[sm]) sm = l;\n        if (r < size && heap[r] < heap[sm]) sm = r;\n        if (sm == i) break;\n        int t = heap[i]; heap[i] = heap[sm]; heap[sm] = t;\n        i = sm;\n    }\n}\n\nvoid insert(int *heap, int *sz, int val) {\n    heap[*sz] = val;\n    sift_up(heap, *sz);\n    (*sz)++;\n}\n\nint extract_min(int *heap, int *sz) {\n    int min_val = heap[0];\n    heap[0] = heap[--(*sz)];\n    sift_down(heap, *sz, 0);\n    return min_val;\n}\n\nint main() {\n    int heap[100];\n    int sz = 0;\n    int vals[] = {3, 1, 4, 1, 5};\n    for (int i = 0; i < 5; i++)\n        insert(heap, &sz, vals[i]);\n\n    printf(\"%d\\n\", extract_min(heap, &sz));\n    printf(\"%d\\n\", extract_min(heap, &sz));\n    printf(\"%d\\n\", extract_min(heap, &sz));\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "1\n1\n3", "message": "Extract min gives 1, 1, 3 (the three smallest values in order)"},
+          {"type": "contains", "patterns": ["sift_down(", "extract_min(", "heap[0]"], "message": "Use sift_down after moving last element to root during extract"}
+        ],
+        "testCode": "",
+        "hint": "After inserting {3,1,4,1,5}, extracting min three times yields 1, 1, 3."
+      },
+      "order": 3
+    }
+  ]
+}

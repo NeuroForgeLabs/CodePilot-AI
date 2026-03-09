@@ -1,0 +1,78 @@
+{
+  "id": "rust-arrays-loops",
+  "title": "Arrays & Loops",
+  "description": "Vec<T> is Rust's dynamic array and the backbone of nearly every interview solution. Master push/pop, slice syntax, iterator chains, and 2D vectors to handle any array-based problem efficiently.",
+  "language": "rust",
+  "category": "arrays-loops",
+  "order": 2,
+  "sections": [
+    {
+      "id": "vec-basics",
+      "title": "Vec<T> basics and push/pop",
+      "explanation": "**Vec<T>** is Rust's growable array. Create with `vec![]` macro or `Vec::new()`. Use `.push()` to append and `.pop()` to remove the last element (returns Option<T>). Access elements with `nums[i]` (panics on out-of-bounds) or `.get(i)` (returns Option). `.len()` gives the size.",
+      "example": "fn main() {\n    let mut nums: Vec<i32> = vec![1, 2, 3];\n    nums.push(4);\n    println!(\"{:?}\", nums);  // [1, 2, 3, 4]\n\n    let last = nums.pop();  // Some(4)\n    println!(\"{:?}\", last);  // Some(4)\n    println!(\"{}\", nums.len());  // 3\n    println!(\"{}\", nums[0]);     // 1\n}",
+      "exercise": {
+        "prompt": "Create a Vec<i32> with values [10, 20, 30]. Push 40 and 50 onto it. Pop the last element and print it. Then print the length and the full vector.",
+        "starterCode": "fn main() {\n    let mut nums: Vec<i32> = vec![10, 20, 30];\n    nums.push();\n    nums.push();\n\n    let last = nums.pop().unwrap();\n    println!(\"{}\", last);\n    println!(\"{}\", nums.len());\n    println!(\"{:?}\", nums);\n}",
+        "validation": [
+          {"type": "output", "expected": "50\n4\n[10, 20, 30, 40]", "message": "After push 40, 50 then pop: last=50, len=4, vec=[10,20,30,40]"},
+          {"type": "contains", "patterns": ["push(40)", "push(50)", "pop()"], "message": "Push 40 and 50, then pop the last element"}
+        ],
+        "testCode": "",
+        "hint": "Push 40, then push 50. Pop removes the last pushed element (50)."
+      },
+      "order": 1
+    },
+    {
+      "id": "slices-iteration",
+      "title": "Slices and for loops",
+      "explanation": "A **slice** `&[T]` is a reference to a contiguous portion of a Vec. Use `&nums[start..end]` for a subslice. For loops iterate with `for x in &nums` (borrows) or `for x in nums.iter()`. Use `.enumerate()` to get `(index, value)` pairs — essential for interview problems.",
+      "example": "fn main() {\n    let nums = vec![10, 20, 30, 40, 50];\n    let slice = &nums[1..4];\n    println!(\"{:?}\", slice);  // [20, 30, 40]\n\n    for x in &nums {\n        print!(\"{} \", x);\n    }\n    println!();  // 10 20 30 40 50\n\n    for (i, x) in nums.iter().enumerate() {\n        print!(\"{}:{} \", i, x);\n    }\n    println!();  // 0:10 1:20 2:30 3:40 4:50\n}",
+      "exercise": {
+        "prompt": "Create a Vec with [5, 10, 15, 20, 25]. Print the slice from index 1 to 3 (exclusive). Then loop with enumerate and print each index:value pair space-separated.",
+        "starterCode": "fn main() {\n    let nums = vec![5, 10, 15, 20, 25];\n\n    let slice = &nums[1..];\n    println!(\"{:?}\", slice);\n\n    for (i, x) in nums.iter().enumerate() {\n        print!(\"{}:{} \", i, x);\n    }\n    println!();\n}",
+        "validation": [
+          {"type": "output", "expected": "[10, 15]\n0:5 1:10 2:15 3:20 4:25", "message": "Slice [1..3] gives [10, 15]. Enumerate prints all index:value pairs."},
+          {"type": "contains", "patterns": ["&nums[1..3]", ".enumerate()"], "message": "Use &nums[1..3] for the slice and .enumerate() for index-value iteration"}
+        ],
+        "testCode": "",
+        "hint": "Use &nums[1..3] to get elements at index 1 and 2. The range end is exclusive."
+      },
+      "order": 2
+    },
+    {
+      "id": "iterator-chains",
+      "title": "Iterator methods (map, filter, collect)",
+      "explanation": "Rust iterators let you chain transformations fluently. Use `.iter()` to start, then `.map()`, `.filter()`, `.sum()`, `.collect()`, etc. This is idiomatic Rust and interviewers expect it. `.collect::<Vec<_>>()` materializes an iterator back into a Vec.",
+      "example": "fn main() {\n    let nums = vec![1, 2, 3, 4, 5];\n\n    let doubled: Vec<i32> = nums.iter().map(|x| x * 2).collect();\n    println!(\"{:?}\", doubled);  // [2, 4, 6, 8, 10]\n\n    let evens: Vec<&i32> = nums.iter().filter(|x| *x % 2 == 0).collect();\n    println!(\"{:?}\", evens);  // [2, 4]\n\n    let sum: i32 = nums.iter().sum();\n    println!(\"{}\", sum);  // 15\n}",
+      "exercise": {
+        "prompt": "Given nums = [1, 2, 3, 4, 5, 6], use iterator methods to: (1) collect squares into a Vec, (2) filter only values > 3 and collect, (3) compute the sum. Print all three results.",
+        "starterCode": "fn main() {\n    let nums = vec![1, 2, 3, 4, 5, 6];\n\n    let squares: Vec<i32> = nums.iter().map(|x| x * x).collect();\n    println!(\"{:?}\", squares);\n\n    let big: Vec<&i32> = nums.iter().filter(|x| **x > ).collect();\n    println!(\"{:?}\", big);\n\n    let total: i32 = nums.iter().();\n    println!(\"{}\", total);\n}",
+        "validation": [
+          {"type": "output", "expected": "[1, 4, 9, 16, 25, 36]\n[4, 5, 6]\n21", "message": "Squares of 1-6, values > 3, and sum = 21"},
+          {"type": "contains", "patterns": [".map(", ".filter(", ".sum()"], "message": "Use .map() for transformation, .filter() for selection, and .sum() for reduction"}
+        ],
+        "testCode": "",
+        "hint": "Filter with **x > 3 (double deref because filter gives &&i32). Use .sum() for the total."
+      },
+      "order": 3
+    },
+    {
+      "id": "2d-vec",
+      "title": "2D Vec (matrix/grid)",
+      "explanation": "For grid/matrix problems, use `vec![vec![0; cols]; rows]` to create a 2D Vec. Access with `grid[r][c]`. This is the standard pattern for DP tables, visited arrays, and adjacency matrices in interviews.",
+      "example": "fn main() {\n    let rows = 3;\n    let cols = 4;\n    let mut grid = vec![vec![0; cols]; rows];\n    grid[0][0] = 1;\n    grid[1][2] = 5;\n\n    for row in &grid {\n        println!(\"{:?}\", row);\n    }\n    // [1, 0, 0, 0]\n    // [0, 0, 5, 0]\n    // [0, 0, 0, 0]\n}",
+      "exercise": {
+        "prompt": "Create a 3x3 grid initialized to 0. Set the diagonal elements (0,0), (1,1), (2,2) to 1 (identity matrix). Print each row.",
+        "starterCode": "fn main() {\n    let mut grid = vec![vec![0; 3]; 3];\n\n    for i in 0..3 {\n        grid[i][] = 1;\n    }\n\n    for row in &grid {\n        println!(\"{:?}\", row);\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "[1, 0, 0]\n[0, 1, 0]\n[0, 0, 1]", "message": "Diagonal elements should be 1, all others 0"},
+          {"type": "contains", "patterns": ["grid[i][i]", "vec![vec![0; 3]; 3]"], "message": "Set grid[i][i] = 1 for the diagonal and initialize with vec![vec![0; 3]; 3]"}
+        ],
+        "testCode": "",
+        "hint": "Set grid[i][i] = 1 in the loop to place 1s on the diagonal."
+      },
+      "order": 4
+    }
+  ]
+}

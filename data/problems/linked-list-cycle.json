@@ -23,14 +23,14 @@
     "go": "func solve(values []int, pos int) bool {\n    \n}"
   },
   "visibleTests": [
-    {"stdin": "print(solve([3, 2, 0, -4], 1))", "expectedStdout": "True"},
-    {"stdin": "print(solve([1, 2], 0))", "expectedStdout": "True"},
-    {"stdin": "print(solve([1], -1))", "expectedStdout": "False"}
+    {"stdin": {"python": "print(solve([3, 2, 0, -4], 1))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve([1, 2], 0))"}, "expectedStdout": "True"},
+    {"stdin": {"python": "print(solve([1], -1))"}, "expectedStdout": "False"}
   ],
   "hiddenTests": [
-    {"stdin": "print(solve([], -1))", "expectedStdout": "False"},
-    {"stdin": "print(solve([1, 2, 3, 4, 5], -1))", "expectedStdout": "False"},
-    {"stdin": "print(solve([1, 2, 3], 2))", "expectedStdout": "True"}
+    {"stdin": {"python": "print(solve([], -1))"}, "expectedStdout": "False"},
+    {"stdin": {"python": "print(solve([1, 2, 3, 4, 5], -1))"}, "expectedStdout": "False"},
+    {"stdin": {"python": "print(solve([1, 2, 3], 2))"}, "expectedStdout": "True"}
   ],
   "notesForAI": {
     "coreIdea": "Floyd's cycle detection (tortoise and hare): slow pointer moves 1 step, fast moves 2. If they meet, cycle exists.",

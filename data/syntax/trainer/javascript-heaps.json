@@ -1,0 +1,78 @@
+{
+  "id": "javascript-heaps",
+  "title": "Heaps",
+  "description": "JavaScript has no built-in heap, so you need to know how to implement a min-heap manually or use sorted arrays for top-K problems. Understanding the heap concept is critical for priority queue interview questions.",
+  "language": "javascript",
+  "category": "heaps",
+  "order": 9,
+  "sections": [
+    {
+      "id": "no-builtin",
+      "title": "No built-in heap in JavaScript",
+      "explanation": "Unlike Python or Java, JavaScript has no built-in priority queue or heap. In interviews, you have three options: implement a MinHeap class, use a sorted array for small inputs, or explain the heap approach and implement with sort. Know this gap and be ready to discuss the trade-offs.",
+      "example": "// Option 1: Sort-based approach for small inputs\nconst findKthSmallest = (nums, k) => {\n  nums.sort((a, b) => a - b);\n  return nums[k - 1];\n};\n\n// Option 2: Maintain a sorted insert\n// Option 3: Implement MinHeap class (shown next)",
+      "exercise": {
+        "prompt": "Given `nums = [7, 2, 9, 1, 5, 3]`, find the 3rd smallest element using sort. Print the sorted array joined by commas, then print the 3rd smallest value.",
+        "starterCode": "const nums = [7, 2, 9, 1, 5, 3];\nnums.sort((a, b) => a _____ b);\n\nconsole.log(nums.join(\",\"));\nconsole.log(nums[_____ - 1]);",
+        "validation": [
+          {"type": "output", "expected": "1,2,3,5,7,9\n3", "message": "Sorted: 1,2,3,5,7,9. Third smallest (index 2) is 3"},
+          {"type": "contains", "patterns": ["sort(", "a - b"], "message": "Use numeric sort with (a, b) => a - b comparator"}
+        ],
+        "testCode": "",
+        "hint": "Sort ascending with a - b. The kth smallest is at index k-1, so nums[3-1] = nums[2]."
+      },
+      "order": 1
+    },
+    {
+      "id": "manual-minheap",
+      "title": "Manual min-heap implementation",
+      "explanation": "A min-heap is a complete binary tree where each parent is smaller than its children. Store it in an array where node i has children at 2i+1 and 2i+2, and parent at Math.floor((i-1)/2). push() adds to the end and bubbles up; pop() swaps root with last, removes last, and bubbles down.",
+      "example": "class MinHeap {\n  constructor() { this.data = []; }\n  push(val) {\n    this.data.push(val);\n    this._bubbleUp(this.data.length - 1);\n  }\n  pop() {\n    const min = this.data[0];\n    const last = this.data.pop();\n    if (this.data.length > 0) {\n      this.data[0] = last;\n      this._bubbleDown(0);\n    }\n    return min;\n  }\n}",
+      "exercise": {
+        "prompt": "Complete the MinHeap with _bubbleUp. Push values 5, 3, 7, 1 into the heap, then pop twice and print each popped value. The smallest values should come out first.",
+        "starterCode": "class MinHeap {\n  constructor() { this.data = []; }\n  get size() { return this.data.length; }\n  push(val) {\n    this.data.push(val);\n    let i = this.data.length - 1;\n    while (i > 0) {\n      const parent = Math.floor((i - 1) / 2);\n      if (this.data[i] _____ this.data[parent]) {\n        [this.data[i], this.data[parent]] = [this.data[parent], this.data[i]];\n        i = parent;\n      } else break;\n    }\n  }\n  pop() {\n    const min = this.data[0];\n    const last = this.data.pop();\n    if (this.data.length > 0) {\n      this.data[0] = last;\n      let i = 0;\n      while (true) {\n        let smallest = i;\n        const left = 2 * i + 1, right = 2 * i + 2;\n        if (left < this.data.length && this.data[left] < this.data[smallest]) smallest = left;\n        if (right < this.data.length && this.data[right] < this.data[smallest]) smallest = right;\n        if (smallest !== i) {\n          [this.data[i], this.data[smallest]] = [this.data[smallest], this.data[i]];\n          i = smallest;\n        } else break;\n      }\n    }\n    return min;\n  }\n}\n\nconst heap = new MinHeap();\nheap.push(5);\nheap.push(3);\nheap.push(7);\nheap.push(1);\n\nconsole.log(heap.pop());\nconsole.log(heap.pop());",
+        "validation": [
+          {"type": "output", "expected": "1\n3", "message": "Min-heap pops smallest first: 1, then 3"},
+          {"type": "contains", "patterns": ["class MinHeap", "push(", "pop("], "message": "Implement a MinHeap class with push and pop methods"}
+        ],
+        "testCode": "",
+        "hint": "In bubbleUp, swap with parent when current value < parent value."
+      },
+      "order": 2
+    },
+    {
+      "id": "top-k-sort",
+      "title": "Top-K with sort",
+      "explanation": "For top-K problems when you don't need a full heap implementation, sort the array and take the first K or last K elements. This is O(n log n) vs O(n log k) with a real heap, but it's clean and fast to write in interviews. Always mention the trade-off.",
+      "example": "function topK(nums, k) {\n  return nums.sort((a, b) => b - a).slice(0, k);\n}\n\nconsole.log(topK([3, 1, 5, 2, 4], 3)); // [5, 4, 3]",
+      "exercise": {
+        "prompt": "Find the top 3 largest values from [8, 2, 15, 3, 11, 7] using sort and slice. Print them joined by commas.",
+        "starterCode": "const nums = [8, 2, 15, 3, 11, 7];\n\nconst topK = nums.sort((a, b) => b _____ a).slice(0, _____);\nconsole.log(topK.join(\",\"));",
+        "validation": [
+          {"type": "output", "expected": "15,11,8", "message": "Top 3 largest: 15, 11, 8"},
+          {"type": "contains", "patterns": ["sort(", "slice("], "message": "Use sort descending then slice to get top-K elements"}
+        ],
+        "testCode": "",
+        "hint": "Sort descending with b - a, then slice(0, 3) for the top 3."
+      },
+      "order": 3
+    },
+    {
+      "id": "priority-queue-concept",
+      "title": "Priority queue concept",
+      "explanation": "A priority queue always serves the highest-priority element first. In interview problems like merge K sorted lists, Dijkstra's algorithm, or task scheduling, explain the priority queue concept even when using a sort-based approach. Interviewers want to hear you reason about O(log n) insert/extract vs O(n log n) re-sort.",
+      "example": "// Simulated priority queue using sorted insert\nfunction insertSorted(arr, val) {\n  let i = arr.length - 1;\n  arr.push(val);\n  while (i >= 0 && arr[i] > val) {\n    arr[i + 1] = arr[i];\n    i--;\n  }\n  arr[i + 1] = val;\n}\n\n// For interviews: just use sort after each insert for clarity\nconst pq = [];\npq.push(5); pq.push(1); pq.push(3);\npq.sort((a, b) => a - b);\n// pq[0] is always the minimum",
+      "exercise": {
+        "prompt": "Simulate a priority queue: push values 5, 1, 3, 2, 4 into an array, sort ascending, and process items from lowest to highest using shift(). Print each processed value on its own line.",
+        "starterCode": "const pq = [];\n[5, 1, 3, 2, 4].forEach(v => pq.push(v));\npq.sort((a, b) => a _____ b);\n\nwhile (pq.length > 0) {\n  console.log(pq._____());\n}",
+        "validation": [
+          {"type": "output", "expected": "1\n2\n3\n4\n5", "message": "Values processed in priority order: 1, 2, 3, 4, 5"},
+          {"type": "contains", "patterns": ["sort(", "shift("], "message": "Use sort for ordering and shift to extract the highest-priority element"}
+        ],
+        "testCode": "",
+        "hint": "Sort ascending with a - b, then shift() removes the smallest (highest priority) each time."
+      },
+      "order": 4
+    }
+  ]
+}

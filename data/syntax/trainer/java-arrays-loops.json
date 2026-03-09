@@ -1,0 +1,78 @@
+{
+  "id": "java-arrays-loops",
+  "title": "Arrays & Loops",
+  "description": "Work with Java arrays, ArrayList, iteration patterns, and 2D arrays for interview problems.",
+  "language": "java",
+  "category": "arrays-loops",
+  "order": 2,
+  "sections": [
+    {
+      "id": "java-al-intarray",
+      "title": "int[] Arrays: Declaration and Access",
+      "explanation": "Java arrays are fixed-size, zero-indexed. Declare with `int[] arr = new int[size]` or `int[] arr = {1, 2, 3}`. Access with `arr[i]`, get length with `arr.length` (no parentheses). Out-of-bounds access throws ArrayIndexOutOfBoundsException. Arrays are reference types—assigning one array variable to another copies the reference, not the data.",
+      "example": "public class Main {\n    public static void main(String[] args) {\n        int[] nums = {10, 20, 30, 40, 50};\n        System.out.println(nums[0]);       // 10\n        System.out.println(nums[4]);       // 50\n        System.out.println(nums.length);   // 5\n\n        nums[2] = 99;\n        System.out.println(nums[2]);       // 99\n    }\n}",
+      "exercise": {
+        "prompt": "Create an int array `scores` with values {85, 92, 78, 95, 88}. Print the first element, the last element (use scores.length - 1), and the total length.",
+        "starterCode": "public class Main {\n    public static void main(String[] args) {\n        // Create scores array\n\n        // Print first element, last element, and length\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "85\n88\n5", "message": "Print first element (85), last element (88), and length (5) on separate lines."},
+          {"type": "contains", "patterns": ["int[]", "scores.length"], "message": "Declare an int[] array and use .length for the size."}
+        ],
+        "testCode": "",
+        "hint": "Use int[] scores = {85, 92, 78, 95, 88}. Access last with scores[scores.length - 1]."
+      },
+      "order": 1
+    },
+    {
+      "id": "java-al-arraylist",
+      "title": "ArrayList: Dynamic Arrays",
+      "explanation": "ArrayList<Integer> is a resizable array. Add with `.add(val)`, access with `.get(i)`, update with `.set(i, val)`, remove with `.remove(i)`, size with `.size()`. Must use wrapper types (Integer, not int). Import `java.util.ArrayList`. In interviews, use ArrayList when the size is unknown upfront.",
+      "example": "import java.util.ArrayList;\n\npublic class Main {\n    public static void main(String[] args) {\n        ArrayList<Integer> list = new ArrayList<>();\n        list.add(10);\n        list.add(20);\n        list.add(30);\n        System.out.println(list.get(0));   // 10\n        System.out.println(list.size());   // 3\n\n        list.set(1, 99);\n        System.out.println(list);          // [10, 99, 30]\n\n        list.remove(0);\n        System.out.println(list);          // [99, 30]\n    }\n}",
+      "exercise": {
+        "prompt": "Create an ArrayList<String> called `names`. Add \"Alice\", \"Bob\", \"Charlie\". Print the size, then print the element at index 1. Remove the first element and print the list.",
+        "starterCode": "import java.util.ArrayList;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Create ArrayList and add names\n\n        // Print size, element at index 1, then remove first and print list\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "3\nBob\n[Bob, Charlie]", "message": "Print size (3), element at index 1 (Bob), then the list after removing index 0."},
+          {"type": "contains", "patterns": ["ArrayList<String>", ".add(", ".get(", ".remove("], "message": "Use ArrayList with add(), get(), and remove() methods."}
+        ],
+        "testCode": "",
+        "hint": "list.get(1) returns the second element. list.remove(0) removes the first element."
+      },
+      "order": 2
+    },
+    {
+      "id": "java-al-forloops",
+      "title": "For Loops and Enhanced For-Each",
+      "explanation": "Standard for loop: `for (int i = 0; i < arr.length; i++)`. Enhanced for-each: `for (int x : arr)` iterates over elements directly—cleaner but no index access. Use standard for when you need the index (e.g., comparing adjacent elements). Use for-each when you just need values. Both work on arrays and Collections.",
+      "example": "public class Main {\n    public static void main(String[] args) {\n        int[] nums = {1, 2, 3, 4, 5};\n\n        // Standard for loop\n        int sum = 0;\n        for (int i = 0; i < nums.length; i++) {\n            sum += nums[i];\n        }\n        System.out.println(sum);  // 15\n\n        // Enhanced for-each\n        int max = nums[0];\n        for (int n : nums) {\n            if (n > max) max = n;\n        }\n        System.out.println(max);  // 5\n    }\n}",
+      "exercise": {
+        "prompt": "Given int[] arr = {3, 7, 2, 9, 4}, use a standard for loop to find the sum of all elements and print it. Then use an enhanced for-each loop to find and print the minimum value.",
+        "starterCode": "public class Main {\n    public static void main(String[] args) {\n        int[] arr = {3, 7, 2, 9, 4};\n\n        // Standard for loop to find sum\n\n        // Enhanced for-each to find minimum\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "25\n2", "message": "Sum should be 25, minimum should be 2."},
+          {"type": "contains", "patterns": ["for (int i", "for (int", ": arr)"], "message": "Use a standard for(int i=...) loop and an enhanced for-each loop."}
+        ],
+        "testCode": "",
+        "hint": "Initialize sum to 0 and add each element. Initialize min to arr[0] and update if element is smaller."
+      },
+      "order": 3
+    },
+    {
+      "id": "java-al-2darray",
+      "title": "2D Arrays",
+      "explanation": "2D arrays are arrays of arrays: `int[][] grid = new int[rows][cols]`. Access with `grid[row][col]`. Rows: `grid.length`, columns: `grid[0].length`. Nested loops iterate row-by-row. Common in matrix and grid interview problems (DFS/BFS on grids, dynamic programming tables).",
+      "example": "public class Main {\n    public static void main(String[] args) {\n        int[][] grid = {\n            {1, 2, 3},\n            {4, 5, 6},\n            {7, 8, 9}\n        };\n\n        System.out.println(grid.length);      // 3 (rows)\n        System.out.println(grid[0].length);   // 3 (cols)\n        System.out.println(grid[1][2]);       // 6\n\n        for (int r = 0; r < grid.length; r++) {\n            for (int c = 0; c < grid[0].length; c++) {\n                System.out.print(grid[r][c] + \" \");\n            }\n            System.out.println();\n        }\n    }\n}",
+      "exercise": {
+        "prompt": "Create a 2x3 grid: {{1,2,3},{4,5,6}}. Print the number of rows, number of columns, and the element at row 1 col 2. Then print the sum of all elements using nested for loops.",
+        "starterCode": "public class Main {\n    public static void main(String[] args) {\n        // Create 2x3 grid\n\n        // Print rows, cols, element at [1][2]\n\n        // Print sum of all elements\n\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "2\n3\n6\n21", "message": "Rows=2, Cols=3, grid[1][2]=6, total sum=21."},
+          {"type": "contains", "patterns": ["int[][]", "grid.length", "grid[0].length"], "message": "Use int[][] for 2D array and .length for dimensions."}
+        ],
+        "testCode": "",
+        "hint": "grid.length gives rows, grid[0].length gives cols. Nested loops accumulate the sum."
+      },
+      "order": 4
+    }
+  ]
+}

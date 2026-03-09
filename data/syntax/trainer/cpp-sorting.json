@@ -1,0 +1,78 @@
+{
+  "id": "cpp-sorting",
+  "title": "Sorting",
+  "description": "Sorting is the gateway to countless interview optimizations — master sort(), custom comparators, lambda sort, and partial_sort so you can reach for the right tool instantly.",
+  "language": "cpp",
+  "category": "sorting",
+  "order": 7,
+  "sections": [
+    {
+      "id": "basic-sort",
+      "title": "sort() basics",
+      "explanation": "**sort(begin, end)** sorts a range in ascending order using introsort (O(n log n) guaranteed). It works on vectors, arrays, and strings. Always pass `.begin()` and `.end()` iterators. Sort is in-place and not stable — use **stable_sort** if you need to preserve equal-element order.",
+      "example": "vector<int> nums = {5, 2, 8, 1, 9, 3};\nsort(nums.begin(), nums.end());\nfor (int x : nums) cout << x << \" \";\n// Output: 1 2 3 5 8 9\n\nstring s = \"dcba\";\nsort(s.begin(), s.end());\ncout << s << endl;  // abcd",
+      "exercise": {
+        "prompt": "Sort the vector {7, 3, 9, 1, 5} in ascending order and print the elements space-separated. Then sort the string \"interview\" alphabetically and print it.",
+        "starterCode": "int main() {\n    vector<int> nums = {7, 3, 9, 1, 5};\n    sort(nums.(), nums.());\n    for (int x : nums) cout << x << \" \";\n    cout << endl;\n\n    string s = \"interview\";\n    sort(s.begin(), s.end());\n    cout << s << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "1 3 5 7 9 \neeiinrtvw", "message": "Numbers sorted ascending, string sorted alphabetically"},
+          {"type": "contains", "patterns": ["sort(nums.begin(), nums.end())", "sort(s.begin(), s.end())"], "message": "Use sort() with begin() and end() iterators"}
+        ],
+        "testCode": "",
+        "hint": "sort(nums.begin(), nums.end()) sorts in place. Same pattern works for strings."
+      },
+      "order": 1
+    },
+    {
+      "id": "custom-comparator",
+      "title": "Custom comparator",
+      "explanation": "Pass a comparison function as the third argument to sort. The comparator takes two elements and returns true if the first should come before the second. Use **greater<int>()** for descending order, or write a custom function for complex sorting logic.",
+      "example": "vector<int> nums = {5, 2, 8, 1, 9};\n\n// Descending with built-in comparator\nsort(nums.begin(), nums.end(), greater<int>());\nfor (int x : nums) cout << x << \" \";\n// Output: 9 8 5 2 1\n\n// Custom: sort by absolute value\nbool cmpAbs(int a, int b) {\n    return abs(a) < abs(b);\n}\nvector<int> v = {-5, 3, -1, 4, -2};\nsort(v.begin(), v.end(), cmpAbs);\n// Result: -1 -2 3 4 -5",
+      "exercise": {
+        "prompt": "Sort the vector {4, 1, 7, 2, 9} in descending order using greater<int>(). Print the result space-separated.",
+        "starterCode": "int main() {\n    vector<int> nums = {4, 1, 7, 2, 9};\n    sort(nums.begin(), nums.end(), <>());\n    for (int x : nums) cout << x << \" \";\n    cout << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "9 7 4 2 1", "message": "Descending order: 9 7 4 2 1"},
+          {"type": "contains", "patterns": ["greater<int>()"], "message": "Use greater<int>() as the comparator for descending sort"}
+        ],
+        "testCode": "",
+        "hint": "Pass greater<int>() as the third argument to sort for descending order."
+      },
+      "order": 2
+    },
+    {
+      "id": "lambda-sort",
+      "title": "Lambda sort",
+      "explanation": "The most flexible way to customize sorting is with a **lambda comparator**. This is the standard interview pattern for sorting pairs, structs, or by computed keys. The lambda returns true if `a` should come before `b`.",
+      "example": "// Sort pairs by second element\nvector<pair<string,int>> scores = {{\"Alice\",90}, {\"Bob\",70}, {\"Carol\",85}};\nsort(scores.begin(), scores.end(), [](const auto& a, const auto& b) {\n    return a.second > b.second;  // descending by score\n});\nfor (auto& [name, score] : scores) {\n    cout << name << \": \" << score << endl;\n}\n// Alice: 90, Carol: 85, Bob: 70",
+      "exercise": {
+        "prompt": "Sort a vector of pairs {(\"banana\", 2), (\"apple\", 5), (\"cherry\", 1)} by their integer value in ascending order. Print each pair as \"name: value\".",
+        "starterCode": "int main() {\n    vector<pair<string,int>> items = {{\"banana\", 2}, {\"apple\", 5}, {\"cherry\", 1}};\n    sort(items.begin(), items.end(), [](const auto& a, const auto& b) {\n        return a. < b.;\n    });\n    for (auto& [name, val] : items) {\n        cout << name << \": \" << val << endl;\n    }\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "cherry: 1\nbanana: 2\napple: 5", "message": "Sorted by value ascending: cherry(1), banana(2), apple(5)"},
+          {"type": "contains", "patterns": ["a.second < b.second", "[](const auto&"], "message": "Use a lambda comparing .second for ascending value sort"}
+        ],
+        "testCode": "",
+        "hint": "Compare a.second < b.second for ascending order by the integer value."
+      },
+      "order": 3
+    },
+    {
+      "id": "partial-sort",
+      "title": "partial_sort",
+      "explanation": "**partial_sort(begin, middle, end)** sorts only the first (middle - begin) elements, which is O(n log k) instead of O(n log n). Use it when you only need the top-K smallest elements. The rest of the range is left in unspecified order. For top-K largest, combine with a custom comparator.",
+      "example": "vector<int> nums = {9, 3, 7, 1, 8, 2, 5};\n\n// Get the 3 smallest elements sorted\npartial_sort(nums.begin(), nums.begin() + 3, nums.end());\nfor (int i = 0; i < 3; i++) {\n    cout << nums[i] << \" \";\n}\n// Output: 1 2 3",
+      "exercise": {
+        "prompt": "Given the vector {15, 3, 8, 1, 12, 5, 9}, use partial_sort to sort only the 4 smallest elements into the front. Print those 4 elements space-separated.",
+        "starterCode": "int main() {\n    vector<int> nums = {15, 3, 8, 1, 12, 5, 9};\n    partial_sort(nums.begin(), nums.begin() + , nums.end());\n    for (int i = 0; i < 4; i++) {\n        cout << nums[i] << \" \";\n    }\n    cout << endl;\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "1 3 5 8", "message": "The 4 smallest elements sorted: 1 3 5 8"},
+          {"type": "contains", "patterns": ["partial_sort", "nums.begin() + 4"], "message": "Use partial_sort with begin + 4 as the middle iterator"}
+        ],
+        "testCode": "",
+        "hint": "partial_sort(begin, begin + 4, end) places the 4 smallest elements sorted at the front."
+      },
+      "order": 4
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "id": "lowest-common-ancestor",
+  "title": "Lowest Common Ancestor of a Binary Search Tree",
+  "difficulty": "Medium",
+  "tags": ["tree", "recursion"],
+  "prompt": "Given a binary search tree (BST) represented as an array (level-order), find the lowest common ancestor (LCA) node of two given values `p` and `q`.\n\nThe lowest common ancestor is defined as the lowest node in the tree that has both `p` and `q` as descendants (where we allow a node to be a descendant of itself).\n\nThe tree is represented as an array where index 0 is the root, and for a node at index `i`, its left child is at `2*i + 1` and right child at `2*i + 2`. `None` values represent absent nodes.\n\nBoth `p` and `q` are guaranteed to exist in the tree. Return the value of the LCA node.",
+  "examples": [
+    {"input": "tree = [6, 2, 8, 0, 4, 7, 9, None, None, 3, 5], p = 2, q = 8", "output": "6\nExplanation: The LCA of nodes 2 and 8 is 6, the root."},
+    {"input": "tree = [6, 2, 8, 0, 4, 7, 9, None, None, 3, 5], p = 2, q = 4", "output": "2\nExplanation: The LCA of nodes 2 and 4 is 2, since a node can be a descendant of itself."}
+  ],
+  "constraints": [
+    "2 <= number of nodes <= 10^5",
+    "-10^9 <= Node.val <= 10^9",
+    "All Node.val are unique.",
+    "p != q",
+    "p and q exist in the BST.",
+    "The tree is given as an array in level-order with None for missing nodes."
+  ],
+  "starterCode": {
+    "python": "def solve(tree, p, q):\n    pass",
+    "javascript": "function solve(tree, p, q) {\n  \n}",
+    "typescript": "export function solve(tree: (number | null)[], p: number, q: number): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(Integer[] tree, int p, int q) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(int?[] tree, int p, int q) {\n        \n    }\n}",
+    "go": "func solve(tree []*int, p int, q int) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([6, 2, 8, 0, 4, 7, 9, None, None, 3, 5], 2, 8))"}, "expectedStdout": "6"},
+    {"stdin": {"python": "print(solve([6, 2, 8, 0, 4, 7, 9, None, None, 3, 5], 2, 4))"}, "expectedStdout": "2"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([6, 2, 8, 0, 4, 7, 9, None, None, 3, 5], 3, 5))"}, "expectedStdout": "4"},
+    {"stdin": {"python": "print(solve([6, 2, 8, 0, 4, 7, 9, None, None, 3, 5], 0, 5))"}, "expectedStdout": "2"},
+    {"stdin": {"python": "print(solve([2, 1], 2, 1))"}, "expectedStdout": "2"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Leverage BST property: starting from root, if both p and q are smaller than current node, LCA is in left subtree. If both are larger, LCA is in right subtree. Otherwise, current node is the LCA (the split point). This gives an iterative O(H) solution.",
+    "commonBugs": ["Using a generic binary tree LCA algorithm instead of exploiting BST property", "Not handling the case where one of p or q is the current node (it is the LCA)", "Incorrect traversal of the array representation"],
+    "expectedComplexity": "O(H) where H is tree height"
+  }
+}

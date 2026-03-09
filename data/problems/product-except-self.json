@@ -22,13 +22,13 @@
     "go": "func solve(nums []int) []int {\n    \n}"
   },
   "visibleTests": [
-    {"stdin": "print(solve([1, 2, 3, 4]))", "expectedStdout": "[24, 12, 8, 6]"},
-    {"stdin": "print(solve([-1, 1, 0, -3, 3]))", "expectedStdout": "[0, 0, 9, 0, 0]"}
+    {"stdin": {"python": "print(solve([1, 2, 3, 4]))"}, "expectedStdout": "[24, 12, 8, 6]"},
+    {"stdin": {"python": "print(solve([-1, 1, 0, -3, 3]))"}, "expectedStdout": "[0, 0, 9, 0, 0]"}
   ],
   "hiddenTests": [
-    {"stdin": "print(solve([0, 0]))", "expectedStdout": "[0, 0]"},
-    {"stdin": "print(solve([1, 1]))", "expectedStdout": "[1, 1]"},
-    {"stdin": "print(solve([2, 3]))", "expectedStdout": "[3, 2]"}
+    {"stdin": {"python": "print(solve([0, 0]))"}, "expectedStdout": "[0, 0]"},
+    {"stdin": {"python": "print(solve([1, 1]))"}, "expectedStdout": "[1, 1]"},
+    {"stdin": {"python": "print(solve([2, 3]))"}, "expectedStdout": "[3, 2]"}
   ],
   "notesForAI": {
     "coreIdea": "Use two passes: left-to-right for prefix products, right-to-left for suffix products. Combine them in-place.",

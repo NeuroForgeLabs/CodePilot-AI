@@ -1,0 +1,37 @@
+{
+  "id": "edit-distance",
+  "title": "Edit Distance",
+  "difficulty": "Hard",
+  "tags": ["strings", "dynamic-programming"],
+  "prompt": "Given two strings `word1` and `word2`, return the minimum number of operations required to convert `word1` to `word2`.\n\nYou have the following three operations permitted on a word:\n- Insert a character\n- Delete a character\n- Replace a character",
+  "examples": [
+    {"input": "word1 = \"horse\", word2 = \"ros\"", "output": "3\nExplanation: horse -> rorse (replace 'h' with 'r') -> rose (remove 'r') -> ros (remove 'e')"},
+    {"input": "word1 = \"intention\", word2 = \"execution\"", "output": "5\nExplanation: intention -> inention (remove 't') -> enention (replace 'i' with 'e') -> exention (replace 'n' with 'x') -> exection (replace 'n' with 'c') -> execution (insert 'u')"}
+  ],
+  "constraints": [
+    "0 <= word1.length, word2.length <= 500",
+    "word1 and word2 consist of lowercase English letters."
+  ],
+  "starterCode": {
+    "python": "def solve(word1, word2):\n    pass",
+    "javascript": "function solve(word1, word2) {\n  \n}",
+    "typescript": "export function solve(word1: string, word2: string): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(String word1, String word2) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(string word1, string word2) {\n        \n    }\n}",
+    "go": "func solve(word1 string, word2 string) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve(\"horse\", \"ros\"))"}, "expectedStdout": "3"},
+    {"stdin": {"python": "print(solve(\"intention\", \"execution\"))"}, "expectedStdout": "5"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve(\"\", \"\"))"}, "expectedStdout": "0"},
+    {"stdin": {"python": "print(solve(\"\", \"abc\"))"}, "expectedStdout": "3"},
+    {"stdin": {"python": "print(solve(\"abc\", \"abc\"))"}, "expectedStdout": "0"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Classic 2D DP. Let dp[i][j] = min operations to convert word1[0..i-1] to word2[0..j-1]. If word1[i-1] == word2[j-1], dp[i][j] = dp[i-1][j-1]. Otherwise, dp[i][j] = 1 + min(dp[i-1][j] (delete), dp[i][j-1] (insert), dp[i-1][j-1] (replace)). Base cases: dp[i][0] = i, dp[0][j] = j.",
+    "commonBugs": ["Incorrect base case initialization (dp[i][0] should be i, dp[0][j] should be j)", "Confusing 0-indexed string access with 1-indexed DP table", "Not considering the equal character case which skips the +1 cost", "Using wrong indices for insert vs delete operations"],
+    "expectedComplexity": "O(m * n) time and space, optimizable to O(min(m, n)) space"
+  }
+}

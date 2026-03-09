@@ -1,0 +1,40 @@
+{
+  "id": "missing-number",
+  "title": "Missing Number",
+  "difficulty": "Easy",
+  "tags": ["arrays", "math", "bit-manipulation"],
+  "prompt": "Given an array `nums` containing `n` distinct numbers in the range `[0, n]`, return the only number in the range that is missing from the array.",
+  "examples": [
+    {"input": "nums = [3, 0, 1]", "output": "2\nExplanation: n = 3 since there are 3 numbers, so all numbers are in [0, 3]. 2 is missing."},
+    {"input": "nums = [0, 1]", "output": "2\nExplanation: n = 2 since there are 2 numbers, so all numbers are in [0, 2]. 2 is missing."},
+    {"input": "nums = [9, 6, 4, 2, 3, 5, 7, 0, 1]", "output": "8"}
+  ],
+  "constraints": [
+    "n == nums.length",
+    "1 <= n <= 10^4",
+    "0 <= nums[i] <= n",
+    "All the numbers of nums are unique."
+  ],
+  "starterCode": {
+    "python": "def solve(nums):\n    pass",
+    "javascript": "function solve(nums) {\n  \n}",
+    "typescript": "export function solve(nums: number[]): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(int[] nums) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(int[] nums) {\n        \n    }\n}",
+    "go": "func solve(nums []int) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([3, 0, 1]))"}, "expectedStdout": "2"},
+    {"stdin": {"python": "print(solve([0, 1]))"}, "expectedStdout": "2"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([9, 6, 4, 2, 3, 5, 7, 0, 1]))"}, "expectedStdout": "8"},
+    {"stdin": {"python": "print(solve([0]))"}, "expectedStdout": "1"},
+    {"stdin": {"python": "print(solve([1]))"}, "expectedStdout": "0"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use Gauss's formula: expected sum = n*(n+1)/2, then subtract the actual sum. Alternatively, XOR all indices 0..n with all elements; pairs cancel, leaving the missing number.",
+    "commonBugs": ["Integer overflow with large n when using sum (not an issue in Python)", "Off-by-one in the range calculation", "Forgetting that 0 can be the missing number"],
+    "expectedComplexity": "O(n)"
+  }
+}

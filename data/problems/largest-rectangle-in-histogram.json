@@ -1,0 +1,38 @@
+{
+  "id": "largest-rectangle-in-histogram",
+  "title": "Largest Rectangle in Histogram",
+  "difficulty": "Hard",
+  "tags": ["arrays", "stack"],
+  "prompt": "Given an array of integers `heights` representing the histogram's bar heights where the width of each bar is `1`, return the area of the largest rectangle in the histogram.",
+  "examples": [
+    {"input": "heights = [2,1,5,6,2,3]", "output": "10\nExplanation: The largest rectangle has area = 10 (spanning bars of height 5 and 6 with width 2)."},
+    {"input": "heights = [2,4]", "output": "4\nExplanation: The largest rectangle is the single bar of height 4."},
+    {"input": "heights = [1,1,1,1]", "output": "4\nExplanation: All bars have height 1, so the widest rectangle spans all 4 bars."}
+  ],
+  "constraints": [
+    "1 <= heights.length <= 10^5",
+    "0 <= heights[i] <= 10^4"
+  ],
+  "starterCode": {
+    "python": "def solve(heights: list[int]) -> int:\n    pass",
+    "javascript": "function solve(heights) {\n  \n}",
+    "typescript": "export function solve(heights: number[]): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(int[] heights) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(int[] heights) {\n        \n    }\n}",
+    "go": "func solve(heights []int) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([2,1,5,6,2,3]))"}, "expectedStdout": "10"},
+    {"stdin": {"python": "print(solve([2,4]))"}, "expectedStdout": "4"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([1,1,1,1]))"}, "expectedStdout": "4"},
+    {"stdin": {"python": "print(solve([6,2,5,4,5,1,6]))"}, "expectedStdout": "12"},
+    {"stdin": {"python": "print(solve([1]))"}, "expectedStdout": "1"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use a monotonic increasing stack of indices. For each bar, while the stack's top bar is taller than the current bar, pop it and calculate the area with the popped bar as the shortest bar. The width extends from the new stack top to the current index. After processing all bars, drain the stack the same way.",
+    "commonBugs": ["Not draining remaining elements in the stack after iterating through all bars", "Incorrect width calculation when stack is empty (width should be current index, not current index minus 0)", "Off-by-one in width calculation: width = i - stack[-1] - 1 (not i - stack[-1])"],
+    "expectedComplexity": "O(n)"
+  }
+}

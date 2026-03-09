@@ -1,0 +1,38 @@
+{
+  "id": "longest-valid-parentheses",
+  "title": "Longest Valid Parentheses",
+  "difficulty": "Hard",
+  "tags": ["strings", "stack", "dynamic-programming"],
+  "prompt": "Given a string containing just the characters `'('` and `')'`, return the length of the longest valid (well-formed) parentheses substring.",
+  "examples": [
+    {"input": "s = \"(()\"", "output": "2\nExplanation: The longest valid parentheses substring is \"()\"."},
+    {"input": "s = \")()())\"", "output": "4\nExplanation: The longest valid parentheses substring is \"()()\"."},
+    {"input": "s = \"\"", "output": "0"}
+  ],
+  "constraints": [
+    "0 <= s.length <= 3 * 10^4",
+    "s[i] is '(' or ')'."
+  ],
+  "starterCode": {
+    "python": "def solve(s):\n    pass",
+    "javascript": "function solve(s) {\n  \n}",
+    "typescript": "export function solve(s: string): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(String s) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(string s) {\n        \n    }\n}",
+    "go": "func solve(s string) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve(\"(()\"))"}, "expectedStdout": "2"},
+    {"stdin": {"python": "print(solve(\")()())\"))"}, "expectedStdout": "4"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve(\"\"))"}, "expectedStdout": "0"},
+    {"stdin": {"python": "print(solve(\"()(())\"))"}, "expectedStdout": "6"},
+    {"stdin": {"python": "print(solve(\"()()\"))"}, "expectedStdout": "4"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Stack-based: push indices onto a stack. Initialize with -1 as a base. For '(', push index. For ')', pop; if stack empty push current index as new base, else result = max(result, i - stack.top()). Alternatively, use DP where dp[i] = length of longest valid substring ending at i.",
+    "commonBugs": ["Forgetting the initial -1 sentinel on the stack", "Not considering concatenated valid substrings like ()() which should return 4", "DP transition missing the case where the character before the matched substring is also '('", "Returning the count of matched pairs instead of the length"],
+    "expectedComplexity": "O(n) time, O(n) space with stack; O(1) space with two-pass counting"
+  }
+}

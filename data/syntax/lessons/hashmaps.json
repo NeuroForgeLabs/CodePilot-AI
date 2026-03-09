@@ -1,0 +1,74 @@
+{
+  "id": "hashmaps",
+  "title": "Hashmaps / Dictionaries",
+  "description": "The most important data structure in coding interviews. Store key-value pairs for O(1) lookup.",
+  "order": 1,
+  "sections": [
+    {
+      "id": "creating",
+      "title": "Creating a hashmap",
+      "type": "concept",
+      "explanation": "A hashmap stores key→value pairs. In interviews, you almost always use it to track seen values, count occurrences, or map one value to another.",
+      "snippets": {
+        "python": "# Empty dict\nseen = {}\nseen = dict()\n\n# Pre-filled\ncounts = {\"a\": 1, \"b\": 2}\n\n# defaultdict — auto-initializes missing keys\nfrom collections import defaultdict\nfreq = defaultdict(int)\nfreq[\"x\"] += 1  # No KeyError, starts at 0",
+        "javascript": "// Empty object (simple cases)\nconst seen = {};\n\n// Map (preferred for interview problems)\nconst seen2 = new Map();\n\n// Pre-filled\nconst counts = new Map([[\"a\", 1], [\"b\", 2]]);",
+        "java": "// HashMap (most common)\nMap<String, Integer> seen = new HashMap<>();\n\n// Pre-filled (Java 9+)\nMap<String, Integer> counts = Map.of(\"a\", 1, \"b\", 2);\n\n// getOrDefault — like Python's defaultdict\nint val = seen.getOrDefault(key, 0);"
+      }
+    },
+    {
+      "id": "lookup",
+      "title": "Insert and check keys",
+      "type": "snippet",
+      "explanation": "The core interview operation: check if a key exists, then insert or retrieve.",
+      "snippets": {
+        "python": "# Insert\nseen[key] = value\n\n# Check existence\nif key in seen:\n    return seen[key]\n\n# Get with default (avoids KeyError)\nval = seen.get(key, 0)\n\n# Delete\ndel seen[key]",
+        "javascript": "// Using Map\nseen.set(key, value);\n\nif (seen.has(key)) {\n    return seen.get(key);\n}\n\n// Delete\nseen.delete(key);\n\n// Using plain object\nobj[key] = value;\nif (key in obj) { ... }\nif (obj[key] !== undefined) { ... }",
+        "java": "// Insert\nseen.put(key, value);\n\n// Check existence\nif (seen.containsKey(key)) {\n    return seen.get(key);\n}\n\n// Get with default\nint val = seen.getOrDefault(key, 0);\n\n// Delete\nseen.remove(key);"
+      }
+    },
+    {
+      "id": "iterating",
+      "title": "Looping over a hashmap",
+      "type": "snippet",
+      "explanation": "Iterating keys, values, or both. Common in frequency counting and grouping problems.",
+      "snippets": {
+        "python": "# Keys and values\nfor key, val in seen.items():\n    print(key, val)\n\n# Keys only\nfor key in seen:\n    print(key)\n\n# Values only\nfor val in seen.values():\n    print(val)",
+        "javascript": "// Map\nfor (const [key, val] of seen) {\n    console.log(key, val);\n}\n\n// Plain object\nfor (const key in obj) {\n    console.log(key, obj[key]);\n}\n\n// Object.entries\nfor (const [k, v] of Object.entries(obj)) {\n    console.log(k, v);\n}",
+        "java": "// Key-value pairs\nfor (Map.Entry<String, Integer> e : seen.entrySet()) {\n    System.out.println(e.getKey() + \" \" + e.getValue());\n}\n\n// Keys only\nfor (String key : seen.keySet()) { ... }\n\n// Values only\nfor (int val : seen.values()) { ... }"
+      }
+    },
+    {
+      "id": "counter",
+      "title": "Frequency counting",
+      "type": "pattern",
+      "explanation": "Counting occurrences is one of the most common hashmap patterns. Every language has a shortcut.",
+      "snippets": {
+        "python": "from collections import Counter\n\n# Count characters\nfreq = Counter(\"aabbc\")\n# Counter({'a': 2, 'b': 2, 'c': 1})\n\n# Count list elements\nfreq = Counter([1, 2, 2, 3, 3, 3])\n\n# Most common\nfreq.most_common(2)  # [(3, 3), (2, 2)]",
+        "javascript": "// Manual frequency count\nconst freq = new Map();\nfor (const ch of str) {\n    freq.set(ch, (freq.get(ch) || 0) + 1);\n}\n\n// Using reduce\nconst freq2 = [...str].reduce((m, ch) => {\n    m.set(ch, (m.get(ch) || 0) + 1);\n    return m;\n}, new Map());",
+        "java": "// Manual frequency count\nMap<Character, Integer> freq = new HashMap<>();\nfor (char ch : str.toCharArray()) {\n    freq.merge(ch, 1, Integer::sum);\n}\n\n// Or with getOrDefault\nfor (char ch : str.toCharArray()) {\n    freq.put(ch, freq.getOrDefault(ch, 0) + 1);\n}"
+      }
+    },
+    {
+      "id": "two-sum-pattern",
+      "title": "Interview Pattern: Complement Lookup",
+      "type": "pattern",
+      "explanation": "The most common hashmap pattern: for each element, check if its complement exists. Used in Two Sum, pair sum problems, and target-based searches.",
+      "snippets": {
+        "python": "seen = {}\nfor i, num in enumerate(nums):\n    comp = target - num\n    if comp in seen:\n        return [seen[comp], i]\n    seen[num] = i",
+        "javascript": "const seen = new Map();\nfor (let i = 0; i < nums.length; i++) {\n    const comp = target - nums[i];\n    if (seen.has(comp)) {\n        return [seen.get(comp), i];\n    }\n    seen.set(nums[i], i);\n}",
+        "java": "Map<Integer, Integer> seen = new HashMap<>();\nfor (int i = 0; i < nums.length; i++) {\n    int comp = target - nums[i];\n    if (seen.containsKey(comp)) {\n        return new int[]{seen.get(comp), i};\n    }\n    seen.put(nums[i], i);\n}"
+      }
+    },
+    {
+      "id": "gotcha-mutable-keys",
+      "title": "Gotcha: Key types and mutability",
+      "type": "gotcha",
+      "explanation": "Not everything can be a hashmap key. Knowing the rules avoids subtle bugs.",
+      "snippets": {
+        "python": "# ✅ Immutable types work as keys\nseen = {(1, 2): True}   # tuple OK\nseen = {\"abc\": True}     # string OK\nseen = {42: True}        # int OK\n\n# ❌ Mutable types fail\n# seen = {[1, 2]: True}  # TypeError: unhashable type: 'list'\n\n# Convert list to tuple for use as key\nkey = tuple(sorted(my_list))",
+        "javascript": "// Plain objects coerce keys to strings\nconst obj = {};\nobj[[1, 2]] = true; // key becomes \"1,2\"\n\n// Map supports any key type\nconst m = new Map();\nm.set([1, 2], true); // works, but uses reference equality\n\n// For complex keys, stringify them\nconst key = JSON.stringify([1, 2]);",
+        "java": "// Integer, String, Character — all work\nMap<Integer, Boolean> m = new HashMap<>();\n\n// Arrays do NOT work as keys (uses reference equality)\n// Use Arrays.toString() or List instead\nMap<String, Boolean> m2 = new HashMap<>();\nm2.put(Arrays.toString(arr), true);\n\n// Or use List<Integer> as key\nMap<List<Integer>, Boolean> m3 = new HashMap<>();"
+      }
+    }
+  ]
+}

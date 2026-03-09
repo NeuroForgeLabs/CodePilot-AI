@@ -1,0 +1,38 @@
+{
+  "id": "min-stack",
+  "title": "Min Stack",
+  "difficulty": "Easy",
+  "tags": ["stack"],
+  "prompt": "Design a stack that supports push, pop, and retrieving the minimum element in constant time.\n\nYou are given a list of operations. Each operation is one of:\n- `[\"push\", x]` — push element x onto the stack\n- `[\"pop\"]` — remove the element on top of the stack\n- `[\"getMin\"]` — retrieve the minimum element in the stack\n\nReturn a list containing the results of all `getMin` operations in order. All `getMin` and `pop` operations are guaranteed to be called on a non-empty stack.",
+  "examples": [
+    {"input": "operations = [[\"push\", -2], [\"push\", 0], [\"push\", -3], [\"getMin\"], [\"pop\"], [\"getMin\"]]", "output": "[-3, -2]\nExplanation: After pushing -2, 0, -3, the min is -3. After popping -3, the min is -2."},
+    {"input": "operations = [[\"push\", 1], [\"push\", 2], [\"getMin\"], [\"pop\"], [\"getMin\"]]", "output": "[1, 1]\nExplanation: The minimum is always 1 since it remains at the bottom."}
+  ],
+  "constraints": [
+    "-2^31 <= val <= 2^31 - 1",
+    "Methods pop and getMin will always be called on non-empty stacks",
+    "1 <= number of operations <= 3 * 10^4"
+  ],
+  "starterCode": {
+    "python": "def solve(operations):\n    pass",
+    "javascript": "function solve(operations) {\n  \n}",
+    "typescript": "export function solve(operations: (string | number)[][]): number[] {\n  \n}",
+    "java": "class Solution {\n    public int[] solve(Object[][] operations) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int[] Solve(object[][] operations) {\n        \n    }\n}",
+    "go": "func solve(operations [][]interface{}) []int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([[\"push\", -2], [\"push\", 0], [\"push\", -3], [\"getMin\"], [\"pop\"], [\"getMin\"]]))"}, "expectedStdout": "[-3, -2]"},
+    {"stdin": {"python": "print(solve([[\"push\", 1], [\"push\", 2], [\"getMin\"], [\"pop\"], [\"getMin\"]]))"}, "expectedStdout": "[1, 1]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([[\"push\", 5], [\"push\", 3], [\"push\", 7], [\"getMin\"], [\"pop\"], [\"pop\"], [\"getMin\"]]))"}, "expectedStdout": "[3, 5]"},
+    {"stdin": {"python": "print(solve([[\"push\", 0], [\"getMin\"], [\"push\", -1], [\"getMin\"], [\"push\", -2], [\"getMin\"]]))"}, "expectedStdout": "[0, -1, -2]"},
+    {"stdin": {"python": "print(solve([[\"push\", 2], [\"push\", 2], [\"pop\"], [\"getMin\"]]))"}, "expectedStdout": "[2]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Maintain two stacks: a main stack for values and a min stack that tracks the current minimum. On push, also push to min stack if the value is <= current min. On pop, also pop from min stack if the popped value equals the current min. getMin returns the top of the min stack.",
+    "commonBugs": ["Not pushing duplicate minimums to the min stack (if two equal minimums are pushed, both must be tracked)", "Popping from min stack when the value doesn't match the current min", "Using strict < instead of <= when deciding to push to min stack"],
+    "expectedComplexity": "O(1) per operation"
+  }
+}

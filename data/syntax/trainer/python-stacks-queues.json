@@ -1,0 +1,90 @@
+{
+  "id": "python-stacks-queues",
+  "title": "Stacks & Queues",
+  "description": "Master stack and queue operations in Python for coding interviews. Covers list-based stacks, deque-based queues, and essential patterns like valid parentheses, BFS traversal, and monotonic stacks.",
+  "language": "python",
+  "category": "stacks-queues",
+  "order": 8,
+  "sections": [
+    {
+      "id": "stack-ops",
+      "title": "Stack Operations with List",
+      "explanation": "Python lists work naturally as stacks with append() for push and pop() for pop, both O(1). Peek at the top element with [-1] without removing it. Interviewers expect you to use a plain list as a stack rather than importing a separate class.",
+      "example": "stack = []\nstack.append(10)\nstack.append(20)\nstack.append(30)\nprint(stack[-1])   # peek: 30\ntop = stack.pop()  # removes 30\nprint(top)         # 30\nprint(stack)       # [10, 20]",
+      "exercise": {
+        "prompt": "Push 5, 10, 15 onto a stack. Peek and print the top. Pop twice and print each popped value. Finally print the remaining stack.",
+        "starterCode": "stack = []\nstack._____(5)\nstack._____(10)\nstack._____(15)\nprint(stack[_____])\nprint(stack._____())\nprint(stack._____())\nprint(stack)",
+        "validation": {
+          "output": "15\n15\n10\n[5]",
+          "contains": ["append", "pop", "-1"]
+        },
+        "testCode": "",
+        "hint": "Use append() to push, [-1] to peek without removing, and pop() to remove and return the top element."
+      }
+    },
+    {
+      "id": "queue-ops",
+      "title": "Queue Operations with deque",
+      "explanation": "Use collections.deque for O(1) enqueue and dequeue. Call append() to add to the back and popleft() to remove from the front. Never use list.pop(0) in interviews — it's O(n) and signals you don't know the right data structure.",
+      "example": "from collections import deque\nq = deque()\nq.append('a')\nq.append('b')\nq.append('c')\nfront = q.popleft()  # removes 'a'\nprint(front)          # a\nprint(list(q))        # ['b', 'c']",
+      "exercise": {
+        "prompt": "Create a deque. Enqueue 1, 2, 3. Dequeue twice and print each value. Then print the remaining queue as a list.",
+        "starterCode": "from collections import _____\nq = _____()\nq._____(1)\nq._____(2)\nq._____(3)\nprint(q._____())\nprint(q._____())\nprint(list(q))",
+        "validation": {
+          "output": "1\n2\n[3]",
+          "contains": ["deque", "append", "popleft"]
+        },
+        "testCode": "",
+        "hint": "Import deque from collections. Use append() to enqueue and popleft() to dequeue from the front."
+      }
+    },
+    {
+      "id": "valid-parens",
+      "title": "Valid Parentheses Pattern",
+      "explanation": "The valid parentheses problem is a classic stack interview question. Push every opening bracket onto the stack and pop when you see a closing bracket, checking it matches. If the stack is empty at the end with no mismatches, the string is valid.",
+      "example": "def is_valid(s):\n    stack = []\n    pairs = {')': '(', ']': '[', '}': '{'}\n    for ch in s:\n        if ch in '([{':\n            stack.append(ch)\n        elif stack and stack[-1] == pairs[ch]:\n            stack.pop()\n        else:\n            return False\n    return len(stack) == 0\nprint(is_valid('()[]{}'))  # True",
+      "exercise": {
+        "prompt": "Check if the string \"({[]})\" is valid using a stack. Print True if valid, False otherwise.",
+        "starterCode": "s = \"({[]})\"\nstack = []\npairs = {')': '(', ']': '[', '}': '{'}\nvalid = True\nfor ch in s:\n    if ch in '([{':\n        stack._____(ch)\n    elif stack and stack[_____] == pairs[ch]:\n        stack._____()\n    else:\n        valid = _____\n        break\nif stack:\n    valid = _____\nprint(valid)",
+        "validation": {
+          "output": "True",
+          "contains": ["append", "pop", "-1"]
+        },
+        "testCode": "",
+        "hint": "Push opening brackets with append(). Peek with [-1] to compare against the matching pair, then pop() on match. Set valid to False on mismatch or if the stack isn't empty at the end."
+      }
+    },
+    {
+      "id": "bfs-template",
+      "title": "BFS Template with deque",
+      "explanation": "BFS uses a queue to explore nodes level by level and is the go-to approach for shortest-path problems on unweighted graphs. Start by enqueuing the source node, then loop: dequeue a node, process it, and enqueue all unvisited neighbors. Always track a visited set to avoid cycles.",
+      "example": "from collections import deque\ndef bfs(graph, start):\n    visited = set([start])\n    queue = deque([start])\n    while queue:\n        node = queue.popleft()\n        print(node, end=' ')\n        for nbr in graph[node]:\n            if nbr not in visited:\n                visited.add(nbr)\n                queue.append(nbr)\nbfs({0: [1, 2], 1: [3], 2: [3], 3: []}, 0)",
+      "exercise": {
+        "prompt": "Perform BFS on the graph {0: [1, 2], 1: [3], 2: [3], 3: []} starting from node 0. Print each visited node separated by spaces on one line.",
+        "starterCode": "from collections import deque\ngraph = {0: [1, 2], 1: [3], 2: [3], 3: []}\nstart = 0\nvisited = _____([start])\nqueue = _____([start])\nresult = []\nwhile _____:\n    node = queue._____()\n    result.append(str(node))\n    for nbr in graph[node]:\n        if nbr not in _____:\n            visited._____(nbr)\n            queue._____(nbr)\nprint(' '.join(result))",
+        "validation": {
+          "output": "0 1 2 3",
+          "contains": ["deque", "popleft", "visited"]
+        },
+        "testCode": "",
+        "hint": "Initialize visited as a set and queue as a deque. Loop while queue is truthy, popleft to dequeue, and add unvisited neighbors to both visited and the queue."
+      }
+    },
+    {
+      "id": "monotonic-stack",
+      "title": "Monotonic Stack Pattern",
+      "explanation": "A monotonic stack keeps elements in sorted order and is the key technique for next-greater-element problems. Iterate through the array and pop elements from the stack that are smaller than the current value, recording the current value as their answer. This reduces a naive O(n^2) scan to O(n).",
+      "example": "def next_greater(nums):\n    result = [-1] * len(nums)\n    stack = []  # stores indices\n    for i, num in enumerate(nums):\n        while stack and nums[stack[-1]] < num:\n            result[stack.pop()] = num\n        stack.append(i)\n    return result\nprint(next_greater([2, 1, 2, 4, 3]))  # [4, 2, 4, -1, -1]",
+      "exercise": {
+        "prompt": "Find the next greater element for each item in [4, 5, 2, 10, 8]. Use a monotonic stack of indices. Print the result list.",
+        "starterCode": "nums = [4, 5, 2, 10, 8]\nresult = [_____] * len(nums)\nstack = []\nfor i, num in enumerate(nums):\n    while stack and nums[stack[_____]] < _____:\n        result[stack._____()] = num\n    stack._____(i)\nprint(result)",
+        "validation": {
+          "output": "[5, 10, 10, -1, -1]",
+          "contains": ["pop", "append", "-1"]
+        },
+        "testCode": "",
+        "hint": "Initialize result with -1s. Use stack[-1] to peek at the top index. While the current num is greater than the element at the top index, pop and record. Then push the current index."
+      }
+    }
+  ]
+}

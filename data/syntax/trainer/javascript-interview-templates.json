@@ -1,0 +1,95 @@
+{
+  "id": "javascript-interview-templates",
+  "title": "Interview Templates",
+  "description": "These are the five most reusable algorithmic templates in coding interviews. Memorize the skeleton, then adapt to specific problems. Sliding window, binary search, two-pointer, prefix sum, and backtracking cover the majority of interview patterns.",
+  "language": "javascript",
+  "category": "interview-templates",
+  "order": 13,
+  "sections": [
+    {
+      "id": "sliding-window",
+      "title": "Sliding window",
+      "explanation": "The sliding window maintains a range [left, right] that expands by moving right and shrinks by moving left. Use it for subarray/substring problems with a contiguous constraint: max sum of size k, longest substring without repeats, minimum window containing target chars. O(n) time.",
+      "example": "function maxSumK(nums, k) {\n  let windowSum = 0;\n  for (let i = 0; i < k; i++) windowSum += nums[i];\n  let maxSum = windowSum;\n  for (let i = k; i < nums.length; i++) {\n    windowSum += nums[i] - nums[i - k];\n    maxSum = Math.max(maxSum, windowSum);\n  }\n  return maxSum;\n}",
+      "exercise": {
+        "prompt": "Find the maximum sum of any contiguous subarray of size 3 in [2, 1, 5, 1, 3, 2]. Use the fixed sliding window pattern. Print the max sum.",
+        "starterCode": "const nums = [2, 1, 5, 1, 3, 2];\nconst k = 3;\n\nlet windowSum = 0;\nfor (let i = 0; i < k; i++) windowSum += nums[i];\nlet maxSum = windowSum;\n\nfor (let i = k; i < nums.length; i++) {\n  windowSum += nums[i] - nums[i _____ k];\n  maxSum = Math._____(maxSum, windowSum);\n}\n\nconsole.log(maxSum);",
+        "validation": [
+          {"type": "output", "expected": "9", "message": "Max sum window of size 3: [5,1,3] = 9"},
+          {"type": "contains", "patterns": ["Math.max(", "windowSum"], "message": "Use the sliding window pattern with Math.max to track the maximum"}
+        ],
+        "testCode": "",
+        "hint": "Slide by adding nums[i] and subtracting nums[i - k]. Max window is [5,1,3] = 9."
+      },
+      "order": 1
+    },
+    {
+      "id": "binary-search",
+      "title": "Binary search",
+      "explanation": "Binary search halves the search space each step for O(log n) time. The template uses `left = 0, right = arr.length - 1` and computes `mid = Math.floor((left + right) / 2)`. Adjust left or right based on comparison. Works on sorted arrays and monotonic functions.",
+      "example": "function binarySearch(nums, target) {\n  let left = 0, right = nums.length - 1;\n  while (left <= right) {\n    const mid = Math.floor((left + right) / 2);\n    if (nums[mid] === target) return mid;\n    else if (nums[mid] < target) left = mid + 1;\n    else right = mid - 1;\n  }\n  return -1;\n}",
+      "exercise": {
+        "prompt": "Implement binary search on sorted array [1, 3, 5, 7, 9, 11, 13]. Search for 7 (print the index) and for 6 (print -1).",
+        "starterCode": "function binarySearch(nums, target) {\n  let left = 0, right = nums.length - 1;\n  while (left _____ right) {\n    const mid = Math.floor((left + right) / 2);\n    if (nums[mid] === target) return mid;\n    else if (nums[mid] < target) left = mid _____ 1;\n    else right = mid - 1;\n  }\n  return -1;\n}\n\nconsole.log(binarySearch([1, 3, 5, 7, 9, 11, 13], 7));\nconsole.log(binarySearch([1, 3, 5, 7, 9, 11, 13], 6));",
+        "validation": [
+          {"type": "output", "expected": "3\n-1", "message": "7 is at index 3, 6 is not found (-1)"},
+          {"type": "contains", "patterns": ["Math.floor(", "left", "right", "mid"], "message": "Use the standard binary search template with left, right, and mid"}
+        ],
+        "testCode": "",
+        "hint": "Continue while left <= right. Narrow with left = mid + 1 or right = mid - 1."
+      },
+      "order": 2
+    },
+    {
+      "id": "two-pointer",
+      "title": "Two-pointer technique",
+      "explanation": "Two pointers move inward from both ends (or at different speeds) to solve problems in O(n) time. Classic uses: pair sum on sorted arrays, container with most water, palindrome check, and removing duplicates. The key insight is that pointer movement eliminates possibilities without checking them all.",
+      "example": "function twoSumSorted(nums, target) {\n  let left = 0, right = nums.length - 1;\n  while (left < right) {\n    const sum = nums[left] + nums[right];\n    if (sum === target) return [left, right];\n    else if (sum < target) left++;\n    else right--;\n  }\n  return [];\n}",
+      "exercise": {
+        "prompt": "Use two pointers to check if a string is a palindrome. Test with \"racecar\" (true) and \"hello\" (false). Print each result.",
+        "starterCode": "function isPalindrome(s) {\n  let left = 0, right = s.length - 1;\n  while (left _____ right) {\n    if (s[left] !== s[right]) return false;\n    left_____;\n    right_____;\n  }\n  return true;\n}\n\nconsole.log(isPalindrome(\"racecar\"));\nconsole.log(isPalindrome(\"hello\"));",
+        "validation": [
+          {"type": "output", "expected": "true\nfalse", "message": "\"racecar\" is a palindrome, \"hello\" is not"},
+          {"type": "contains", "patterns": ["left", "right", "while"], "message": "Use left and right pointers moving inward in a while loop"}
+        ],
+        "testCode": "",
+        "hint": "Continue while left < right. Increment left++, decrement right--."
+      },
+      "order": 3
+    },
+    {
+      "id": "prefix-sum",
+      "title": "Prefix sum",
+      "explanation": "A prefix sum array stores cumulative sums so any subarray sum can be computed in O(1): sum(i, j) = prefix[j+1] - prefix[i]. Build it in O(n), then answer range queries instantly. This pattern appears in subarray sum problems, running averages, and difference array techniques.",
+      "example": "const nums = [1, 2, 3, 4, 5];\nconst prefix = [0];\nfor (const n of nums) {\n  prefix.push(prefix[prefix.length - 1] + n);\n}\n// prefix = [0, 1, 3, 6, 10, 15]\n// sum(1..3) = prefix[4] - prefix[1] = 10 - 1 = 9",
+      "exercise": {
+        "prompt": "Build a prefix sum for [3, 1, 4, 1, 5]. Print the prefix array joined by commas. Then compute and print the subarray sum from index 1 to 3 (inclusive).",
+        "starterCode": "const nums = [3, 1, 4, 1, 5];\nconst prefix = [0];\n\nfor (const n of nums) {\n  prefix.push(prefix[prefix.length - 1] _____ n);\n}\n\nconsole.log(prefix.join(\",\"));\n\nconst rangeSum = prefix[_____] - prefix[_____];\nconsole.log(rangeSum);",
+        "validation": [
+          {"type": "output", "expected": "0,3,4,8,9,14\n6", "message": "Prefix: [0,3,4,8,9,14]. Sum indices 1-3: prefix[4]-prefix[1] = 9-3 = 6"},
+          {"type": "contains", "patterns": ["prefix", "push("], "message": "Build the prefix sum array by pushing cumulative sums"}
+        ],
+        "testCode": "",
+        "hint": "Add each number to the last prefix value. Range sum [1,3] = prefix[4] - prefix[1]."
+      },
+      "order": 4
+    },
+    {
+      "id": "backtracking-template",
+      "title": "Backtracking template",
+      "explanation": "Backtracking systematically explores all candidates and prunes invalid paths. The template: for each option, choose it, recurse deeper, then unchoose it. Pruning conditions skip invalid branches early. This solves permutations, combinations, subsets, N-Queens, and constraint satisfaction problems.",
+      "example": "function permutations(nums) {\n  const result = [];\n  function backtrack(path, used) {\n    if (path.length === nums.length) {\n      result.push([...path]);\n      return;\n    }\n    for (let i = 0; i < nums.length; i++) {\n      if (used[i]) continue;\n      used[i] = true;\n      path.push(nums[i]);\n      backtrack(path, used);\n      path.pop();\n      used[i] = false;\n    }\n  }\n  backtrack([], new Array(nums.length).fill(false));\n  return result;\n}",
+      "exercise": {
+        "prompt": "Generate all permutations of [1, 2, 3] using backtracking. Print the count, then print each permutation as a comma-joined string on its own line (sorted lexicographically).",
+        "starterCode": "function permutations(nums) {\n  const result = [];\n  function backtrack(path, used) {\n    if (path.length === nums.length) {\n      result.push([...path]);\n      return;\n    }\n    for (let i = 0; i < nums.length; i++) {\n      if (used[i]) continue;\n      used[i] = true;\n      path.push(nums[i]);\n      backtrack(path, used);\n      path._____();\n      used[i] = _____;\n    }\n  }\n  backtrack([], new Array(nums.length).fill(false));\n  return result;\n}\n\nconst perms = permutations([1, 2, 3]);\nperms.sort((a, b) => a.toString().localeCompare(b.toString()));\nconsole.log(perms.length);\nfor (const p of perms) {\n  console.log(p.join(\",\"));\n}",
+        "validation": [
+          {"type": "output", "expected": "6\n1,2,3\n1,3,2\n2,1,3\n2,3,1\n3,1,2\n3,2,1", "message": "6 permutations of [1,2,3] in lexicographic order"},
+          {"type": "contains", "patterns": ["pop()", "backtrack(", "used[i]"], "message": "Use pop() to unchoose and used array to track selections"}
+        ],
+        "testCode": "",
+        "hint": "path.pop() undoes the choice, used[i] = false unmarks the element."
+      },
+      "order": 5
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "number-of-1-bits",
+  "title": "Number of 1 Bits",
+  "difficulty": "Easy",
+  "tags": ["bit-manipulation"],
+  "prompt": "Given a positive integer `n`, return the number of set bits (1s) in its binary representation.\n\nThis is also known as the Hamming weight of the number.",
+  "examples": [
+    {"input": "n = 11", "output": "3\nExplanation: The binary representation of 11 is 1011, which has three set bits."},
+    {"input": "n = 128", "output": "1\nExplanation: The binary representation of 128 is 10000000, which has one set bit."},
+    {"input": "n = 2147483645", "output": "30\nExplanation: The binary representation of 2147483645 is 1111111111111111111111111111101, which has 30 set bits."}
+  ],
+  "constraints": [
+    "1 <= n <= 2^31 - 1"
+  ],
+  "starterCode": {
+    "python": "def solve(n):\n    pass",
+    "javascript": "function solve(n) {\n  \n}",
+    "typescript": "export function solve(n: number): number {\n  \n}",
+    "java": "class Solution {\n    public int solve(int n) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int Solve(int n) {\n        \n    }\n}",
+    "go": "func solve(n int) int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve(11))"}, "expectedStdout": "3"},
+    {"stdin": {"python": "print(solve(128))"}, "expectedStdout": "1"},
+    {"stdin": {"python": "print(solve(2147483645))"}, "expectedStdout": "30"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve(1))"}, "expectedStdout": "1"},
+    {"stdin": {"python": "print(solve(255))"}, "expectedStdout": "8"},
+    {"stdin": {"python": "print(solve(1023))"}, "expectedStdout": "10"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use n & (n - 1) to clear the lowest set bit in each iteration, counting how many times until n becomes 0. Alternatively, check each bit with n & 1 and right-shift.",
+    "commonBugs": ["Using arithmetic right shift instead of logical right shift in languages with signed integers", "Infinite loop if not using unsigned or logical shift for negative-looking bit patterns", "Off-by-one from confusing 0-indexed bit positions with count"],
+    "expectedComplexity": "O(k) where k is the number of set bits"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "range-sum-query",
+  "title": "Range Sum Query",
+  "difficulty": "Easy",
+  "tags": ["arrays", "dynamic-programming"],
+  "prompt": "Given an integer array `nums` and a list of queries where each query is a pair `[i, j]`, return a list of the sum of elements between indices `i` and `j` (inclusive) for each query.\n\nUse a prefix sum approach so that each query can be answered in O(1) time after an O(n) preprocessing step.",
+  "examples": [
+    {"input": "nums = [-2, 0, 3, -5, 2, -1], queries = [[0, 2], [2, 5], [0, 5]]", "output": "[1, -1, -3]\nExplanation: sum(0,2) = -2+0+3 = 1, sum(2,5) = 3+(-5)+2+(-1) = -1, sum(0,5) = -2+0+3+(-5)+2+(-1) = -3."},
+    {"input": "nums = [1, 2, 3, 4, 5], queries = [[0, 4], [1, 3]]", "output": "[15, 9]\nExplanation: sum(0,4) = 15, sum(1,3) = 2+3+4 = 9."}
+  ],
+  "constraints": [
+    "1 <= nums.length <= 10^4",
+    "-10^5 <= nums[i] <= 10^5",
+    "0 <= i <= j < nums.length",
+    "1 <= queries.length <= 10^4"
+  ],
+  "starterCode": {
+    "python": "def solve(nums, queries):\n    pass",
+    "javascript": "function solve(nums, queries) {\n  \n}",
+    "typescript": "export function solve(nums: number[], queries: number[][]): number[] {\n  \n}",
+    "java": "class Solution {\n    public int[] solve(int[] nums, int[][] queries) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public int[] Solve(int[] nums, int[][] queries) {\n        \n    }\n}",
+    "go": "func solve(nums []int, queries [][]int) []int {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve([-2, 0, 3, -5, 2, -1], [[0, 2], [2, 5], [0, 5]]))"}, "expectedStdout": "[1, -1, -3]"},
+    {"stdin": {"python": "print(solve([1, 2, 3, 4, 5], [[0, 4], [1, 3]]))"}, "expectedStdout": "[15, 9]"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve([5], [[0, 0]]))"}, "expectedStdout": "[5]"},
+    {"stdin": {"python": "print(solve([1, -1, 1, -1], [[0, 3], [0, 1], [2, 3]]))"}, "expectedStdout": "[0, 0, 0]"},
+    {"stdin": {"python": "print(solve([10, 20, 30], [[0, 0], [1, 1], [2, 2], [0, 2]]))"}, "expectedStdout": "[10, 20, 30, 60]"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Build a prefix sum array where prefix[i] = sum of nums[0..i-1]. Then rangeSum(i, j) = prefix[j+1] - prefix[i]. This gives O(n) preprocessing and O(1) per query.",
+    "commonBugs": ["Off-by-one errors in prefix sum indexing (prefix array is length n+1)", "Forgetting that query indices are inclusive on both ends", "Not handling single-element range correctly"],
+    "expectedComplexity": "O(n + q) where n is array length and q is number of queries"
+  }
+}

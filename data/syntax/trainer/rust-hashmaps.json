@@ -1,0 +1,78 @@
+{
+  "id": "rust-hashmaps",
+  "title": "HashMaps",
+  "description": "HashMap<K,V> is the most-used data structure in interviews for O(1) lookups. Master insert, get, contains_key, the entry API for elegant upserts, and iteration patterns to solve frequency counting, two-sum, and graph problems.",
+  "language": "rust",
+  "category": "hashmaps",
+  "order": 5,
+  "sections": [
+    {
+      "id": "hashmap-basics",
+      "title": "Creating and inserting",
+      "explanation": "Create with `HashMap::new()`. Use `.insert(key, value)` to add entries — it returns the old value as Option<V> if the key existed. Access with `.get(&key)` which returns `Option<&V>`, or use `map[&key]` (panics if missing). Always prefer `.get()` in interview code for safety.",
+      "example": "fn main() {\n    let mut map: HashMap<String, i32> = HashMap::new();\n    map.insert(\"alice\".to_string(), 90);\n    map.insert(\"bob\".to_string(), 85);\n\n    println!(\"{:?}\", map.get(\"alice\"));  // Some(90)\n    println!(\"{}\", map[\"bob\"]);          // 85\n    println!(\"{}\", map.contains_key(\"charlie\"));  // false\n    println!(\"{}\", map.len());  // 2\n}",
+      "exercise": {
+        "prompt": "Create a HashMap<&str, i32> mapping \"apple\"->3, \"banana\"->5, \"cherry\"->2. Print the value for \"banana\" using .get(), check if \"date\" exists, and print the map length.",
+        "starterCode": "fn main() {\n    let mut map: HashMap<&str, i32> = HashMap::new();\n    map.insert(\"apple\", 3);\n    map.insert(\"banana\", 5);\n    map.insert(\"cherry\", 2);\n\n    println!(\"{:?}\", map.get(\"\"));\n    println!(\"{}\", map.contains_key(\"\"));\n    println!(\"{}\", map.len());\n}",
+        "validation": [
+          {"type": "output", "expected": "Some(5)\nfalse\n3", "message": "get(\"banana\") returns Some(5), \"date\" doesn't exist, length is 3"},
+          {"type": "contains", "patterns": ["HashMap::new()", "map.insert(", "map.get(", "contains_key("], "message": "Use HashMap::new(), insert(), get(), and contains_key()"}
+        ],
+        "testCode": "",
+        "hint": "Pass \"banana\" to .get() and \"date\" to .contains_key()."
+      },
+      "order": 1
+    },
+    {
+      "id": "entry-api",
+      "title": "Entry API for frequency counting",
+      "explanation": "The **entry API** is Rust's elegant way to handle \"insert if missing, update if present\". Use `map.entry(key).or_insert(default)` to get a mutable reference, then dereference with `*` to modify. This is the go-to pattern for frequency counting — the most common HashMap interview pattern.",
+      "example": "fn main() {\n    let words = vec![\"apple\", \"banana\", \"apple\", \"cherry\", \"banana\", \"apple\"];\n    let mut freq: HashMap<&str, i32> = HashMap::new();\n\n    for word in &words {\n        *freq.entry(word).or_insert(0) += 1;\n    }\n\n    println!(\"{:?}\", freq);\n    // {\"apple\": 3, \"banana\": 2, \"cherry\": 1}\n}",
+      "exercise": {
+        "prompt": "Count the frequency of each character in the string \"abracadabra\". Print the count for 'a' and 'b'.",
+        "starterCode": "fn main() {\n    let s = \"abracadabra\";\n    let mut freq: HashMap<char, i32> = HashMap::new();\n\n    for c in s.chars() {\n        *freq.entry(c).or_insert() += 1;\n    }\n\n    println!(\"{}\", freq[&'a']);\n    println!(\"{}\", freq[&'b']);\n}",
+        "validation": [
+          {"type": "output", "expected": "5\n2", "message": "'a' appears 5 times, 'b' appears 2 times in \"abracadabra\""},
+          {"type": "contains", "patterns": [".entry(", ".or_insert(0)", "+= 1"], "message": "Use the entry API with or_insert(0) and increment with += 1"}
+        ],
+        "testCode": "",
+        "hint": "Initialize with or_insert(0) so the first occurrence starts at 0 then increments to 1."
+      },
+      "order": 2
+    },
+    {
+      "id": "hashmap-iteration",
+      "title": "Iterating over a HashMap",
+      "explanation": "Iterate with `for (key, value) in &map` or use `.iter()`. For mutable iteration, use `for (key, value) in &mut map` (value is &mut V). You can also iterate just keys with `.keys()` or values with `.values()`. Note: HashMap iteration order is not guaranteed.",
+      "example": "fn main() {\n    let mut scores: HashMap<&str, i32> = HashMap::new();\n    scores.insert(\"alice\", 90);\n    scores.insert(\"bob\", 85);\n    scores.insert(\"charlie\", 92);\n\n    for (name, score) in &scores {\n        println!(\"{}: {}\", name, score);\n    }\n\n    let max_entry = scores.iter().max_by_key(|&(_, v)| *v);\n    println!(\"Top: {:?}\", max_entry);  // (\"charlie\", 92)\n}",
+      "exercise": {
+        "prompt": "Create a HashMap with \"x\"->10, \"y\"->20, \"z\"->30. Use .values() to compute the sum of all values. Use .keys() to collect all keys into a sorted Vec. Print the sum and the sorted keys.",
+        "starterCode": "fn main() {\n    let mut map: HashMap<&str, i32> = HashMap::new();\n    map.insert(\"x\", 10);\n    map.insert(\"y\", 20);\n    map.insert(\"z\", 30);\n\n    let sum: i32 = map.values().sum();\n    println!(\"{}\", sum);\n\n    let mut keys: Vec<&&str> = map.keys().collect();\n    keys.sort();\n    println!(\"{:?}\", keys);\n}",
+        "validation": [
+          {"type": "output", "expected": "60\n[\"x\", \"y\", \"z\"]", "message": "Sum of values is 60, sorted keys are [\"x\", \"y\", \"z\"]"},
+          {"type": "contains", "patterns": [".values()", ".sum()", ".keys()", ".sort()"], "message": "Use .values().sum() for the total and .keys().collect() with sort for ordered keys"}
+        ],
+        "testCode": "",
+        "hint": "The code is complete. .values().sum() adds all values, .keys().collect() gathers keys."
+      },
+      "order": 3
+    },
+    {
+      "id": "two-sum-pattern",
+      "title": "Two-sum with HashMap",
+      "explanation": "The classic two-sum pattern: for each number, check if `target - num` exists in the map. If yes, return the pair. If not, store `num -> index`. This O(n) approach is the gold standard for this problem and demonstrates effective HashMap usage to interviewers.",
+      "example": "fn two_sum(nums: &[i32], target: i32) -> Option<(usize, usize)> {\n    let mut seen: HashMap<i32, usize> = HashMap::new();\n    for (i, &num) in nums.iter().enumerate() {\n        let complement = target - num;\n        if let Some(&j) = seen.get(&complement) {\n            return Some((j, i));\n        }\n        seen.insert(num, i);\n    }\n    None\n}\n\nfn main() {\n    let result = two_sum(&[2, 7, 11, 15], 9);\n    println!(\"{:?}\", result);  // Some((0, 1))\n}",
+      "exercise": {
+        "prompt": "Complete the two_sum function. Test with nums = [3, 2, 4] and target = 6. Print the result tuple.",
+        "starterCode": "fn two_sum(nums: &[i32], target: i32) -> Option<(usize, usize)> {\n    let mut seen: HashMap<i32, usize> = HashMap::new();\n    for (i, &num) in nums.iter().enumerate() {\n        let complement = target - num;\n        if let Some(&j) = seen.get(&complement) {\n            return Some((j, i));\n        }\n        seen.insert(, );\n    }\n    None\n}\n\nfn main() {\n    let result = two_sum(&[3, 2, 4], 6);\n    println!(\"{:?}\", result);\n}",
+        "validation": [
+          {"type": "output", "expected": "Some((1, 2))", "message": "nums[1]=2 + nums[2]=4 = 6, so the answer is (1, 2)"},
+          {"type": "contains", "patterns": ["seen.get(&complement)", "seen.insert(num, i)"], "message": "Check for complement in the map, then insert the current num with its index"}
+        ],
+        "testCode": "",
+        "hint": "Insert the current number and its index: seen.insert(num, i)."
+      },
+      "order": 4
+    }
+  ]
+}

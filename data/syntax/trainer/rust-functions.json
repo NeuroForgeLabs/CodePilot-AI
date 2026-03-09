@@ -1,0 +1,78 @@
+{
+  "id": "rust-functions",
+  "title": "Functions",
+  "description": "Rust functions use ownership and borrowing for parameters — understanding when to pass by reference (&), mutable reference (&mut), or value is critical. Master fn declarations, return types, and closures for clean interview code.",
+  "language": "rust",
+  "category": "functions",
+  "order": 4,
+  "sections": [
+    {
+      "id": "fn-declaration",
+      "title": "fn declaration and return types",
+      "explanation": "Declare functions with **fn name(params) -> ReturnType**. The last expression without a semicolon is the implicit return. You can also use explicit `return`. Parameter types must always be specified. Rust functions are snake_case by convention.",
+      "example": "fn add(a: i32, b: i32) -> i32 {\n    a + b\n}\n\nfn is_even(n: i32) -> bool {\n    n % 2 == 0\n}\n\nfn main() {\n    println!(\"{}\", add(3, 4));       // 7\n    println!(\"{}\", is_even(10));     // true\n    println!(\"{}\", is_even(7));      // false\n}",
+      "exercise": {
+        "prompt": "Write a function `multiply` that takes two i32 parameters and returns their product. Write a function `is_positive` that takes an i32 and returns bool. Call both and print the results.",
+        "starterCode": "fn multiply(a: i32, b: i32) -> i32 {\n    a * b\n}\n\nfn is_positive(n: i32) -> bool {\n    n > \n}\n\nfn main() {\n    println!(\"{}\", multiply(6, 7));\n    println!(\"{}\", is_positive(5));\n    println!(\"{}\", is_positive(-3));\n}",
+        "validation": [
+          {"type": "output", "expected": "42\ntrue\nfalse", "message": "6*7=42, 5 is positive (true), -3 is not (false)"},
+          {"type": "contains", "patterns": ["fn multiply", "fn is_positive", "-> i32", "-> bool"], "message": "Define both functions with explicit parameter and return types"}
+        ],
+        "testCode": "",
+        "hint": "is_positive should check n > 0. The last expression without semicolon is returned."
+      },
+      "order": 1
+    },
+    {
+      "id": "borrowing-params",
+      "title": "Ownership and borrowing in parameters",
+      "explanation": "Pass by **reference** (`&Vec<i32>`) to read without taking ownership. Pass by **mutable reference** (`&mut Vec<i32>`) to modify in place. Pass by **value** to transfer ownership (rarely wanted for collections). In interviews, borrow (&) by default — it avoids unnecessary clones and ownership issues.",
+      "example": "fn sum(nums: &Vec<i32>) -> i32 {\n    nums.iter().sum()\n}\n\nfn add_element(nums: &mut Vec<i32>, val: i32) {\n    nums.push(val);\n}\n\nfn main() {\n    let mut nums = vec![1, 2, 3];\n    println!(\"{}\", sum(&nums));  // 6\n\n    add_element(&mut nums, 4);\n    println!(\"{:?}\", nums);  // [1, 2, 3, 4]\n}",
+      "exercise": {
+        "prompt": "Write `find_max` that borrows a &Vec<i32> and returns the max value. Write `double_all` that takes &mut Vec<i32> and doubles every element in place. Print the max, call double_all, then print the vector.",
+        "starterCode": "fn find_max(nums: &Vec<i32>) -> i32 {\n    let mut max_val = nums[0];\n    for &x in nums {\n        if x > max_val {\n            max_val = x;\n        }\n    }\n    max_val\n}\n\nfn double_all(nums: &mut Vec<i32>) {\n    for i in 0..nums.len() {\n        nums[i] *= ;\n    }\n}\n\nfn main() {\n    let mut nums = vec![3, 1, 4, 1, 5];\n    println!(\"{}\", find_max(&nums));\n    double_all(&mut nums);\n    println!(\"{:?}\", nums);\n}",
+        "validation": [
+          {"type": "output", "expected": "5\n[6, 2, 8, 2, 10]", "message": "Max is 5, after doubling: [6, 2, 8, 2, 10]"},
+          {"type": "contains", "patterns": ["&Vec<i32>", "&mut Vec<i32>", "nums[i] *= 2"], "message": "Use & for read-only borrow and &mut for mutable borrow, multiply by 2"}
+        ],
+        "testCode": "",
+        "hint": "Multiply each element by 2: nums[i] *= 2."
+      },
+      "order": 2
+    },
+    {
+      "id": "closures",
+      "title": "Closures",
+      "explanation": "Closures are anonymous functions defined with `|params| body`. They can capture variables from their enclosing scope. Use them with iterator methods like `.map()`, `.filter()`, and `.sort_by()`. Closures are essential for writing concise interview code in Rust.",
+      "example": "fn main() {\n    let add = |a: i32, b: i32| -> i32 { a + b };\n    println!(\"{}\", add(3, 4));  // 7\n\n    let factor = 10;\n    let scale = |x: i32| x * factor;\n    println!(\"{}\", scale(5));  // 50\n\n    let nums = vec![1, 2, 3, 4, 5];\n    let evens: Vec<i32> = nums.into_iter().filter(|x| x % 2 == 0).collect();\n    println!(\"{:?}\", evens);  // [2, 4]\n}",
+      "exercise": {
+        "prompt": "Define a closure `square` that squares an i32. Use it with .map() to square all elements of [1, 2, 3, 4, 5]. Define a `threshold` variable of 10 and use a closure with .filter() to keep only squared values above it. Print the results.",
+        "starterCode": "fn main() {\n    let square = |x: i32| x * x;\n\n    let nums = vec![1, 2, 3, 4, 5];\n    let squared: Vec<i32> = nums.iter().map(|x| square(*x)).collect();\n    println!(\"{:?}\", squared);\n\n    let threshold = 10;\n    let big: Vec<&i32> = squared.iter().filter(|x| **x > ).collect();\n    println!(\"{:?}\", big);\n}",
+        "validation": [
+          {"type": "output", "expected": "[1, 4, 9, 16, 25]\n[16, 25]", "message": "Squared: [1,4,9,16,25]. Values > 10: [16, 25]"},
+          {"type": "contains", "patterns": ["square", ".map(", ".filter(", "threshold"], "message": "Define the square closure and use it with .map(), then filter with the threshold"}
+        ],
+        "testCode": "",
+        "hint": "Filter with **x > threshold. The closure captures threshold from the enclosing scope."
+      },
+      "order": 3
+    },
+    {
+      "id": "returning-tuples",
+      "title": "Returning multiple values with tuples",
+      "explanation": "Rust functions can return **tuples** to provide multiple values. Destructure with `let (a, b) = func()`. This is the idiomatic way to return multiple results — no need for out-parameters or wrapper structs for simple cases. Common in interview problems that return index pairs or (min, max).",
+      "example": "fn min_max(nums: &Vec<i32>) -> (i32, i32) {\n    let mut mn = nums[0];\n    let mut mx = nums[0];\n    for &x in nums {\n        if x < mn { mn = x; }\n        if x > mx { mx = x; }\n    }\n    (mn, mx)\n}\n\nfn main() {\n    let nums = vec![3, 1, 4, 1, 5, 9];\n    let (lo, hi) = min_max(&nums);\n    println!(\"{} {}\", lo, hi);  // 1 9\n}",
+      "exercise": {
+        "prompt": "Write a function `sum_and_count` that takes a &Vec<i32> and returns a tuple (i32, usize) of the sum and the count. Call it with [10, 20, 30] and print both values.",
+        "starterCode": "fn sum_and_count(nums: &Vec<i32>) -> (i32, usize) {\n    let sum: i32 = nums.iter().sum();\n    let count = nums.len();\n    (sum, count)\n}\n\nfn main() {\n    let nums = vec![10, 20, 30];\n    let (s, c) = sum_and_count(&nums);\n    println!(\"{}\", s);\n    println!(\"{}\", c);\n}",
+        "validation": [
+          {"type": "output", "expected": "60\n3", "message": "Sum of [10,20,30] = 60, count = 3"},
+          {"type": "contains", "patterns": ["-> (i32, usize)", "let (s, c)"], "message": "Return a (i32, usize) tuple and destructure with let (s, c)"}
+        ],
+        "testCode": "",
+        "hint": "The function body is already complete. Just run it — sum is 60, count is 3."
+      },
+      "order": 4
+    }
+  ]
+}

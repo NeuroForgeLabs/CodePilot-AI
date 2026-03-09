@@ -22,12 +22,12 @@
     "go": "func solve(intervals [][]int) [][]int {\n    \n}"
   },
   "visibleTests": [
-    {"stdin": "print(solve([[1,3],[2,6],[8,10],[15,18]]))", "expectedStdout": "[[1, 6], [8, 10], [15, 18]]"},
-    {"stdin": "print(solve([[1,4],[4,5]]))", "expectedStdout": "[[1, 5]]"}
+    {"stdin": {"python": "print(solve([[1,3],[2,6],[8,10],[15,18]]))"}, "expectedStdout": "[[1, 6], [8, 10], [15, 18]]"},
+    {"stdin": {"python": "print(solve([[1,4],[4,5]]))"}, "expectedStdout": "[[1, 5]]"}
   ],
   "hiddenTests": [
-    {"stdin": "print(solve([[1,4],[0,4]]))", "expectedStdout": "[[0, 4]]"},
-    {"stdin": "print(solve([[1,4],[2,3]]))", "expectedStdout": "[[1, 4]]"}
+    {"stdin": {"python": "print(solve([[1,4],[0,4]]))"}, "expectedStdout": "[[0, 4]]"},
+    {"stdin": {"python": "print(solve([[1,4],[2,3]]))"}, "expectedStdout": "[[1, 4]]"}
   ],
   "notesForAI": {
     "coreIdea": "Sort intervals by start. Iterate and merge: if current interval overlaps with last merged (current start <= last end), extend last merged interval's end. Otherwise append as new interval.",

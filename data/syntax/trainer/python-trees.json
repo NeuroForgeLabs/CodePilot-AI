@@ -1,0 +1,78 @@
+{
+  "id": "python-trees",
+  "title": "Trees",
+  "description": "Master tree data structures in Python — binary trees, traversals, and depth calculations are among the most common coding interview topics.",
+  "language": "python",
+  "category": "trees",
+  "order": 11,
+  "sections": [
+    {
+      "id": "tree-node",
+      "title": "TreeNode class and construction",
+      "explanation": "Most interview problems represent binary trees using a simple `TreeNode` class with `val`, `left`, and `right` attributes. You're expected to define this class from memory and build trees by linking nodes manually. Interviewers use this as a foundation for every tree question, so being fluent with it saves valuable time.",
+      "example": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nroot = TreeNode(1)\nroot.left = TreeNode(2)\nroot.right = TreeNode(3)\n\nprint(root.val)        # 1\nprint(root.left.val)   # 2\nprint(root.right.val)  # 3",
+      "exercise": {
+        "prompt": "Define a TreeNode class with val, left, and right. Create a tree where root=1, left child=2, right child=3. Print the root value, then the left child value, then the right child value.",
+        "starterCode": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nroot = TreeNode()\nroot.left = TreeNode()\nroot.right = TreeNode()\n\nprint(root.val)\nprint(root.left.val)\nprint(root.right.val)",
+        "validation": [
+          {"type": "output", "expected": "1\n2\n3", "message": "The tree should have root=1, left=2, right=3"},
+          {"type": "contains", "patterns": ["TreeNode", "root.left", "root.right"], "message": "Use the TreeNode class to build the tree and access children via .left and .right"}
+        ],
+        "testCode": "",
+        "hint": "Pass 1, 2, and 3 as the val argument to each TreeNode constructor."
+      },
+      "order": 1
+    },
+    {
+      "id": "dfs-traversals",
+      "title": "DFS traversals (inorder, preorder, postorder)",
+      "explanation": "Depth-first traversals visit every node using recursion or a stack. Inorder (left, root, right) yields sorted order for BSTs and is the most commonly tested. Preorder (root, left, right) is useful for serialization, while postorder (left, right, root) is used for deletion and bottom-up computation. Interviewers expect you to write all three from memory.",
+      "example": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\ndef inorder(node, result):\n    if not node:\n        return\n    inorder(node.left, result)\n    result.append(node.val)\n    inorder(node.right, result)\n\nroot = TreeNode(1, TreeNode(2), TreeNode(3))\nres = []\ninorder(root, res)\nprint(res)  # [2, 1, 3]",
+      "exercise": {
+        "prompt": "Implement an inorder DFS traversal that appends each node's value to a result list. Build a tree with root=4, left=2, right=6, then run the traversal and print the result list.",
+        "starterCode": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\ndef inorder(node, result):\n    if not node:\n        return\n    inorder(, result)\n    result.append()\n    inorder(, result)\n\nroot = TreeNode(4, TreeNode(2), TreeNode(6))\nres = []\ninorder(root, res)\nprint(res)",
+        "validation": [
+          {"type": "output", "expected": "[2, 4, 6]", "message": "Inorder traversal of this tree should produce [2, 4, 6]"},
+          {"type": "contains", "patterns": ["inorder", "node.left", "node.val", "node.right"], "message": "Recurse on node.left, append node.val, then recurse on node.right for inorder traversal"}
+        ],
+        "testCode": "",
+        "hint": "Inorder visits left subtree first, then the current node, then right subtree. Fill in node.left, node.val, and node.right in that order."
+      },
+      "order": 2
+    },
+    {
+      "id": "bfs-level-order",
+      "title": "BFS level-order traversal",
+      "explanation": "Level-order traversal processes nodes breadth-first using a queue, typically `collections.deque`. You dequeue a node, record its value, and enqueue its children. Grouping nodes by level is done by iterating over the current queue length per level. This pattern appears in problems like \"zigzag traversal\", \"right side view\", and \"minimum depth\".",
+      "example": "from collections import deque\n\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\ndef level_order(root):\n    if not root:\n        return []\n    result, queue = [], deque([root])\n    while queue:\n        level = []\n        for _ in range(len(queue)):\n            node = queue.popleft()\n            level.append(node.val)\n            if node.left:  queue.append(node.left)\n            if node.right: queue.append(node.right)\n        result.append(level)\n    return result\n\nroot = TreeNode(1, TreeNode(2), TreeNode(3))\nprint(level_order(root))  # [[1], [2, 3]]",
+      "exercise": {
+        "prompt": "Implement BFS level-order traversal using a deque. Build a tree with root=1, left=2 (left child 4, right child 5), right=3. Print the result as a list of lists grouped by level.",
+        "starterCode": "from collections import deque\n\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\ndef level_order(root):\n    if not root:\n        return []\n    result, queue = [], deque([root])\n    while queue:\n        level = []\n        for _ in range(len(queue)):\n            node = queue.()\n            level.append(node.val)\n            if node.left:  queue.append(node.)\n            if node.right: queue.append(node.)\n        result.append(level)\n    return result\n\nroot = TreeNode(1, TreeNode(2, TreeNode(4), TreeNode(5)), TreeNode(3))\nprint(level_order(root))",
+        "validation": [
+          {"type": "output", "expected": "[[1], [2, 3], [4, 5]]", "message": "Level-order should produce [[1], [2, 3], [4, 5]]"},
+          {"type": "contains", "patterns": ["deque", "popleft", "queue.append"], "message": "Use deque with popleft to process nodes and append to enqueue children"}
+        ],
+        "testCode": "",
+        "hint": "Use popleft() to dequeue from the front, then append node.left and node.right to enqueue children."
+      },
+      "order": 3
+    },
+    {
+      "id": "tree-depth",
+      "title": "Tree depth / height (recursive)",
+      "explanation": "Maximum depth (or height) of a binary tree is the number of nodes along the longest root-to-leaf path. The classic recursive solution returns `1 + max(depth(left), depth(right))` with a base case of 0 for null nodes. This O(n) pattern is a building block for balanced-tree checks, diameter calculations, and many divide-and-conquer tree problems.",
+      "example": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\ndef max_depth(node):\n    if not node:\n        return 0\n    return 1 + max(max_depth(node.left), max_depth(node.right))\n\nroot = TreeNode(1, TreeNode(2, TreeNode(4)), TreeNode(3))\nprint(max_depth(root))  # 3",
+      "exercise": {
+        "prompt": "Implement a recursive function to compute the maximum depth of a binary tree. Build a tree with root=1, left=2 (left child=4, which has left child=8), right=3. Print the max depth.",
+        "starterCode": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\ndef max_depth(node):\n    if not node:\n        return \n    return 1 + max(max_depth(), max_depth())\n\nroot = TreeNode(1, TreeNode(2, TreeNode(4, TreeNode(8))), TreeNode(3))\nprint(max_depth(root))",
+        "validation": [
+          {"type": "output", "expected": "4", "message": "The longest path is root(1)->2->4->8, so max depth is 4"},
+          {"type": "contains", "patterns": ["max_depth", "node.left", "node.right", "max("], "message": "Recursively compute max of left and right subtree depths and add 1"}
+        ],
+        "testCode": "",
+        "hint": "Base case returns 0 for a null node. Recurse with node.left and node.right, then return 1 + the max of both."
+      },
+      "order": 4
+    }
+  ]
+}

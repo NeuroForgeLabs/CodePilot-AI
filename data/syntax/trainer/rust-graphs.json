@@ -1,0 +1,78 @@
+{
+  "id": "rust-graphs",
+  "title": "Graphs",
+  "description": "Graphs are represented as HashMap<i32, Vec<i32>> adjacency lists in Rust interviews. Master DFS, BFS, and connected component detection to tackle the wide range of graph problems that appear in coding interviews.",
+  "language": "rust",
+  "category": "graphs",
+  "order": 12,
+  "sections": [
+    {
+      "id": "adjacency-list",
+      "title": "Building an adjacency list",
+      "explanation": "The standard graph representation in interviews is an **adjacency list**: `HashMap<i32, Vec<i32>>` where each key maps to its neighbors. For undirected graphs, add edges in both directions. Use the entry API for clean construction from an edge list.",
+      "example": "fn main() {\n    let edges = vec![(0, 1), (0, 2), (1, 2), (2, 3)];\n    let mut graph: HashMap<i32, Vec<i32>> = HashMap::new();\n\n    for (u, v) in edges {\n        graph.entry(u).or_insert_with(Vec::new).push(v);\n        graph.entry(v).or_insert_with(Vec::new).push(u);\n    }\n\n    for (node, neighbors) in &graph {\n        println!(\"{}: {:?}\", node, neighbors);\n    }\n}",
+      "exercise": {
+        "prompt": "Build an undirected graph from edges [(1,2), (1,3), (2,4), (3,4)]. Print the sorted neighbor list for each node (sorted by node key).",
+        "starterCode": "fn main() {\n    let edges = vec![(1, 2), (1, 3), (2, 4), (3, 4)];\n    let mut graph: HashMap<i32, Vec<i32>> = HashMap::new();\n\n    for (u, v) in edges {\n        graph.entry(u).or_insert_with(Vec::new).push(v);\n        graph.entry(v).or_insert_with(Vec::new).push();\n    }\n\n    let mut keys: Vec<&i32> = graph.keys().collect();\n    keys.sort();\n    for &node in &keys {\n        let neighbors = graph.get(node).unwrap();\n        println!(\"{}: {:?}\", node, neighbors);\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "1: [2, 3]\n2: [1, 4]\n3: [1, 4]\n4: [2, 3]", "message": "Each node should list its neighbors from the undirected edges"},
+          {"type": "contains", "patterns": ["graph.entry(u)", "graph.entry(v)", ".push(v)", ".push(u)"], "message": "Add edges in both directions using the entry API"}
+        ],
+        "testCode": "",
+        "hint": "For undirected edges, push u into v's list: graph.entry(v)...push(u)."
+      },
+      "order": 1
+    },
+    {
+      "id": "graph-dfs",
+      "title": "DFS on a graph",
+      "explanation": "Graph DFS uses a **HashSet** to track visited nodes and recurses into unvisited neighbors. The recursive pattern: mark current as visited, process it, then recurse on each unvisited neighbor. For iterative DFS, use a Vec as an explicit stack.",
+      "example": "fn dfs(graph: &HashMap<i32, Vec<i32>>, node: i32, visited: &mut HashSet<i32>, order: &mut Vec<i32>) {\n    visited.insert(node);\n    order.push(node);\n    if let Some(neighbors) = graph.get(&node) {\n        for &next in neighbors {\n            if !visited.contains(&next) {\n                dfs(graph, next, visited, order);\n            }\n        }\n    }\n}\n\nfn main() {\n    let mut graph: HashMap<i32, Vec<i32>> = HashMap::new();\n    graph.insert(1, vec![2, 3]);\n    graph.insert(2, vec![4]);\n    graph.insert(3, vec![4]);\n    graph.insert(4, vec![]);\n\n    let mut visited = HashSet::new();\n    let mut order = Vec::new();\n    dfs(&graph, 1, &mut visited, &mut order);\n    println!(\"{:?}\", order);  // [1, 2, 4, 3]\n}",
+      "exercise": {
+        "prompt": "Implement DFS on a directed graph: 1->[2,3], 2->[4], 3->[5], 4->[], 5->[]. Start from node 1 and print the visit order.",
+        "starterCode": "fn dfs(graph: &HashMap<i32, Vec<i32>>, node: i32, visited: &mut HashSet<i32>, order: &mut Vec<i32>) {\n    visited.insert(node);\n    order.push(node);\n    if let Some(neighbors) = graph.get(&node) {\n        for &next in neighbors {\n            if !visited.contains(&next) {\n                dfs(graph, , visited, order);\n            }\n        }\n    }\n}\n\nfn main() {\n    let mut graph: HashMap<i32, Vec<i32>> = HashMap::new();\n    graph.insert(1, vec![2, 3]);\n    graph.insert(2, vec![4]);\n    graph.insert(3, vec![5]);\n    graph.insert(4, vec![]);\n    graph.insert(5, vec![]);\n\n    let mut visited = HashSet::new();\n    let mut order = Vec::new();\n    dfs(&graph, 1, &mut visited, &mut order);\n    println!(\"{:?}\", order);\n}",
+        "validation": [
+          {"type": "output", "expected": "[1, 2, 4, 3, 5]", "message": "DFS from 1: visit 1, then 2->4 (depth first), back to 3->5"},
+          {"type": "contains", "patterns": ["visited.insert(node)", "visited.contains(&next)", "dfs(graph, next"], "message": "Mark visited, check before recursing, pass next as the node argument"}
+        ],
+        "testCode": "",
+        "hint": "Pass `next` as the node argument to the recursive dfs call."
+      },
+      "order": 2
+    },
+    {
+      "id": "graph-bfs",
+      "title": "BFS on a graph",
+      "explanation": "Graph BFS uses a **VecDeque** as a FIFO queue and a **HashSet** for visited tracking. Enqueue the start, then loop: dequeue, process, enqueue unvisited neighbors. BFS naturally finds shortest paths in unweighted graphs.",
+      "example": "fn bfs(graph: &HashMap<i32, Vec<i32>>, start: i32) -> Vec<i32> {\n    let mut visited = HashSet::new();\n    let mut queue = VecDeque::new();\n    let mut order = Vec::new();\n\n    visited.insert(start);\n    queue.push_back(start);\n\n    while let Some(node) = queue.pop_front() {\n        order.push(node);\n        if let Some(neighbors) = graph.get(&node) {\n            for &next in neighbors {\n                if visited.insert(next) {\n                    queue.push_back(next);\n                }\n            }\n        }\n    }\n    order\n}",
+      "exercise": {
+        "prompt": "Implement BFS on the graph: 0->[1,2], 1->[3], 2->[3], 3->[4], 4->[]. Start from node 0 and print the visit order.",
+        "starterCode": "fn main() {\n    let mut graph: HashMap<i32, Vec<i32>> = HashMap::new();\n    graph.insert(0, vec![1, 2]);\n    graph.insert(1, vec![3]);\n    graph.insert(2, vec![3]);\n    graph.insert(3, vec![4]);\n    graph.insert(4, vec![]);\n\n    let mut visited = HashSet::new();\n    let mut queue = VecDeque::new();\n    let mut order = Vec::new();\n\n    visited.insert(0);\n    queue.push_back(0);\n\n    while let Some(node) = queue.pop_front() {\n        order.push(node);\n        if let Some(neighbors) = graph.get(&node) {\n            for &next in neighbors {\n                if visited.(next) {\n                    queue.push_back(next);\n                }\n            }\n        }\n    }\n    println!(\"{:?}\", order);\n}",
+        "validation": [
+          {"type": "output", "expected": "[0, 1, 2, 3, 4]", "message": "BFS from 0: level 0=[0], level 1=[1,2], level 2=[3], level 3=[4]"},
+          {"type": "contains", "patterns": ["queue.pop_front()", "visited.insert(next)", "queue.push_back(next)"], "message": "Pop from front for FIFO, use insert's return value as visited check, push to back"}
+        ],
+        "testCode": "",
+        "hint": "Use visited.insert(next) — it returns true if the element was new, acting as both check and insert."
+      },
+      "order": 3
+    },
+    {
+      "id": "connected-components",
+      "title": "Connected components",
+      "explanation": "To find connected components in an undirected graph: iterate all nodes, and for each unvisited node, run DFS/BFS to discover its entire component. Count how many times you start a new traversal — that's the number of components. This pattern solves \"number of islands\" and related problems.",
+      "example": "fn dfs(graph: &HashMap<i32, Vec<i32>>, node: i32, visited: &mut HashSet<i32>) {\n    visited.insert(node);\n    if let Some(neighbors) = graph.get(&node) {\n        for &next in neighbors {\n            if !visited.contains(&next) {\n                dfs(graph, next, visited);\n            }\n        }\n    }\n}\n\nfn count_components(nodes: &[i32], graph: &HashMap<i32, Vec<i32>>) -> i32 {\n    let mut visited = HashSet::new();\n    let mut count = 0;\n    for &node in nodes {\n        if !visited.contains(&node) {\n            dfs(graph, node, &mut visited);\n            count += 1;\n        }\n    }\n    count\n}",
+      "exercise": {
+        "prompt": "Count connected components in an undirected graph with nodes 0-5 and edges [(0,1), (1,2), (3,4)]. Node 5 is isolated. Print the count (should be 3).",
+        "starterCode": "fn dfs(graph: &HashMap<i32, Vec<i32>>, node: i32, visited: &mut HashSet<i32>) {\n    visited.insert(node);\n    if let Some(neighbors) = graph.get(&node) {\n        for &next in neighbors {\n            if !visited.contains(&next) {\n                dfs(graph, next, visited);\n            }\n        }\n    }\n}\n\nfn main() {\n    let edges = vec![(0, 1), (1, 2), (3, 4)];\n    let mut graph: HashMap<i32, Vec<i32>> = HashMap::new();\n    for i in 0..=5 {\n        graph.entry(i).or_insert_with(Vec::new);\n    }\n    for (u, v) in edges {\n        graph.entry(u).or_insert_with(Vec::new).push(v);\n        graph.entry(v).or_insert_with(Vec::new).push(u);\n    }\n\n    let mut visited = HashSet::new();\n    let mut count = 0;\n    for node in 0..=5 {\n        if !visited.contains(&node) {\n            dfs(&graph, node, &mut visited);\n            count += ;\n        }\n    }\n    println!(\"{}\", count);\n}",
+        "validation": [
+          {"type": "output", "expected": "3", "message": "Components: {0,1,2}, {3,4}, {5} = 3 components"},
+          {"type": "contains", "patterns": ["!visited.contains(&node)", "count += 1", "dfs(&graph, node"], "message": "Check if unvisited, run DFS to explore the component, increment count"}
+        ],
+        "testCode": "",
+        "hint": "Increment count by 1 each time you start a new DFS from an unvisited node."
+      },
+      "order": 4
+    }
+  ]
+}

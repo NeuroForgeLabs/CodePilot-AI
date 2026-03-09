@@ -1,0 +1,6 @@
+[
+  {"id": "hashmaps", "title": "Hashmaps / Dictionaries", "order": 1},
+  {"id": "arrays-loops", "title": "Arrays & Loops", "order": 2},
+  {"id": "stacks-queues", "title": "Stacks & Queues", "order": 3},
+  {"id": "sorting", "title": "Sorting", "order": 4}
+]

@@ -1,0 +1,38 @@
+{
+  "id": "minimum-window-substring",
+  "title": "Minimum Window Substring",
+  "difficulty": "Hard",
+  "tags": ["strings", "hash-table", "sliding-window"],
+  "prompt": "Given two strings `s` and `t`, return the minimum window substring of `s` such that every character in `t` (including duplicates) is included in the window. If there is no such window, return the empty string `\"\"`.\n\nThe answer is guaranteed to be unique when it exists.",
+  "examples": [
+    {"input": "s = \"ADOBECODEBANC\", t = \"ABC\"", "output": "BANC\nExplanation: The minimum window substring \"BANC\" includes 'A', 'B', and 'C' from string t."},
+    {"input": "s = \"a\", t = \"a\"", "output": "a"},
+    {"input": "s = \"a\", t = \"aa\"", "output": "\nExplanation: Both 'a's from t must be included, so there is no valid window. Return empty string."}
+  ],
+  "constraints": [
+    "1 <= s.length, t.length <= 10^5",
+    "s and t consist of uppercase and lowercase English letters."
+  ],
+  "starterCode": {
+    "python": "def solve(s, t):\n    pass",
+    "javascript": "function solve(s, t) {\n  \n}",
+    "typescript": "export function solve(s: string, t: string): string {\n  \n}",
+    "java": "class Solution {\n    public String solve(String s, String t) {\n        \n    }\n}",
+    "csharp": "public class Solution {\n    public string Solve(string s, string t) {\n        \n    }\n}",
+    "go": "func solve(s string, t string) string {\n    \n}"
+  },
+  "visibleTests": [
+    {"stdin": {"python": "print(solve(\"ADOBECODEBANC\", \"ABC\"))"}, "expectedStdout": "BANC"},
+    {"stdin": {"python": "print(solve(\"a\", \"a\"))"}, "expectedStdout": "a"}
+  ],
+  "hiddenTests": [
+    {"stdin": {"python": "print(solve(\"a\", \"aa\"))"}, "expectedStdout": ""},
+    {"stdin": {"python": "print(solve(\"cabwefgewcwaefgcf\", \"cae\"))"}, "expectedStdout": "cwae"},
+    {"stdin": {"python": "print(solve(\"aa\", \"aa\"))"}, "expectedStdout": "aa"}
+  ],
+  "notesForAI": {
+    "coreIdea": "Use a sliding window with two pointers and a character frequency map. Expand the right pointer to include characters, then shrink from the left while the window still contains all of t's characters. Track the minimum valid window seen.",
+    "commonBugs": ["Not accounting for duplicate characters in t", "Incorrect shrinking logic that removes required characters", "Returning the window indices instead of the substring", "Not handling case sensitivity"],
+    "expectedComplexity": "O(|s| + |t|) time, O(|s| + |t|) space"
+  }
+}

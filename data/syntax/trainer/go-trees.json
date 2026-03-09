@@ -1,0 +1,78 @@
+{
+  "id": "go-trees",
+  "title": "Trees",
+  "description": "Trees are the most common recursive data structure in interviews. Master the TreeNode struct, DFS traversals, BFS with a slice queue, and depth calculation in Go.",
+  "language": "go",
+  "category": "trees",
+  "order": 11,
+  "sections": [
+    {
+      "id": "tree-node",
+      "title": "TreeNode struct",
+      "explanation": "Define a binary tree node as a **struct with Val, Left, Right**. Left and Right are pointers to TreeNode. Build trees by creating nodes and linking them. In interviews, this struct is usually given — you just need to know how to use it.",
+      "example": "type TreeNode struct {\n    Val   int\n    Left  *TreeNode\n    Right *TreeNode\n}\n\nfunc main() {\n    root := &TreeNode{Val: 1}\n    root.Left = &TreeNode{Val: 2}\n    root.Right = &TreeNode{Val: 3}\n    root.Left.Left = &TreeNode{Val: 4}\n\n    fmt.Println(root.Val)        // 1\n    fmt.Println(root.Left.Val)   // 2\n    fmt.Println(root.Right.Val)  // 3\n}",
+      "exercise": {
+        "prompt": "Build a binary tree: root=1, left=2, right=3, left.left=4, left.right=5. Print the root value, left child value, and right child value.",
+        "starterCode": "type TreeNode struct {\n    Val   int\n    Left  *TreeNode\n    Right *TreeNode\n}\n\nfunc main() {\n    root := &TreeNode{Val: 1}\n    root.Left = &TreeNode{Val: }\n    root.Right = &TreeNode{Val: }\n    root.Left.Left = &TreeNode{Val: 4}\n    root.Left.Right = &TreeNode{Val: 5}\n\n    fmt.Println(root.Val)\n    fmt.Println(root.Left.Val)\n    fmt.Println(root.Right.Val)\n}",
+        "validation": [
+          {"type": "output", "expected": "1\n2\n3", "message": "Root is 1, left child is 2, right child is 3"},
+          {"type": "contains", "patterns": ["type TreeNode struct", "&TreeNode{Val:", "root.Left", "root.Right"], "message": "Define TreeNode struct and link nodes with pointers"}
+        ],
+        "testCode": "",
+        "hint": "root.Left = &TreeNode{Val: 2}, root.Right = &TreeNode{Val: 3}. Access values with .Val."
+      },
+      "order": 1
+    },
+    {
+      "id": "dfs-traversals",
+      "title": "DFS traversals (inorder, preorder, postorder)",
+      "explanation": "DFS traversals visit nodes recursively. **Inorder** (left, root, right) gives sorted order for BSTs. **Preorder** (root, left, right) is used for serialization. **Postorder** (left, right, root) is used for deletion and bottom-up computation. The base case is always `if node == nil { return }`.",
+      "example": "type TreeNode struct {\n    Val   int\n    Left  *TreeNode\n    Right *TreeNode\n}\n\nfunc inorder(node *TreeNode) {\n    if node == nil { return }\n    inorder(node.Left)\n    fmt.Printf(\"%d \", node.Val)\n    inorder(node.Right)\n}\n\nfunc main() {\n    root := &TreeNode{Val: 2,\n        Left:  &TreeNode{Val: 1},\n        Right: &TreeNode{Val: 3},\n    }\n    inorder(root)  // 1 2 3\n    fmt.Println()\n}",
+      "exercise": {
+        "prompt": "Build tree: root=4, left=2(left=1, right=3), right=6(left=5, right=7). Write inorder traversal and print the values space-separated. It should output the sorted sequence.",
+        "starterCode": "type TreeNode struct {\n    Val   int\n    Left  *TreeNode\n    Right *TreeNode\n}\n\nfunc inorder(node *TreeNode) {\n    if node ==  {\n        return\n    }\n    inorder(node.)\n    fmt.Printf(\"%d \", node.Val)\n    inorder(node.)\n}\n\nfunc main() {\n    root := &TreeNode{Val: 4,\n        Left: &TreeNode{Val: 2,\n            Left:  &TreeNode{Val: 1},\n            Right: &TreeNode{Val: 3},\n        },\n        Right: &TreeNode{Val: 6,\n            Left:  &TreeNode{Val: 5},\n            Right: &TreeNode{Val: 7},\n        },\n    }\n    inorder(root)\n    fmt.Println()\n}",
+        "validation": [
+          {"type": "output", "expected": "1 2 3 4 5 6 7 ", "message": "Inorder traversal of a BST gives sorted order"},
+          {"type": "contains", "patterns": ["node == nil", "inorder(node.Left)", "inorder(node.Right)"], "message": "Check nil, recurse left, print, recurse right"}
+        ],
+        "testCode": "",
+        "hint": "Base case: if node == nil. Recurse left (node.Left), print value, recurse right (node.Right)."
+      },
+      "order": 2
+    },
+    {
+      "id": "bfs-level",
+      "title": "BFS level-order traversal",
+      "explanation": "BFS traverses a tree level by level using a **queue** (slice in Go). At each level, process all nodes in the queue (track size), then enqueue their children. This gives level-order output and is used for problems like zigzag traversal, right-side view, and minimum depth.",
+      "example": "type TreeNode struct {\n    Val   int\n    Left  *TreeNode\n    Right *TreeNode\n}\n\nfunc levelOrder(root *TreeNode) [][]int {\n    if root == nil { return nil }\n    result := [][]int{}\n    queue := []*TreeNode{root}\n    for len(queue) > 0 {\n        size := len(queue)\n        level := []int{}\n        for i := 0; i < size; i++ {\n            node := queue[0]\n            queue = queue[1:]\n            level = append(level, node.Val)\n            if node.Left != nil  { queue = append(queue, node.Left) }\n            if node.Right != nil { queue = append(queue, node.Right) }\n        }\n        result = append(result, level)\n    }\n    return result\n}\n\nfunc main() {\n    root := &TreeNode{Val: 1,\n        Left:  &TreeNode{Val: 2, Left: &TreeNode{Val: 4}, Right: &TreeNode{Val: 5}},\n        Right: &TreeNode{Val: 3},\n    }\n    fmt.Println(levelOrder(root))  // [[1] [2 3] [4 5]]\n}",
+      "exercise": {
+        "prompt": "Implement level-order traversal for tree: root=1, left=2(left=4,right=5), right=3(left=6,right=7). Print each level as a slice.",
+        "starterCode": "type TreeNode struct {\n    Val   int\n    Left  *TreeNode\n    Right *TreeNode\n}\n\nfunc levelOrder(root *TreeNode) [][]int {\n    if root == nil { return nil }\n    result := [][]int{}\n    queue := []*TreeNode{root}\n    for len(queue) > 0 {\n        size := len(queue)\n        level := []int{}\n        for i := 0; i < size; i++ {\n            node := queue[]\n            queue = queue[1:]\n            level = append(level, node.Val)\n            if node.Left != nil  { queue = append(queue, node.) }\n            if node.Right != nil { queue = append(queue, node.) }\n        }\n        result = append(result, level)\n    }\n    return result\n}\n\nfunc main() {\n    root := &TreeNode{Val: 1,\n        Left:  &TreeNode{Val: 2, Left: &TreeNode{Val: 4}, Right: &TreeNode{Val: 5}},\n        Right: &TreeNode{Val: 3, Left: &TreeNode{Val: 6}, Right: &TreeNode{Val: 7}},\n    }\n    fmt.Println(levelOrder(root))\n}",
+        "validation": [
+          {"type": "output", "expected": "[[1] [2 3] [4 5 6 7]]", "message": "Three levels: [1], [2 3], [4 5 6 7]"},
+          {"type": "contains", "patterns": ["queue[0]", "queue[1:]", "node.Left", "node.Right"], "message": "Use queue[0]/queue[1:] for dequeue, enqueue children if not nil"}
+        ],
+        "testCode": "",
+        "hint": "Dequeue with queue[0], queue = queue[1:]. Enqueue node.Left and node.Right if not nil."
+      },
+      "order": 3
+    },
+    {
+      "id": "tree-depth",
+      "title": "Tree depth and height",
+      "explanation": "**Max depth** is the longest root-to-leaf path. Recursively, it's `1 + max(depth(left), depth(right))`. Base case: nil node returns 0. This pattern extends to balanced-tree checks, diameter calculation, and subtree problems. Write a helper `max` function since Go doesn't have a generic one for ints (pre-1.21).",
+      "example": "type TreeNode struct {\n    Val   int\n    Left  *TreeNode\n    Right *TreeNode\n}\n\nfunc maxDepth(node *TreeNode) int {\n    if node == nil { return 0 }\n    left := maxDepth(node.Left)\n    right := maxDepth(node.Right)\n    if left > right { return 1 + left }\n    return 1 + right\n}\n\nfunc main() {\n    root := &TreeNode{Val: 1,\n        Left: &TreeNode{Val: 2, Left: &TreeNode{Val: 4}},\n        Right: &TreeNode{Val: 3},\n    }\n    fmt.Println(maxDepth(root))  // 3\n}",
+      "exercise": {
+        "prompt": "Compute the max depth of tree: root=1, left=2(left=4(left=8)), right=3. The depth should be 4. Print the result.",
+        "starterCode": "type TreeNode struct {\n    Val   int\n    Left  *TreeNode\n    Right *TreeNode\n}\n\nfunc maxDepth(node *TreeNode) int {\n    if node ==  {\n        return 0\n    }\n    left := maxDepth(node.Left)\n    right := maxDepth(node.Right)\n    if left > right {\n        return 1 + left\n    }\n    return 1 + \n}\n\nfunc main() {\n    root := &TreeNode{Val: 1,\n        Left: &TreeNode{Val: 2,\n            Left: &TreeNode{Val: 4,\n                Left: &TreeNode{Val: 8},\n            },\n        },\n        Right: &TreeNode{Val: 3},\n    }\n    fmt.Println(maxDepth(root))\n}",
+        "validation": [
+          {"type": "output", "expected": "4", "message": "Deepest path is 1->2->4->8, depth 4"},
+          {"type": "contains", "patterns": ["node == nil", "maxDepth(node.Left)", "1 + right"], "message": "Check nil, recurse both sides, return 1 + max of both depths"}
+        ],
+        "testCode": "",
+        "hint": "Base: nil returns 0. Return 1 + max(left, right). Use if/else to pick the larger depth."
+      },
+      "order": 4
+    }
+  ]
+}

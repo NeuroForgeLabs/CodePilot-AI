@@ -1,0 +1,78 @@
+{
+  "id": "c-arrays-loops",
+  "title": "Arrays & Loops",
+  "description": "Fixed-size arrays and loops are the backbone of C interview solutions — master declaration, access, iteration, 2D arrays, and sizeof.",
+  "language": "c",
+  "category": "arrays-loops",
+  "order": 2,
+  "sections": [
+    {
+      "id": "fixed-arrays",
+      "title": "Fixed arrays and access",
+      "explanation": "C arrays are fixed-size, stack-allocated blocks of contiguous memory. Declare with `type name[size]` or initialize with `type name[] = {...}`. Access elements with `arr[i]` (0-indexed). Arrays do NOT track their own length — you must manage it yourself.",
+      "example": "int nums[5] = {10, 20, 30, 40, 50};\nprintf(\"%d\\n\", nums[0]);  // 10\nprintf(\"%d\\n\", nums[4]);  // 50\n\nnums[2] = 99;\nprintf(\"%d\\n\", nums[2]);  // 99\n\nint size = sizeof(nums) / sizeof(nums[0]);\nprintf(\"length: %d\\n\", size);  // length: 5",
+      "exercise": {
+        "prompt": "Create an array with values {5, 10, 15, 20, 25}. Print the first and last elements. Then change the middle element to 99 and print it. Finally, compute and print the array length using sizeof.",
+        "starterCode": "int main() {\n    int nums[] = {5, 10, 15, 20, 25};\n    printf(\"%d\\n\", nums[0]);\n    printf(\"%d\\n\", nums[]);\n\n    nums[2] = ;\n    printf(\"%d\\n\", nums[2]);\n\n    int len = sizeof(nums) / sizeof(nums[]);\n    printf(\"%d\\n\", len);\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "5\n25\n99\n5", "message": "First is 5, last is 25, middle changed to 99, length is 5"},
+          {"type": "contains", "patterns": ["nums[4]", "nums[2] = 99", "sizeof(nums)"], "message": "Use index 4 for last element, assign 99 to index 2, and sizeof for length"}
+        ],
+        "testCode": "",
+        "hint": "Last element is nums[4]. Set nums[2] = 99. Length = sizeof(nums) / sizeof(nums[0])."
+      },
+      "order": 1
+    },
+    {
+      "id": "for-while-loops",
+      "title": "for and while loops",
+      "explanation": "**for** loops are the standard iteration pattern: `for (int i = 0; i < n; i++)`. **while** loops are used when the number of iterations isn't known upfront. Both are identical in power — use whichever reads more clearly for the problem.",
+      "example": "int arr[] = {1, 2, 3, 4, 5};\nint n = 5;\n\nint sum = 0;\nfor (int i = 0; i < n; i++) {\n    sum += arr[i];\n}\nprintf(\"sum: %d\\n\", sum);  // sum: 15\n\nint j = 0;\nwhile (j < n) {\n    printf(\"%d \", arr[j]);\n    j++;\n}\n// 1 2 3 4 5",
+      "exercise": {
+        "prompt": "Given array {2, 4, 6, 8, 10}, use a for loop to compute the sum and print it. Then use a while loop to print all elements separated by spaces.",
+        "starterCode": "int main() {\n    int arr[] = {2, 4, 6, 8, 10};\n    int n = 5;\n\n    int sum = 0;\n    for (int i = 0; i < n; i++) {\n        sum += arr[];\n    }\n    printf(\"%d\\n\", sum);\n\n    int j = 0;\n    while (j < ) {\n        printf(\"%d \", arr[j]);\n        j++;\n    }\n    printf(\"\\n\");\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "30\n2 4 6 8 10", "message": "Sum should be 30, then print all elements space-separated"},
+          {"type": "contains", "patterns": ["for (int i", "while (j", "arr[i]"], "message": "Use a for loop with index i and a while loop with index j"}
+        ],
+        "testCode": "",
+        "hint": "Access arr[i] inside the for loop. The while condition is j < n."
+      },
+      "order": 2
+    },
+    {
+      "id": "two-d-arrays",
+      "title": "2D arrays",
+      "explanation": "2D arrays model grids and matrices — very common in interview problems (BFS on grid, DP tables). Declare as `int grid[ROWS][COLS]`. Access with `grid[row][col]`. Iterate with nested for loops. You must know the dimensions at compile time or use dynamic allocation.",
+      "example": "int grid[2][3] = {\n    {1, 2, 3},\n    {4, 5, 6}\n};\n\nfor (int r = 0; r < 2; r++) {\n    for (int c = 0; c < 3; c++) {\n        printf(\"%d \", grid[r][c]);\n    }\n    printf(\"\\n\");\n}\n// 1 2 3\n// 4 5 6",
+      "exercise": {
+        "prompt": "Create a 3x3 identity matrix (1s on diagonal, 0s elsewhere) as a 2D array. Print it row by row with spaces between elements.",
+        "starterCode": "int main() {\n    int grid[3][3] = {\n        {1, 0, 0},\n        {0, 1, 0},\n        {0, 0, 1}\n    };\n\n    for (int r = 0; r < 3; r++) {\n        for (int c = 0; c < 3; c++) {\n            printf(\"%d \", grid[][]);\n        }\n        printf(\"\\n\");\n    }\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "1 0 0 \n0 1 0 \n0 0 1", "message": "Print the 3x3 identity matrix row by row"},
+          {"type": "contains", "patterns": ["grid[r][c]", "int grid[3][3]"], "message": "Use grid[r][c] to access elements in the 2D array"}
+        ],
+        "testCode": "",
+        "hint": "Access each element as grid[r][c] where r is the row and c is the column index."
+      },
+      "order": 3
+    },
+    {
+      "id": "sizeof-patterns",
+      "title": "sizeof for array length",
+      "explanation": "Since C arrays don't store their length, use `sizeof(arr) / sizeof(arr[0])` to compute it. This only works for stack-allocated arrays — it fails for pointer parameters (which decay and lose size info). In functions, always pass the length as a separate parameter.",
+      "example": "int nums[] = {10, 20, 30, 40};\nint len = sizeof(nums) / sizeof(nums[0]);\nprintf(\"length: %d\\n\", len);  // length: 4\n\ndouble vals[] = {1.1, 2.2, 3.3};\nint dlen = sizeof(vals) / sizeof(vals[0]);\nprintf(\"length: %d\\n\", dlen);  // length: 3",
+      "exercise": {
+        "prompt": "Compute and print the length of three arrays: an int array {1,2,3,4,5}, a double array {1.0, 2.0, 3.0}, and a char array \"hello\" (remember: string literals include a null terminator). Print each length.",
+        "starterCode": "int main() {\n    int a[] = {1, 2, 3, 4, 5};\n    double b[] = {1.0, 2.0, 3.0};\n    char c[] = \"hello\";\n\n    printf(\"%d\\n\", (int)(sizeof(a) / sizeof(a[])));\n    printf(\"%d\\n\", (int)(sizeof(b) / sizeof(b[])));\n    printf(\"%d\\n\", (int)(sizeof(c) / sizeof(c[])));\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "5\n3\n6", "message": "int array has 5 elements, double has 3, char \"hello\" has 6 (including null terminator)"},
+          {"type": "contains", "patterns": ["sizeof(a)", "sizeof(b)", "sizeof(c)"], "message": "Use sizeof for each array to compute length"}
+        ],
+        "testCode": "",
+        "hint": "Divide sizeof(arr) by sizeof(arr[0]). \"hello\" has 6 chars: h, e, l, l, o, and the '\\0' terminator."
+      },
+      "order": 4
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "id": "c-graphs",
+  "title": "Graphs",
+  "description": "Graph representation with adjacency lists using arrays, DFS, BFS, and connected components — core patterns for graph interview problems in C.",
+  "language": "c",
+  "category": "graphs",
+  "order": 12,
+  "sections": [
+    {
+      "id": "adjacency-list",
+      "title": "Adjacency list with arrays",
+      "explanation": "In C, represent a graph's adjacency list using 2D arrays or parallel arrays. A simple approach: `int adj[MAX_N][MAX_N]` for the neighbor list and `int deg[MAX_N]` for the degree (number of neighbors) of each node. Add an edge by appending to both nodes' lists for undirected graphs.",
+      "example": "#define MAX_N 100\nint adj[MAX_N][MAX_N];\nint deg[MAX_N];\n\nvoid add_edge(int u, int v) {\n    adj[u][deg[u]++] = v;\n    adj[v][deg[v]++] = u;\n}\n\nint main() {\n    memset(deg, 0, sizeof(deg));\n    add_edge(0, 1);\n    add_edge(0, 2);\n    add_edge(1, 2);\n    // Node 0 neighbors: 1, 2\n    // Node 1 neighbors: 0, 2\n    // Node 2 neighbors: 0, 1\n}",
+      "exercise": {
+        "prompt": "Build an undirected graph with 4 nodes and edges: 0-1, 0-2, 1-3, 2-3. Print the neighbors of each node in format \"node: n1 n2 ...\".",
+        "starterCode": "#define MAX_N 100\nint adj[MAX_N][MAX_N];\nint deg[MAX_N];\n\nvoid add_edge(int u, int v) {\n    adj[u][deg[u]++] = v;\n    adj[v][deg[v]++] = u;\n}\n\nint main() {\n    memset(deg, 0, sizeof(deg));\n    add_edge(0, 1);\n    add_edge(0, 2);\n    add_edge(1, 3);\n    add_edge(2, 3);\n\n    for (int i = 0; i < 4; i++) {\n        printf(\"%d:\", i);\n        for (int j = 0; j < deg[i]; j++)\n            printf(\" %d\", adj[i][j]);\n        printf(\"\\n\");\n    }\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "0: 1 2\n1: 0 3\n2: 0 3\n3: 1 2", "message": "Each node should list its neighbors"},
+          {"type": "contains", "patterns": ["add_edge(", "deg[u]++", "adj[i][j]"], "message": "Use adjacency list with degree tracking for undirected graph"}
+        ],
+        "testCode": "",
+        "hint": "add_edge adds v to u's list and u to v's list. deg tracks how many neighbors each node has."
+      },
+      "order": 1
+    },
+    {
+      "id": "dfs-graph",
+      "title": "DFS on graph",
+      "explanation": "DFS explores as deep as possible before backtracking. Use a **visited** array to avoid cycles. Start from a node, mark it visited, then recursively visit all unvisited neighbors. DFS is the basis for cycle detection, topological sort, and path finding.",
+      "example": "int visited[MAX_N];\n\nvoid dfs(int node) {\n    visited[node] = 1;\n    printf(\"%d \", node);\n    for (int i = 0; i < deg[node]; i++) {\n        int neighbor = adj[node][i];\n        if (!visited[neighbor])\n            dfs(neighbor);\n    }\n}",
+      "exercise": {
+        "prompt": "Perform DFS starting from node 0 on graph with edges: 0-1, 0-2, 1-3, 2-3. Print visited nodes in DFS order.",
+        "starterCode": "#define MAX_N 100\nint adj[MAX_N][MAX_N];\nint deg[MAX_N];\nint visited[MAX_N];\n\nvoid add_edge(int u, int v) {\n    adj[u][deg[u]++] = v;\n    adj[v][deg[v]++] = u;\n}\n\nvoid dfs(int node) {\n    visited[node] = 1;\n    printf(\"%d \", node);\n    for (int i = 0; i < deg[node]; i++) {\n        int nb = adj[node][i];\n        if (!visited[nb])\n            dfs(nb);\n    }\n}\n\nint main() {\n    memset(deg, 0, sizeof(deg));\n    memset(visited, 0, sizeof(visited));\n    add_edge(0, 1);\n    add_edge(0, 2);\n    add_edge(1, 3);\n    add_edge(2, 3);\n\n    dfs(0);\n    printf(\"\\n\");\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "0 1 3 2", "message": "DFS from 0 visits: 0, then 1 (first neighbor), then 3, then 2"},
+          {"type": "contains", "patterns": ["visited[node] = 1", "!visited[nb]", "dfs(nb)"], "message": "Mark visited before recursing, check !visited before visiting neighbors"}
+        ],
+        "testCode": "",
+        "hint": "DFS from 0: visit 0, go to neighbor 1, from 1 go to 3, backtrack, visit 2. Order: 0 1 3 2."
+      },
+      "order": 2
+    },
+    {
+      "id": "bfs-graph",
+      "title": "BFS on graph",
+      "explanation": "BFS explores level by level using a queue. It finds the **shortest path** in unweighted graphs. Use an array queue of node indices with front/back pointers. Mark nodes visited when **enqueued** (not when dequeued) to avoid duplicates.",
+      "example": "void bfs(int start) {\n    int queue[MAX_N], front = 0, back = 0;\n    visited[start] = 1;\n    queue[back++] = start;\n    while (front < back) {\n        int node = queue[front++];\n        printf(\"%d \", node);\n        for (int i = 0; i < deg[node]; i++) {\n            int nb = adj[node][i];\n            if (!visited[nb]) {\n                visited[nb] = 1;\n                queue[back++] = nb;\n            }\n        }\n    }\n}",
+      "exercise": {
+        "prompt": "Perform BFS starting from node 0 on graph with edges: 0-1, 0-2, 1-3, 2-3. Print visited nodes in BFS order.",
+        "starterCode": "#define MAX_N 100\nint adj[MAX_N][MAX_N];\nint deg[MAX_N];\nint visited[MAX_N];\n\nvoid add_edge(int u, int v) {\n    adj[u][deg[u]++] = v;\n    adj[v][deg[v]++] = u;\n}\n\nint main() {\n    memset(deg, 0, sizeof(deg));\n    memset(visited, 0, sizeof(visited));\n    add_edge(0, 1);\n    add_edge(0, 2);\n    add_edge(1, 3);\n    add_edge(2, 3);\n\n    int queue[MAX_N], front = 0, back = 0;\n    visited[0] = 1;\n    queue[back++] = 0;\n    while (front < back) {\n        int node = queue[front++];\n        printf(\"%d \", node);\n        for (int i = 0; i < deg[node]; i++) {\n            int nb = adj[node][i];\n            if (!visited[nb]) {\n                visited[nb] = 1;\n                queue[back++] = nb;\n            }\n        }\n    }\n    printf(\"\\n\");\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "0 1 2 3", "message": "BFS from 0 visits level by level: 0, then 1 2, then 3"},
+          {"type": "contains", "patterns": ["queue[back++]", "queue[front++]", "visited[nb] = 1"], "message": "Use array queue, mark visited on enqueue"}
+        ],
+        "testCode": "",
+        "hint": "BFS visits level by level: 0 first, then neighbors 1 and 2, then 3. Mark visited when enqueuing."
+      },
+      "order": 3
+    },
+    {
+      "id": "connected-components",
+      "title": "Connected components",
+      "explanation": "To find connected components, iterate through all nodes. For each unvisited node, run DFS/BFS to mark all reachable nodes as one component. Count how many times you start a new DFS — that's the number of components.",
+      "example": "int component_count = 0;\nfor (int i = 0; i < n; i++) {\n    if (!visited[i]) {\n        dfs(i);\n        component_count++;\n    }\n}\nprintf(\"components: %d\\n\", component_count);",
+      "exercise": {
+        "prompt": "Find the number of connected components in a graph with 6 nodes and edges: 0-1, 1-2, 3-4. Nodes 5 is isolated. Print the count.",
+        "starterCode": "#define MAX_N 100\nint adj[MAX_N][MAX_N];\nint deg[MAX_N];\nint visited[MAX_N];\n\nvoid add_edge(int u, int v) {\n    adj[u][deg[u]++] = v;\n    adj[v][deg[v]++] = u;\n}\n\nvoid dfs(int node) {\n    visited[node] = 1;\n    for (int i = 0; i < deg[node]; i++) {\n        int nb = adj[node][i];\n        if (!visited[nb]) dfs(nb);\n    }\n}\n\nint main() {\n    memset(deg, 0, sizeof(deg));\n    memset(visited, 0, sizeof(visited));\n    add_edge(0, 1);\n    add_edge(1, 2);\n    add_edge(3, 4);\n\n    int components = 0;\n    for (int i = 0; i < 6; i++) {\n        if (!visited[i]) {\n            dfs(i);\n            components++;\n        }\n    }\n    printf(\"%d\\n\", components);\n    return 0;\n}",
+        "validation": [
+          {"type": "output", "expected": "3", "message": "Three components: {0,1,2}, {3,4}, {5}"},
+          {"type": "contains", "patterns": ["!visited[i]", "dfs(i)", "components++"], "message": "Loop through all nodes, DFS from unvisited ones, increment component count"}
+        ],
+        "testCode": "",
+        "hint": "Start DFS from each unvisited node. Components: {0,1,2}, {3,4}, {5} = 3 components."
+      },
+      "order": 4
+    }
+  ]
+}

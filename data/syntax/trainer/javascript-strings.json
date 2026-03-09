@@ -1,0 +1,95 @@
+{
+  "id": "javascript-strings",
+  "title": "Strings",
+  "description": "String manipulation is at the core of many interview problems. Master iteration, slicing, splitting, character codes, and the critical concept of string immutability in JavaScript.",
+  "language": "javascript",
+  "category": "strings",
+  "order": 3,
+  "sections": [
+    {
+      "id": "iterate-chars",
+      "title": "Iterating over characters",
+      "explanation": "JavaScript strings are iterable. Use `for...of` to iterate characters or spread into an array with `[...str]`. Index access with `str[i]` works but `str.charAt(i)` is the classic alternative. For interview problems involving character frequency or palindromes, iteration is the first step.",
+      "example": "const s = \"hello\";\nfor (const ch of s) {\n  // process each character\n}\n\nconst chars = [...s]; // ['h','e','l','l','o']\nconsole.log(s[0]);    // 'h'\nconsole.log(s.length); // 5",
+      "exercise": {
+        "prompt": "Given string `s = \"abcd\"`, iterate with for...of and build a reversed string. Print the reversed string. Then print the length of the original.",
+        "starterCode": "const s = \"abcd\";\nlet reversed = \"\";\n\nfor (const ch _____ s) {\n  reversed = ch + _____;\n}\n\nconsole.log(reversed);\nconsole.log(s.length);",
+        "validation": [
+          {"type": "output", "expected": "dcba\n4", "message": "Reversed 'abcd' is 'dcba', length is 4"},
+          {"type": "contains", "patterns": ["for", "of"], "message": "Use a for...of loop to iterate the string characters"}
+        ],
+        "testCode": "",
+        "hint": "Use 'of' to iterate and prepend each char: reversed = ch + reversed."
+      },
+      "order": 1
+    },
+    {
+      "id": "substring-slice",
+      "title": "substring and slice",
+      "explanation": "Use `str.slice(start, end)` to extract substrings — it supports negative indices. `str.substring(start, end)` is similar but swaps arguments if start > end and doesn't support negatives. In interviews, slice is generally preferred for consistency with array operations.",
+      "example": "const s = \"interview\";\nconsole.log(s.slice(0, 5));   // \"inter\"\nconsole.log(s.slice(5));      // \"view\"\nconsole.log(s.slice(-4));     // \"view\"\nconsole.log(s.substring(0, 5)); // \"inter\"",
+      "exercise": {
+        "prompt": "Given `s = \"javascript\"`, extract and print: the first 4 characters using slice, the last 6 characters using slice with a negative index, and everything from index 4 onward.",
+        "starterCode": "const s = \"javascript\";\n\nconsole.log(s.slice(0, _____));\nconsole.log(s.slice(_____));\nconsole.log(s.slice(_____));",
+        "validation": [
+          {"type": "output", "expected": "java\nscript\nscript", "message": "First 4 chars are 'java', last 6 are 'script', from index 4 is 'script'"},
+          {"type": "contains", "patterns": ["slice("], "message": "Use the slice method for all extractions"}
+        ],
+        "testCode": "",
+        "hint": "slice(0, 4) for first 4, slice(-6) for last 6, slice(4) for index 4 onward."
+      },
+      "order": 2
+    },
+    {
+      "id": "split-join",
+      "title": "split and join",
+      "explanation": "split() converts a string to an array, join() converts an array back to a string. This pattern is essential because JavaScript strings are immutable — to rearrange characters, split into an array, manipulate, then join back. Interviewers love problems that require this roundtrip.",
+      "example": "const words = \"hello world foo\".split(\" \");\nconsole.log(words); // ['hello', 'world', 'foo']\n\nconst joined = words.join(\"-\");\nconsole.log(joined); // 'hello-world-foo'\n\n// Reverse a string via split/reverse/join\nconst rev = \"abcd\".split(\"\").reverse().join(\"\");\nconsole.log(rev); // 'dcba'",
+      "exercise": {
+        "prompt": "Given `sentence = \"the quick brown fox\"`, split by spaces into an array, print the number of words, then join with hyphens and print the result.",
+        "starterCode": "const sentence = \"the quick brown fox\";\n\nconst words = sentence.split(\"_____\");\nconsole.log(words.length);\n\nconst hyphenated = words.join(\"_____\");\nconsole.log(hyphenated);",
+        "validation": [
+          {"type": "output", "expected": "4\nthe-quick-brown-fox", "message": "4 words when split by space, joined by hyphens"},
+          {"type": "contains", "patterns": ["split(", "join("], "message": "Use split to break and join to reassemble the string"}
+        ],
+        "testCode": "",
+        "hint": "Split by \" \" (space) and join with \"-\" (hyphen)."
+      },
+      "order": 3
+    },
+    {
+      "id": "charcodeat",
+      "title": "charCodeAt and fromCharCode",
+      "explanation": "charCodeAt(i) returns the Unicode value of a character — essential for problems involving character math (e.g., mapping 'a' to 0 for frequency arrays). String.fromCharCode() converts back. Know that 'a' is 97 and 'A' is 65.",
+      "example": "console.log(\"a\".charCodeAt(0));  // 97\nconsole.log(\"z\".charCodeAt(0));  // 122\nconsole.log(\"A\".charCodeAt(0));  // 65\n\n// Character arithmetic\nconst idx = \"c\".charCodeAt(0) - \"a\".charCodeAt(0); // 2\nconsole.log(String.fromCharCode(97)); // 'a'",
+      "exercise": {
+        "prompt": "Print the char code of 'a', compute the alphabet index of 'e' (e - a), and convert char code 122 back to a character. Print each on its own line.",
+        "starterCode": "console.log(\"a\".charCodeAt(0));\n\nconst idx = \"e\".charCodeAt(0) - \"_____\".charCodeAt(0);\nconsole.log(idx);\n\nconsole.log(String.fromCharCode(_____));",
+        "validation": [
+          {"type": "output", "expected": "97\n4\nz", "message": "char code of 'a' is 97, 'e'-'a' is 4, char code 122 is 'z'"},
+          {"type": "contains", "patterns": ["charCodeAt", "fromCharCode"], "message": "Use charCodeAt for encoding and fromCharCode for decoding"}
+        ],
+        "testCode": "",
+        "hint": "Subtract 'a'.charCodeAt(0) to get alphabet index. fromCharCode(122) is 'z'."
+      },
+      "order": 4
+    },
+    {
+      "id": "immutability",
+      "title": "String immutability",
+      "explanation": "JavaScript strings are immutable — you cannot change a character in place. Every string operation returns a new string. For interview problems needing character manipulation, convert to an array first, modify, then join. This is a critical performance consideration for building strings in loops.",
+      "example": "let s = \"hello\";\n// s[0] = 'H';  // Does nothing — strings are immutable\n\n// Correct approach: split, modify, join\nconst chars = s.split(\"\");\nchars[0] = \"H\";\nconst result = chars.join(\"\");\nconsole.log(result); // \"Hello\"",
+      "exercise": {
+        "prompt": "Given `s = \"abcde\"`, convert to an array, swap the first and last characters, join back, and print the result.",
+        "starterCode": "const s = \"abcde\";\nconst chars = s.split(\"\");\n\nconst temp = chars[0];\nchars[0] = chars[chars.length - _____];\nchars[chars.length - 1] = _____;\n\nconst result = chars.join(\"\");\nconsole.log(result);",
+        "validation": [
+          {"type": "output", "expected": "ebcda", "message": "Swapping first 'a' and last 'e' gives 'ebcda'"},
+          {"type": "contains", "patterns": ["split(", "join("], "message": "Use split/join to work around string immutability"}
+        ],
+        "testCode": "",
+        "hint": "chars.length - 1 for the last index, and temp holds the original first character."
+      },
+      "order": 5
+    }
+  ]
+}

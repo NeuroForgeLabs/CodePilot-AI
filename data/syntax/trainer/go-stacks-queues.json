@@ -1,0 +1,78 @@
+{
+  "id": "go-stacks-queues",
+  "title": "Stacks & Queues",
+  "description": "Go uses slices as both stacks and queues — no separate container needed. Master the push/pop patterns, valid parentheses, and BFS queue usage that appear constantly in interviews.",
+  "language": "go",
+  "category": "stacks-queues",
+  "order": 8,
+  "sections": [
+    {
+      "id": "slice-stack",
+      "title": "Slice as stack",
+      "explanation": "Use a slice as a stack: **push** with `append(stack, val)`, **pop** by slicing off the last element, **peek** with `stack[len(stack)-1]`. Check `len(stack) > 0` before popping. This O(1) amortized pattern replaces a dedicated Stack class from other languages.",
+      "example": "func main() {\n    stack := []int{}\n\n    // Push\n    stack = append(stack, 10)\n    stack = append(stack, 20)\n    stack = append(stack, 30)\n\n    // Peek\n    fmt.Println(stack[len(stack)-1])  // 30\n\n    // Pop\n    top := stack[len(stack)-1]\n    stack = stack[:len(stack)-1]\n    fmt.Println(top)                  // 30\n    fmt.Println(stack)                // [10 20]\n}",
+      "exercise": {
+        "prompt": "Push 5, 10, 15 onto a stack. Print the top (peek), pop it, then print the new top and the stack.",
+        "starterCode": "func main() {\n    stack := []int{}\n    stack = append(stack, 5)\n    stack = append(stack, 10)\n    stack = append(stack, 15)\n\n    fmt.Println(stack[len(stack)-])\n\n    top := stack[len(stack)-1]\n    stack = stack[:len(stack)-]\n    fmt.Println(top)\n    fmt.Println(stack[len(stack)-1])\n    fmt.Println(stack)\n}",
+        "validation": [
+          {"type": "output", "expected": "15\n15\n10\n[5 10]", "message": "Peek is 15, pop returns 15, new top is 10, stack is [5 10]"},
+          {"type": "contains", "patterns": ["stack[len(stack)-1]", "stack[:len(stack)-1]", "append(stack"], "message": "Use slice indexing for peek/pop and append for push"}
+        ],
+        "testCode": "",
+        "hint": "Peek: stack[len(stack)-1]. Pop: top = stack[len(stack)-1]; stack = stack[:len(stack)-1]."
+      },
+      "order": 1
+    },
+    {
+      "id": "slice-queue",
+      "title": "Slice as queue",
+      "explanation": "Use a slice as a queue: **enqueue** with `append(queue, val)`, **dequeue** by taking `queue[0]` and slicing `queue = queue[1:]`. Check `len(queue) > 0` before dequeueing. For BFS this is sufficient — the GC handles the underlying array.",
+      "example": "func main() {\n    queue := []string{}\n\n    // Enqueue\n    queue = append(queue, \"first\")\n    queue = append(queue, \"second\")\n    queue = append(queue, \"third\")\n\n    // Dequeue\n    front := queue[0]\n    queue = queue[1:]\n    fmt.Println(front)   // first\n    fmt.Println(queue)   // [second third]\n}",
+      "exercise": {
+        "prompt": "Enqueue \"a\", \"b\", \"c\" into a queue. Dequeue the front, print it, then print the remaining queue and its length.",
+        "starterCode": "func main() {\n    queue := []string{}\n    queue = append(queue, \"a\")\n    queue = append(queue, \"b\")\n    queue = append(queue, \"c\")\n\n    front := queue[]\n    queue = queue[:]n\n    fmt.Println(front)\n    fmt.Println(queue)\n    fmt.Println(len(queue))\n}",
+        "validation": [
+          {"type": "output", "expected": "a\n[b c]\n2", "message": "Front is \"a\", remaining is [b c], length is 2"},
+          {"type": "contains", "patterns": ["queue[0]", "queue[1:]", "append(queue"], "message": "Use queue[0] for front and queue[1:] to dequeue"}
+        ],
+        "testCode": "",
+        "hint": "front := queue[0] takes the first element. queue = queue[1:] removes it from the front."
+      },
+      "order": 2
+    },
+    {
+      "id": "valid-parens",
+      "title": "Valid parentheses pattern",
+      "explanation": "The classic stack problem: push opening brackets, pop on closing brackets, and check the popped bracket matches. If the stack is empty at the end, the string is valid. This pattern extends to any nested structure validation.",
+      "example": "func isValid(s string) bool {\n    stack := []rune{}\n    pairs := map[rune]rune{')': '(', ']': '[', '}': '{'}\n    for _, ch := range s {\n        if ch == '(' || ch == '[' || ch == '{' {\n            stack = append(stack, ch)\n        } else {\n            if len(stack) == 0 || stack[len(stack)-1] != pairs[ch] {\n                return false\n            }\n            stack = stack[:len(stack)-1]\n        }\n    }\n    return len(stack) == 0\n}\n\nfunc main() {\n    fmt.Println(isValid(\"()[]{}\"))   // true\n    fmt.Println(isValid(\"(]\"))       // false\n}",
+      "exercise": {
+        "prompt": "Complete the isValid function that checks if a string of brackets is valid. Test with \"({[]})\" (true), \"([)]\" (false), and \"\" (true). Print each result.",
+        "starterCode": "func isValid(s string) bool {\n    stack := []rune{}\n    pairs := map[rune]rune{')': '(', ']': '[', '}': '{'}\n    for _, ch := range s {\n        if ch == '(' || ch == '[' || ch == '{' {\n            stack = append(stack, ch)\n        } else {\n            if len(stack) == 0 || stack[len(stack)-1] != [ch] {\n                return false\n            }\n            stack = stack[:len(stack)-1]\n        }\n    }\n    return len(stack) == 0\n}\n\nfunc main() {\n    fmt.Println(isValid(\"({[]})\"))\n    fmt.Println(isValid(\"([)]\"))\n    fmt.Println(isValid(\"\"))\n}",
+        "validation": [
+          {"type": "output", "expected": "true\nfalse\ntrue", "message": "({[]}) is valid, ([)] is not, empty string is valid"},
+          {"type": "contains", "patterns": ["pairs[ch]", "stack[:len(stack)-1]", "len(stack) == 0"], "message": "Use the pairs map for matching and stack operations for validation"}
+        ],
+        "testCode": "",
+        "hint": "Look up the matching bracket with pairs[ch]. Compare with stack[len(stack)-1]. Pop with stack[:len(stack)-1]."
+      },
+      "order": 3
+    },
+    {
+      "id": "bfs-queue",
+      "title": "BFS with queue",
+      "explanation": "BFS uses a queue to explore nodes level by level. Enqueue the start, then loop: dequeue front, process it, enqueue unvisited neighbors. For level-order traversal, track the queue length at each level. This pattern solves shortest-path, minimum-steps, and tree-level problems.",
+      "example": "func main() {\n    graph := map[int][]int{1: {2, 3}, 2: {4}, 3: {4}, 4: {}}\n    queue := []int{1}\n    visited := map[int]bool{1: true}\n    level := 0\n\n    for len(queue) > 0 {\n        size := len(queue)\n        fmt.Printf(\"Level %d: \", level)\n        for i := 0; i < size; i++ {\n            node := queue[0]\n            queue = queue[1:]\n            fmt.Printf(\"%d \", node)\n            for _, nb := range graph[node] {\n                if !visited[nb] {\n                    visited[nb] = true\n                    queue = append(queue, nb)\n                }\n            }\n        }\n        fmt.Println()\n        level++\n    }\n}",
+      "exercise": {
+        "prompt": "Perform BFS from node 0 on graph: 0->[1,2], 1->[3], 2->[3], 3->[]. Print each node as it's dequeued, one per line.",
+        "starterCode": "func main() {\n    graph := map[int][]int{0: {1, 2}, 1: {3}, 2: {3}, 3: {}}\n    queue := []int{0}\n    visited := map[int]bool{0: true}\n\n    for len(queue) > 0 {\n        node := queue[0]\n        queue = queue[1:]\n        fmt.Println(node)\n        for _, nb := range graph[node] {\n            if !visited[nb] {\n                [nb] = true\n                queue = (queue, nb)\n            }\n        }\n    }\n}",
+        "validation": [
+          {"type": "output", "expected": "0\n1\n2\n3", "message": "BFS visits nodes in level order: 0, 1, 2, 3"},
+          {"type": "contains", "patterns": ["queue[0]", "queue[1:]", "visited[nb] = true", "append(queue"], "message": "Use queue[0]/queue[1:] for dequeue and append for enqueue"}
+        ],
+        "testCode": "",
+        "hint": "Dequeue: node := queue[0]; queue = queue[1:]. Mark visited and enqueue: visited[nb] = true; queue = append(queue, nb)."
+      },
+      "order": 4
+    }
+  ]
+}
