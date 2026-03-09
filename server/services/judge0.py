@@ -2,10 +2,13 @@ from __future__ import annotations
 
 import asyncio
 import base64
+import logging
 import os
 from typing import Any
 
 import httpx
+
+logger = logging.getLogger(__name__)
 
 LANGUAGE_IDS: dict[str, int] = {
     "python": 71,       # Python 3
@@ -15,6 +18,9 @@ LANGUAGE_IDS: dict[str, int] = {
     "csharp": 51,       # C# (Mono)
     "go": 60,           # Go
 }
+
+MAX_RETRIES = 3
+RETRY_BACKOFF = [1.0, 3.0, 6.0]
 
 WRAPPER_TEMPLATES: dict[str, str] = {
     "python": """\
@@ -183,6 +189,10 @@ func main() {{
 }
 
 
+class Judge0RateLimitError(Exception):
+    """Raised when Judge0 returns 429 Too Many Requests."""
+
+
 def _get_judge0_url() -> str:
     url = os.getenv("JUDGE0_URL", "").rstrip("/")
     if not url:
@@ -196,10 +206,43 @@ def _get_judge0_url() -> str:
 def _get_headers() -> dict[str, str]:
     headers: dict[str, str] = {"Content-Type": "application/json"}
     api_key = os.getenv("JUDGE0_API_KEY", "")
-    if api_key:
+    if not api_key:
+        url = os.getenv("JUDGE0_URL", "")
+        if "rapidapi" in url.lower():
+            raise EnvironmentError(
+                "JUDGE0_API_KEY is not set but you're using the RapidAPI-hosted Judge0. "
+                "Sign up at https://rapidapi.com/judge0-official/api/judge0-ce and add "
+                "your key to .env.local"
+            )
+    else:
         headers["X-RapidAPI-Key"] = api_key
         headers["X-RapidAPI-Host"] = "judge0-ce.p.rapidapi.com"
     return headers
+
+
+async def _request_with_retry(
+    client: httpx.AsyncClient,
+    method: str,
+    url: str,
+    headers: dict[str, str],
+    **kwargs: Any,
+) -> httpx.Response:
+    last_exc: Exception | None = None
+    for attempt in range(MAX_RETRIES):
+        resp = await client.request(method, url, headers=headers, **kwargs)
+        if resp.status_code == 429:
+            wait = RETRY_BACKOFF[min(attempt, len(RETRY_BACKOFF) - 1)]
+            logger.warning("Judge0 rate limited (429). Retry %d/%d in %.1fs", attempt + 1, MAX_RETRIES, wait)
+            await asyncio.sleep(wait)
+            last_exc = Judge0RateLimitError(
+                "Judge0 rate limit exceeded (429 Too Many Requests). "
+                "The free RapidAPI tier has strict limits — wait a moment and try again, "
+                "or upgrade your RapidAPI plan."
+            )
+            continue
+        resp.raise_for_status()
+        return resp
+    raise last_exc or Judge0RateLimitError("Judge0 rate limit exceeded after retries.")
 
 
 def build_submission_source(language: str, user_code: str) -> str:
@@ -235,27 +278,31 @@ async def submit_batch(
         })
 
     async with httpx.AsyncClient(timeout=60) as client:
+        tokens: list[str] = []
+
         # Try batch submission first
         try:
-            resp = await client.post(
+            resp = await _request_with_retry(
+                client, "POST",
                 f"{url}/submissions/batch",
-                json={"submissions": submissions},
                 headers=headers,
+                json={"submissions": submissions},
                 params={"base64_encoded": "true"},
             )
-            resp.raise_for_status()
             tokens = [item["token"] for item in resp.json()]
-        except (httpx.HTTPError, KeyError):
-            # Fall back to sequential submissions
+        except (httpx.HTTPError, KeyError, Judge0RateLimitError) as batch_err:
+            logger.info("Batch submission failed (%s), falling back to sequential.", type(batch_err).__name__)
             tokens = []
-            for sub in submissions:
-                resp = await client.post(
+            for i, sub in enumerate(submissions):
+                if i > 0:
+                    await asyncio.sleep(0.5)
+                resp = await _request_with_retry(
+                    client, "POST",
                     f"{url}/submissions",
-                    json=sub,
                     headers=headers,
+                    json=sub,
                     params={"base64_encoded": "true"},
                 )
-                resp.raise_for_status()
                 tokens.append(resp.json()["token"])
 
         results = await _poll_results(client, url, headers, tokens)
@@ -270,30 +317,38 @@ async def _poll_results(
     tokens: list[str],
     max_attempts: int = 30,
 ) -> list[dict[str, Any]]:
-    for _ in range(max_attempts):
-        await asyncio.sleep(1)
+    subs: list[dict[str, Any]] = []
+    for attempt in range(max_attempts):
+        await asyncio.sleep(1.5 if attempt < 3 else 2.0)
 
         try:
             token_str = ",".join(tokens)
-            resp = await client.get(
+            resp = await _request_with_retry(
+                client, "GET",
                 f"{url}/submissions/batch",
-                params={"tokens": token_str, "base64_encoded": "true"},
                 headers=headers,
+                params={"tokens": token_str, "base64_encoded": "true"},
             )
-            resp.raise_for_status()
             data = resp.json()
             subs = data.get("submissions", data) if isinstance(data, dict) else data
-        except (httpx.HTTPError, KeyError):
-            # Fall back to individual polling
+        except (httpx.HTTPError, KeyError, Judge0RateLimitError):
             subs = []
-            for token in tokens:
-                resp = await client.get(
-                    f"{url}/submissions/{token}",
-                    params={"base64_encoded": "true"},
-                    headers=headers,
-                )
-                resp.raise_for_status()
-                subs.append(resp.json())
+            for i, token in enumerate(tokens):
+                if i > 0:
+                    await asyncio.sleep(0.5)
+                try:
+                    resp = await _request_with_retry(
+                        client, "GET",
+                        f"{url}/submissions/{token}",
+                        headers=headers,
+                        params={"base64_encoded": "true"},
+                    )
+                    subs.append(resp.json())
+                except (httpx.HTTPError, Judge0RateLimitError):
+                    subs.append({"status": {"id": 2, "description": "Processing"}})
+
+        if not subs:
+            continue
 
         all_done = all(
             sub.get("status", {}).get("id", 0) not in (1, 2) for sub in subs

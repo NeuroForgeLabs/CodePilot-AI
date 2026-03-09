@@ -18,7 +18,7 @@ from models.schemas import (
     ReviewResponse,
     TestResult,
 )
-from services.judge0 import LANGUAGE_IDS, build_submission_source, submit_batch
+from services.judge0 import LANGUAGE_IDS, Judge0RateLimitError, build_submission_source, submit_batch
 from services.llm import generate_hint, generate_review
 
 load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / ".env.local")
@@ -107,6 +107,8 @@ async def execute_code(req: ExecuteRequest):
         raw_results = await submit_batch(req.language, source, test_inputs, expected_outputs)
     except EnvironmentError as e:
         raise HTTPException(status_code=503, detail=str(e))
+    except Judge0RateLimitError as e:
+        raise HTTPException(status_code=429, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Execution error: {str(e)}")
 
